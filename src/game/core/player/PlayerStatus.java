@@ -13,6 +13,7 @@ public class PlayerStatus {
     private List<PlayerEffect> effects = new ArrayList<>();
 
     public PlayerStatus() {
+        // Add all attributes with their initial values
         Arrays.stream(PlayerAttribute.values()).forEach(attr -> setAttribute(attr, attr.initialVal));
     }
 
@@ -21,6 +22,7 @@ public class PlayerStatus {
     }
 
     public void update(Player player) {
+        // Update all effects and remove those that have expired
         int offset = 0;
         int size = effects.size();
         for (int i = 0; i < size; i++) {
