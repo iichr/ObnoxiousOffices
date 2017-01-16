@@ -1,8 +1,10 @@
 package game.core.player;
 
+import game.core.Updateable;
 import game.core.player.effect.PlayerEffect;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by samtebbs on 15/01/2017.
@@ -10,7 +12,8 @@ import java.util.*;
 public class PlayerStatus {
 
     private HashMap<PlayerAttribute, Double> attributes = new HashMap<>();
-    private List<PlayerEffect> effects = new ArrayList<>();
+    private Set<PlayerAction> actions = new HashSet<>();
+    private Set<PlayerEffect> effects = new HashSet<>();
 
     public PlayerStatus() {
         // Add all attributes with their initial values
@@ -22,16 +25,13 @@ public class PlayerStatus {
     }
 
     public void update(Player player) {
-        // Update all effects and remove those that have expired
-        int offset = 0;
-        int size = effects.size();
-        for (int i = 0; i < size; i++) {
-            int j = i - offset;
-            if(effects.get(j).update(player)) {
-                offset++;
-                effects.remove(j);
-            }
-        }
+        actions = update(actions, player);
+        effects = update(effects, player);
+    }
+
+    private <T extends Updateable<Player>> Set<T> update(Set<T> updateables, Player player) {
+        updateables.forEach(u -> u.update(player));
+        return updateables.stream().filter(Updateable::ended).collect(Collectors.toSet());
     }
 
     public void setAttribute(PlayerAttribute attribute, double val) {
