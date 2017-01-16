@@ -15,5 +15,5 @@ public class Player {
     public void update() {
         status.update(this);
     }
-
+    
 }

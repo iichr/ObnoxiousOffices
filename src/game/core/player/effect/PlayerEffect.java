@@ -1,11 +1,12 @@
 package game.core.player.effect;
 
+import game.core.Updateable;
 import game.core.player.Player;
 
 /**
  * Created by samtebbs on 15/01/2017.
  */
-public abstract class PlayerEffect {
+public abstract class PlayerEffect implements Updateable<Player> {
 
     protected final int duration;
     protected int elapsed;
@@ -15,13 +16,14 @@ public abstract class PlayerEffect {
         this.duration = duration;
     }
 
-    public final boolean update(Player player) {
-        if(elapsed++ >= duration) expired = true;
-        else update2(player);
-        return expired;
+    public void update(Player player) {
+        if(!expired) {
+            if (elapsed++ >= duration) expired = true;
+            else updatePlayer(player);
+        }
     }
 
-    protected abstract void update2(Player player);
+    protected abstract void updatePlayer(Player player);
 
     public int getDuration() {
         return duration;
@@ -29,5 +31,9 @@ public abstract class PlayerEffect {
 
     public int getElapsed() {
         return elapsed;
+    }
+
+    public boolean ended() {
+        return expired;
     }
 }
