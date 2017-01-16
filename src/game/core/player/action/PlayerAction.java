@@ -1,6 +1,7 @@
-package game.core.player;
+package game.core.player.action;
 
 import game.core.Updateable;
+import game.core.player.Player;
 
 /**
  * Created by samtebbs on 16/01/2017.
