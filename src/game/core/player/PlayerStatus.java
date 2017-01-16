@@ -35,7 +35,7 @@ public class PlayerStatus {
     }
 
     public void setAttribute(PlayerAttribute attribute, double val) {
-        attributes.put(attribute, val);
+        attributes.put(attribute, Math.min(val, attribute.maxVal));
     }
 
     public void addToAttribute(PlayerAttribute attribute, double val) {
@@ -52,12 +52,13 @@ public class PlayerStatus {
     }
 
     public enum PlayerAttribute {
-        FATIGUE(0.0), PRODUCTIVITY(1.0);
+        FATIGUE(0.0, 1.0), PRODUCTIVITY(1.0, 1.0);
 
-        public final double initialVal;
+        public final double initialVal, maxVal;
 
-        PlayerAttribute(double initialVal) {
+        PlayerAttribute(double initialVal, double maxVal) {
             this.initialVal = initialVal;
+            this.maxVal = maxVal;
         }
     }
 
