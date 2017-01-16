@@ -1,6 +1,7 @@
 package game.core.player;
 
 import game.core.Updateable;
+import game.core.player.action.PlayerAction;
 import game.core.player.effect.PlayerEffect;
 
 import java.util.*;
@@ -22,6 +23,11 @@ public class PlayerStatus {
 
     public void addEffect(PlayerEffect effect) {
         effects.add(effect);
+    }
+
+    public void addAction(PlayerAction action) {
+        actions.add(action);
+        action.start();
     }
 
     public void update(Player player) {
