@@ -41,11 +41,11 @@ public class PlayerStatus {
     }
 
     public void setAttribute(PlayerAttribute attribute, double val) {
-        attributes.put(attribute, Math.min(val, attribute.maxVal));
+        attributes.put(attribute, Math.max(0, Math.min(val, attribute.maxVal)));
     }
 
     public void addToAttribute(PlayerAttribute attribute, double val) {
-        if (hasAttribute(attribute)) setAttribute(attribute, val + getAttribute(attribute).get());
+        if (hasAttribute(attribute)) setAttribute(attribute, val + getAttribute(attribute));
         else setAttribute(attribute, val);
     }
 
