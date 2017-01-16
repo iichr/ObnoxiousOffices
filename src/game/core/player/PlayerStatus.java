@@ -47,8 +47,8 @@ public class PlayerStatus {
         return attributes.containsKey(attribute);
     }
 
-    public Optional<Double> getAttribute(PlayerAttribute attribute) {
-        return hasAttribute(attribute) ? Optional.of(attributes.get(attribute)) : Optional.empty();
+    public double getAttribute(PlayerAttribute attribute) {
+        return attributes.get(attribute);
     }
 
     public enum PlayerAttribute {
