@@ -12,7 +12,8 @@ public class Server {
 	public static Map<String, Integer> SCORES = new HashMap<>();
 
 	public static void main(String[] args) {
-
+		int NumberOfClients = 0;
+		boolean waiting = true;
 		if (args.length != 1) {
 			System.err.println("Usage: java Server port");
 			System.exit(1); // Give up.
@@ -43,7 +44,7 @@ public class Server {
 		// Must try again for the same reason:
 		try {
 
-			while (true) {
+			while (waiting = true) {
 				// Listen to the socket, accepting connections from new clients:
 				Socket socket = serverSocket.accept();
 
@@ -55,7 +56,7 @@ public class Server {
 
 				// For debugging:
 				System.out.println(clientName + " connected");
-
+				NumberOfClients = NumberOfClients + 1;
 				// We add the client to the table:
 				clientTable.add(clientName);
 				SCORES.put(clientName, 0);
@@ -66,6 +67,11 @@ public class Server {
 				// Create and start a new thread to write to the client:
 				PrintStream toClient = new PrintStream(socket.getOutputStream());
 				(new ServerSender(clientTable.getQueue(clientName), toClient)).start();
+				
+				if(NumberOfClients >= 4){
+				waiting = false;
+					//START GAME
+				}
 			}
 		} catch (IOException e) {
 			System.err.println("IO error " + e.getMessage());
