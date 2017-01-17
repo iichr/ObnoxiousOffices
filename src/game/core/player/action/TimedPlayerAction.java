@@ -52,6 +52,7 @@ public abstract class TimedPlayerAction extends PlayerAction {
     }
 
     protected void startCounter(int i) {
+        counter = 0;
         counterMax = i;
     }
 
