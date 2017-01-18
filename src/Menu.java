@@ -47,25 +47,38 @@ public class Menu implements GameState {
 		g.drawString(new Date().toString(), 450, 30);
 		//(gc.getHeight()/2 -5)
 		g.drawString("START", 295, 150);
-		g.drawString("EXIT", 300, 200);
+		
+		g.drawString("OPTIONS", 290, 200);
+		
+		g.drawString("EXIT", 300, 250);
 
 	}
 
+	
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		Input input = gc.getInput();
 		int xlocation = Mouse.getX();
 		int ylocation = gc.getHeight() - Mouse.getY();
 		
+		// Convention for the clickable area of a String:
+		// height (delta y) = 20
+		// width (delta x) = dependent on object length + some padding on both sides
+		
 		if (xlocation >= 295 && xlocation <= 340 && ylocation >= 140 && ylocation <= 160) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				sbg.enterState(1);
 			}
-		} else if (xlocation >= 300 && xlocation <= 335 && ylocation >= 190 && ylocation <= 210) {
+		} else if (xlocation >= 295 && xlocation <= 335 && ylocation >= 240 && ylocation <= 260) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				gc.exit();
 			}
 
+		} else if ((xlocation >= 285 && xlocation <= 360) && (ylocation >=200 && ylocation <=220)) {
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sbg.enterState(2);
+				// TODO create the Options state	
+			} 
 		} else {
 			mouse = "Mouse postion at (" + xlocation + " , " + ylocation + ")";
 		}
