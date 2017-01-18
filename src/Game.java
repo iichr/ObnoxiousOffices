@@ -9,6 +9,7 @@ public class Game extends StateBasedGame{
 	public static final String gamename = " Offices " ;
 	public static final int menu = 0 ;
 	public static final int play = 1; 
+	public static final int options = 2;
 	public static final int width = 800;
 	public static final int height = 600;
 	
@@ -16,11 +17,13 @@ public class Game extends StateBasedGame{
 		super(gamename);
 		this.addState(new Menu(menu));
 		this.addState(new Play(play));
+		this.addState(new Options(options));
 	}
 	
 	public void initStatesList(GameContainer gc) throws SlickException{
 		this.getState(menu).init(gc, this);
 		this.getState(play).init(gc, this);
+		this.getState(options).init(gc,this);
 		this.enterState(menu);
 	}
 	
