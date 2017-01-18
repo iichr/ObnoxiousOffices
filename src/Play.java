@@ -23,8 +23,7 @@ public class Play implements GameState {
 
 	@Override
 	public int getID() {
-
-		return 1;
+		return Vals.PLAY_STATE;
 	}
 
 	@Override

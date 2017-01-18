@@ -35,6 +35,7 @@ public class Options extends BasicGameState {
 		soundStatus = turnOn;
 		
 		// TODO add music and sound
+		 
 		
 	}
 
@@ -44,25 +45,29 @@ public class Options extends BasicGameState {
 		g.drawString(mouseCoords, 100, 100);
 		
 		soundStatus.draw(295,150);
+		g.drawString("Back",295 ,300);
+		
 	}
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		Input input = container.getInput();
 		
+		int mouseX = Mouse.getX();
+		int mouseY = container.getHeight() - Mouse.getY();
+		mouseCoords = mouseX + " ," + mouseY;
+		
 		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			// sound.play();
+			if((mouseX >= 290 && mouseX <= 340) && (mouseY >= 290 && mouseY<=310)) {
+				game.enterState(Vals.MENU_STATE);
+			}
 		}
-		
-		// debugging
-		int mouseX = Mouse.getX();
-		int mouseY = Mouse.getY();
-		mouseCoords = mouseX + " ," + mouseY;
 	}
 
 	@Override
 	public int getID() {
-		return 2;
+		return Vals.OPTIONS_STATE;
 	}
 	
 	public void mousePressed(int button, int x, int y) {

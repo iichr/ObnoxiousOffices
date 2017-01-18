@@ -25,7 +25,7 @@ public class Menu implements GameState {
 
 	@Override
 	public int getID() {
-		return 0;
+		return Vals.MENU_STATE;
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class Menu implements GameState {
 		
 		if (xlocation >= 295 && xlocation <= 340 && ylocation >= 140 && ylocation <= 160) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sbg.enterState(1);
+				sbg.enterState(Vals.PLAY_STATE);
 			}
 		} else if (xlocation >= 295 && xlocation <= 335 && ylocation >= 240 && ylocation <= 260) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
@@ -76,8 +76,7 @@ public class Menu implements GameState {
 
 		} else if ((xlocation >= 285 && xlocation <= 360) && (ylocation >=200 && ylocation <=220)) {
 			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sbg.enterState(2);
-				// TODO create the Options state	
+				sbg.enterState(Vals.OPTIONS_STATE);
 			} 
 		} else {
 			mouse = "Mouse postion at (" + xlocation + " , " + ylocation + ")";

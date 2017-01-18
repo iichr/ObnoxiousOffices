@@ -6,25 +6,18 @@ import org.newdawn.slick.state.*;
 
 public class Game extends StateBasedGame{
 	
-	public static final String gamename = " Offices " ;
-	public static final int menu = 0 ;
-	public static final int play = 1; 
-	public static final int options = 2;
-	public static final int width = 800;
-	public static final int height = 600;
-	
 	public Game(String gamename) {
 		super(gamename);
-		this.addState(new Menu(menu));
-		this.addState(new Play(play));
-		this.addState(new Options(options));
+		this.addState(new Menu(Vals.MENU_STATE));
+		this.addState(new Play(Vals.PLAY_STATE));
+		this.addState(new Options(Vals.OPTIONS_STATE));
 	}
 	
 	public void initStatesList(GameContainer gc) throws SlickException{
-		this.getState(menu).init(gc, this);
-		this.getState(play).init(gc, this);
-		this.getState(options).init(gc,this);
-		this.enterState(menu);
+		this.getState(Vals.MENU_STATE).init(gc, this);
+		this.getState(Vals.PLAY_STATE).init(gc, this);
+		this.getState(Vals.OPTIONS_STATE).init(gc,this);
+		this.enterState(Vals.MENU_STATE);
 	}
 	
 	public static void main(String[] args) {
@@ -53,8 +46,8 @@ public class Game extends StateBasedGame{
 
 		AppGameContainer agc;
 		try{
-			agc = new AppGameContainer(new Game(gamename));
-			agc.setDisplayMode(width,height,false);
+			agc = new AppGameContainer(new Game(Vals.GAME_NAME));
+			agc.setDisplayMode(Vals.SCREEN_WIDTH,Vals.SCREEN_HEIGHT,false);
 			agc.start();
 		}catch(SlickException e){
 			e.printStackTrace();
