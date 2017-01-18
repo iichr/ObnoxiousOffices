@@ -9,6 +9,8 @@ public class Game extends StateBasedGame{
 	public static final String gamename = " Offices " ;
 	public static final int menu = 0 ;
 	public static final int play = 1; 
+	public static final int width = 800;
+	public static final int height = 600;
 	
 	public Game(String gamename) {
 		super(gamename);
@@ -49,7 +51,7 @@ public class Game extends StateBasedGame{
 		AppGameContainer agc;
 		try{
 			agc = new AppGameContainer(new Game(gamename));
-			agc.setDisplayMode(600,350,false);
+			agc.setDisplayMode(width,height,false);
 			agc.start();
 		}catch(SlickException e){
 			e.printStackTrace();

@@ -1,10 +1,13 @@
 
-import org.newdawn.slick.*;
-import org.newdawn.slick.state.*;
-
 import java.util.Date;
 
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.GameState;
+import org.newdawn.slick.state.StateBasedGame;
 
 public class Menu implements GameState {
 
@@ -40,7 +43,6 @@ public class Menu implements GameState {
 	 */
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-
 		g.drawString(mouse, 50, 50);
 		g.drawString(new Date().toString(), 450, 30);
 		//(gc.getHeight()/2 -5)
@@ -53,13 +55,13 @@ public class Menu implements GameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		Input input = gc.getInput();
 		int xlocation = Mouse.getX();
-		int ylocation = Mouse.getY();
-		if (xlocation >= 295 && xlocation <= 340 && ylocation >= 195 && ylocation <= 207) {
+		int ylocation = gc.getHeight() - Mouse.getY();
+		
+		if (xlocation >= 295 && xlocation <= 340 && ylocation >= 140 && ylocation <= 160) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				sbg.enterState(1);
-
 			}
-		} else if (xlocation >= 300 && xlocation <= 335 && ylocation >= 145 && ylocation <= 157) {
+		} else if (xlocation >= 300 && xlocation <= 335 && ylocation >= 190 && ylocation <= 210) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				gc.exit();
 			}
