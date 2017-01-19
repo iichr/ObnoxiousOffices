@@ -1,9 +1,13 @@
-import java.awt.Font;
-
 import org.lwjgl.input.Mouse;
-import org.newdawn.slick.*;
-import org.newdawn.slick.font.effects.ColorEffect;
-import org.newdawn.slick.state.*;
+import org.newdawn.slick.Animation;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Music;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
 /**
  * The Options submenu.
@@ -17,7 +21,7 @@ public class Options extends BasicGameState {
 	private Music music;
 	private Sound sound;
 	private int mouseX, mouseY;
-	private String mouseCoords;
+	private String mouseCoords = "No input yet!";
 	
 	private MenuButton backButton;
 	
@@ -25,7 +29,6 @@ public class Options extends BasicGameState {
 		
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		//sound toggle animation

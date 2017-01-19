@@ -1,16 +1,21 @@
-import java.util.Date;
-
 import org.lwjgl.input.Mouse;
-import org.newdawn.slick.*;
-import org.newdawn.slick.state.*;
+import org.newdawn.slick.Animation;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
-public class Play implements GameState {
-	String mouse = "No input yet!";
+public class Play extends BasicGameState {
+	private String mouseCoords = "No input yet!";
 	float moveX = 300;
 	float moveY = 150;
 	Animation circle, staying, moving;
 	int[] duration = { 200, 200 };
 	boolean quit = false;
+	private MenuButton backButton;
 
 	public Play(int state) {
 
@@ -34,6 +39,11 @@ public class Play implements GameState {
 		staying = new Animation(stay, duration, false);
 		moving = new Animation(move, duration, false);
 		circle = staying;
+
+		Image back = new Image("./res/back.png");
+		Image backR = new Image("./res/backR.png");
+
+		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 	}
 
 	@Override
@@ -43,26 +53,24 @@ public class Play implements GameState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+		// debugging
+		g.drawString(mouseCoords, 10, 50);
 
-		g.drawString(mouse, 50, 50);
+		// example
 		circle.draw(moveX, moveY);
 		g.drawString("Circle at:(" + moveX + "," + moveY + ")", 350, 50);
-		g.drawString(new Date().toString(), 450, 30);
-		if (quit == true) {
-			g.drawString("Resume (R) Main Menu (M) Quit (Q)", 90, 150);
-			if (quit == false) {
-				g.clear();
-			}
 
-		}
+		// add back button
+		backButton.render(g);
 	}
 
 	@Override
-	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
-		int xlocation = Mouse.getX();
-		int ylocation = Mouse.getY();
-		mouse = "Mouse postion at (" + xlocation + " , " + ylocation + ")";
+		int mouseX = Mouse.getX();
+		int mouseY = gc.getHeight() - Mouse.getY();
+		mouseCoords = mouseX + " ," + mouseY;
+
 		if (input.isKeyDown(Input.KEY_UP)) {
 			circle = moving;
 			moveY -= 0.5;
@@ -77,151 +85,11 @@ public class Play implements GameState {
 			moveX += 0.5;
 		} else if (input.isKeyDown(Input.KEY_ESCAPE)) {
 			quit = true;
-		} else if (quit) {
-			if (input.isKeyDown(Input.KEY_R)) {
-				quit = false;
-			}
-			if (input.isKeyDown(Input.KEY_M)) {
-
-				sbg.enterState(0);
-
-			}
-			if (input.isKeyDown(Input.KEY_Q)) {
-				gc.exit();
-			}
 		} else {
 			circle = staying;
 		}
 
-	}
-
-	@Override
-	public void mouseClicked(int arg0, int arg1, int arg2, int arg3) {
-
-	}
-
-	@Override
-	public void mouseDragged(int arg0, int arg1, int arg2, int arg3) {
-
-	}
-
-	@Override
-	public void mouseMoved(int arg0, int arg1, int arg2, int arg3) {
-
-	}
-
-	@Override
-	public void mousePressed(int arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(int arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseWheelMoved(int arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void inputEnded() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void inputStarted() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean isAcceptingInput() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setInput(Input arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyPressed(int arg0, char arg1) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyReleased(int arg0, char arg1) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void controllerButtonPressed(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void controllerButtonReleased(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void controllerDownPressed(int arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void controllerDownReleased(int arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void controllerLeftPressed(int arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void controllerLeftReleased(int arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void controllerRightPressed(int arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void controllerRightReleased(int arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void controllerUpPressed(int arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void controllerUpReleased(int arg0) {
-		// TODO Auto-generated method stub
-
+		backButton.onClick(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 	}
 
 }
