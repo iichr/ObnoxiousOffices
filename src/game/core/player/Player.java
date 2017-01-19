@@ -1,9 +1,11 @@
 package game.core.player;
 
+import game.core.Updateable;
+
 /**
  * Created by samtebbs on 15/01/2017.
  */
-public class Player {
+public class Player implements Updateable {
 
     public final String name;
     public final PlayerStatus status = new PlayerStatus();
@@ -13,8 +15,13 @@ public class Player {
         this.name = name;
     }
 
-    public void update() {
+    public void update(Object _) {
         status.update(this);
+    }
+
+    @Override
+    public boolean ended() {
+        return false;
     }
 
     public void setProgress(double progress) {
