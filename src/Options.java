@@ -1,5 +1,8 @@
+import java.awt.Font;
+
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.*;
 
 /**
@@ -17,10 +20,14 @@ public class Options extends BasicGameState {
 	private int mouseX, mouseY;
 	private String mouseCoords;
 	
+	private MenuButton testButton;
+	private UnicodeFont font;
+	
 	public Options(int state) {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		speakerOff = new Image("./res/speakerOff.png");
@@ -36,7 +43,12 @@ public class Options extends BasicGameState {
 		
 		// TODO add music and sound
 		 
-		
+		testButton = new MenuButton(295.0f, 350.0f, 200, 50, "Test");
+		Font awtFont = new Font("Arial", Font.BOLD, 30);
+		font = new UnicodeFont(awtFont);
+		font.getEffects().add(new ColorEffect(java.awt.Color.white));
+		font.addAsciiGlyphs();
+		font.loadGlyphs();
 	}
 
 	@Override
@@ -44,8 +56,14 @@ public class Options extends BasicGameState {
 		// debugging
 		g.drawString(mouseCoords, 100, 100);
 		
+		g.setFont(font);
+		
 		soundStatus.draw(295,150);
 		g.drawString("Back",295 ,300);
+		
+		int strWidth = font.getWidth(testButton.getString());
+		int strHeight = font.getHeight(testButton.getString());
+		testButton.render(g,strWidth,strHeight);
 		
 	}
 
@@ -57,12 +75,15 @@ public class Options extends BasicGameState {
 		int mouseY = container.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
 		
+		testButton.onClick(input, game, mouseX, mouseY, Vals.MENU_STATE);
+		
+		// TODO FIX testButton currently invalidates Back string link to menu state.
 		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			// sound.play();
 			if((mouseX >= 290 && mouseX <= 340) && (mouseY >= 290 && mouseY<=310)) {
 				game.enterState(Vals.MENU_STATE);
 			}
-		}
+		}		
 	}
 
 	@Override
@@ -85,5 +106,4 @@ public class Options extends BasicGameState {
 			}
 		}
 	}
-
 }
