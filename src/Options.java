@@ -29,8 +29,6 @@ public class Options extends BasicGameState {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		//back button animation
-		
 		//sound toggle animation
 		speakerOff = new Image("./res/speakerOff.png");
 		speakerOn = new Image("./res/speakerOn.png");
