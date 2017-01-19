@@ -19,8 +19,7 @@ public class Options extends BasicGameState {
 	private int mouseX, mouseY;
 	private String mouseCoords;
 	
-	private MenuButton testButton;
-	private UnicodeFont font;
+	private MenuButton backButton;
 	
 	public Options(int state) {
 		
@@ -28,7 +27,7 @@ public class Options extends BasicGameState {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		//sound toggle animation
 		speakerOff = new Image("./res/speakerOff.png");
 		speakerOn = new Image("./res/speakerOn.png");
@@ -42,45 +41,30 @@ public class Options extends BasicGameState {
 		soundStatus = turnOn;
 		
 		// TODO add music and sound	 
-		testButton = new MenuButton(295.0f, 350.0f, 200, 50, "Test");
-		Font awtFont = new Font("Arial", Font.BOLD, 30);
-		font = new UnicodeFont(awtFont);
-		font.getEffects().add(new ColorEffect(java.awt.Color.white));
-		font.addAsciiGlyphs();
-		font.loadGlyphs();
+		Image back = new Image("./res/back.png");
+		Image backR = new Image("./res/backR.png");
+		
+		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 	}
 
 	@Override
-	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		// debugging
-		g.drawString(mouseCoords, 100, 100);
-		
-		g.setFont(font);
+		g.drawString(mouseCoords, 10, 50);
 		
 		soundStatus.draw(295,150);
-		
-		int strWidth = font.getWidth(testButton.getString());
-		int strHeight = font.getHeight(testButton.getString());
-		testButton.render(g,strWidth,strHeight);
+
+		//add back button
+		backButton.render(g);
 	}
 
 	@Override
-	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-		Input input = container.getInput();
-		
+	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		int mouseX = Mouse.getX();
-		int mouseY = container.getHeight() - Mouse.getY();
+		int mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
 		
-		testButton.onClick(input, game, mouseX, mouseY, Vals.MENU_STATE);
-		
-		// TODO FIX testButton currently invalidates Back string link to menu state.
-		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			// sound.play();
-			if((mouseX >= 290 && mouseX <= 340) && (mouseY >= 290 && mouseY<=310)) {
-				game.enterState(Vals.MENU_STATE);
-			}
-		}		
+		backButton.onClick(gc, game, mouseX, mouseY, Vals.MENU_STATE);	
 	}
 
 	@Override

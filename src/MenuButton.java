@@ -11,7 +11,7 @@ import org.newdawn.slick.state.*;
 public class MenuButton extends Rectangle {
 	
 	private static final long serialVersionUID = -4269697269366852233L;
-	private String buttonText;
+	private Animation rollOn, rollOff, rolloverButton;
 	
 	/** 
 	 * Create a new menu button.
@@ -21,9 +21,27 @@ public class MenuButton extends Rectangle {
 	 * @param height The button's height
 	 * @param text The text to be displayed at the centre of the button.
 	 */
-	public MenuButton(float x, float y, float width, float height, String text) {
+	public MenuButton(float x, float y, float width, float height, Image normal, Image rollover) {
 		super(x, y, width, height);
-		buttonText = text;
+		createAnimation(normal, rollover);
+	}
+	
+	/**
+	 * Creates the animation for the roll-over button
+	 * @param normal The image for the button
+	 * @param rollover The image for the button when rolled over
+	 */
+	public void createAnimation(Image normal, Image rollover){
+		int[] duration = {200,200};
+		
+		Image[] rollO = {rollover, normal};
+		Image[] rollF = {normal, rollover};
+				
+		rollOn = new Animation(rollO, duration, false);
+		rollOff = new Animation(rollF, duration, false);
+				
+		//set initial state to off
+		rolloverButton = rollOff;
 	}
 	
 	/**
@@ -33,10 +51,8 @@ public class MenuButton extends Rectangle {
 	 * @param strWidth The width of the label
 	 * @param strHeight The height of the label
 	 */
-	public void render(Graphics g, int strWidth, int strHeight) {
-		//g.setColor(Color.lightGray);
-		g.fill(this);
-		g.drawString(buttonText, (this.x + this.width/2) - (strWidth/2), (this.y + this.height/2) - (strHeight/2));
+	public void render(Graphics g) {
+		rolloverButton.draw(this.x, this.y);
 	}
 	
 	/**
@@ -57,11 +73,20 @@ public class MenuButton extends Rectangle {
 	 * @param mouseY The y coord of the mouse cursor
 	 * @param stateID The new state which to enter.
 	 */
-	public void onClick(Input input, StateBasedGame game, int mouseX, int mouseY, int stateID) {
-		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			if(inRange((float)mouseX, (float)mouseY)) {
-				game.enterState(stateID);
+	public void onClick(GameContainer gc, StateBasedGame game, int mouseX, int mouseY, int stateID) {
+		Input input = gc.getInput();
+		
+		if(inRange((float)mouseX, (float)mouseY)) {
+			rolloverButton = rollOn;
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				if(stateID == 4){
+					gc.exit();
+				}else{
+					game.enterState(stateID);
+				}
 			}
+		}else{
+			rolloverButton = rollOff;
 		}
 	}
 	
@@ -70,6 +95,7 @@ public class MenuButton extends Rectangle {
 	 * @return The label of the button.
 	 */
 	public String getString() {
-		return buttonText;
+		//TODO think of a nice way to do this
+		return "button";
 	}
 }

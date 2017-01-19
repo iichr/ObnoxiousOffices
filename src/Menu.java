@@ -4,14 +4,15 @@ import java.util.Date;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Menu implements GameState {
-
-	public String mouse = "No input yet!";
+	private MenuButton playButton, optionsButton, rulesButton, exitButton;
+	private String mouseCoords = "No input yet!";
 
 	public Menu(int state) {
 
@@ -31,6 +32,22 @@ public class Menu implements GameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		gc.setShowFPS(false);
+		
+		Image play = new Image("./res/play.png");
+		Image playR = new Image("./res/playR.png");
+		playButton = new MenuButton(250.0f, 100.0f, 200, 50, play, playR);
+		
+		Image options = new Image("./res/options.png");
+		Image optionsR = new Image("./res/optionsR.png");
+		optionsButton = new MenuButton(250.0f, 200.0f, 200, 50, options, optionsR);
+		
+		Image rules = new Image("./res/rules.png");
+		Image rulesR = new Image("./res/rulesR.png");
+		rulesButton = new MenuButton(250.0f, 300.0f, 200, 50, rules, rulesR);
+		
+		Image exit = new Image("./res/exit.png");
+		Image exitR = new Image("./res/exitR.png");
+		exitButton = new MenuButton(250.0f, 400.0f, 200, 50, exit, exitR);
 	}
 
 	@Override
@@ -43,54 +60,31 @@ public class Menu implements GameState {
 	 */
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		g.drawString(mouse, 50, 50);
+		// debugging
+		g.drawString(mouseCoords, 10, 50);
 		g.drawString(new Date().toString(), 450, 30);
-		//(gc.getHeight()/2 -5)
-		g.drawString("START", 295, 150);
 		
-		g.drawString("OPTIONS", 290, 200);
-		
-		g.drawString("RULES", 295, 250);
-		
-		g.drawString("EXIT", 300, 300);
-
+		//draw buttons
+		playButton.render(g);
+		optionsButton.render(g);
+		rulesButton.render(g);
+		exitButton.render(g);
 	}
 
 	
 	@Override
-	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
-		int xlocation = Mouse.getX();
-		int ylocation = gc.getHeight() - Mouse.getY();
 		
-		// Convention for the clickable area of a String:
-		// height (delta y) = 20
-		// width (delta x) = dependent on object length + some padding on both sides
+		int mouseX = Mouse.getX();
+		int mouseY = gc.getHeight() - Mouse.getY();
+		mouseCoords = mouseX + " ," + mouseY;
 		
-		if (xlocation >= 290 && xlocation <= 340 && ylocation >= 150 && ylocation <= 170) {
-			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sbg.enterState(Vals.PLAY_STATE);
-			}
-			
-		} else if ((xlocation >= 285 && xlocation <= 360) && (ylocation >=200 && ylocation <=220)) {
-			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sbg.enterState(Vals.OPTIONS_STATE);
-			} 
-			
-		}  else if ((xlocation >= 290 && xlocation <= 340) && (ylocation >=250 && ylocation <=270)) {
-			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sbg.enterState(Vals.RULES_STATE);
-			} 
-			
-		} else if (xlocation >= 295 && xlocation <= 335 && ylocation >= 300 && ylocation <= 320) {
-			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				gc.exit();
-			}		
-			
-		}else {
-			mouse = "Mouse postion at (" + xlocation + " , " + ylocation + ")";
-		}
-
+		//set button properties
+		playButton.onClick(gc, game, mouseX, mouseY, Vals.PLAY_STATE);
+		optionsButton.onClick(gc, game, mouseX, mouseY, Vals.OPTIONS_STATE);	
+		rulesButton.onClick(gc, game, mouseX, mouseY, Vals.RULES_STATE);	
+		exitButton.onClick(gc, game, mouseX, mouseY, Vals.EXIT);	
 	}
 
 	@Override

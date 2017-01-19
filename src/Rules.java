@@ -30,7 +30,7 @@ public class Rules extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		// debugging
-		g.drawString(mouseCoords, 100, 100);
+		g.drawString(mouseCoords, 10, 50);
 		
 		//draw back button
 		backButton.draw(10, 10);
