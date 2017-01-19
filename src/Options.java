@@ -1,5 +1,8 @@
+import java.awt.Font;
+
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.*;
 
 /**
@@ -7,12 +10,7 @@ import org.newdawn.slick.state.*;
  * @author iichr
  *
  */
-public class Options extends BasicGameState {
-	
-	//animation for back button
-	private Image back, backR;
-	private Animation rollOn, rollOff, backButton;
-	
+public class Options extends BasicGameState {	
 	private Image speakerOn, speakerOff;
 	private Animation turnOn, turnOff, soundStatus;
 	private int[] duration = {200,200};
@@ -21,23 +19,17 @@ public class Options extends BasicGameState {
 	private int mouseX, mouseY;
 	private String mouseCoords;
 	
+	private MenuButton testButton;
+	private UnicodeFont font;
+	
 	public Options(int state) {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		//back button animation
-		back = new Image("./res/back.png");
-		backR = new Image("./res/backR.png");
-		Image[] rollO = {backR, back};
-		Image[] rollF = {back, backR};
-		
-		rollOn = new Animation(rollO, duration, false);
-		rollOff = new Animation(rollF, duration, false);
-		
-		//set initial state to off
-		backButton = rollOff;
 		
 		//sound toggle animation
 		speakerOff = new Image("./res/speakerOff.png");
@@ -51,7 +43,13 @@ public class Options extends BasicGameState {
 		// set initial state to ON;
 		soundStatus = turnOn;
 		
-		// TODO add music and sound
+		// TODO add music and sound	 
+		testButton = new MenuButton(295.0f, 350.0f, 200, 50, "Test");
+		Font awtFont = new Font("Arial", Font.BOLD, 30);
+		font = new UnicodeFont(awtFont);
+		font.getEffects().add(new ColorEffect(java.awt.Color.white));
+		font.addAsciiGlyphs();
+		font.loadGlyphs();
 	}
 
 	@Override
@@ -59,10 +57,13 @@ public class Options extends BasicGameState {
 		// debugging
 		g.drawString(mouseCoords, 100, 100);
 		
+		g.setFont(font);
+		
 		soundStatus.draw(295,150);
 		
-		//draw back button
-		backButton.draw(10, 10);
+		int strWidth = font.getWidth(testButton.getString());
+		int strHeight = font.getHeight(testButton.getString());
+		testButton.render(g,strWidth,strHeight);
 	}
 
 	@Override
@@ -73,15 +74,15 @@ public class Options extends BasicGameState {
 		int mouseY = container.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
 		
-		//back size 40
-		if((mouseX >= 10 && mouseX <= 50) && (mouseY >= 10 && mouseY<= 50)) {
-			backButton = rollOn;
-			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+		testButton.onClick(input, game, mouseX, mouseY, Vals.MENU_STATE);
+		
+		// TODO FIX testButton currently invalidates Back string link to menu state.
+		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+			// sound.play();
+			if((mouseX >= 290 && mouseX <= 340) && (mouseY >= 290 && mouseY<=310)) {
 				game.enterState(Vals.MENU_STATE);
 			}
-		} else {
-			backButton = rollOff;
-		}
+		}		
 	}
 
 	@Override
@@ -104,5 +105,4 @@ public class Options extends BasicGameState {
 			}
 		}
 	}
-
 }
