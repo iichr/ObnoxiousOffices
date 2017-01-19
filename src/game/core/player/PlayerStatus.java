@@ -5,7 +5,6 @@ import game.core.player.action.PlayerAction;
 import game.core.player.effect.PlayerEffect;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by samtebbs on 15/01/2017.
@@ -31,13 +30,8 @@ public class PlayerStatus {
     }
 
     public void update(Player player) {
-        actions = update(actions, player);
-        effects = update(effects, player);
-    }
-
-    private <T extends Updateable<Player>> Set<T> update(Set<T> updateables, Player player) {
-        updateables.forEach(u -> u.update(player));
-        return updateables.stream().filter(Updateable::ended).collect(Collectors.toSet());
+        actions = Updateable.updateAll(actions, player);
+        effects = Updateable.updateAll(effects, player);
     }
 
     public void setAttribute(PlayerAttribute attribute, double val) {
