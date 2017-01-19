@@ -19,18 +19,20 @@ public class MenuButton extends Rectangle {
 	private Animation rollOn, rollOff, rolloverButton;
 
 	/**
-	 * Create a new menu button.
+	 * Create a new image based menu button.
 	 * 
 	 * @param x
 	 *            The x coord of the top left of the button
 	 * @param y
-	 *            The y coord of the top right of the button
+	 *            The y coord of the top left of the button
 	 * @param width
 	 *            The button's width
 	 * @param height
 	 *            The button's height
-	 * @param text
-	 *            The text to be displayed at the centre of the button.
+	 * @param normal
+	 *            The default button image, on no interaction
+	 * @param rollover
+	 *            The button image on mouse hover.
 	 */
 	public MenuButton(float x, float y, float width, float height, Image normal, Image rollover) {
 		super(x, y, width, height);
@@ -59,15 +61,10 @@ public class MenuButton extends Rectangle {
 	}
 
 	/**
-	 * Renders the button to the graphics context. Uses the label's width and
-	 * height for proper centring.
+	 * Renders the button to the graphics context using its coords.
 	 * 
 	 * @param g
 	 *            The graphics context to render to
-	 * @param strWidth
-	 *            The width of the label
-	 * @param strHeight
-	 *            The height of the label
 	 */
 	public void render(Graphics g) {
 		rolloverButton.draw(this.x, this.y);
@@ -89,14 +86,16 @@ public class MenuButton extends Rectangle {
 	/**
 	 * Update method for the button - enter a new state on button click.
 	 * 
-	 * @param input
+	 * @param gc
+	 *            The game container
 	 * @param game
+	 *            The game
 	 * @param mouseX
 	 *            The x coord of the mouse cursor
 	 * @param mouseY
 	 *            The y coord of the mouse cursor
 	 * @param stateID
-	 *            The new state which to enter.
+	 *            The new state to enter.
 	 */
 	public void onClick(GameContainer gc, StateBasedGame game, int mouseX, int mouseY, int stateID) {
 		Input input = gc.getInput();
