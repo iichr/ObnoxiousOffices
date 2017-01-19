@@ -9,6 +9,10 @@ import org.newdawn.slick.state.*;
  */
 public class Options extends BasicGameState {
 	
+	//animation for back button
+	private Image back, backR;
+	private Animation rollOn, rollOff, backButton;
+	
 	private Image speakerOn, speakerOff;
 	private Animation turnOn, turnOff, soundStatus;
 	private int[] duration = {200,200};
@@ -23,6 +27,19 @@ public class Options extends BasicGameState {
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+		//back button animation
+		back = new Image("./res/back.png");
+		backR = new Image("./res/backR.png");
+		Image[] rollO = {backR, back};
+		Image[] rollF = {back, backR};
+		
+		rollOn = new Animation(rollO, duration, false);
+		rollOff = new Animation(rollF, duration, false);
+		
+		//set initial state to off
+		backButton = rollOff;
+		
+		//sound toggle animation
 		speakerOff = new Image("./res/speakerOff.png");
 		speakerOn = new Image("./res/speakerOn.png");
 		Image[] speakerTurnOff = {speakerOff, speakerOn};
@@ -35,8 +52,6 @@ public class Options extends BasicGameState {
 		soundStatus = turnOn;
 		
 		// TODO add music and sound
-		 
-		
 	}
 
 	@Override
@@ -45,8 +60,9 @@ public class Options extends BasicGameState {
 		g.drawString(mouseCoords, 100, 100);
 		
 		soundStatus.draw(295,150);
-		g.drawString("Back",295 ,300);
 		
+		//draw back button
+		backButton.draw(10, 10);
 	}
 
 	@Override
@@ -57,11 +73,14 @@ public class Options extends BasicGameState {
 		int mouseY = container.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
 		
-		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			// sound.play();
-			if((mouseX >= 290 && mouseX <= 340) && (mouseY >= 290 && mouseY<=310)) {
+		//back size 40
+		if((mouseX >= 10 && mouseX <= 50) && (mouseY >= 10 && mouseY<= 50)) {
+			backButton = rollOn;
+			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				game.enterState(Vals.MENU_STATE);
 			}
+		} else {
+			backButton = rollOff;
 		}
 	}
 

@@ -30,7 +30,7 @@ public class Menu implements GameState {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-
+		gc.setShowFPS(false);
 	}
 
 	@Override
