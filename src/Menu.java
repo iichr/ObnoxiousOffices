@@ -50,7 +50,9 @@ public class Menu implements GameState {
 		
 		g.drawString("OPTIONS", 290, 200);
 		
-		g.drawString("EXIT", 300, 250);
+		g.drawString("RULES", 295, 250);
+		
+		g.drawString("EXIT", 300, 300);
 
 	}
 
@@ -65,20 +67,27 @@ public class Menu implements GameState {
 		// height (delta y) = 20
 		// width (delta x) = dependent on object length + some padding on both sides
 		
-		if (xlocation >= 295 && xlocation <= 340 && ylocation >= 140 && ylocation <= 160) {
+		if (xlocation >= 290 && xlocation <= 340 && ylocation >= 150 && ylocation <= 170) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				sbg.enterState(Vals.PLAY_STATE);
 			}
-		} else if (xlocation >= 295 && xlocation <= 335 && ylocation >= 240 && ylocation <= 260) {
-			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				gc.exit();
-			}
-
+			
 		} else if ((xlocation >= 285 && xlocation <= 360) && (ylocation >=200 && ylocation <=220)) {
 			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				sbg.enterState(Vals.OPTIONS_STATE);
 			} 
-		} else {
+			
+		}  else if ((xlocation >= 290 && xlocation <= 340) && (ylocation >=250 && ylocation <=270)) {
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sbg.enterState(Vals.RULES_STATE);
+			} 
+			
+		} else if (xlocation >= 295 && xlocation <= 335 && ylocation >= 300 && ylocation <= 320) {
+			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				gc.exit();
+			}		
+			
+		}else {
 			mouse = "Mouse postion at (" + xlocation + " , " + ylocation + ")";
 		}
 

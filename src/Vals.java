@@ -16,5 +16,7 @@ public interface Vals {
 	public static final int MENU_STATE = 0;
 	public static final int PLAY_STATE = 1;
 	public static final int OPTIONS_STATE = 2;
+	public static final int RULES_STATE = 3;
+	
 	
 }
