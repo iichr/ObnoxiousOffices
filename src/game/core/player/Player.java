@@ -10,7 +10,7 @@ import game.core.world.Location;
 public class Player implements Updateable {
 
     public final String name;
-    public final PlayerStatus status = new PlayerStatus();
+    public final PlayerStatus status = new PlayerStatus(this);
     private double progress = 0;
     private Direction facing;
     public Location location;
@@ -21,8 +21,7 @@ public class Player implements Updateable {
         this.location = location;
     }
 
-
-    public void update(Object _) {
+    public void update() {
         status.update(this);
     }
 

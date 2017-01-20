@@ -14,7 +14,7 @@ public abstract class TimedPlayerAction extends PlayerAction {
     }
 
     @Override
-    public void update(Player _) {
+    public void update() {
         update();
         incrementCounter();
         if (ended()) stop();

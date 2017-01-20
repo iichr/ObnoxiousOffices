@@ -23,8 +23,8 @@ public class World implements Updateable {
     }
 
     @Override
-    public void update(Object o) {
-        Updateable.updateAll(players, null);
+    public void update() {
+        Updateable.updateAll(players);
     }
 
     @Override

@@ -14,8 +14,10 @@ public class PlayerStatus {
     private HashMap<PlayerAttribute, Double> attributes = new HashMap<>();
     private Set<PlayerAction> actions = new HashSet<>();
     private Set<PlayerEffect> effects = new HashSet<>();
+    public final Player player;
 
-    public PlayerStatus() {
+    public PlayerStatus(Player player) {
+        this.player = player;
         // Add all attributes with their initial values
         Arrays.stream(PlayerAttribute.values()).forEach(attr -> setAttribute(attr, attr.initialVal));
     }
@@ -30,8 +32,8 @@ public class PlayerStatus {
     }
 
     public void update(Player player) {
-        actions = Updateable.updateAll(actions, player);
-        effects = Updateable.updateAll(effects, player);
+        actions = Updateable.updateAll(actions);
+        effects = Updateable.updateAll(effects);
     }
 
     public void setAttribute(PlayerAttribute attribute, double val) {
