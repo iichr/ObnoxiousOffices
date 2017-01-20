@@ -21,6 +21,22 @@ public class Player implements Updateable {
         this.location = location;
     }
 
+    public void moveForwards() {
+        location = location.forward(facing);
+    }
+
+    public void moveBackwards() {
+        location = location.backward(facing);
+    }
+
+    public void rotateLeft() {
+        facing = facing.left();
+    }
+
+    public void rotateRight() {
+        facing = facing.right();
+    }
+
     public void update() {
         status.update(this);
     }
