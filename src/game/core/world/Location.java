@@ -15,4 +15,8 @@ public class Location {
         this.world = world;
     }
 
+    public Location(int x, int y, World world) {
+        this(x, y, 0, world);
+    }
+
 }
