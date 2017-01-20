@@ -22,4 +22,12 @@ public abstract class TileType {
     public abstract void onWalkOver(Player player);
 
     public abstract void onInteraction(Player player);
+
+    public static boolean typeExists(char ch) {
+        return types.containsKey(ch);
+    }
+
+    public static TileType getType(char ch) {
+        return types.get(ch);
+    }
 }
