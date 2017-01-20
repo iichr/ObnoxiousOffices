@@ -1,5 +1,7 @@
 package game.core.world;
 
+import game.core.world.tile.Tile;
+
 /**
  * Created by samtebbs on 20/01/2017.
  */
@@ -28,4 +30,7 @@ public class Location {
         return new Location(x + facing.xAdd, y + facing.yAdd, z, world);
     }
 
+    public void setTile(Tile tile) {
+        world.setTile(x, y, z, tile);
+    }
 }
