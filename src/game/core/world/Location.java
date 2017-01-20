@@ -19,4 +19,13 @@ public class Location {
         this(x, y, 0, world);
     }
 
+    public Location forward(Direction facing) {
+        return new Location(x + facing.xAdd, y + facing.yAdd, z, world);
+    }
+
+    public Location backward(Direction facing) {
+        facing = facing.opposite();
+        return new Location(x + facing.xAdd, y + facing.yAdd, z, world);
+    }
+
 }
