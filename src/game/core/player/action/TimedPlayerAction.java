@@ -15,12 +15,12 @@ public abstract class TimedPlayerAction extends PlayerAction {
 
     @Override
     public void update() {
-        update();
+        timedUpdate();
         incrementCounter();
         if (ended()) stop();
     }
 
-    protected abstract void update();
+    protected abstract void timedUpdate();
 
     @Override
     public void start() {
