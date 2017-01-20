@@ -67,8 +67,8 @@ public class Menu extends BasicGameState {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
-		int mouseX = Mouse.getX();
-		int mouseY = gc.getHeight() - Mouse.getY();
+		float mouseX = Mouse.getX();
+		float mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
 
 		// set button properties

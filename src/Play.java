@@ -14,7 +14,7 @@ public class Play extends BasicGameState {
 	float moveY = 150;
 	Animation circle, staying, moving;
 	int[] duration = { 200, 200 };
-	boolean quit = false;
+	boolean pause = false;
 	private MenuButton backButton;
 
 	public Play(int state) {
@@ -67,10 +67,10 @@ public class Play extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
-		int mouseX = Mouse.getX();
-		int mouseY = gc.getHeight() - Mouse.getY();
+		float mouseX = Mouse.getX();
+		float mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
-
+		
 		if (input.isKeyDown(Input.KEY_UP)) {
 			circle = moving;
 			moveY -= 0.5;
@@ -83,8 +83,6 @@ public class Play extends BasicGameState {
 		} else if (input.isKeyDown(Input.KEY_RIGHT)) {
 			circle = moving;
 			moveX += 0.5;
-		} else if (input.isKeyDown(Input.KEY_ESCAPE)) {
-			quit = true;
 		} else {
 			circle = staying;
 		}

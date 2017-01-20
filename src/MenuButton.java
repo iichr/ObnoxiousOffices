@@ -97,10 +97,10 @@ public class MenuButton extends Rectangle {
 	 * @param stateID
 	 *            The new state to enter.
 	 */
-	public void onClick(GameContainer gc, StateBasedGame game, int mouseX, int mouseY, int stateID) {
+	public void onClick(GameContainer gc, StateBasedGame game, float mouseX, float mouseY, int stateID) {
 		Input input = gc.getInput();
 
-		if (inRange((float) mouseX, (float) mouseY)) {
+		if (inRange( mouseX, mouseY)) {
 			rolloverButton = rollOn;
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				if (stateID == 4) {
