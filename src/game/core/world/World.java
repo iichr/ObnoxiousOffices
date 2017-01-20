@@ -13,15 +13,17 @@ import java.util.Set;
 public class World implements Updateable {
 
     private final Set<Player> players;
+    private final int maxPlayers;
     private final Tile[][][] tiles;
 
     public World(int maxPlayers, int sizeX, int sizeY, int sizeZ) {
         this.tiles = new Tile[sizeX][sizeY][sizeZ];
         this.players = new HashSet<>(maxPlayers);
+        this.maxPlayers = maxPlayers;
     }
 
     public void addPlayer(Player player) {
-        players.add(player);
+        if(players.size() < maxPlayers) players.add(player);
     }
 
     @Override
