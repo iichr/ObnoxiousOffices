@@ -5,6 +5,29 @@ package game.core.world;
  */
 public enum Direction {
 
-    NORTH, EAST, SOUTH, WEST
+    NORTH(0, 1), EAST(-1, 0), SOUTH(0, -1), WEST(0, -1);
+
+    public final int xAdd, yAdd;
+
+    Direction(int xAdd, int yAdd) {
+        this.xAdd = xAdd;
+        this.yAdd = yAdd;
+    }
+
+    public Direction right() {
+        int i = ordinal() + 1;
+        if(i >= values().length) i = 0;
+        return values()[i];
+    }
+
+    public Direction left() {
+        int i = ordinal() - 1;
+        if(i < 0) i = values().length - 1;
+        return values()[i];
+    }
+
+    public Direction opposite() {
+        return left().left();
+    }
 
 }
