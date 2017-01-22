@@ -59,30 +59,34 @@ public class Play extends BasicGameState {
 		// example
 		circle.draw(moveX, moveY);
 		g.drawString("Circle at:(" + moveX + "," + moveY + ")", 350, 50);
-
+		// pausing the game
+		if (pause) {
+			g.drawString("Resume (R) ", Vals.SCREEN_WIDTH - Vals.SCREEN_HEIGHT / 10, Vals.SCREEN_HEIGHT / 2 - 20);
+		}
+		g.clear();
 		// add back button
 		backButton.render(g);
 	}
 
-	@Override
+	@Override	
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
 		float mouseX = Mouse.getX();
 		float mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
-		
 		if (input.isKeyDown(Input.KEY_UP)) {
 			circle = moving;
-			moveY -= 0.5;
+			moveY -= delta * .1f;
+
 		} else if (input.isKeyDown(Input.KEY_DOWN)) {
 			circle = moving;
-			moveY += 0.5;
+			moveY += delta * .1f;
 		} else if (input.isKeyDown(Input.KEY_LEFT)) {
 			circle = moving;
-			moveX -= 0.5;
+			moveX -= delta * .1f;
 		} else if (input.isKeyDown(Input.KEY_RIGHT)) {
 			circle = moving;
-			moveX += 0.5;
+			moveX += delta * .1f;
 		} else {
 			circle = staying;
 		}

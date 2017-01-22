@@ -83,9 +83,11 @@ public class Options extends BasicGameState {
 			if((x>=295 && x<=423) && (y>=150 && y<=278)) {
 				if(soundStatus == turnOff) {
 				soundStatus = turnOn;
+				music.resume();
 				}
 				else {
 					soundStatus = turnOff;
+					music.stop();
 				}
 			}
 		}

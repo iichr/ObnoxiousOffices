@@ -2,14 +2,17 @@ import org.lwjgl.input.Mouse;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Music;
+import org.newdawn.slick.MusicListener;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class Menu extends BasicGameState {
+public class Menu extends BasicGameState implements MusicListener{
 
 	private MenuButton playButton, optionsButton, rulesButton, exitButton;
 	private String mouseCoords = "No input yet!";
+	private Music music;
 
 	public Menu(int state) {
 
@@ -23,7 +26,7 @@ public class Menu extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		gc.setShowFPS(false);
-
+		
 		Image play = new Image("./res/play.png");
 		Image playR = new Image("./res/playR.png");
 		playButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H - 150, Vals.BUTTON_WIDTH,
@@ -43,8 +46,15 @@ public class Menu extends BasicGameState {
 		Image exitR = new Image("./res/exitR.png");
 		exitButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 150, Vals.BUTTON_WIDTH,
 				Vals.BUTTON_HEIGHT, exit, exitR);
-	}
+		music = new Music ("res/music/bg.ogg");
+		music.addListener(this);
+		music.setVolume(0.5f); //
 
+	}
+	public void enter(GameContainer container, StateBasedGame sbg) throws SlickException{
+	      //Start the music loop when you first enter the state, will not end until you use music.stop() or .pause() somewhere, even if you change states.
+	      music.loop();
+	   }   
 	@Override
 	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
 
@@ -76,6 +86,18 @@ public class Menu extends BasicGameState {
 		optionsButton.onClick(gc, game, mouseX, mouseY, Vals.OPTIONS_STATE);
 		rulesButton.onClick(gc, game, mouseX, mouseY, Vals.RULES_STATE);
 		exitButton.onClick(gc, game, mouseX, mouseY, Vals.EXIT);
+	}
+
+	@Override
+	public void musicEnded(Music arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void musicSwapped(Music arg0, Music arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
