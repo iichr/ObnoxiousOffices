@@ -13,6 +13,11 @@ public class TileTypeBasic extends TileType {
     }
 
     @Override
+    public boolean canWalkOver() {
+        return true;
+    }
+
+    @Override
     public void onInteraction(Player player) {
 
     }

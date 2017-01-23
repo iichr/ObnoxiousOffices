@@ -21,6 +21,8 @@ public abstract class TileType {
 
     public abstract void onWalkOver(Player player);
 
+    public abstract boolean canWalkOver();
+
     public abstract void onInteraction(Player player);
 
     public static boolean typeExists(char ch) {
