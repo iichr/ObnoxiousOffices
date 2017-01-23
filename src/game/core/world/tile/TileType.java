@@ -13,6 +13,12 @@ public abstract class TileType {
 
     public static final HashMap<Character, TileType> types = new HashMap<>();
 
+    public static void init() {
+        addTileType('c', new TileTypeComputer());
+        addTileType('d', new TileTypeDesk());
+        addTileType('f', new TileTypeFloor());
+    }
+
     public static boolean addTileType(char levelSymbol, TileType type) {
         if(types.containsKey(levelSymbol)) return true;
         types.put(levelSymbol, type);
