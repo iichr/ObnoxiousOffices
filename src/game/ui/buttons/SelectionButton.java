@@ -7,8 +7,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class SelectionButton extends Button {
 	
-	public SelectionButton(float x, float y, float width, float height, Image normal, Image rollover) {
-		super(x, y, width, height, normal, rollover);
+	public SelectionButton(float x, float y, float width, float height, Image normal, Image alternate) {
+		super(x, y, width, height, normal, alternate);
 	}
 
 	private static final long serialVersionUID = -685450501085834835L;
@@ -27,12 +27,13 @@ public class SelectionButton extends Button {
 	 */
 	public void update(GameContainer gc, StateBasedGame game, float mouseX, float mouseY) {
 		Input input = gc.getInput();
-
-		if (inRange(mouseX, mouseY)) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				if (inRange(mouseX, mouseY)) {
 				button = select;
+				//update core game with selected character
 			}else{
 				button = unselect;
+				//update game that character unselected
 			}
 		}
 	}

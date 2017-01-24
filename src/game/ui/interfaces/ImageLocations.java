@@ -27,4 +27,8 @@ public interface ImageLocations{
 	public static final String SPEAKER_ON = "res/buttons/speakerOn.png";
 	public static final String SPEAKER_OFF = "res/buttons/speakerOff.png";
 	
+	//SELECTION BUTTON IMAGES
+	public static final String CIRCLE_UNSELECTED = "res/buttons/circleUnselected.png";
+	public static final String CIRCLE_SELECTED = "res/buttons/circleSelected.png";
+	
 }

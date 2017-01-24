@@ -14,8 +14,8 @@ import game.ui.interfaces.Vals;
  */
 public class MenuButton extends Button {
 
-	public MenuButton(float x, float y, float width, float height, Image normal, Image rollover) {
-		super(x, y, width, height, normal, rollover);
+	public MenuButton(float x, float y, float width, float height, Image normal, Image alternate) {
+		super(x, y, width, height, normal, alternate);
 	}
 
 	private static final long serialVersionUID = -6073162297979548251L;
