@@ -1,3 +1,4 @@
+package game.ui;
 import java.io.File;
 
 import org.lwjgl.LWJGLUtil;

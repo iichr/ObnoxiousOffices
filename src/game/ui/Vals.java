@@ -1,3 +1,4 @@
+package game.ui;
 /**
  * An interface for all shared values in the UI.
  * 
