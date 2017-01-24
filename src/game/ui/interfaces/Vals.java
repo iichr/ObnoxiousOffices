@@ -1,4 +1,8 @@
 package game.ui.interfaces;
+
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 /**
  * An interface for all shared values in the UI.
  * 
@@ -10,8 +14,9 @@ public interface Vals {
 	public static final String GAME_NAME = "Obnoxious Offices";
 
 	// SCREEN SIZES
-	public static final int SCREEN_WIDTH = 800;
-	public static final int SCREEN_HEIGHT = 600;
+	Dimension screenRes = Toolkit.getDefaultToolkit().getScreenSize();
+	public static final int SCREEN_WIDTH = (int) screenRes.getWidth();
+	public static final int SCREEN_HEIGHT = (int) screenRes.getHeight();
 
 	// STATE IDs
 	public static final int EXIT = -1;	
