@@ -9,7 +9,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import game.ui.MenuButton;
+import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
@@ -87,7 +87,7 @@ public class Play extends BasicGameState {
 			circle = staying;
 		}
 
-		backButton.onClick(gc, game, mouseX, mouseY, Vals.MENU_STATE);
+		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 	}
 
 }

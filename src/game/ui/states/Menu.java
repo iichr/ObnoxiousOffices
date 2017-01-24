@@ -10,9 +10,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import game.ui.MenuButton;
+import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
-import game.ui.interfaces.MusicLocations;
 import game.ui.interfaces.Vals;
 
 public class Menu extends BasicGameState implements MusicListener{
@@ -53,6 +52,7 @@ public class Menu extends BasicGameState implements MusicListener{
 		Image exitR = new Image(ImageLocations.EXIT_ROLLOVER);
 		exitButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 150, Vals.BUTTON_WIDTH,
 				Vals.BUTTON_HEIGHT, exit, exitR);
+		
 //		music = new Music (MusicLocations.MENU_MUSIC);
 //		music.addListener(this);
 //		music.setVolume(0.5f); 
@@ -89,10 +89,10 @@ public class Menu extends BasicGameState implements MusicListener{
 		mouseCoords = mouseX + " ," + mouseY;
 
 		// set button properties
-		playButton.onClick(gc, game, mouseX, mouseY, Vals.CHARACTER_SELECT_STATE);
-		optionsButton.onClick(gc, game, mouseX, mouseY, Vals.OPTIONS_STATE);
-		rulesButton.onClick(gc, game, mouseX, mouseY, Vals.RULES_STATE);
-		exitButton.onClick(gc, game, mouseX, mouseY, Vals.EXIT);
+		playButton.update(gc, game, mouseX, mouseY, Vals.CHARACTER_SELECT_STATE);
+		optionsButton.update(gc, game, mouseX, mouseY, Vals.OPTIONS_STATE);
+		rulesButton.update(gc, game, mouseX, mouseY, Vals.RULES_STATE);
+		exitButton.update(gc, game, mouseX, mouseY, Vals.EXIT);
 	}
 
 	@Override

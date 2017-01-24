@@ -7,7 +7,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import game.ui.MenuButton;
+import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
@@ -41,7 +41,7 @@ public class Rules extends BasicGameState {
 		int mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
 
-		backButton.onClick(gc, game, mouseX, mouseY, Vals.MENU_STATE);
+		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 	}
 
 	@Override
