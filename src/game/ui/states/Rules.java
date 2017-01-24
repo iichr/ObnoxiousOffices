@@ -1,4 +1,4 @@
-package game.ui;
+package game.ui.states;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -6,6 +6,10 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+
+import game.ui.MenuButton;
+import game.ui.interfaces.ImageLocations;
+import game.ui.interfaces.Vals;
 
 public class Rules extends BasicGameState {
 	private MenuButton backButton;
@@ -17,9 +21,8 @@ public class Rules extends BasicGameState {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-		Image back = new Image("./res/back.png");
-		Image backR = new Image("./res/backR.png");
-
+		Image back = new Image(ImageLocations.BACK);
+		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 	}
 

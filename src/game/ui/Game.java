@@ -5,6 +5,12 @@ import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
+import game.ui.interfaces.Vals;
+import game.ui.states.Menu;
+import game.ui.states.Options;
+import game.ui.states.Play;
+import game.ui.states.Rules;
+
 public class Game extends StateBasedGame{
 	
 	public Game(String gamename) {

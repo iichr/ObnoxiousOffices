@@ -1,4 +1,4 @@
-package game.ui;
+package game.ui.interfaces;
 /**
  * An interface for all shared values in the UI.
  * 

@@ -1,4 +1,4 @@
-package game.ui;
+package game.ui.states;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -8,6 +8,9 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+
+import game.ui.MenuButton;
+import game.ui.interfaces.Vals;
 
 public class Play extends BasicGameState {
 	private String mouseCoords = "No input yet!";

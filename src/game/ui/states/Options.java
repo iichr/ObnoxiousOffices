@@ -1,4 +1,4 @@
-package game.ui;
+package game.ui.states;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -9,6 +9,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+
+import game.ui.MenuButton;
+import game.ui.interfaces.ImageLocations;
+import game.ui.interfaces.Vals;
 
 /**
  * The Options submenu.
@@ -33,8 +37,8 @@ public class Options extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		//sound toggle animation
-		speakerOff = new Image("./res/speakerOff.png");
-		speakerOn = new Image("./res/speakerOn.png");
+		speakerOff = new Image(ImageLocations.SPEAKER_OFF);
+		speakerOn = new Image(ImageLocations.SPEAKER_ON);
 		Image[] speakerTurnOff = {speakerOff, speakerOn};
 		Image[] speakerTurnOn = {speakerOn, speakerOff};
 		

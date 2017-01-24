@@ -1,4 +1,5 @@
-package game.ui;
+package game.ui.states;
+
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -8,6 +9,11 @@ import org.newdawn.slick.MusicListener;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+
+import game.ui.MenuButton;
+import game.ui.interfaces.ImageLocations;
+import game.ui.interfaces.MusicLocations;
+import game.ui.interfaces.Vals;
 
 public class Menu extends BasicGameState implements MusicListener{
 
@@ -28,26 +34,26 @@ public class Menu extends BasicGameState implements MusicListener{
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		gc.setShowFPS(false);
 		
-		Image play = new Image("./res/play.png");
-		Image playR = new Image("./res/playR.png");
+		Image play = new Image(ImageLocations.PLAY);
+		Image playR = new Image(ImageLocations.PLAY_ROLLOVER);
 		playButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H - 150, Vals.BUTTON_WIDTH,
 				Vals.BUTTON_HEIGHT, play, playR);
 
-		Image options = new Image("./res/options.png");
-		Image optionsR = new Image("./res/optionsR.png");
+		Image options = new Image(ImageLocations.OPTIONS);
+		Image optionsR = new Image(ImageLocations.OPTIONS_ROLLOVER);
 		optionsButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H - 50, Vals.BUTTON_WIDTH,
 				Vals.BUTTON_HEIGHT, options, optionsR);
 
-		Image rules = new Image("./res/rules.png");
-		Image rulesR = new Image("./res/rulesR.png");
+		Image rules = new Image(ImageLocations.RULES);
+		Image rulesR = new Image(ImageLocations.RULES_ROLLOVER);
 		rulesButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 50, Vals.BUTTON_WIDTH,
 				Vals.BUTTON_HEIGHT, rules, rulesR);
 
-		Image exit = new Image("./res/exit.png");
-		Image exitR = new Image("./res/exitR.png");
+		Image exit = new Image(ImageLocations.EXIT);
+		Image exitR = new Image(ImageLocations.EXIT_ROLLOVER);
 		exitButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 150, Vals.BUTTON_WIDTH,
 				Vals.BUTTON_HEIGHT, exit, exitR);
-		music = new Music ("res/music/bg.ogg");
+		music = new Music (MusicLocations.MENU_MUSIC);
 		music.addListener(this);
 		music.setVolume(0.5f); //
 
