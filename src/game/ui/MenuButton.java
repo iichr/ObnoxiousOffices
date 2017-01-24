@@ -7,6 +7,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
+import game.ui.interfaces.Vals;
+
 /**
  * Used to create a new labeled button for the menu. Label is centered to the
  * middle of the button.
@@ -104,7 +106,7 @@ public class MenuButton extends Rectangle {
 		if (inRange( mouseX, mouseY)) {
 			rolloverButton = rollOn;
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				if (stateID == 4) {
+				if (stateID == Vals.EXIT) {
 					gc.exit();
 				} else {
 					game.enterState(stateID);

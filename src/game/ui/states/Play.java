@@ -10,6 +10,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import game.ui.MenuButton;
+import game.ui.interfaces.ImageLocations;
+import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 
 public class Play extends BasicGameState {
@@ -26,33 +28,23 @@ public class Play extends BasicGameState {
 	}
 
 	@Override
-	public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
-
-	}
-
-	@Override
 	public int getID() {
 		return Vals.PLAY_STATE;
 	}
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		Image[] stay = { new Image("./res/circle.png"), new Image("./res/circle.png") };
-		Image[] move = { new Image("./res/circle2.png"), new Image("./res/circle2.png") };
+		Image[] stay = { new Image(SpriteLocations.TEST_CIRCLE_GREEN), new Image(SpriteLocations.TEST_CIRCLE_GREEN) };
+		Image[] move = { new Image(SpriteLocations.TEST_CIRCLE_PINK), new Image(SpriteLocations.TEST_CIRCLE_PINK) };
 
 		staying = new Animation(stay, duration, false);
 		moving = new Animation(move, duration, false);
 		circle = staying;
 
-		Image back = new Image("./res/back.png");
-		Image backR = new Image("./res/backR.png");
+		Image back = new Image(ImageLocations.BACK);
+		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
-	}
-
-	@Override
-	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-
 	}
 
 	@Override
@@ -67,7 +59,7 @@ public class Play extends BasicGameState {
 		if (pause) {
 			g.drawString("Resume (R) ", Vals.SCREEN_WIDTH - Vals.SCREEN_HEIGHT / 10, Vals.SCREEN_HEIGHT / 2 - 20);
 		}
-		g.clear();
+		
 		// add back button
 		backButton.render(g);
 	}

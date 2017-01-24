@@ -18,7 +18,8 @@ public interface Vals {
 	public static final int PLAY_STATE = 1;
 	public static final int OPTIONS_STATE = 2;
 	public static final int RULES_STATE = 3;
-	public static final int EXIT = 4;
+	public static final int CHARACTER_SELECT_STATE = 4;
+	public static final int EXIT = 5;
 
 	// BUTTON SIZES
 	public static final int BUTTON_WIDTH = 200;

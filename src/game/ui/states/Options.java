@@ -49,8 +49,8 @@ public class Options extends BasicGameState {
 		soundStatus = turnOn;
 		
 		// TODO add music and sound	 
-		Image back = new Image("./res/back.png");
-		Image backR = new Image("./res/backR.png");
+		Image back = new Image(ImageLocations.BACK);
+		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 		
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 	}

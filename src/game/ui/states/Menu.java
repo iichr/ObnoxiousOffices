@@ -53,14 +53,14 @@ public class Menu extends BasicGameState implements MusicListener{
 		Image exitR = new Image(ImageLocations.EXIT_ROLLOVER);
 		exitButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 150, Vals.BUTTON_WIDTH,
 				Vals.BUTTON_HEIGHT, exit, exitR);
-		music = new Music (MusicLocations.MENU_MUSIC);
-		music.addListener(this);
-		music.setVolume(0.5f); //
+//		music = new Music (MusicLocations.MENU_MUSIC);
+//		music.addListener(this);
+//		music.setVolume(0.5f); 
 
 	}
 	public void enter(GameContainer container, StateBasedGame sbg) throws SlickException{
 	      //Start the music loop when you first enter the state, will not end until you use music.stop() or .pause() somewhere, even if you change states.
-	      music.loop();
+//	      music.loop();
 	   }   
 	@Override
 	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -89,7 +89,7 @@ public class Menu extends BasicGameState implements MusicListener{
 		mouseCoords = mouseX + " ," + mouseY;
 
 		// set button properties
-		playButton.onClick(gc, game, mouseX, mouseY, Vals.PLAY_STATE);
+		playButton.onClick(gc, game, mouseX, mouseY, Vals.CHARACTER_SELECT_STATE);
 		optionsButton.onClick(gc, game, mouseX, mouseY, Vals.OPTIONS_STATE);
 		rulesButton.onClick(gc, game, mouseX, mouseY, Vals.RULES_STATE);
 		exitButton.onClick(gc, game, mouseX, mouseY, Vals.EXIT);
