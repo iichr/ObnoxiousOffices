@@ -24,6 +24,7 @@ public class World implements Updateable {
     private final int maxPlayers;
     private final Tile[][][] tiles;
     public final int xSize, ySize, zSize;
+    // TODO: Add preset spawn points
 
     public World(int maxPlayers, int sizeX, int sizeY, int sizeZ) {
         this.tiles = new Tile[sizeX][sizeY][sizeZ];
@@ -33,6 +34,8 @@ public class World implements Updateable {
         ySize = sizeY;
         xSize = sizeX;
     }
+
+    // TODO: getSpawnPoint(int i) = spawnPoints[i]
 
     public void addPlayer(Player player) {
         if(players.size() < maxPlayers) players.add(player);

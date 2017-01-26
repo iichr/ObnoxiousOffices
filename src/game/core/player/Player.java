@@ -21,6 +21,8 @@ public class Player implements Updateable {
         this.location = location;
     }
 
+    // TODO: move(Direction)
+
     public void moveForwards() {
         location = location.forward(facing);
     }
