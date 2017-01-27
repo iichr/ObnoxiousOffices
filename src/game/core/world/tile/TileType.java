@@ -17,6 +17,8 @@ public abstract class TileType {
         addTileType('c', new TileTypeComputer());
         addTileType('d', new TileTypeDesk());
         addTileType('f', new TileTypeFloor());
+        addTileType('s', new TileTypeChair());
+        addTileType('m', new TileTypeCoffeeMachine());
     }
 
     public static boolean addTileType(char levelSymbol, TileType type) {
