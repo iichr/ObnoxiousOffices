@@ -34,7 +34,7 @@ public class Menu extends BasicGameState implements MusicListener{
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		gc.setShowFPS(false);
-		bg= new Image(ImageLocations.BG);
+		bg= new Image(ImageLocations.BG,false,Image.FILTER_NEAREST);
 		Image play = new Image(ImageLocations.PLAY);
 		Image playR = new Image(ImageLocations.PLAY_ROLLOVER);
 		playButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H - 150, Vals.BUTTON_WIDTH,
@@ -80,7 +80,7 @@ public class Menu extends BasicGameState implements MusicListener{
 
 		//put the background on
 
-        g.drawImage(bg,0,0);
+        bg.draw(0,0,Vals.SCREEN_WIDTH,Vals.SCREEN_HEIGHT);
         // draw buttons
 		playButton.render(g);
 		optionsButton.render(g);
