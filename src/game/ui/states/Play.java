@@ -24,7 +24,6 @@ public class Play extends BasicGameState {
 	private MenuButton backButton;
 
 	public Play(int state) {
-
 	}
 
 	@Override
@@ -89,5 +88,4 @@ public class Play extends BasicGameState {
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 	}
-
 }
