@@ -30,5 +30,6 @@ public interface ImageLocations{
 	//SELECTION BUTTON IMAGES
 	public static final String CIRCLE_UNSELECTED = "res/buttons/circleUnselected.png";
 	public static final String CIRCLE_SELECTED = "res/buttons/circleSelected.png";
+	public static final String BG = "res/bg.png";
 	
 }

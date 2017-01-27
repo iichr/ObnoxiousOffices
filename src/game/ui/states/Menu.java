@@ -19,6 +19,8 @@ public class Menu extends BasicGameState implements MusicListener{
 	private MenuButton playButton, optionsButton, rulesButton, exitButton;
 	private String mouseCoords = "No input yet!";
 	private Music music;
+    private Image bg;
+
 
 	public Menu(int state) {
 
@@ -32,7 +34,7 @@ public class Menu extends BasicGameState implements MusicListener{
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		gc.setShowFPS(false);
-		
+		bg= new Image(ImageLocations.BG);
 		Image play = new Image(ImageLocations.PLAY);
 		Image playR = new Image(ImageLocations.PLAY_ROLLOVER);
 		playButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H - 150, Vals.BUTTON_WIDTH,
@@ -52,6 +54,7 @@ public class Menu extends BasicGameState implements MusicListener{
 		Image exitR = new Image(ImageLocations.EXIT_ROLLOVER);
 		exitButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 150, Vals.BUTTON_WIDTH,
 				Vals.BUTTON_HEIGHT, exit, exitR);
+
 		
 //		music = new Music (MusicLocations.MENU_MUSIC);
 //		music.addListener(this);
@@ -75,7 +78,10 @@ public class Menu extends BasicGameState implements MusicListener{
 		// debugging
 		g.drawString(mouseCoords, 10, 50);
 
-		// draw buttons
+		//put the background on
+
+        g.drawImage(bg,0,0);
+        // draw buttons
 		playButton.render(g);
 		optionsButton.render(g);
 		rulesButton.render(g);
