@@ -32,7 +32,7 @@ public class Game extends StateBasedGame{
 		this.enterState(Vals.MENU_STATE);
 	}
 	
-	public static void main(String[] args) {
+	public static void init() {
 
 		File JGLLib = null;
 
@@ -65,9 +65,11 @@ public class Game extends StateBasedGame{
 			agc.start();
 		}catch(SlickException e){
 			e.printStackTrace();
-			
 		}
 		
+	}
+	public static void main(String[] args) {
+		init();
 	}
 
 }

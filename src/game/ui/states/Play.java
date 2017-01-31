@@ -1,8 +1,10 @@
 package game.ui.states;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Animation;
@@ -56,6 +58,8 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+		drawWorld(gc, sbg, g);
+		
 		// debugging
 		g.drawString(mouseCoords, 10, 50);
 
@@ -66,47 +70,55 @@ public class Play extends BasicGameState {
 		if (pause) {
 			g.drawString("Resume (R) ", Vals.SCREEN_WIDTH - Vals.SCREEN_HEIGHT / 10, Vals.SCREEN_HEIGHT / 2 - 20);
 		}
-		
-		drawWorld(gc, sbg, g);
-		
+
 		// add back button
 		backButton.render(g);
 	}
 	
-	public void drawWorld(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		Image floor = new Image(SpriteLocations.TILE_FLOOR1, false, Image.FILTER_NEAREST);
+	private HashMap<TileType, Image []> getMap() throws SlickException{
+		HashMap<TileType, Image[]> images = new HashMap<>();
+			Image [] floor = {new Image(SpriteLocations.TILE_FLOOR2, false, Image.FILTER_NEAREST)};
+			images.put(null, floor);
+		return images;
+	}
+
+	public void drawWorld(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {		
+		Image floor = new Image(SpriteLocations.TILE_FLOOR2, false, Image.FILTER_NEAREST);
 		Image desk = new Image(SpriteLocations.TILE_DESK, false, Image.FILTER_NEAREST);
 		Image chair = new Image(SpriteLocations.TILE_CHAIR, false, Image.FILTER_NEAREST);
 		Image pc = new Image(SpriteLocations.TILE_PC, false, Image.FILTER_NEAREST);
+		Image cm = new Image(SpriteLocations.TILE_COFFEE_MACHINE, false, Image.FILTER_NEAREST);
 		Path p = Paths.get("data/office.level");
 		try {
 			TileType.init();
 			World world = World.load(p, 4);
 			System.out.println(floor.getWidth());
-			int tileWidth = (Vals.SCREEN_WIDTH)/world.xSize;
-			int tileHeight = (Vals.SCREEN_HEIGHT)/world.ySize;
-			for(int y = 0; y < world.ySize; y++ ){
-				for(int x = 0; x < world.xSize; x++){
+			int tileWidth = (Vals.SCREEN_WIDTH) / world.xSize;
+			int tileHeight = (Vals.SCREEN_HEIGHT) / world.ySize;
+			for (int y = 0; y < world.ySize; y++) {
+				for (int x = 0; x < world.xSize; x++) {
 					System.out.println(x);
 					TileType type = world.getTile(x, y, 0).type;
-					if(type.equals(TileType.getType('f'))){
-						floor.draw(x*tileWidth, y*tileHeight, tileWidth, tileHeight);
-					}else if(type.equals(TileType.getType('d'))){
-						desk.draw(x*tileWidth, y*tileHeight, tileWidth, tileHeight);
-					}else if(type.equals(TileType.getType('s'))){
-						chair.draw(x*tileWidth, y*tileHeight, tileWidth, tileHeight);
-					}else if(type.equals(TileType.getType('c'))){
-						pc.draw(x*tileWidth, y*tileHeight, tileWidth, tileHeight);
+					if (type.equals(TileType.getType('f'))) {
+						floor.draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+					} else if (type.equals(TileType.getType('d'))) {
+						desk.draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+					} else if (type.equals(TileType.getType('s'))) {
+						chair.draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+					} else if (type.equals(TileType.getType('c'))) {
+						pc.draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+					} else if (type.equals(TileType.getType('m'))) {
+						cm.draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
 					}
 				}
 			}
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	@Override	
+	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
 		float mouseX = Mouse.getX();
