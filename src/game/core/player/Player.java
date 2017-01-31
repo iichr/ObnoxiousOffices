@@ -21,20 +21,38 @@ public class Player implements Updateable {
         this.location = location;
     }
 
-    // TODO: move(Direction)
-
-    public void moveForwards() {
-        location = location.forward(facing);
+    /**
+     * Move forwards one space in the given direction
+     * @param direction
+     */
+    public void move(Direction direction) {
+        location = location.forward(direction);
     }
 
+    /**
+     * Move forwards one space in the direction of the player's facing
+     */
+    public void moveForwards() {
+        move(facing);
+    }
+
+    /**
+     * Move backwards one space in the direction of the player's facing
+     */
     public void moveBackwards() {
         location = location.backward(facing);
     }
 
+    /**
+     * Rotate the 90 degrees player left
+     */
     public void rotateLeft() {
         facing = facing.left();
     }
 
+    /**
+     * Rotate the 90 degrees player left
+     */
     public void rotateRight() {
         facing = facing.right();
     }
@@ -48,6 +66,10 @@ public class Player implements Updateable {
         return false;
     }
 
+    /**
+     * Set the player's work progress
+     * @param progress
+     */
     public void setProgress(double progress) {
         this.progress += progress;
         if(this.progress >= 100) {
@@ -68,11 +90,18 @@ public class Player implements Updateable {
 
     }
 
+    /**
+     * Add the standard amount of progress (using multiplier)
+     */
     public void addProgress() {
         double toAdd = 1.0 * getProgressMultiplier();
         setProgress(progress + toAdd);
     }
 
+    /**
+     * Gets the player's progress multiplier, which depends on attributes and effects
+     * @return
+     */
     private double getProgressMultiplier() {
         return status.getAttribute(PlayerStatus.PlayerAttribute.PRODUCTIVITY);
     }
