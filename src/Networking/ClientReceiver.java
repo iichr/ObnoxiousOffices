@@ -1,13 +1,15 @@
 package Networking;
+
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 // Gets messages from other clients via the server (by the
 // ServerSender thread).
 
 public class ClientReceiver extends Thread {
-
+	ArrayList<SendableObject> commands = new ArrayList<SendableObject>();
 	private BufferedReader server;
 	// private GUI gui;
 	private boolean notQuit = true;
@@ -44,30 +46,6 @@ public class ClientReceiver extends Thread {
 				String request = server.readLine();
 				if (request != null) {
 					int length = request.length();
-					char ch = request.charAt(length - 1);
-					if (ch == 'W') {
-						String playerName = "";
-						// get name out and set it as player in client if person
-						// types yes then set this as player
-						for (int name = 5; name <= (length - 4); name++) {
-							char character = request.charAt(name);
-							playerName = playerName + character;
-						}
-						Client.OPPONENT = playerName;
-						System.out.println(request
-								+ "ould you like to play a game? Type 'Yes' to accept or 'No' to reject then press enter. If you have rejected the request after pressing enter, enter then name of the person you want to play against");
-					} else if (ch == 'o') {
-						System.out.println("Your request has been rejected. Please enter soneone elses name");
-						Scanner s = new Scanner(System.in);
-						while (s.hasNextLine()) {
-							Client.OPPONENT = s.nextLine();
-						}
-						s.close();
-
-					} else {
-						Client.Connected = true;
-					}
-
 				}
 			}
 			Thread.sleep(1);
@@ -81,14 +59,23 @@ public class ClientReceiver extends Thread {
 			try {
 				Thread.sleep(100);
 				while (notQuit && Client.Connected) {
-					String s = server.readLine();
-					if (s != null) {
-						//DECODE MESSAGE
+							popCommand();
 					}
 				}
-			}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+			catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+
 }
+
+	synchronized public SendableObject popCommand() {
+		if (commands.isEmpty()) {
+			return null;
+		} else {
+			SendableObject comm = commands.get(0);
+			commands.remove(0);
+			return comm;
+		}
+	}
 }

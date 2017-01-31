@@ -14,18 +14,10 @@ public class Server {
 	public static void main(String[] args) {
 		int NumberOfClients = 0;
 		boolean waiting = true;
-		if (args.length != 1) {
-			System.err.println("Usage: java Server port");
-			System.exit(1); // Give up.
-		}
+	
 		// Initialize information:
-		int port;
-		try {
-			port = Integer.parseInt(args[0]);
-		} catch (NumberFormatException e) {
-			System.out.println("Not a valid port");
-			return;
-		}
+		int port = 8942;
+	
 
 		// This will be shared by the server threads:
 		ClientTable clientTable = new ClientTable();

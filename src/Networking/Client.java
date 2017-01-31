@@ -11,28 +11,17 @@ import java.net.UnknownHostException;
  * reciever threads
  */
 class Client {
-	public static int PLAYERNUM = 0;
-	public static String OPPONENT = "";
+	public static String[] OPPONENT = new String[3];
 	public static boolean Connected = false;
 
 	public static void main(String[] args) {
 
-		// Check correct usage:
-		if (args.length != 3) {
-			System.err.println("Usage: java Client user-nickname hostname port");
-			System.exit(1); // Give up.
-		}
+	
 
 		// Initialize information:
-		String nickname = args[0];
-		int port;
-		try {
-			port = Integer.parseInt(args[1]);
-		} catch (NumberFormatException e) {
-			System.out.println("Not a valid port");
-			return;
-		}
-		String hostname = args[2];
+		String nickname = getName();
+		int port = 8942;
+		String hostname = "localhost";
 		// Open sockets:
 		PrintStream toServer = null;
 		BufferedReader fromServer = null;
@@ -75,5 +64,10 @@ class Client {
 			System.err.println("Unexpected interruption " + e.getMessage());
 			System.exit(1); // Give up.
 		}
+	}
+
+	private static String getName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
