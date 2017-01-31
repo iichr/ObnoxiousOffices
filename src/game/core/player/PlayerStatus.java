@@ -41,8 +41,7 @@ public class PlayerStatus {
     }
 
     public void addToAttribute(PlayerAttribute attribute, double val) {
-        if (hasAttribute(attribute)) setAttribute(attribute, val + getAttribute(attribute));
-        else setAttribute(attribute, val);
+        setAttribute(attribute, val + getAttribute(attribute));
     }
 
     public boolean hasAttribute(PlayerAttribute attribute) {
@@ -50,7 +49,7 @@ public class PlayerStatus {
     }
 
     public double getAttribute(PlayerAttribute attribute) {
-        return attributes.get(attribute);
+        return attributes.getOrDefault(attribute, 0.0);
     }
 
     public enum PlayerAttribute {
