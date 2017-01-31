@@ -3,8 +3,6 @@ package game.core.world.tile;
 import game.core.player.Player;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by samtebbs on 20/01/2017.
@@ -13,12 +11,19 @@ public abstract class TileType {
 
     public static final HashMap<Character, TileType> types = new HashMap<>();
 
+    public static final TileType COMPUTER = new TileTypeComputer(),
+            DESK = new TileTypeDesk(),
+            FLOOR = new TileTypeFloor(),
+            CHAIR = new TileTypeChair(),
+            COFFEE_MACHINE = new TileTypeCoffeeMachine(), PLANT = new TileTypeDecoration();
+
     public static void init() {
-        addTileType('c', new TileTypeComputer());
-        addTileType('d', new TileTypeDesk());
-        addTileType('f', new TileTypeFloor());
-        addTileType('s', new TileTypeChair());
-        addTileType('m', new TileTypeCoffeeMachine());
+        addTileType('c', COMPUTER);
+        addTileType('d', DESK);
+        addTileType('f', FLOOR);
+        addTileType('s', CHAIR);
+        addTileType('m', COFFEE_MACHINE);
+        addTileType('p', PLANT);
     }
 
     public static boolean addTileType(char levelSymbol, TileType type) {

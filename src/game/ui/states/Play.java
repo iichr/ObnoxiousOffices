@@ -84,13 +84,13 @@ public class Play extends BasicGameState {
 			imageMap.put(TileType.DESK, desk);
 			
 			Image [] chair = {new Image(SpriteLocations.TILE_CHAIR, false, Image.FILTER_NEAREST)};
-			imageMap.put(TileType.CHAIR, desk);
+			imageMap.put(TileType.CHAIR, chair);
 			
 			Image [] pc = {new Image(SpriteLocations.TILE_PC, false, Image.FILTER_NEAREST)};
-			imageMap.put(TileType.PC, desk);
+			imageMap.put(TileType.COMPUTER, pc);
 			
 			Image [] cm = {new Image(SpriteLocations.TILE_COFFEE_MACHINE, false, Image.FILTER_NEAREST)};
-			imageMap.put(TileType.CM, desk);
+			imageMap.put(TileType.COFFEE_MACHINE, cm);
 		return imageMap;
 	}
 
@@ -104,12 +104,11 @@ public class Play extends BasicGameState {
 			int tileHeight = (Vals.SCREEN_HEIGHT) / world.ySize;
 			for (int y = 0; y < world.ySize; y++) {
 				for (int x = 0; x < world.xSize; x++) {
-					System.out.println(x);
 					TileType type = world.getTile(x, y, 0).type;
-					imageMap.get(type)[0].draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+					Image [] images = imageMap.get(type);
+					images[0].draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
 				}
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
