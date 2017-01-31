@@ -1,4 +1,5 @@
 package game.ui.states;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -75,7 +76,7 @@ public class Play extends BasicGameState {
 	public void drawWorld(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		Image floor = new Image(SpriteLocations.TILE_FLOOR1, false, Image.FILTER_NEAREST);
 		System.out.println("Gets to 1");
-		Path p = Paths.get("C:/Users/mad-s/Google Drive/Work/Uni/Year 2/Team Project/b2/data/office.level");
+		Path p = Paths.get("data/office.level");
 		System.out.println("Gets to 2");
 		try {
 			World world = World.load(p, 4);
