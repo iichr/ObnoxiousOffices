@@ -56,6 +56,10 @@ public class Player implements Updateable {
         }
     }
 
+    public double getProgress() {
+        return progress;
+    }
+
     private void onProgressDone() {
         // TODO
     }
