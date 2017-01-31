@@ -76,40 +76,37 @@ public class Play extends BasicGameState {
 	}
 	
 	private HashMap<TileType, Image []> getMap() throws SlickException{
-		HashMap<TileType, Image[]> images = new HashMap<>();
+		HashMap<TileType, Image[]> imageMap = new HashMap<>();
 			Image [] floor = {new Image(SpriteLocations.TILE_FLOOR2, false, Image.FILTER_NEAREST)};
-			images.put(null, floor);
-		return images;
+			imageMap.put(TileType.FLOOR, floor);
+			
+			Image [] desk = {new Image(SpriteLocations.TILE_DESK, false, Image.FILTER_NEAREST)};
+			imageMap.put(TileType.DESK, desk);
+			
+			Image [] chair = {new Image(SpriteLocations.TILE_CHAIR, false, Image.FILTER_NEAREST)};
+			imageMap.put(TileType.CHAIR, desk);
+			
+			Image [] pc = {new Image(SpriteLocations.TILE_PC, false, Image.FILTER_NEAREST)};
+			imageMap.put(TileType.PC, desk);
+			
+			Image [] cm = {new Image(SpriteLocations.TILE_COFFEE_MACHINE, false, Image.FILTER_NEAREST)};
+			imageMap.put(TileType.CM, desk);
+		return imageMap;
 	}
 
-	public void drawWorld(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {		
-		Image floor = new Image(SpriteLocations.TILE_FLOOR2, false, Image.FILTER_NEAREST);
-		Image desk = new Image(SpriteLocations.TILE_DESK, false, Image.FILTER_NEAREST);
-		Image chair = new Image(SpriteLocations.TILE_CHAIR, false, Image.FILTER_NEAREST);
-		Image pc = new Image(SpriteLocations.TILE_PC, false, Image.FILTER_NEAREST);
-		Image cm = new Image(SpriteLocations.TILE_COFFEE_MACHINE, false, Image.FILTER_NEAREST);
+	public void drawWorld(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {	
+		HashMap<TileType, Image []> imageMap = getMap();
 		Path p = Paths.get("data/office.level");
 		try {
 			TileType.init();
 			World world = World.load(p, 4);
-			System.out.println(floor.getWidth());
 			int tileWidth = (Vals.SCREEN_WIDTH) / world.xSize;
 			int tileHeight = (Vals.SCREEN_HEIGHT) / world.ySize;
 			for (int y = 0; y < world.ySize; y++) {
 				for (int x = 0; x < world.xSize; x++) {
 					System.out.println(x);
 					TileType type = world.getTile(x, y, 0).type;
-					if (type.equals(TileType.getType('f'))) {
-						floor.draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
-					} else if (type.equals(TileType.getType('d'))) {
-						desk.draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
-					} else if (type.equals(TileType.getType('s'))) {
-						chair.draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
-					} else if (type.equals(TileType.getType('c'))) {
-						pc.draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
-					} else if (type.equals(TileType.getType('m'))) {
-						cm.draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
-					}
+					imageMap.get(type)[0].draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
 				}
 			}
 
