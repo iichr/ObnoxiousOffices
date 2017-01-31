@@ -77,6 +77,7 @@ public class Play extends BasicGameState {
 		Image floor = new Image(SpriteLocations.TILE_FLOOR1, false, Image.FILTER_NEAREST);
 		Image desk = new Image(SpriteLocations.TILE_DESK, false, Image.FILTER_NEAREST);
 		Image chair = new Image(SpriteLocations.TILE_CHAIR, false, Image.FILTER_NEAREST);
+		Image pc = new Image(SpriteLocations.TILE_PC, false, Image.FILTER_NEAREST);
 		Path p = Paths.get("data/office.level");
 		try {
 			TileType.init();
@@ -94,6 +95,8 @@ public class Play extends BasicGameState {
 						desk.draw(x*tileWidth, y*tileHeight, tileWidth, tileHeight);
 					}else if(type.equals(TileType.getType('s'))){
 						chair.draw(x*tileWidth, y*tileHeight, tileWidth, tileHeight);
+					}else if(type.equals(TileType.getType('c'))){
+						pc.draw(x*tileWidth, y*tileHeight, tileWidth, tileHeight);
 					}
 				}
 			}
