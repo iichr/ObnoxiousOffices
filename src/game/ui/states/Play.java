@@ -75,29 +75,25 @@ public class Play extends BasicGameState {
 	
 	public void drawWorld(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		Image floor = new Image(SpriteLocations.TILE_FLOOR1, false, Image.FILTER_NEAREST);
-		System.out.println("Gets to 1");
+		Image desk = new Image(SpriteLocations.TILE_DESK, false, Image.FILTER_NEAREST);
+		Image chair = new Image(SpriteLocations.TILE_CHAIR, false, Image.FILTER_NEAREST);
 		Path p = Paths.get("data/office.level");
-		System.out.println("Gets to 2");
 		try {
+			TileType.init();
 			World world = World.load(p, 4);
-			System.out.println("Gets to 3");
-			System.out.println(world.xSize);
-			System.out.println(world.ySize);
-			System.out.println(world.zSize);
-			int tileWidth = (floor.getWidth() * Vals.SCREEN_WIDTH)/world.xSize;
-			int tileHeight = (floor.getHeight() * Vals.SCREEN_HEIGHT)/world.ySize;
+			System.out.println(floor.getWidth());
+			int tileWidth = (Vals.SCREEN_WIDTH)/world.xSize;
+			int tileHeight = (Vals.SCREEN_HEIGHT)/world.ySize;
 			for(int y = 0; y < world.ySize; y++ ){
 				for(int x = 0; x < world.xSize; x++){
-					System.out.println("Gets to 4");
-					System.out.println(world.checkBounds(x, y, 0));
-					Tile t = world.getTile(x, y, 0);
-					System.out.println("t: " + t.type.canWalkOver());
+					System.out.println(x);
 					TileType type = world.getTile(x, y, 0).type;
-					System.out.println("Gets to 5");
 					if(type.equals(TileType.getType('f'))){
-						System.out.println("Gets to 6");
-						floor.draw(x, y, tileWidth, tileHeight);
-						System.out.println("f");
+						floor.draw(x*tileWidth, y*tileHeight, tileWidth, tileHeight);
+					}else if(type.equals(TileType.getType('d'))){
+						desk.draw(x*tileWidth, y*tileHeight, tileWidth, tileHeight);
+					}else if(type.equals(TileType.getType('s'))){
+						chair.draw(x*tileWidth, y*tileHeight, tileWidth, tileHeight);
 					}
 				}
 			}
