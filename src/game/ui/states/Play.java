@@ -1,4 +1,8 @@
 package game.ui.states;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -9,6 +13,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import game.core.world.World;
+import game.core.world.tile.Tile;
+import game.core.world.tile.TileType;
 import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
@@ -59,8 +66,44 @@ public class Play extends BasicGameState {
 			g.drawString("Resume (R) ", Vals.SCREEN_WIDTH - Vals.SCREEN_HEIGHT / 10, Vals.SCREEN_HEIGHT / 2 - 20);
 		}
 		
+		drawWorld(gc, sbg, g);
+		
 		// add back button
 		backButton.render(g);
+	}
+	
+	public void drawWorld(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+		Image floor = new Image(SpriteLocations.TILE_FLOOR1, false, Image.FILTER_NEAREST);
+		System.out.println("Gets to 1");
+		Path p = Paths.get("C:/Users/mad-s/Google Drive/Work/Uni/Year 2/Team Project/b2/data/office.level");
+		System.out.println("Gets to 2");
+		try {
+			World world = World.load(p, 4);
+			System.out.println("Gets to 3");
+			System.out.println(world.xSize);
+			System.out.println(world.ySize);
+			System.out.println(world.zSize);
+			int tileWidth = (floor.getWidth() * Vals.SCREEN_WIDTH)/world.xSize;
+			int tileHeight = (floor.getHeight() * Vals.SCREEN_HEIGHT)/world.ySize;
+			for(int y = 0; y < world.ySize; y++ ){
+				for(int x = 0; x < world.xSize; x++){
+					System.out.println("Gets to 4");
+					System.out.println(world.checkBounds(x, y, 0));
+					Tile t = world.getTile(x, y, 0);
+					System.out.println("t: " + t.type.canWalkOver());
+					TileType type = world.getTile(x, y, 0).type;
+					System.out.println("Gets to 5");
+					if(type.equals(TileType.getType('f'))){
+						System.out.println("Gets to 6");
+						floor.draw(x, y, tileWidth, tileHeight);
+						System.out.println("f");
+					}
+				}
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override	
