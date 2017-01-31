@@ -21,6 +21,7 @@ import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
+import org.newdawn.slick.Color;
 
 public class Play extends BasicGameState {
 	private String mouseCoords = "No input yet!";
@@ -90,6 +91,9 @@ public class Play extends BasicGameState {
 
 		Image[] cm = { new Image(SpriteLocations.TILE_COFFEE_MACHINE, false, Image.FILTER_NEAREST) };
 		imageMap.put(TileType.COFFEE_MACHINE, cm);
+		
+		Image[] plant = { new Image(SpriteLocations.TILE_PLANT, false, Image.FILTER_NEAREST) };
+		imageMap.put(TileType.PLANT, plant);
 		return imageMap;
 	}
 
@@ -108,7 +112,8 @@ public class Play extends BasicGameState {
 					if (type.equals(TileType.FLOOR)) {
 						images[(x + y) % 2].draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
 					}else{
-						images[0].draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+						Color c = new Color(Color.orange);
+						images[0].draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight, c);
 					}
 				}
 			}
