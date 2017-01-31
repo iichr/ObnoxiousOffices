@@ -21,7 +21,7 @@ public abstract class TileType {
         addTileType('c', COMPUTER);
         addTileType('d', DESK);
         addTileType('f', FLOOR);
-        addTileType('s', CHAIR;
+        addTileType('s', CHAIR);
         addTileType('m', COFFEE_MACHINE);
         addTileType('p', PLANT);
     }
