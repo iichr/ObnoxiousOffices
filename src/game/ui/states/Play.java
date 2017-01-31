@@ -1,6 +1,5 @@
 package game.ui.states;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,7 +16,6 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import game.core.world.World;
-import game.core.world.tile.Tile;
 import game.core.world.tile.TileType;
 import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
@@ -59,7 +57,7 @@ public class Play extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		drawWorld(gc, sbg, g);
-		
+
 		// debugging
 		g.drawString(mouseCoords, 10, 50);
 
@@ -74,28 +72,29 @@ public class Play extends BasicGameState {
 		// add back button
 		backButton.render(g);
 	}
-	
-	private HashMap<TileType, Image []> getMap() throws SlickException{
+
+	private HashMap<TileType, Image[]> getMap() throws SlickException {
 		HashMap<TileType, Image[]> imageMap = new HashMap<>();
-			Image [] floor = {new Image(SpriteLocations.TILE_FLOOR2, false, Image.FILTER_NEAREST)};
-			imageMap.put(TileType.FLOOR, floor);
-			
-			Image [] desk = {new Image(SpriteLocations.TILE_DESK, false, Image.FILTER_NEAREST)};
-			imageMap.put(TileType.DESK, desk);
-			
-			Image [] chair = {new Image(SpriteLocations.TILE_CHAIR, false, Image.FILTER_NEAREST)};
-			imageMap.put(TileType.CHAIR, chair);
-			
-			Image [] pc = {new Image(SpriteLocations.TILE_PC, false, Image.FILTER_NEAREST)};
-			imageMap.put(TileType.COMPUTER, pc);
-			
-			Image [] cm = {new Image(SpriteLocations.TILE_COFFEE_MACHINE, false, Image.FILTER_NEAREST)};
-			imageMap.put(TileType.COFFEE_MACHINE, cm);
+		Image[] floor = { new Image(SpriteLocations.TILE_FLOOR2, false, Image.FILTER_NEAREST),
+				new Image(SpriteLocations.TILE_FLOOR1, false, Image.FILTER_NEAREST) };
+		imageMap.put(TileType.FLOOR, floor);
+
+		Image[] desk = { new Image(SpriteLocations.TILE_DESK, false, Image.FILTER_NEAREST) };
+		imageMap.put(TileType.DESK, desk);
+
+		Image[] chair = { new Image(SpriteLocations.TILE_CHAIR, false, Image.FILTER_NEAREST) };
+		imageMap.put(TileType.CHAIR, chair);
+
+		Image[] pc = { new Image(SpriteLocations.TILE_PC, false, Image.FILTER_NEAREST) };
+		imageMap.put(TileType.COMPUTER, pc);
+
+		Image[] cm = { new Image(SpriteLocations.TILE_COFFEE_MACHINE, false, Image.FILTER_NEAREST) };
+		imageMap.put(TileType.COFFEE_MACHINE, cm);
 		return imageMap;
 	}
 
-	public void drawWorld(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {	
-		HashMap<TileType, Image []> imageMap = getMap();
+	public void drawWorld(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+		HashMap<TileType, Image[]> imageMap = getMap();
 		Path p = Paths.get("data/office.level");
 		try {
 			TileType.init();
@@ -105,8 +104,12 @@ public class Play extends BasicGameState {
 			for (int y = 0; y < world.ySize; y++) {
 				for (int x = 0; x < world.xSize; x++) {
 					TileType type = world.getTile(x, y, 0).type;
-					Image [] images = imageMap.get(type);
-					images[0].draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+					Image[] images = imageMap.get(type);
+					if (type.equals(TileType.FLOOR)) {
+						images[(x + y) % 2].draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+					}else{
+						images[0].draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+					}
 				}
 			}
 		} catch (IOException e) {

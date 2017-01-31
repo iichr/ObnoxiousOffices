@@ -1,4 +1,5 @@
 package game.ui;
+
 import java.io.File;
 
 import org.lwjgl.LWJGLUtil;
@@ -12,8 +13,8 @@ import game.ui.states.Options;
 import game.ui.states.Play;
 import game.ui.states.Rules;
 
-public class Game extends StateBasedGame{
-	
+public class Game extends StateBasedGame {
+
 	public Game(String gamename) {
 		super(gamename);
 		this.addState(new Menu(Vals.MENU_STATE));
@@ -22,16 +23,16 @@ public class Game extends StateBasedGame{
 		this.addState(new Rules(Vals.RULES_STATE));
 		this.addState(new CharacterSelect(Vals.CHARACTER_SELECT_STATE));
 	}
-	
-	public void initStatesList(GameContainer gc) throws SlickException{
+
+	public void initStatesList(GameContainer gc) throws SlickException {
 		this.getState(Vals.MENU_STATE).init(gc, this);
 		this.getState(Vals.PLAY_STATE).init(gc, this);
-		this.getState(Vals.OPTIONS_STATE).init(gc,this);
+		this.getState(Vals.OPTIONS_STATE).init(gc, this);
 		this.getState(Vals.RULES_STATE).init(gc, this);
 		this.getState(Vals.CHARACTER_SELECT_STATE).init(gc, this);
 		this.enterState(Vals.MENU_STATE);
 	}
-	
+
 	public static void init() {
 
 		File JGLLib = null;
@@ -52,22 +53,22 @@ public class Game extends StateBasedGame{
 		}
 			break;
 		}
-		
+
 		System.setProperty("org.lwjgl.librarypath", JGLLib.getAbsolutePath());
-		
 
 		AppGameContainer agc;
-		try{
+		try {
 			agc = new AppGameContainer(new Game(Vals.GAME_NAME));
-			agc.setDisplayMode(Vals.SCREEN_WIDTH,Vals.SCREEN_HEIGHT,false);
-			
+			agc.setDisplayMode(Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT, false);
+
 			agc.setFullscreen(true);
 			agc.start();
-		}catch(SlickException e){
+		} catch (SlickException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
+
 	public static void main(String[] args) {
 		init();
 	}
