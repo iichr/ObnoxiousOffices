@@ -1,4 +1,5 @@
 package game.ui.states;
+
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -11,6 +12,13 @@ import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
+/**
+ * The rules page accessible from the main menu. Provides the user with a guide
+ * on how to play.
+ * 
+ * @author iichr
+ *
+ */
 public class Rules extends BasicGameState {
 	private MenuButton backButton;
 	private String mouseCoords;
@@ -26,9 +34,9 @@ public class Rules extends BasicGameState {
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
-		
+
 		gameTitle = "Read below/Placeholder TITLE";
-		rules =" Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n "
+		rules = " Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n "
 				+ "Proin mattis odio leo, quis fermentum augue eleifend non.\n "
 				+ "Ut vel maximus dui. Vivamus pellentesque fringilla dolor, et volutpat leo varius quis.\n "
 				+ "Aliquam molestie elit vitae arcu interdum ultrices. Maecenas sagittis vel tellus fermentum fringilla.\n "
@@ -38,8 +46,8 @@ public class Rules extends BasicGameState {
 				+ "augue ultricies id. Suspendisse sed neque dui.\n"
 				+ "Ut tempus dapibus imperdiet. Phasellus sit amet pulvinar elit,\n"
 				+ "in consequat ipsum. Suspendisse sed tincidunt erat. In posuere ligula sit amet enim cursus,\n"
-				+ "nec pretium quam dictum. Ut semper vulputate quam, non auctor lacus egestas in. Praesent sed odio pellentesque risus fermentum.\n"; 
-				}
+				+ "nec pretium quam dictum. Ut semper vulputate quam, non auctor lacus egestas in. Praesent sed odio pellentesque risus fermentum.\n";
+	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
@@ -49,7 +57,7 @@ public class Rules extends BasicGameState {
 		// add back button
 		backButton.render(g);
 		g.drawString(gameTitle, 200, 50);
-		drawRules(g,rules, 30, 100);
+		drawRules(g, rules, 30, 100);
 	}
 
 	@Override
@@ -65,10 +73,17 @@ public class Rules extends BasicGameState {
 	public int getID() {
 		return Vals.RULES_STATE;
 	}
-	
+
+	/**
+	 * Draw a long string, entering a new line every time the \n character is encountered.
+	 * @param g The graphics
+	 * @param s The string to be displayed
+	 * @param x The x coordinate of the string
+	 * @param y The y coordinate of the string.
+	 */
 	public void drawRules(Graphics g, String s, int x, int y) {
-		for(String line: s.split("\n"))
-			g.drawString(line, x, y+=20);
+		for (String line : s.split("\n"))
+			g.drawString(line, Vals.SCREEN_WIDTH / 2 - 500, y += 60);
 	}
 
 }
