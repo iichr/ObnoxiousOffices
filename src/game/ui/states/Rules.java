@@ -35,7 +35,7 @@ public class Rules extends BasicGameState {
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 
-		gameTitle = "Read below/Placeholder TITLE";
+		gameTitle = "DevWars";
 		rules = " Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n "
 				+ "Proin mattis odio leo, quis fermentum augue eleifend non.\n "
 				+ "Ut vel maximus dui. Vivamus pellentesque fringilla dolor, et volutpat leo varius quis.\n "
@@ -56,8 +56,8 @@ public class Rules extends BasicGameState {
 
 		// add back button
 		backButton.render(g);
-		g.drawString(gameTitle, 200, 50);
-		drawRules(g, rules, 30, 100);
+		g.drawString(gameTitle, 200, 100);
+		drawRules(g, rules, 30, 140);
 	}
 
 	@Override
