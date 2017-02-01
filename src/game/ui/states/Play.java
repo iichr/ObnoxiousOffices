@@ -24,12 +24,14 @@ import game.ui.interfaces.Vals;
 
 public class Play extends BasicGameState {
 	private String mouseCoords = "No input yet!";
-	float moveX = 300;
-	float moveY = 150;
-	Animation circle, staying, moving;
-	int[] duration = { 200, 200 };
+	private float moveX = 300;
+	private float moveY = 150;
+	private Animation circle, staying, moving;
+	private int[] duration = { 200, 200 };
 	boolean pause = false;
 	private MenuButton backButton;
+	private HashMap<TileType, Image []> imageMap;
+	private World world;
 
 	public Play(int state) {
 	}
@@ -52,11 +54,26 @@ public class Play extends BasicGameState {
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
+		
+		imageMap = SpriteLocations.createMap();
+		createWorld();
+	}
+
+	// temporary method until classes integrated
+	private void createWorld() {
+		TileType.init();
+		Path p = Paths.get("data/office.level");
+		try {
+			world = World.load(p, 4);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		drawWorld(gc, sbg, g);
+		drawWorld();
+		drawPlayer();
 
 		// debugging
 		g.drawString(mouseCoords, 10, 50);
@@ -73,51 +90,29 @@ public class Play extends BasicGameState {
 		backButton.render(g);
 	}
 
-	private HashMap<TileType, Image[]> getMap() throws SlickException {
-		HashMap<TileType, Image[]> imageMap = new HashMap<>();
-		Image[] floor = { new Image(SpriteLocations.TILE_FLOOR2, false, Image.FILTER_NEAREST),
-				new Image(SpriteLocations.TILE_FLOOR1, false, Image.FILTER_NEAREST) };
-		imageMap.put(TileType.FLOOR, floor);
-
-		Image[] desk = { new Image(SpriteLocations.TILE_DESK, false, Image.FILTER_NEAREST) };
-		imageMap.put(TileType.DESK, desk);
-
-		Image[] chair = { new Image(SpriteLocations.TILE_CHAIR, false, Image.FILTER_NEAREST) };
-		imageMap.put(TileType.CHAIR, chair);
-
-		Image[] pc = { new Image(SpriteLocations.TILE_PC, false, Image.FILTER_NEAREST) };
-		imageMap.put(TileType.COMPUTER, pc);
-
-		Image[] cm = { new Image(SpriteLocations.TILE_COFFEE_MACHINE, false, Image.FILTER_NEAREST) };
-		imageMap.put(TileType.COFFEE_MACHINE, cm);
-
-		Image[] plant = { new Image(SpriteLocations.TILE_PLANT, false, Image.FILTER_NEAREST) };
-		imageMap.put(TileType.PLANT, plant);
-		return imageMap;
-	}
-
-	public void drawWorld(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		HashMap<TileType, Image[]> imageMap = getMap();
-		Path p = Paths.get("data/office.level");
-		try {
-			TileType.init();
-			World world = World.load(p, 4);
-			int tileWidth = (Vals.SCREEN_WIDTH) / world.xSize;
-			int tileHeight = (Vals.SCREEN_HEIGHT) / world.ySize;
-			for (int y = 0; y < world.ySize; y++) {
-				for (int x = 0; x < world.xSize; x++) {
-					TileType type = world.getTile(x, y, 0).type;
-					Image[] images = imageMap.get(type);
-					if (type.equals(TileType.FLOOR)) {
-						images[(x + y) % 2].draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
-					} else {
-						images[0].draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
-					}
+	public void drawWorld() throws SlickException {
+		//find tile width and height
+		int tileWidth = (Vals.SCREEN_WIDTH) / world.xSize;
+		int tileHeight = (Vals.SCREEN_HEIGHT) / world.ySize;
+		
+		//render each tile
+		for (int y = 0; y < world.ySize; y++) {
+			for (int x = 0; x < world.xSize; x++) {
+				TileType type = world.getTile(x, y, 0).type;
+				Image[] images = imageMap.get(type);
+				if (type.equals(TileType.FLOOR)) {
+					images[(x + y) % 2].draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+				} else {
+					images[0].draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+	}
+
+	private void drawPlayer() throws SlickException {
+		//TODO make/find player sprites
+		//TODO need a way to access the list of players
+		//TODO draw players (taller than one tile?) - may want a height variable in tileType?
 	}
 
 	@Override
