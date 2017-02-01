@@ -28,7 +28,7 @@ public class Options extends BasicGameState {
 	private Music music;
 	private Sound sound;
 	private int mouseX, mouseY;
-	private String mouseCoords = "No input yet!";
+	private String mouseCoords;
 
 	private MenuButton backButton;
 
@@ -38,6 +38,7 @@ public class Options extends BasicGameState {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
+		
 		// sound toggle animation
 		speakerOff = new Image(ImageLocations.SPEAKER_OFF);
 		speakerOn = new Image(ImageLocations.SPEAKER_ON);
@@ -62,7 +63,7 @@ public class Options extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		// debugging
 		g.drawString(mouseCoords, 10, 50);
-
+		
 		soundStatus.draw(295, 150);
 
 		// add back button
@@ -91,10 +92,10 @@ public class Options extends BasicGameState {
 			if ((x >= 295 && x <= 423) && (y >= 150 && y <= 278)) {
 				if (soundStatus == turnOff) {
 					soundStatus = turnOn;
-					music.resume();
+					//music.resume();
 				} else {
 					soundStatus = turnOff;
-					music.stop();
+					//music.stop();
 				}
 			}
 		}
