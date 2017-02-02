@@ -114,14 +114,14 @@ public class Play extends BasicGameState {
 
 	public void drawWorld() throws SlickException {
 		// find tile width and height
-		int tileWidth = Vals.SCREEN_WIDTH / world.xSize;
-		int tileHeight = Vals.SCREEN_HEIGHT / world.ySize;
+		float tileWidth = Vals.SCREEN_WIDTH / world.xSize;
+		float tileHeight = Vals.SCREEN_HEIGHT / world.ySize;
 
 		// render each tile
 		for (int y = 0; y < world.ySize; y++) {
 			for (int x = 0; x < world.xSize; x++) {
-				int tileX = x * tileWidth;
-				int tileY = y * tileHeight;
+				float tileX = x * tileWidth;
+				float tileY = y * tileHeight;
 				TileType type = world.getTile(x, y, 0).type;
 				Image[] images = imageMap.get(type);
 				if (type.equals(TileType.FLOOR)) {
@@ -134,15 +134,15 @@ public class Play extends BasicGameState {
 	}
 
 	private void drawPlayers() throws SlickException {
-		int tileHeight = Vals.SCREEN_HEIGHT / world.ySize;
-		int tileWidth = Vals.SCREEN_WIDTH / world.xSize;
-		int playerHeight = 2 * tileHeight;
-		int playerWidth = tileWidth;
+		float tileHeight = Vals.SCREEN_HEIGHT / world.ySize;
+		float tileWidth = Vals.SCREEN_WIDTH / world.xSize;
+		float playerHeight = 2 * tileHeight;
+		float playerWidth = tileWidth;
 
 		Set<Player> players = world.getPlayers();
 		for (Player player : players) {
-			int playerX = player.location.x * tileWidth;
-			int playerY = player.location.y * tileHeight;
+			float playerX = player.location.x * tileWidth;
+			float playerY = player.location.y * tileHeight;
 			playerMap.get(player).drawPlayer(playerX, playerY, playerWidth, playerHeight);
 		}
 	}

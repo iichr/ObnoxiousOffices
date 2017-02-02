@@ -43,7 +43,7 @@ public class PlayerAnimation {
 		}
 	}
 
-	public void drawPlayer(int x, int y, int width, int height) {
+	public void drawPlayer(float x, float y, float width, float height) {
 		move.draw(x, y, width, height);
 	}
 
