@@ -8,7 +8,6 @@ import java.util.Random;
 import java.util.Set;
 
 import org.lwjgl.input.Mouse;
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -30,7 +29,6 @@ import game.ui.player.PlayerAnimation;
 
 public class Play extends BasicGameState {
 	private String mouseCoords = "No input yet!";
-	private int[] duration = { 200, 200 };
 	boolean pause = false;
 	private MenuButton backButton;
 	private HashMap<TileType, Image[]> imageMap;
@@ -76,22 +74,22 @@ public class Play extends BasicGameState {
 		Random r = new Random();
 		for (int i = 0; i < 4; i++) {
 			int x = r.nextInt(world.xSize);
-			int y = r.nextInt(world.ySize -1);
+			int y = r.nextInt(world.ySize - 1);
 			Location l = new Location(x, y, world);
 			Direction d = Direction.NORTH;
 			Player p = new Player("" + i, d, l);
 			world.addPlayer(p);
 		}
 	}
-	
-	//map players to player animations
-	private void animatePlayers(Set<Player> players) throws SlickException{
-		for(Player p: players){
+
+	// map players to player animations
+	private void animatePlayers(Set<Player> players) throws SlickException {
+		for (Player p : players) {
 			Image n = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_NORTH, false, Image.FILTER_NEAREST);
 			Image s = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_SOUTH, false, Image.FILTER_NEAREST);
 			Image e = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_EAST, false, Image.FILTER_NEAREST);
 			Image w = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_WEST, false, Image.FILTER_NEAREST);
-			
+
 			PlayerAnimation animation = new PlayerAnimation(n, s, e, w, p.getDirection());
 			playerMap.put(p, animation);
 		}
@@ -122,12 +120,14 @@ public class Play extends BasicGameState {
 		// render each tile
 		for (int y = 0; y < world.ySize; y++) {
 			for (int x = 0; x < world.xSize; x++) {
+				int tileX = x * tileWidth;
+				int tileY = y * tileHeight;
 				TileType type = world.getTile(x, y, 0).type;
 				Image[] images = imageMap.get(type);
 				if (type.equals(TileType.FLOOR)) {
-					images[(x + y) % 2].draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+					images[(x + y) % 2].draw(tileX, tileY, tileWidth, tileHeight);
 				} else {
-					images[0].draw(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+					images[0].draw(tileX, tileY, tileWidth, tileHeight);
 				}
 			}
 		}
@@ -153,39 +153,39 @@ public class Play extends BasicGameState {
 		float mouseX = Mouse.getX();
 		float mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
-		
+
 		Player p1 = null;
-		for(Player p: world.getPlayers()){
-			if (p.name.equals("0")){
+		for (Player p : world.getPlayers()) {
+			if (p.name.equals("0")) {
 				p1 = p;
 			}
 		}
 		if (input.isKeyPressed(Input.KEY_UP)) {
-			//for testing, move player one
+			// for testing, move player one
 			p1.move(Direction.NORTH);
 			playerMap.get(p1).turnNorth();
-			
-			//actually send info to game logic
+
+			// actually send info to game logic
 		} else if (input.isKeyPressed(Input.KEY_DOWN)) {
-			//for testing, move player one
+			// for testing, move player one
 			p1.move(Direction.SOUTH);
 			playerMap.get(p1).turnSouth();
-			
-			//actually send info to game logic
+
+			// actually send info to game logic
 		} else if (input.isKeyPressed(Input.KEY_LEFT)) {
-			//for testing, move player one
+			// for testing, move player one
 			p1.move(Direction.WEST);
 			playerMap.get(p1).turnWest();
-			
-			//actually send info to game logic
+
+			// actually send info to game logic
 		} else if (input.isKeyPressed(Input.KEY_RIGHT)) {
-			//for testing move player one
+			// for testing move player one
 			p1.move(Direction.EAST);
 			playerMap.get(p1).turnEast();
-			
-			//actually send info to game logic
+
+			// actually send info to game logic
 		} else {
-			//do nothing
+			// do nothing
 		}
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
