@@ -28,6 +28,14 @@ public class Player implements Updateable {
     public void move(Direction direction) {
         location = location.forward(direction);
     }
+    
+    /**
+     * Gets the current facing of the player
+     * @return Direction the current facing of the player
+     */
+    public Direction getDirection() {
+        return facing;
+    }
 
     /**
      * Move forwards one space in the direction of the player's facing
