@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -39,6 +40,10 @@ public class World implements Updateable {
 
     public void addPlayer(Player player) {
         if(players.size() < maxPlayers) players.add(player);
+    }
+
+    public Set<Player> getPlayers() {
+        return players.stream().collect(Collectors.toSet());
     }
 
     @Override
