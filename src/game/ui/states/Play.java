@@ -10,6 +10,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import game.ui.StatusContainer;
 import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
@@ -23,6 +24,10 @@ public class Play extends BasicGameState {
 	int[] duration = { 200, 200 };
 	boolean pause = false;
 	private MenuButton backButton;
+
+	// status container
+	private StatusContainer playerOverview;
+	private Image _avatar;
 
 	public Play(int state) {
 	}
@@ -45,6 +50,11 @@ public class Play extends BasicGameState {
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
+
+		// Status container
+		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
+		playerOverview = new StatusContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
+
 	}
 
 	@Override
@@ -58,6 +68,9 @@ public class Play extends BasicGameState {
 
 		// add back button
 		backButton.render(g);
+		
+		// add player overview
+		playerOverview.render(g);
 	}
 
 	@Override
