@@ -46,9 +46,9 @@ public class Pause extends BasicGameState {
 		// Manage which state each button routes to
 		if (input.isKeyPressed(resume)) {
 			game.enterState(Vals.PLAY_STATE);
-		} else if (input.isKeyPressed(backToMenu)) {
+		} else if (input.isKeyDown(backToMenu)) {
 			game.enterState(Vals.MENU_STATE);
-		} else if (input.isKeyPressed(quit)) {
+		} else if (input.isKeyDown(quit)) {
 			gc.exit();
 		}
 	}

@@ -22,7 +22,6 @@ public class Play extends BasicGameState {
 	float moveY = 150;
 	Animation circle, staying, moving;
 	int[] duration = { 200, 200 };
-	boolean pause = false;
 	private MenuButton backButton;
 
 	// status container
@@ -95,8 +94,6 @@ public class Play extends BasicGameState {
 		} else if (input.isKeyDown(Input.KEY_RIGHT)) {
 			circle = moving;
 			moveX += delta * .1f;
-		} else if (input.isKeyDown(Input.KEY_ESCAPE)) {
-			pause = true;
 		} else {
 			circle = staying;
 		}
