@@ -30,9 +30,6 @@ import game.ui.player.PlayerAnimation;
 
 public class Play extends BasicGameState {
 	private String mouseCoords = "No input yet!";
-	private float moveX = 300;
-	private float moveY = 150;
-	private Animation circle, staying, moving;
 	private int[] duration = { 200, 200 };
 	boolean pause = false;
 	private MenuButton backButton;
@@ -50,12 +47,7 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		Image[] stay = { new Image(SpriteLocations.TEST_CIRCLE_GREEN), new Image(SpriteLocations.TEST_CIRCLE_GREEN) };
-		Image[] move = { new Image(SpriteLocations.TEST_CIRCLE_PINK), new Image(SpriteLocations.TEST_CIRCLE_PINK) };
-
-		staying = new Animation(stay, duration, false);
-		moving = new Animation(move, duration, false);
-		circle = staying;
+		playerMap = new HashMap<Player, PlayerAnimation>();
 
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
@@ -86,8 +78,8 @@ public class Play extends BasicGameState {
 			int x = r.nextInt(world.xSize);
 			int y = r.nextInt(world.ySize -1);
 			Location l = new Location(x, y, world);
-			Direction d = Direction.SOUTH;
-			Player p = new Player("testPlayer" + i, d, l);
+			Direction d = Direction.NORTH;
+			Player p = new Player("" + i, d, l);
 			world.addPlayer(p);
 		}
 	}
@@ -113,9 +105,6 @@ public class Play extends BasicGameState {
 		// debugging
 		g.drawString(mouseCoords, 10, 50);
 
-		// example
-		circle.draw(moveX, moveY);
-		g.drawString("Circle at:(" + moveX + "," + moveY + ")", 350, 50);
 		// pausing the game
 		if (pause) {
 			g.drawString("Resume (R) ", Vals.SCREEN_WIDTH - Vals.SCREEN_HEIGHT / 10, Vals.SCREEN_HEIGHT / 2 - 20);
@@ -153,7 +142,7 @@ public class Play extends BasicGameState {
 		Set<Player> players = world.getPlayers();
 		for (Player player : players) {
 			int playerX = player.location.x * tileWidth;
-			int playerY = player.location.x * tileWidth;
+			int playerY = player.location.y * tileHeight;
 			playerMap.get(player).drawPlayer(playerX, playerY, playerWidth, playerHeight);
 		}
 	}
@@ -164,21 +153,39 @@ public class Play extends BasicGameState {
 		float mouseX = Mouse.getX();
 		float mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
-		if (input.isKeyDown(Input.KEY_UP)) {
-			circle = moving;
-			moveY -= delta * .1f;
-
-		} else if (input.isKeyDown(Input.KEY_DOWN)) {
-			circle = moving;
-			moveY += delta * .1f;
-		} else if (input.isKeyDown(Input.KEY_LEFT)) {
-			circle = moving;
-			moveX -= delta * .1f;
-		} else if (input.isKeyDown(Input.KEY_RIGHT)) {
-			circle = moving;
-			moveX += delta * .1f;
+		
+		Player p1 = null;
+		for(Player p: world.getPlayers()){
+			if (p.name.equals("0")){
+				p1 = p;
+			}
+		}
+		if (input.isKeyPressed(Input.KEY_UP)) {
+			//for testing, move player one
+			p1.move(Direction.NORTH);
+			playerMap.get(p1).turnNorth();
+			
+			//actually send info to game logic
+		} else if (input.isKeyPressed(Input.KEY_DOWN)) {
+			//for testing, move player one
+			p1.move(Direction.SOUTH);
+			playerMap.get(p1).turnSouth();
+			
+			//actually send info to game logic
+		} else if (input.isKeyPressed(Input.KEY_LEFT)) {
+			//for testing, move player one
+			p1.move(Direction.WEST);
+			playerMap.get(p1).turnWest();
+			
+			//actually send info to game logic
+		} else if (input.isKeyPressed(Input.KEY_RIGHT)) {
+			//for testing move player one
+			p1.move(Direction.EAST);
+			playerMap.get(p1).turnEast();
+			
+			//actually send info to game logic
 		} else {
-			circle = staying;
+			//do nothing
 		}
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);

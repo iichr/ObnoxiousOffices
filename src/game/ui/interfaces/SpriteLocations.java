@@ -32,6 +32,7 @@ public interface SpriteLocations {
 	public static final String PLAYER_BLONDE_STANDING_SOUTH = "/res/sprites/players/PlayerBlondeStandingSouth.png";
 	public static final String PLAYER_BLONDE_STANDING_EAST = "/res/sprites/players/PlayerBlondeStandingEast.png";
 	public static final String PLAYER_BLONDE_STANDING_WEST = "/res/sprites/players/PlayerBlondeStandingWest.png";
+	
 	//map between tile types and images
 	public static HashMap<TileType, Image[]> createMap() throws SlickException {
 		HashMap<TileType, Image[]> imageMap = new HashMap<>();
