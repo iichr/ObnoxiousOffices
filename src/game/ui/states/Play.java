@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Random;
+import java.util.Set;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Animation;
@@ -15,12 +17,16 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import game.core.player.Player;
+import game.core.world.Direction;
+import game.core.world.Location;
 import game.core.world.World;
 import game.core.world.tile.TileType;
 import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
+import game.ui.player.PlayerAnimation;
 
 public class Play extends BasicGameState {
 	private String mouseCoords = "No input yet!";
@@ -30,7 +36,8 @@ public class Play extends BasicGameState {
 	private int[] duration = { 200, 200 };
 	boolean pause = false;
 	private MenuButton backButton;
-	private HashMap<TileType, Image []> imageMap;
+	private HashMap<TileType, Image[]> imageMap;
+	private HashMap<Player, PlayerAnimation> playerMap;
 	private World world;
 
 	public Play(int state) {
@@ -54,9 +61,11 @@ public class Play extends BasicGameState {
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
-		
+
 		imageMap = SpriteLocations.createMap();
 		createWorld();
+		addPlayers();
+		animatePlayers(world.getPlayers());
 	}
 
 	// temporary method until classes integrated
@@ -70,10 +79,36 @@ public class Play extends BasicGameState {
 		}
 	}
 
+	// temporary method until classes integrated
+	private void addPlayers() {
+		Random r = new Random();
+		for (int i = 0; i < 4; i++) {
+			int x = r.nextInt(world.xSize);
+			int y = r.nextInt(world.ySize -1);
+			Location l = new Location(x, y, world);
+			Direction d = Direction.SOUTH;
+			Player p = new Player("testPlayer" + i, d, l);
+			world.addPlayer(p);
+		}
+	}
+	
+	//map players to player animations
+	private void animatePlayers(Set<Player> players) throws SlickException{
+		for(Player p: players){
+			Image n = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_NORTH, false, Image.FILTER_NEAREST);
+			Image s = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_SOUTH, false, Image.FILTER_NEAREST);
+			Image e = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_EAST, false, Image.FILTER_NEAREST);
+			Image w = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_WEST, false, Image.FILTER_NEAREST);
+			
+			PlayerAnimation animation = new PlayerAnimation(n, s, e, w, p.getDirection());
+			playerMap.put(p, animation);
+		}
+	}
+
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		drawWorld();
-		drawPlayer();
+		drawPlayers();
 
 		// debugging
 		g.drawString(mouseCoords, 10, 50);
@@ -87,15 +122,15 @@ public class Play extends BasicGameState {
 		}
 
 		// add back button
-		backButton.render(g);
+		backButton.render();
 	}
 
 	public void drawWorld() throws SlickException {
-		//find tile width and height
-		int tileWidth = (Vals.SCREEN_WIDTH) / world.xSize;
-		int tileHeight = (Vals.SCREEN_HEIGHT) / world.ySize;
-		
-		//render each tile
+		// find tile width and height
+		int tileWidth = Vals.SCREEN_WIDTH / world.xSize;
+		int tileHeight = Vals.SCREEN_HEIGHT / world.ySize;
+
+		// render each tile
 		for (int y = 0; y < world.ySize; y++) {
 			for (int x = 0; x < world.xSize; x++) {
 				TileType type = world.getTile(x, y, 0).type;
@@ -109,10 +144,18 @@ public class Play extends BasicGameState {
 		}
 	}
 
-	private void drawPlayer() throws SlickException {
-		//TODO make/find player sprites
-		//TODO need a way to access the list of players
-		//TODO draw players (taller than one tile?) - may want a height variable in tileType?
+	private void drawPlayers() throws SlickException {
+		int tileHeight = Vals.SCREEN_HEIGHT / world.ySize;
+		int tileWidth = Vals.SCREEN_WIDTH / world.xSize;
+		int playerHeight = 2 * tileHeight;
+		int playerWidth = tileWidth;
+
+		Set<Player> players = world.getPlayers();
+		for (Player player : players) {
+			int playerX = player.location.x * tileWidth;
+			int playerY = player.location.x * tileWidth;
+			playerMap.get(player).drawPlayer(playerX, playerY, playerWidth, playerHeight);
+		}
 	}
 
 	@Override

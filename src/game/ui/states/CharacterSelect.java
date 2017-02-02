@@ -44,9 +44,9 @@ public class CharacterSelect extends BasicGameState {
 		g.drawString(mouseCoords, 10, 50);
 
 		// add back button
-		backButton.render(g);
-		circleButton.render(g);
-		connectButton.render(g);
+		backButton.render();
+		circleButton.render();
+		connectButton.render();
 	}
 
 	@Override

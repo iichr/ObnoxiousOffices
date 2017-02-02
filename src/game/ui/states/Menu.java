@@ -82,10 +82,10 @@ public class Menu extends BasicGameState implements MusicListener{
 
         bg.draw(0,0,Vals.SCREEN_WIDTH,Vals.SCREEN_HEIGHT);
         // draw buttons
-		playButton.render(g);
-		optionsButton.render(g);
-		rulesButton.render(g);
-		exitButton.render(g);
+		playButton.render();
+		optionsButton.render();
+		rulesButton.render();
+		exitButton.render();
 	}
 
 	@Override

@@ -47,7 +47,7 @@ public class Rules extends BasicGameState {
 		g.drawString(mouseCoords, 10, 50);
 
 		// add back button
-		backButton.render(g);
+		backButton.render();
 		g.drawString(gameTitle, 200, 50);
 		drawRules(g,rules, 30, 100);
 	}

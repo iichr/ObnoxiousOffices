@@ -26,7 +26,12 @@ public interface SpriteLocations {
 	public static final String TILE_FLOOR2 = "/res/sprites/tiles/floor2.png";
 	public static final String TILE_PLANT = "/res/sprites/tiles/plant.png";
 	public static final String TILE_WALL = "/res/sprites/tiles/wall.png";
-			
+	
+	//PLAYER SPRITE LOCATIONS
+	public static final String PLAYER_BLONDE_STANDING_NORTH = "/res/sprites/players/PlayerBlondeStandingNorth.png";
+	public static final String PLAYER_BLONDE_STANDING_SOUTH = "/res/sprites/players/PlayerBlondeStandingSouth.png";
+	public static final String PLAYER_BLONDE_STANDING_EAST = "/res/sprites/players/PlayerBlondeStandingEast.png";
+	public static final String PLAYER_BLONDE_STANDING_WEST = "/res/sprites/players/PlayerBlondeStandingWest.png";
 	//map between tile types and images
 	public static HashMap<TileType, Image[]> createMap() throws SlickException {
 		HashMap<TileType, Image[]> imageMap = new HashMap<>();
