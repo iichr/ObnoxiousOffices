@@ -27,6 +27,7 @@ public class Play extends BasicGameState {
 	// status container
 	private StatusContainer playerOverview;
 	private Image _avatar;
+	boolean showOverview = false;
 
 	public Play(int state) {
 	}
@@ -67,9 +68,9 @@ public class Play extends BasicGameState {
 
 		// add back button
 		backButton.render(g);
-		
-		// add player overview
-		playerOverview.render(g);
+
+		// add player status container
+		playerOverview.render(g, showOverview);
 	}
 
 	@Override
@@ -81,7 +82,10 @@ public class Play extends BasicGameState {
 
 		// Handle pause and movement
 		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
+			input.clearKeyPressedRecord();
 			game.enterState(Vals.PAUSE_STATE);
+		} else if (input.isKeyDown(Input.KEY_TAB)) {
+			showOverview = true;
 		} else if (input.isKeyDown(Input.KEY_UP)) {
 			circle = moving;
 			moveY -= delta * .1f;
@@ -96,8 +100,10 @@ public class Play extends BasicGameState {
 			moveX += delta * .1f;
 		} else {
 			circle = staying;
+			showOverview = false;
 		}
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 	}
+
 }
