@@ -21,10 +21,6 @@ public class Player implements Updateable {
         this.location = location;
     }
 
-    public Direction getFacing() {
-        return facing;
-    }
-
     /**
      * Move forwards one space in the given direction
      * @param direction
