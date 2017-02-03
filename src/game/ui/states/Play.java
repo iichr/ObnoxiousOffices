@@ -53,6 +53,7 @@ public class Play extends BasicGameState {
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 
 		imageMap = SpriteLocations.createMap();
+		//testing methods
 		createWorld();
 		addPlayers();
 		animatePlayers(world.getPlayers());
@@ -82,7 +83,7 @@ public class Play extends BasicGameState {
 		}
 	}
 
-	// map players to player animations
+	// map players to player animations, testing different sprites, not final
 	private void animatePlayers(Set<Player> players) throws SlickException {
 		for (Player p : players) {
 			Image n = null;
