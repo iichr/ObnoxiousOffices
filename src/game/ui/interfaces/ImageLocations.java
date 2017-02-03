@@ -32,4 +32,7 @@ public interface ImageLocations{
 	public static final String CIRCLE_SELECTED = "res/buttons/circleSelected.png";
 	public static final String BG = "res/bg.png";
 	
+	// PLAYER AVATAR IMAGES
+	public static final String TEMP_AVATAR = "res/player/avatar.png";
+	
 }

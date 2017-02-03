@@ -6,7 +6,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
-
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -15,12 +14,12 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
 import game.core.world.tile.TileType;
+import game.ui.StatusContainer;
 import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
@@ -29,11 +28,15 @@ import game.ui.player.PlayerAnimation;
 
 public class Play extends BasicGameState {
 	private String mouseCoords = "No input yet!";
-	boolean pause = false;
 	private MenuButton backButton;
 	private HashMap<TileType, Image[]> imageMap;
 	private HashMap<Player, PlayerAnimation> playerMap;
 	private World world;
+
+	// status container
+	private StatusContainer playerOverview;
+	private Image _avatar;
+	boolean showOverview = false;
 
 	public Play(int state) {
 	}
@@ -52,6 +55,10 @@ public class Play extends BasicGameState {
 
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 
+		//Status container
+		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
+		playerOverview = new StatusContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
+		
 		imageMap = SpriteLocations.createMap();
 		//testing methods
 		createWorld();
@@ -131,13 +138,11 @@ public class Play extends BasicGameState {
 		// debugging
 		g.drawString(mouseCoords, 10, 50);
 
-		// pausing the game
-		if (pause) {
-			g.drawString("Resume (R) ", Vals.SCREEN_WIDTH - Vals.SCREEN_HEIGHT / 10, Vals.SCREEN_HEIGHT / 2 - 20);
-		}
-
 		// add back button
 		backButton.render();
+		
+		// add player status container
+				playerOverview.render(g, showOverview);
 	}
 
 	public void drawWorld() throws SlickException {
@@ -188,7 +193,14 @@ public class Play extends BasicGameState {
 				p1 = p;
 			}
 		}
-		if (input.isKeyPressed(Input.KEY_UP)) {
+		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
+			input.clearKeyPressedRecord();
+			game.enterState(Vals.PAUSE_STATE);
+			
+		} else if (input.isKeyDown(Input.KEY_TAB)) {
+			showOverview = true;
+			
+		}else if (input.isKeyPressed(Input.KEY_UP)) {
 			// for testing, move player one
 			p1.move(Direction.NORTH);
 			playerMap.get(p1).turnNorth();
@@ -213,9 +225,10 @@ public class Play extends BasicGameState {
 
 			// actually send info to game logic
 		} else {
-			// do nothing
+			showOverview = false;
 		}
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 	}
+
 }
