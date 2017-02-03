@@ -44,7 +44,11 @@ public class PlayerAnimation {
 	}
 
 	public void drawPlayer(float x, float y, float width, float height) {
-		move.draw(x, y, width, height);
+		if (move.equals(moveEast) || move.equals(moveWest)) {
+			move.draw(x + 8, y, width - 16, height);
+		} else {
+			move.draw(x, y, width, height);
+		}
 	}
 
 	public void turnNorth() {

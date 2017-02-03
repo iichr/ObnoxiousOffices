@@ -32,6 +32,18 @@ public interface SpriteLocations {
 	public static final String PLAYER_BLONDE_STANDING_SOUTH = "/res/sprites/players/PlayerBlondeStandingSouth.png";
 	public static final String PLAYER_BLONDE_STANDING_EAST = "/res/sprites/players/PlayerBlondeStandingEast.png";
 	public static final String PLAYER_BLONDE_STANDING_WEST = "/res/sprites/players/PlayerBlondeStandingWest.png";
+	public static final String PLAYER_DARK_STANDING_NORTH = "/res/sprites/players/PlayerDarkStandingNorth.png";
+	public static final String PLAYER_DARK_STANDING_SOUTH = "/res/sprites/players/PlayerDarkStandingSouth.png";
+	public static final String PLAYER_DARK_STANDING_EAST = "/res/sprites/players/PlayerDarkStandingEast.png";
+	public static final String PLAYER_DARK_STANDING_WEST = "/res/sprites/players/PlayerDarkStandingWest.png";
+	public static final String PLAYER_BROWN_STANDING_NORTH = "/res/sprites/players/PlayerBrownStandingNorth.png";
+	public static final String PLAYER_BROWN_STANDING_SOUTH = "/res/sprites/players/PlayerBrownStandingSouth.png";
+	public static final String PLAYER_BROWN_STANDING_EAST = "/res/sprites/players/PlayerBrownStandingEast.png";
+	public static final String PLAYER_BROWN_STANDING_WEST = "/res/sprites/players/PlayerBrownStandingWest.png";
+	public static final String PLAYER_PINK_STANDING_NORTH = "/res/sprites/players/PlayerPinkStandingNorth.png";
+	public static final String PLAYER_PINK_STANDING_SOUTH = "/res/sprites/players/PlayerPinkStandingSouth.png";
+	public static final String PLAYER_PINK_STANDING_EAST = "/res/sprites/players/PlayerPinkStandingEast.png";
+	public static final String PLAYER_PINK_STANDING_WEST = "/res/sprites/players/PlayerPinkStandingWest.png";
 	
 	//map between tile types and images
 	public static HashMap<TileType, Image[]> createMap() throws SlickException {
