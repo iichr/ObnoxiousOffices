@@ -1,4 +1,5 @@
 package game.ui.states;
+
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -9,6 +10,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import game.ui.StatusContainer;
 import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
@@ -20,8 +22,12 @@ public class Play extends BasicGameState {
 	float moveY = 150;
 	Animation circle, staying, moving;
 	int[] duration = { 200, 200 };
-	boolean pause = false;
 	private MenuButton backButton;
+
+	// status container
+	private StatusContainer playerOverview;
+	private Image _avatar;
+	boolean showOverview = false;
 
 	public Play(int state) {
 	}
@@ -44,6 +50,11 @@ public class Play extends BasicGameState {
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
+
+		// Status container
+		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
+		playerOverview = new StatusContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
+
 	}
 
 	@Override
@@ -54,25 +65,30 @@ public class Play extends BasicGameState {
 		// example
 		circle.draw(moveX, moveY);
 		g.drawString("Circle at:(" + moveX + "," + moveY + ")", 350, 50);
-		// pausing the game
-		if (pause) {
-			g.drawString("Resume (R) ", Vals.SCREEN_WIDTH - Vals.SCREEN_HEIGHT / 10, Vals.SCREEN_HEIGHT / 2 - 20);
-		}
-		
+
 		// add back button
 		backButton.render(g);
+
+		// add player status container
+		playerOverview.render(g, showOverview);
 	}
 
-	@Override	
+	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
 		float mouseX = Mouse.getX();
 		float mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
-		if (input.isKeyDown(Input.KEY_UP)) {
+
+		// Handle pause and movement
+		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
+			input.clearKeyPressedRecord();
+			game.enterState(Vals.PAUSE_STATE);
+		} else if (input.isKeyDown(Input.KEY_TAB)) {
+			showOverview = true;
+		} else if (input.isKeyDown(Input.KEY_UP)) {
 			circle = moving;
 			moveY -= delta * .1f;
-
 		} else if (input.isKeyDown(Input.KEY_DOWN)) {
 			circle = moving;
 			moveY += delta * .1f;
@@ -84,8 +100,10 @@ public class Play extends BasicGameState {
 			moveX += delta * .1f;
 		} else {
 			circle = staying;
+			showOverview = false;
 		}
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 	}
+
 }
