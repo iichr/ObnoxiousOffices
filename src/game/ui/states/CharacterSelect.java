@@ -25,6 +25,8 @@ public class CharacterSelect extends BasicGameState {
 	private String mouseCoords = "No input yet!";
 
 	private TextField serverAddress, playerName;
+	private String serverStr = "Enter Server Address:";
+	private String playerStr = "Enter Player Name:";
 
 	public CharacterSelect(int state) {
 
@@ -76,6 +78,7 @@ public class CharacterSelect extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		// debugging
+		g.setFont(Vals.fieldFONT);
 		g.drawString(mouseCoords, 10, 50);
 		// g.drawString(ipAddress.getText(), 700, 100);
 
@@ -86,7 +89,9 @@ public class CharacterSelect extends BasicGameState {
 
 		// Text fields
 		serverAddress.render(gc, g);
+		g.drawString(serverStr, serverAddress.getX() - Vals.fieldFONT.getWidth(serverStr) - 10, 200);
 		playerName.render(gc, g);
+		g.drawString(playerStr, serverAddress.getX() - Vals.fieldFONT.getWidth(playerStr) - 10, 300);
 	}
 
 	@Override
