@@ -1,8 +1,10 @@
 package game.ui.interfaces;
 
 import org.newdawn.slick.Input;
+import org.newdawn.slick.UnicodeFont;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 
 /**
@@ -32,6 +34,13 @@ public interface Vals {
 	// BUTTON SIZES
 	public static final int BUTTON_WIDTH = 200;
 	public static final int BUTTON_HEIGHT = 50;
+	
+	// TEXT FIELD SIZES
+	public static final int TFIELD_WIDTH = 300;
+	public static final int TFIELD_ALIGN_CENTRE_W = (SCREEN_WIDTH - TFIELD_WIDTH)/2;
+	
+	// FONTS
+	public static final UnicodeFont fieldFONT = new UnicodeFont(new Font("Arial", Font.BOLD, 20));
 
 	// The coords of the screen centre for a Menu Button
 	public static final int BUTTON_ALIGN_CENTRE_W = SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2;
