@@ -29,6 +29,6 @@ public class TileTypeSofa extends TileType {
 
     @Override
     public Collection<Tile> getTiles(Location location, Direction facing) {
-        return Arrays.asList(new Tile(location, this, facing, 0), new Tile(location.forward(Direction.EAST), this, facing, 0));
+        return Arrays.asList(new Tile(location, this, facing, 0), new Tile(location.forward(facing.right()), this, facing, 0));
     }
 }
