@@ -1,12 +1,8 @@
 package game.ui.states;
 
+import game.ui.components.Inputs;
 import org.lwjgl.input.Mouse;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Music;
-import org.newdawn.slick.MusicListener;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -20,7 +16,10 @@ public class Menu extends BasicGameState implements MusicListener{
 	private String mouseCoords = "No input yet!";
 	private Music music;
     private Image bg;
-
+    private Inputs inputs;
+    private static boolean isWPressed = false;
+    private static boolean isSPressed = false ;
+    private static boolean isEnterPressed = false ;
 
 	public Menu(int state) {
 
@@ -37,13 +36,13 @@ public class Menu extends BasicGameState implements MusicListener{
 		bg= new Image(ImageLocations.BG,false,Image.FILTER_NEAREST);
 		Image play = new Image(ImageLocations.PLAY);
 		Image playR = new Image(ImageLocations.PLAY_ROLLOVER);
-		playButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H - 150, Vals.BUTTON_WIDTH,
-				Vals.BUTTON_HEIGHT, play, playR);
+		playButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H - 150, play.getTextureWidth(),
+				play.getTextureHeight(), play, playR);
 
 		Image options = new Image(ImageLocations.OPTIONS);
 		Image optionsR = new Image(ImageLocations.OPTIONS_ROLLOVER);
-		optionsButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H - 50, Vals.BUTTON_WIDTH,
-				Vals.BUTTON_HEIGHT, options, optionsR);
+		optionsButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H - 50, options.getWidth(),
+				options.getHeight(), options, optionsR);
 
 		Image rules = new Image(ImageLocations.RULES);
 		Image rulesR = new Image(ImageLocations.RULES_ROLLOVER);
@@ -55,7 +54,7 @@ public class Menu extends BasicGameState implements MusicListener{
 		exitButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 150, Vals.BUTTON_WIDTH,
 				Vals.BUTTON_HEIGHT, exit, exitR);
 
-		
+
 //		music = new Music (MusicLocations.MENU_MUSIC);
 //		music.addListener(this);
 //		music.setVolume(0.5f); 
@@ -90,15 +89,20 @@ public class Menu extends BasicGameState implements MusicListener{
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+	    Input input= gc.getInput();
 		float mouseX = Mouse.getX();
 		float mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
-
+		isEnterPressed=input.isKeyPressed(Vals.ENTER);
+  		isWPressed = input.isKeyPressed(Vals.UP);
+  		isSPressed = input.isKeyPressed(Vals.DOWN);
 		// set button properties
 		playButton.update(gc, game, mouseX, mouseY, Vals.CHARACTER_SELECT_STATE);
 		optionsButton.update(gc, game, mouseX, mouseY, Vals.OPTIONS_STATE);
 		rulesButton.update(gc, game, mouseX, mouseY, Vals.RULES_STATE);
 		exitButton.update(gc, game, mouseX, mouseY, Vals.EXIT);
+
+		//Add a boolean function to button.update
 	}
 
 	@Override
@@ -113,4 +117,13 @@ public class Menu extends BasicGameState implements MusicListener{
 		
 	}
 
+	public static boolean isSPressed(){
+        return isSPressed;
+    }
+    public static boolean isWPressed(){
+        return isWPressed;
+    }
+    public static boolean isEnterPressed(){
+        return isEnterPressed;
+    }
 }

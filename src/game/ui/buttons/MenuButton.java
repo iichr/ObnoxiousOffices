@@ -1,5 +1,6 @@
 package game.ui.buttons;
 
+import game.ui.components.Inputs;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
@@ -19,6 +20,7 @@ public class MenuButton extends Button {
 	}
 
 	private static final long serialVersionUID = -6073162297979548251L;
+	private Inputs inputs;
 
 	/**
 	 * Update method for the button - enter a new state on button click.
