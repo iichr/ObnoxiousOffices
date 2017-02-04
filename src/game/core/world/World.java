@@ -3,15 +3,13 @@ package game.core.world;
 import game.core.Updateable;
 import game.core.player.Player;
 import game.core.world.tile.Tile;
+import game.core.world.tile.TilePrototype;
 import game.core.world.tile.TileType;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -64,20 +62,43 @@ public class World implements Updateable {
         if(checkBounds(x, y, z)) tiles[x][y][z] = tile;
     }
 
+    public void addTile(Tile tile) {
+        Location loc = tile.location;
+        setTile(loc.x, loc.y, loc.z, tile);
+    }
+
+    public void addTiles(Collection<Tile> c) {
+        c.forEach(this::addTile);
+    }
+
     public boolean checkBounds(int x, int y, int z) {
         return x < tiles.length && x >= 0 && y < tiles[x].length && y >= 0 && z < tiles[x][y].length && z >= 0;
     }
 
     public static World load(String[] lines, int maxPlayers) {
-        int sizeX = Arrays.stream(lines).mapToInt(String::length).min().orElse(0), sizeY = lines.length, sizeZ = 1;
-        World world = new World(maxPlayers, sizeX, sizeY, sizeZ);
-        IntStream.range(0, sizeY).forEach(y -> {
+        int i = Arrays.asList(lines).indexOf("###");
+        if (i < 0) return null;
+        String[] aliasLines = Arrays.copyOfRange(lines, i+1, lines.length), worldLines = Arrays.copyOfRange(lines, 0, i);
+
+        // Read tile aliases
+        HashMap<String, TilePrototype> aliases = new HashMap<>();
+        for(String aliasLine : aliasLines) {
+            String[] parts = aliasLine.split("=");
+            String name = parts[0].trim();
+            String[] prototypeParts = parts[1].split(",");
+            Direction direction = prototypeParts.length > 1 ? Direction.valueOf(prototypeParts[1].trim().toUpperCase()) : Direction.NORTH;
+            aliases.put(name, new TilePrototype(TileType.getType(prototypeParts[0].trim()), direction));
+        }
+
+        // Read world lines
+        String[][] tileStrings = new String[worldLines.length][];
+        for (int j = 0; j < tileStrings.length; j++) tileStrings[j] = worldLines[j].split(",");
+        int sizeX = Arrays.stream(tileStrings).mapToInt(a -> a.length).min().orElse(0), sizeZ = 1;
+        World world = new World(maxPlayers, sizeX, tileStrings.length, sizeZ);
+        IntStream.range(0, tileStrings.length).forEach(y -> {
             IntStream.range(0, sizeX).forEach(x -> {
-                IntStream.range(0, sizeZ).forEach(z -> {
-                    char ch = lines[y].charAt(x);
-                    Location location = new Location(x, y, z, world);
-                    if(TileType.typeExists(ch)) location.setTile(new Tile(location, TileType.getType(ch), Direction.NORTH));
-                });
+                TilePrototype p = aliases.get(tileStrings[y][x]);
+                world.addTiles(p.type.getTiles(new Location(x, y, 0, world), p.facing));
             });
         });
         return world;

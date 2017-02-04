@@ -13,7 +13,7 @@ import java.util.HashMap;
  */
 public abstract class TileType {
 
-    public static final HashMap<Character, TileType> types = new HashMap<>();
+    public static final HashMap<String, TileType> types = new HashMap<>();
 
     public static final TileType COMPUTER = new TileTypeComputer(),
             DESK = new TileTypeDesk(),
@@ -21,16 +21,16 @@ public abstract class TileType {
             CHAIR = new TileTypeChair(),
             COFFEE_MACHINE = new TileTypeCoffeeMachine(), PLANT = new TileTypeDecoration();
 
-    public static void init() {
-        addTileType('c', COMPUTER);
-        addTileType('d', DESK);
-        addTileType('f', FLOOR);
-        addTileType('s', CHAIR);
-        addTileType('m', COFFEE_MACHINE);
-        addTileType('p', PLANT);
+    static {
+        addTileType("computer", COMPUTER);
+        addTileType("desk", DESK);
+        addTileType("floor", FLOOR);
+        addTileType("chair", CHAIR);
+        addTileType("coffee", COFFEE_MACHINE);
+        addTileType("plant", PLANT);
     }
 
-    public static boolean addTileType(char levelSymbol, TileType type) {
+    public static boolean addTileType(String levelSymbol, TileType type) {
         if(types.containsKey(levelSymbol)) return true;
         types.put(levelSymbol, type);
         return false;
@@ -50,7 +50,7 @@ public abstract class TileType {
         return types.containsKey(ch);
     }
 
-    public static TileType getType(char ch) {
-        return types.get(ch);
+    public static TileType getType(String symbol) {
+        return types.get(symbol);
     }
 }
