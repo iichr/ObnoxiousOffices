@@ -10,7 +10,7 @@ import org.newdawn.slick.geom.Rectangle;
  * @author iichr
  *
  */
-public class StatusContainer extends Rectangle {
+public class PlayerContainer extends Rectangle {
 
 	private static final long serialVersionUID = 7035477320220180349L;
 	
@@ -37,7 +37,7 @@ public class StatusContainer extends Rectangle {
 	 * @param i3 Player 3's avatar
 	 * @param i4 Player 4's avatar.
 	 */
-	public StatusContainer(float x, float y, float width, float height, Image i1, Image i2, Image i3, Image i4) {
+	public PlayerContainer(float x, float y, float width, float height, Image i1, Image i2, Image i3, Image i4) {
 		super(x, y, width, height);
 		this.i1 = i1.getScaledCopy((int) width / 2, setImgHeight());
 		this.i2 = i2.getScaledCopy((int) width / 2, setImgHeight());

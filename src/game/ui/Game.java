@@ -9,7 +9,7 @@ import game.ui.interfaces.Vals;
 import game.ui.states.CharacterSelect;
 import game.ui.states.Menu;
 import game.ui.states.Options;
-import game.ui.states.Pause;
+import game.ui.buttons.Pause;
 import game.ui.states.Play;
 import game.ui.states.Rules;
 
@@ -22,7 +22,7 @@ public class Game extends StateBasedGame{
 		this.addState(new Options(Vals.OPTIONS_STATE));
 		this.addState(new Rules(Vals.RULES_STATE));
 		this.addState(new CharacterSelect(Vals.CHARACTER_SELECT_STATE));
-		this.addState(new Pause(Vals.PAUSE_STATE));
+		//this.addState(new Pause(Vals.PAUSE_STATE));
 	}
 	
 	public void initStatesList(GameContainer gc) throws SlickException{
@@ -31,7 +31,7 @@ public class Game extends StateBasedGame{
 		this.getState(Vals.OPTIONS_STATE).init(gc,this);
 		this.getState(Vals.RULES_STATE).init(gc, this);
 		this.getState(Vals.CHARACTER_SELECT_STATE).init(gc, this);
-		this.getState(Vals.PAUSE_STATE).init(gc, this);
+	//		this.getState(Vals.PAUSE_STATE).init(gc, this);
 		this.enterState(Vals.MENU_STATE);
 
 	}

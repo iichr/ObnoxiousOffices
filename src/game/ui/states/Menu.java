@@ -1,6 +1,5 @@
 package game.ui.states;
 
-import game.ui.components.Inputs;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
@@ -16,10 +15,6 @@ public class Menu extends BasicGameState implements MusicListener{
 	private String mouseCoords = "No input yet!";
 	private Music music;
     private Image bg;
-    private Inputs inputs;
-    private static boolean isWPressed = false;
-    private static boolean isSPressed = false ;
-    private static boolean isEnterPressed = false ;
 
 	public Menu(int state) {
 
@@ -63,7 +58,7 @@ public class Menu extends BasicGameState implements MusicListener{
 	public void enter(GameContainer container, StateBasedGame sbg) throws SlickException{
 	      //Start the music loop when you first enter the state, will not end until you use music.stop() or .pause() somewhere, even if you change states.
 //	      music.loop();
-	   }   
+	}
 	@Override
 	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
 
@@ -89,18 +84,18 @@ public class Menu extends BasicGameState implements MusicListener{
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
-	    Input input= gc.getInput();
 		float mouseX = Mouse.getX();
 		float mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
-		isEnterPressed=input.isKeyPressed(Vals.ENTER);
-  		isWPressed = input.isKeyPressed(Vals.UP);
-  		isSPressed = input.isKeyPressed(Vals.DOWN);
 		// set button properties
 		playButton.update(gc, game, mouseX, mouseY, Vals.CHARACTER_SELECT_STATE);
+		playButton.update(gc,game);
 		optionsButton.update(gc, game, mouseX, mouseY, Vals.OPTIONS_STATE);
+		optionsButton.update(gc,game);
 		rulesButton.update(gc, game, mouseX, mouseY, Vals.RULES_STATE);
+		rulesButton.update(gc,game);
 		exitButton.update(gc, game, mouseX, mouseY, Vals.EXIT);
+		exitButton.update(gc,game);
 
 		//Add a boolean function to button.update
 	}
@@ -117,13 +112,4 @@ public class Menu extends BasicGameState implements MusicListener{
 		
 	}
 
-	public static boolean isSPressed(){
-        return isSPressed;
-    }
-    public static boolean isWPressed(){
-        return isWPressed;
-    }
-    public static boolean isEnterPressed(){
-        return isEnterPressed;
-    }
 }

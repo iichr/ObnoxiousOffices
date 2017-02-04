@@ -1,5 +1,6 @@
 package game.ui.states;
 
+import game.ui.buttons.Pause;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -10,7 +11,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import game.ui.StatusContainer;
+import game.ui.PlayerContainer;
 import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
@@ -25,9 +26,17 @@ public class Play extends BasicGameState {
 	private MenuButton backButton;
 
 	// status container
-	private StatusContainer playerOverview;
+	private PlayerContainer playerOverview;
 	private Image _avatar;
+	private Pause pause_;
 	boolean showOverview = false;
+	boolean pause = false ;
+    // Resume game
+    private int resume = Input.KEY_ESCAPE;
+    // Back to menu
+    private int backToMenu = Input.KEY_M;
+    // Quit
+    private int quit = Input.KEY_Q;
 
 	public Play(int state) {
 	}
@@ -53,7 +62,7 @@ public class Play extends BasicGameState {
 
 		// Status container
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
-		playerOverview = new StatusContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
+		playerOverview = new PlayerContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
 
 	}
 
@@ -71,6 +80,10 @@ public class Play extends BasicGameState {
 
 		// add player status container
 		playerOverview.render(g, showOverview);
+		if(pause) {
+            pause_.render(g);
+        }
+
 	}
 
 	@Override
@@ -79,29 +92,42 @@ public class Play extends BasicGameState {
 		float mouseX = Mouse.getX();
 		float mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
-
 		// Handle pause and movement
 		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
 			input.clearKeyPressedRecord();
-			game.enterState(Vals.PAUSE_STATE);
-		} else if (input.isKeyDown(Input.KEY_TAB)) {
-			showOverview = true;
-		} else if (input.isKeyDown(Input.KEY_UP)) {
-			circle = moving;
-			moveY -= delta * .1f;
-		} else if (input.isKeyDown(Input.KEY_DOWN)) {
-			circle = moving;
-			moveY += delta * .1f;
-		} else if (input.isKeyDown(Input.KEY_LEFT)) {
-			circle = moving;
-			moveX -= delta * .1f;
-		} else if (input.isKeyDown(Input.KEY_RIGHT)) {
-			circle = moving;
-			moveX += delta * .1f;
-		} else {
-			circle = staying;
-			showOverview = false;
+			pause=true;
 		}
+		if(pause){
+			if (input.isKeyPressed(resume)) {
+				input.clearKeyPressedRecord();
+				pause=!pause;
+			} else if (input.isKeyDown(backToMenu)) {
+				input.clearKeyPressedRecord();
+				game.enterState(Vals.MENU_STATE);
+			} else if (input.isKeyDown(quit)) {
+				gc.exit();
+			}
+		}
+		if (!pause) {
+            if (input.isKeyDown(Input.KEY_TAB)) {
+                showOverview = true;
+            } else if (input.isKeyDown(Input.KEY_UP)) {
+                circle = moving;
+                moveY -= delta * .1f;
+            } else if (input.isKeyDown(Input.KEY_DOWN)) {
+                circle = moving;
+                moveY += delta * .1f;
+            } else if (input.isKeyDown(Input.KEY_LEFT)) {
+                circle = moving;
+                moveX -= delta * .1f;
+            } else if (input.isKeyDown(Input.KEY_RIGHT)) {
+                circle = moving;
+                moveX += delta * .1f;
+            } else {
+                circle = staying;
+                showOverview = false;
+            }
+        }
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 	}
