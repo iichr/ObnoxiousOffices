@@ -13,7 +13,7 @@ public class Tile {
     public final TileType type;
     public final Direction facing;
 
-    public Tile(Location location, TileType type, Direction facing) {
+    Tile(Location location, TileType type, Direction facing) {
         this.location = location;
         this.type = type;
         this.facing = facing;
