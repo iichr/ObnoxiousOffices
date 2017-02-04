@@ -1,6 +1,7 @@
 package game.core.world.tile;
 
 import game.core.player.Player;
+import game.core.world.Direction;
 import game.core.world.Location;
 
 /**
@@ -10,10 +11,12 @@ public class Tile {
 
     public final Location location;
     public final TileType type;
+    public final Direction facing;
 
-    public Tile(Location location, TileType type) {
+    public Tile(Location location, TileType type, Direction facing) {
         this.location = location;
         this.type = type;
+        this.facing = facing;
     }
 
     public void onWalkOver(Player player) {

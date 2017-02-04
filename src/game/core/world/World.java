@@ -6,7 +6,6 @@ import game.core.world.tile.Tile;
 import game.core.world.tile.TileType;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -77,7 +76,7 @@ public class World implements Updateable {
                 IntStream.range(0, sizeZ).forEach(z -> {
                     char ch = lines[y].charAt(x);
                     Location location = new Location(x, y, z, world);
-                    if(TileType.typeExists(ch)) location.setTile(new Tile(location, TileType.getType(ch)));
+                    if(TileType.typeExists(ch)) location.setTile(new Tile(location, TileType.getType(ch), Direction.NORTH));
                 });
             });
         });
