@@ -40,22 +40,22 @@ public class Menu extends BasicGameState implements MusicListener {
 		bg = new Image(ImageLocations.BG, false, Image.FILTER_NEAREST);
 		Image play = new Image(ImageLocations.PLAY);
 		Image playR = new Image(ImageLocations.PLAY_ROLLOVER);
-		playButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H - 150,
-				play.getTextureWidth(), play.getTextureHeight(), play, playR);
+		playButton = new MenuButton(Vals.SCREEN_WIDTH/4 - (play.getWidth()/2), Vals.BUTTON_ALIGN_CENTRE_H - 50,
+				play.getWidth(), play.getHeight(), play, playR);
 
 		Image options = new Image(ImageLocations.OPTIONS);
 		Image optionsR = new Image(ImageLocations.OPTIONS_ROLLOVER);
-		optionsButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H - 50, options.getWidth(),
+		optionsButton = new MenuButton(3*Vals.SCREEN_WIDTH/4 - (options.getWidth()/2), Vals.BUTTON_ALIGN_CENTRE_H - 50, options.getWidth(),
 				options.getHeight(), options, optionsR);
 
 		Image rules = new Image(ImageLocations.RULES);
 		Image rulesR = new Image(ImageLocations.RULES_ROLLOVER);
-		rulesButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 50, Vals.BUTTON_WIDTH,
+		rulesButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W/2, Vals.BUTTON_ALIGN_CENTRE_H + 150, Vals.BUTTON_WIDTH,
 				Vals.BUTTON_HEIGHT, rules, rulesR);
 
 		Image exit = new Image(ImageLocations.EXIT);
 		Image exitR = new Image(ImageLocations.EXIT_ROLLOVER);
-		exitButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 150, Vals.BUTTON_WIDTH,
+		exitButton = new MenuButton(3*Vals.BUTTON_ALIGN_CENTRE_W/2, Vals.BUTTON_ALIGN_CENTRE_H + 150, Vals.BUTTON_WIDTH,
 				Vals.BUTTON_HEIGHT, exit, exitR);
 
 		// music = new Music (MusicLocations.MENU_MUSIC);
