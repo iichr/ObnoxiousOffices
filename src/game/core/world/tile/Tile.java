@@ -12,11 +12,17 @@ public class Tile {
     public final Location location;
     public final TileType type;
     public final Direction facing;
+    public final int multitileID;
 
-    Tile(Location location, TileType type, Direction facing) {
+    Tile(Location location, TileType type, Direction facing, int multitileID) {
         this.location = location;
         this.type = type;
         this.facing = facing;
+        this.multitileID = multitileID;
+    }
+
+    Tile(Location location, TileType type, Direction facing) {
+        this(location, type, facing, 0);
     }
 
     public void onWalkOver(Player player) {
