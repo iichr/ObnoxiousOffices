@@ -1,10 +1,14 @@
 package game.ui.states;
 
+import java.util.ArrayList;
+
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -25,6 +29,11 @@ public class Rules extends BasicGameState {
 	private String gameTitle;
 	private String rules;
 
+	// testing with some arbitrary sprites
+	private final String chairLoc = "/res/sprites/tiles/chair.png";
+	private final String deskLoc = "/res/sprites/tiles/desk.png";
+	private Image chair, desk;
+
 	public Rules(int state) {
 
 	}
@@ -34,6 +43,22 @@ public class Rules extends BasicGameState {
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
+
+		// Fonts - temp
+		// only load those actually needed.
+		ArrayList<UnicodeFont> fontList = new ArrayList<UnicodeFont>();
+		fontList.add(Vals.FONT_MAIN);
+		fontList.add(Vals.FONT_HEADING1);
+
+		for (UnicodeFont font : fontList) {
+			font.addAsciiGlyphs();
+			font.getEffects().add(new ColorEffect());
+			font.loadGlyphs();
+		}
+
+		// Object images
+		chair = new Image(chairLoc).getScaledCopy(50, 50);
+		desk = new Image(deskLoc).getScaledCopy(50, 50);
 
 		gameTitle = "DevWars";
 		rules = " Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n "
@@ -54,10 +79,20 @@ public class Rules extends BasicGameState {
 		// debugging
 		g.drawString(mouseCoords, 10, 50);
 
+		// title
+		g.setFont(Vals.FONT_HEADING1);
+		g.drawString(gameTitle, (Vals.SCREEN_WIDTH - Vals.FONT_MAIN.getWidth(gameTitle)) / 2, 30);
+
+		g.setFont(Vals.FONT_MAIN);
+
+		g.drawImage(chair, Vals.RULES_SECT_LEFT_W / 2 - chair.getWidth() / 2, 150);
+		g.drawImage(desk, Vals.RULES_SECT_LEFT_W / 2 - desk.getWidth() / 2, 300);
+
 		// add back button
 		backButton.render(g);
-		g.drawString(gameTitle, 200, 100);
-		drawRules(g, rules, 30, 140);
+
+		// do -50 of the first image rendered to account for xline height.
+		drawRules(g, rules, 100);
 	}
 
 	@Override
@@ -75,15 +110,28 @@ public class Rules extends BasicGameState {
 	}
 
 	/**
-	 * Draw a long string, entering a new line every time the \n character is encountered.
-	 * @param g The graphics
-	 * @param s The string to be displayed
-	 * @param x The x coordinate of the string
-	 * @param y The y coordinate of the string.
+	 * Draw a long string, entering a new line every time the \n character is
+	 * encountered. Each line will be left-aligned according to the
+	 * RULES_SECT_RIGHT_W variable.
+	 * 
+	 * @param g
+	 *            The graphics
+	 * @param s
+	 *            The string to be displayed
+	 * @param x
+	 *            The x coordinate of the string
+	 * @param y
+	 *            The y coordinate of the string.
 	 */
-	public void drawRules(Graphics g, String s, int x, int y) {
+	public void drawRules(Graphics g, String s, int y) {
 		for (String line : s.split("\n"))
-			g.drawString(line, Vals.SCREEN_WIDTH / 2 - 500, y += 60);
+			if (Vals.FONT_MAIN.getWidth(line) > Vals.RULES_SECT_RIGHT_W) {
+				g.drawString("ERROR: THIS LINE NEEDS SHORTENING", Vals.SCREEN_WIDTH - Vals.RULES_SECT_RIGHT_W,
+						y += Vals.FONT_MAIN.getLineHeight() * 2);
+			} else {
+				g.drawString(line, Vals.SCREEN_WIDTH - Vals.RULES_SECT_RIGHT_W,
+						y += Vals.FONT_MAIN.getLineHeight() * 2);
+			}
 	}
 
 }

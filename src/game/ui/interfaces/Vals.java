@@ -40,11 +40,17 @@ public interface Vals {
 	public static final int TFIELD_ALIGN_CENTRE_W = (SCREEN_WIDTH - TFIELD_WIDTH)/2;
 	
 	// FONTS
-	public static final UnicodeFont fieldFONT = new UnicodeFont(new Font("Arial", Font.BOLD, 20));
+	public static final UnicodeFont FONT_MAIN = new UnicodeFont(new Font("Arial", Font.BOLD, 20));
+	public static final UnicodeFont FONT_HEADING1 = new UnicodeFont(new Font("Arial", Font.BOLD, 30));
+	
+	// RULES Alignment
+	public static final int RULES_SECT_LEFT_W = SCREEN_WIDTH/4;
+	public static final int RULES_SECT_RIGHT_W = SCREEN_WIDTH - RULES_SECT_LEFT_W;
 
 	// The coords of the screen centre for a Menu Button
 	public static final int BUTTON_ALIGN_CENTRE_W = SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2;
 	public static final int BUTTON_ALIGN_CENTRE_H = SCREEN_HEIGHT / 2 - BUTTON_HEIGHT / 2;
+	
 	// Input checking
 	public static final long INPUT_INTERVAL = 100;
 	// Get input
