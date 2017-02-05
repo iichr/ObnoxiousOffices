@@ -1,5 +1,6 @@
 package game.ui.states;
 
+import game.ui.EffectContainer;
 import game.ui.buttons.Pause;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Animation;
@@ -17,6 +18,8 @@ import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 
+import java.time.Instant;
+
 public class Play extends BasicGameState {
 	private String mouseCoords = "No input yet!";
 	float moveX = 300;
@@ -27,7 +30,8 @@ public class Play extends BasicGameState {
 
 	// status container
 	private PlayerContainer playerOverview;
-	private Image _avatar;
+	private EffectContainer effectOverview;
+	private Image _avatar,coffee;
 	private Pause pause_;
 	boolean showOverview = false;
 	boolean pause = false ;
@@ -40,6 +44,7 @@ public class Play extends BasicGameState {
 
 	public Play(int state) {
 	}
+
 
 	@Override
 	public int getID() {
@@ -60,11 +65,17 @@ public class Play extends BasicGameState {
 
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 
-		// Status container
+		// PlayerContainer container
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
 		playerOverview = new PlayerContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
-
-	}
+		//Effectcontainer
+		coffee = new Image("res/sprites/tiles/coffee.png",false,Image.FILTER_NEAREST);
+		effectOverview = new EffectContainer(coffee,10);
+    }
+    @Override
+    public void enter(GameContainer container, StateBasedGame game){
+        effectOverview.setCurrent(Instant.now());
+    }
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
@@ -80,9 +91,11 @@ public class Play extends BasicGameState {
 
 		// add player status container
 		playerOverview.render(g, showOverview);
+		effectOverview.render(g);
 		if(pause) {
             pause_.render(g);
         }
+
 
 	}
 
@@ -92,6 +105,7 @@ public class Play extends BasicGameState {
 		float mouseX = Mouse.getX();
 		float mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
+        effectOverview.update();
 		// Handle pause and movement
 		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
 			input.clearKeyPressedRecord();
@@ -130,6 +144,7 @@ public class Play extends BasicGameState {
         }
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
+
 	}
 
 }
