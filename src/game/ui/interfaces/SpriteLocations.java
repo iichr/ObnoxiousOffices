@@ -121,8 +121,8 @@ public class SpriteLocations {
 
 	public static final String TILE_DESK = "/res/sprites/tiles/desk.png";
 
-	public static final String TILE_CHAIR_NORTH = "/res/sprites/tiles/chair.png";
-	public static final String TILE_CHAIR_SOUTH = "/res/sprites/tiles/chair.png";
+	public static final String TILE_CHAIR_NORTH = "/res/sprites/tiles/chairNorth.png";
+	public static final String TILE_CHAIR_SOUTH = "/res/sprites/tiles/chairSouth.png";
 	public static final String TILE_CHAIR_EAST = "/res/sprites/tiles/chair.png";
 	public static final String TILE_CHAIR_WEST = "/res/sprites/tiles/chair.png";
 
@@ -132,6 +132,7 @@ public class SpriteLocations {
 	public static final String TILE_PLANT = "/res/sprites/tiles/plant.png";
 
 	public static final String TILE_WALL = "/res/sprites/tiles/wall.png";
+	
 
 	// PLAYER SPRITE LOCATIONS
 	public static final String PLAYER_BLONDE_STANDING_NORTH = "/res/sprites/players/PlayerBlondeStandingNorth.png";

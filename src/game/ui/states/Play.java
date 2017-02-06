@@ -57,14 +57,14 @@ public class Play extends BasicGameState {
 
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 
-		//Status container
+		// Status container
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
 		playerOverview = new StatusContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
-		
+
 		SpriteLocations sp = new SpriteLocations();
 		tileMap = sp.getTileMap();
-		
-		//testing methods
+
+		// testing methods
 		createWorld();
 		addPlayers();
 		animatePlayers(world.getPlayers());
@@ -100,8 +100,8 @@ public class Play extends BasicGameState {
 			Image s = null;
 			Image e = null;
 			Image w = null;
-			
-			switch(p.name){
+
+			switch (p.name) {
 			case "0":
 				n = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_NORTH, false, Image.FILTER_NEAREST);
 				s = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_SOUTH, false, Image.FILTER_NEAREST);
@@ -136,55 +136,44 @@ public class Play extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		drawWorld();
-		drawPlayers();
+		// drawPlayers();
 
 		// debugging
-		g.drawString(mouseCoords, 10, 50);
+		g.drawString(mouseCoords, 0, 0);
 
-		// add back button
-		backButton.render();
-		
 		// add player status container
-				playerOverview.render(g, showOverview);
+		playerOverview.render(g, showOverview);
 	}
 
 	public void drawWorld() throws SlickException {
 		// find tile width and height
 		float tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
-		float tileHeight = (float) Vals.SCREEN_HEIGHT / world.ySize;
+		float tileHeight = 2 * (float) Vals.SCREEN_HEIGHT / (world.ySize + 2);
+
+		Image wall = new Image(SpriteLocations.TILE_WALL, false, Image.FILTER_NEAREST);
+		wall.draw(0, 0, Vals.SCREEN_WIDTH, tileHeight);
+
+		// get players
+		Set<Player> players = world.getPlayers();
 
 		// render each tile
 		for (int y = 0; y < world.ySize; y++) {
 			for (int x = 0; x < world.xSize; x++) {
-				
+				float tileX = x * tileWidth;
+				float tileY = (y - 1 + 2) * (tileHeight / 2);
+
 				Direction facing = world.getTile(x, y, 0).facing;
 				int spN = world.getTile(x, y, 0).multitileID;
 				TileType type = world.getTile(x, y, 0).type;
-				
-				HashMap <Direction, Image[]> directionMap = tileMap.get(type);
-				Image [] images = directionMap.get(facing);
-				
-				float tileX = x * tileWidth;
-				float tileY = y * tileHeight;
+
+				HashMap<Direction, Image[]> directionMap = tileMap.get(type);
+				Image[] images = directionMap.get(facing);
+
 				images[spN].draw(tileX, tileY, tileWidth, tileHeight);
-			}
-		}
-	}
 
-	private void drawPlayers() throws SlickException {
-		float tileHeight = (float) Vals.SCREEN_HEIGHT / world.ySize;
-		float tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
-		float playerHeight = 2 * tileHeight;
-		float playerWidth = tileWidth;
-
-		Set<Player> players = world.getPlayers();
-		for (int y = 0; y < world.ySize; y++) {
-			for (int x = 0; x < world.xSize; x++) {
-				for(Player player : players){
-					if(player.location.x == x && player.location.y == y){
-						float playerX = player.location.x * tileWidth;
-						float playerY = (player.location.y - 1) * tileHeight;
-						playerMap.get(player).drawPlayer(playerX, playerY, playerWidth, playerHeight);
+				for (Player player : players) {
+					if (player.location.x == x && player.location.y == y) {
+						playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
 					}
 				}
 			}
@@ -207,11 +196,11 @@ public class Play extends BasicGameState {
 		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
 			input.clearKeyPressedRecord();
 			game.enterState(Vals.PAUSE_STATE);
-			
+
 		} else if (input.isKeyDown(Input.KEY_TAB)) {
 			showOverview = true;
-			
-		}else if (input.isKeyPressed(Input.KEY_UP)) {
+
+		} else if (input.isKeyPressed(Input.KEY_UP)) {
 			// for testing, move player one
 			p1.move(Direction.NORTH);
 			playerMap.get(p1).turnNorth();
