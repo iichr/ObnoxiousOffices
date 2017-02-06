@@ -31,7 +31,7 @@ import game.ui.player.PlayerAnimation;
 public class Play extends BasicGameState {
 	private String mouseCoords = "No input yet!";
 	private MenuButton backButton;
-	private HashMap<TileType, Image[]> imageMap;
+	private HashMap<TileType, HashMap<Direction, Image[]>> tileMap;
 	private HashMap<Player, PlayerAnimation> playerMap;
 	private World world;
 
@@ -61,7 +61,9 @@ public class Play extends BasicGameState {
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
 		playerOverview = new StatusContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
 		
-		imageMap = SpriteLocations.createMap();
+		SpriteLocations sp = new SpriteLocations();
+		tileMap = sp.getTileMap();
+		
 		//testing methods
 		createWorld();
 		addPlayers();
@@ -70,7 +72,6 @@ public class Play extends BasicGameState {
 
 	// temporary method until classes integrated
 	private void createWorld() {
-//		TileType.init();
 		Path p = Paths.get("data/office.level");
 		try {
 			world = World.load(p, 4);
@@ -155,15 +156,17 @@ public class Play extends BasicGameState {
 		// render each tile
 		for (int y = 0; y < world.ySize; y++) {
 			for (int x = 0; x < world.xSize; x++) {
+				
+				Direction facing = world.getTile(x, y, 0).facing;
+				int spN = world.getTile(x, y, 0).multitileID;
+				TileType type = world.getTile(x, y, 0).type;
+				
+				HashMap <Direction, Image[]> directionMap = tileMap.get(type);
+				Image [] images = directionMap.get(facing);
+				
 				float tileX = x * tileWidth;
 				float tileY = y * tileHeight;
-				TileType type = world.getTile(x, y, 0).type;
-				Image[] images = imageMap.get(type);
-				if (type.equals(TileType.FLOOR)) {
-					images[(x + y) % 2].draw(tileX, tileY, tileWidth, tileHeight);
-				} else {
-					images[0].draw(tileX, tileY, tileWidth, tileHeight);
-				}
+				images[spN].draw(tileX, tileY, tileWidth, tileHeight);
 			}
 		}
 	}
