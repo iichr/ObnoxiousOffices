@@ -156,26 +156,30 @@ public class Play extends BasicGameState {
 		// get players
 		Set<Player> players = world.getPlayers();
 
-		// render each tile
+		// check every position in the world to render what is needed at that
+		// location
 		for (int y = 0; y < world.ySize; y++) {
 			for (int x = 0; x < world.xSize; x++) {
 				float tileX = x * tileWidth;
 				float tileY = (y - 1 + 2) * (tileHeight / 2);
 
+				// find out what to render at this location
 				Direction facing = world.getTile(x, y, 0).facing;
 				int spN = world.getTile(x, y, 0).multitileID;
 				TileType type = world.getTile(x, y, 0).type;
-
 				HashMap<Direction, Image[]> directionMap = tileMap.get(type);
 				Image[] images = directionMap.get(facing);
 
+				// render the tile
 				images[spN].draw(tileX, tileY, tileWidth, tileHeight);
 
+				// render the players
 				for (Player player : players) {
 					if (player.location.x == x && player.location.y == y) {
 						playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
 					}
 				}
+
 			}
 		}
 	}
