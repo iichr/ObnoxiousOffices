@@ -70,7 +70,7 @@ public class Play extends BasicGameState {
 
 	// temporary method until classes integrated
 	private void createWorld() {
-		TileType.init();
+//		TileType.init();
 		Path p = Paths.get("data/office.level");
 		try {
 			world = World.load(p, 4);

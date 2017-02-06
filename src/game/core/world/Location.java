@@ -33,4 +33,13 @@ public class Location {
     public void setTile(Tile tile) {
         world.setTile(x, y, z, tile);
     }
+
+    public Tile getTile() {
+        return world.getTile(x, y, z);
+    }
+
+    public boolean checkBounds() {
+        return world.checkBounds(x, y, z);
+    }
+
 }
