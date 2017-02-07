@@ -1,7 +1,6 @@
 package game.ui.states;
 
 import game.ui.EffectContainer;
-import game.ui.buttons.Pause;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -30,21 +29,14 @@ public class Play extends BasicGameState {
 
 	// status container
 	private PlayerContainer playerOverview;
+
+	// effect container
 	private EffectContainer effectOverview;
-	private Image _avatar,coffee;
-	private Pause pause_;
+	private Image _avatar, coffee;
 	boolean showOverview = false;
-	boolean pause = false ;
-    // Resume game
-    private int resume = Input.KEY_ESCAPE;
-    // Back to menu
-    private int backToMenu = Input.KEY_M;
-    // Quit
-    private int quit = Input.KEY_Q;
 
 	public Play(int state) {
 	}
-
 
 	@Override
 	public int getID() {
@@ -69,16 +61,16 @@ public class Play extends BasicGameState {
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
 		playerOverview = new PlayerContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
 
+	}
 
-    }
-    @Override
-    public void enter(GameContainer container, StateBasedGame game) throws SlickException{
-		//Effectcontainer
-		coffee = new Image("res/sprites/tiles/coffee.png",false,Image.FILTER_NEAREST);
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+		// Effectcontainer
+		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
 		effectOverview.setCurrent(Instant.now());
-		effectOverview = new EffectContainer(coffee,10);
+		effectOverview = new EffectContainer(coffee, 10);
 
-    }
+	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
@@ -94,11 +86,9 @@ public class Play extends BasicGameState {
 
 		// add player status container
 		playerOverview.render(g, showOverview);
+		
+		// add effects overview container
 		effectOverview.render(g);
-		if(pause) {
-            pause_.render(g);
-        }
-
 
 	}
 
@@ -108,43 +98,29 @@ public class Play extends BasicGameState {
 		float mouseX = Mouse.getX();
 		float mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
-        effectOverview.update();
+		effectOverview.update();
 		// Handle pause and movement
 		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
 			input.clearKeyPressedRecord();
-			pause=true;
+			game.enterState(Vals.PAUSE_STATE);
+		} else if (input.isKeyDown(Input.KEY_TAB)) {
+			showOverview = true;
+		} else if (input.isKeyDown(Input.KEY_UP)) {
+			circle = moving;
+			moveY -= delta * .1f;
+		} else if (input.isKeyDown(Input.KEY_DOWN)) {
+			circle = moving;
+			moveY += delta * .1f;
+		} else if (input.isKeyDown(Input.KEY_LEFT)) {
+			circle = moving;
+			moveX -= delta * .1f;
+		} else if (input.isKeyDown(Input.KEY_RIGHT)) {
+			circle = moving;
+			moveX += delta * .1f;
+		} else {
+			circle = staying;
+			showOverview = false;
 		}
-		if(pause){
-			if (input.isKeyPressed(resume)) {
-				input.clearKeyPressedRecord();
-				pause=!pause;
-			} else if (input.isKeyDown(backToMenu)) {
-				input.clearKeyPressedRecord();
-				game.enterState(Vals.MENU_STATE);
-			} else if (input.isKeyDown(quit)) {
-				gc.exit();
-			}
-		}
-		if (!pause) {
-            if (input.isKeyDown(Input.KEY_TAB)) {
-                showOverview = true;
-            } else if (input.isKeyDown(Input.KEY_UP)) {
-                circle = moving;
-                moveY -= delta * .1f;
-            } else if (input.isKeyDown(Input.KEY_DOWN)) {
-                circle = moving;
-                moveY += delta * .1f;
-            } else if (input.isKeyDown(Input.KEY_LEFT)) {
-                circle = moving;
-                moveX -= delta * .1f;
-            } else if (input.isKeyDown(Input.KEY_RIGHT)) {
-                circle = moving;
-                moveX += delta * .1f;
-            } else {
-                circle = staying;
-                showOverview = false;
-            }
-        }
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 
