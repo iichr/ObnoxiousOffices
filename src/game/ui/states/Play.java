@@ -68,13 +68,16 @@ public class Play extends BasicGameState {
 		// PlayerContainer container
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
 		playerOverview = new PlayerContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
-		//Effectcontainer
-		coffee = new Image("res/sprites/tiles/coffee.png",false,Image.FILTER_NEAREST);
-		effectOverview = new EffectContainer(coffee,10);
+
+
     }
     @Override
-    public void enter(GameContainer container, StateBasedGame game){
-        effectOverview.setCurrent(Instant.now());
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException{
+		//Effectcontainer
+		coffee = new Image("res/sprites/tiles/coffee.png",false,Image.FILTER_NEAREST);
+		effectOverview.setCurrent(Instant.now());
+		effectOverview = new EffectContainer(coffee,10);
+
     }
 
 	@Override

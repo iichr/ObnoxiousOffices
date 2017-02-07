@@ -26,7 +26,7 @@ public class EffectContainer{
     private boolean show = false;
     private int duration;
 
-
+        // effect id
     public EffectContainer(Image img,int duration){
         this.duration= duration;
         this.img=img.getScaledCopy(50,50);
@@ -40,9 +40,10 @@ public class EffectContainer{
     * show effects vertically
     * */
     public void render(Graphics g) throws SlickException{
-        if(show) {
+        if(!show){}else
+        {
             g.drawImage(this.img,Vals.SCREEN_WIDTH - 100 , Vals.SCREEN_HEIGHT - Vals.SCREEN_HEIGHT/5*4);
-            g.drawString(Long.toString(ChronoUnit.SECONDS.between(Instant.now(),end)) + " s",Vals.SCREEN_WIDTH -100 , Vals.SCREEN_HEIGHT -Vals.SCREEN_HEIGHT/5*4 + 50);
+            g.drawString(Long.toString(ChronoUnit.SECONDS.between(Instant.now(),this.end)) + " s",Vals.SCREEN_WIDTH -100 , Vals.SCREEN_HEIGHT -Vals.SCREEN_HEIGHT/5*4 + 50);
             g.drawString("show : " + (show?"true":"false"),Vals.SCREEN_WIDTH -150 , Vals.SCREEN_HEIGHT -Vals.SCREEN_HEIGHT/5*4 + 100);
         }
     }
@@ -50,7 +51,7 @@ public class EffectContainer{
     public void update()throws SlickException{
         if(ChronoUnit.SECONDS.between(Instant.now(),end)==(long)0){
             show=false;
-            this.current = Instant.now().plusSeconds(interval);
+            this.current = Instant.now().plusSeconds(interval+1);
             this.end = current.plusSeconds(this.duration);
         }else {show=true;}
 
