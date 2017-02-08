@@ -38,6 +38,14 @@ public class Player implements Updateable {
     }
 
     /**
+     * Sets the player's facing
+     * @param facing
+     */
+    public void setFacing(Direction facing) {
+        this.facing = facing;
+    }
+
+    /**
      * Move forwards one space in the direction of the player's facing
      */
     public void moveForwards() {
