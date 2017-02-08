@@ -116,7 +116,7 @@ public class SpriteLocations {
 
 		Image sNR = new Image(TILE_SOFA_NORTH_RIGHT, false, Image.FILTER_NEAREST);
 		Image sNL = new Image(TILE_SOFA_NORTH_LEFT, false, Image.FILTER_NEAREST);
-		Image[] sNorth = { sNR, sNL };
+		Image[] sNorth = { sNL, sNR };
 		sofaMap.put(Direction.NORTH, sNorth);
 
 		Image sSR = new Image(TILE_SOFA_SOUTH_RIGHT, false, Image.FILTER_NEAREST);

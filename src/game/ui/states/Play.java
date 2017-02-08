@@ -185,6 +185,9 @@ public class Play extends BasicGameState {
 				Direction facing = world.getTile(x, y, 0).facing;
 				TileType type = world.getTile(x, y, 0).type;
 				int mtID = world.getTile(x, y, 0).multitileID;
+				if(mtID == -1){
+					mtID++;
+				}
 				HashMap<Direction, Image[]> directionMap = tileMap.get(type);
 				Image[] images = directionMap.get(facing);
 				images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
