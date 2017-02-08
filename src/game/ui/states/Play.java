@@ -3,7 +3,6 @@ package game.ui.states;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
@@ -72,7 +71,7 @@ public class Play extends BasicGameState {
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		// Effectcontainer
 		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
-//		effectOverview.setCurrent(Instant.now());
+		// effectOverview.setCurrent(Instant.now());
 		effectOverview = new EffectContainer(coffee, 10);
 
 		SpriteLocations sp = new SpriteLocations();
@@ -176,6 +175,7 @@ public class Play extends BasicGameState {
 
 		// check every position in the world to render what is needed at that
 		// location
+		
 		for (int y = 0; y < world.ySize; y++) {
 			for (int x = 0; x < world.xSize; x++) {
 				float tileX = x * tileWidth;
@@ -184,11 +184,11 @@ public class Play extends BasicGameState {
 				// find out what to render at this location
 				Direction facing = world.getTile(x, y, 0).facing;
 				TileType type = world.getTile(x, y, 0).type;
+				int mtID = world.getTile(x, y, 0).multitileID;
 				HashMap<Direction, Image[]> directionMap = tileMap.get(type);
 				Image[] images = directionMap.get(facing);
-
-				images[0].draw(tileX, tileY, tileWidth, tileHeight);
-
+				images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
+				
 				// render the players
 				for (Player player : players) {
 					Location playerLocation = player.getLocation();

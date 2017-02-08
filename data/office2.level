@@ -1,4 +1,4 @@
-fl,s2,fl,fl,fl,fl,fl,fl,fl,fl,fl,s2,s2,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
+fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,s2,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
@@ -13,7 +13,7 @@ fl,fl,fl,fl,fl,fl,d2,p1,d4,fl,fl,fl,fl,fl,fl,d2,p1,d4,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
-fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,s1,s1,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
+fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,s1,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 ###
 fl = floor
 d1 = desk,north
@@ -26,7 +26,7 @@ c3 = chair,south
 c4 = chair,west
 p1 = computer,north
 p2 = computer,south
-m1 = coffee,east
-m2 = coffee,west
 s1 = sofa,north
 s2 = sofa,south
+m1 = coffee,east
+m2 = coffee,west
