@@ -71,14 +71,14 @@ public class Player implements Updateable {
      * Rotate the 90 degrees player left
      */
     public void rotateLeft() {
-        facing = facing.left();
+        setFacing(facing.left());
     }
 
     /**
      * Rotate the 90 degrees player left
      */
     public void rotateRight() {
-        facing = facing.right();
+        setFacing(facing.right());
     }
 
     public void update() {
