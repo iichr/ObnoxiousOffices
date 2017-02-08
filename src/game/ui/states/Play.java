@@ -1,10 +1,9 @@
 package game.ui.states;
 
-
-import game.ui.EffectContainer;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
@@ -18,23 +17,18 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-
-import game.ui.PlayerContainer;
-
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
 import game.core.world.tile.TileType;
-import game.ui.StatusContainer;
-
+import game.ui.EffectContainer;
+import game.ui.PlayerContainer;
 import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 import game.ui.player.PlayerAnimation;
-
-import java.time.Instant;
 
 public class Play extends BasicGameState {
 	private String mouseCoords = "No input yet!";
@@ -163,7 +157,7 @@ public class Play extends BasicGameState {
 
 		// add player status container
 		playerOverview.render(g, showOverview);
-		
+
 		// add effects overview container
 		effectOverview.render(g);
 
@@ -192,9 +186,9 @@ public class Play extends BasicGameState {
 				TileType type = world.getTile(x, y, 0).type;
 				HashMap<Direction, Image[]> directionMap = tileMap.get(type);
 				Image[] images = directionMap.get(facing);
-				
+
 				images[0].draw(tileX, tileY, tileWidth, tileHeight);
-				
+
 				// render the players
 				for (Player player : players) {
 					Location playerLocation = player.getLocation();
