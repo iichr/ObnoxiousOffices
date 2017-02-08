@@ -13,7 +13,7 @@ public class Player implements Updateable {
     public final PlayerStatus status = new PlayerStatus(this);
     private double progress = 0;
     private Direction facing;
-    public Location location;
+    private Location location;
 
     public Player(String name, Direction facing, Location location) {
         this.name = name;
@@ -26,15 +26,31 @@ public class Player implements Updateable {
      * @param direction
      */
     public void move(Direction direction) {
-        location = location.forward(direction);
+        setLocation(location.forward(direction));
     }
     
     /**
      * Gets the current facing of the player
      * @return Direction the current facing of the player
      */
-    public Direction getDirection() {
+    public Direction getFacing() {
         return facing;
+    }
+
+    /**
+     * Sets the player's facing
+     * @param facing
+     */
+    public void setFacing(Direction facing) {
+        this.facing = facing;
+    }
+
+    /**
+     * Sets the player's location
+     * @param location
+     */
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     /**
@@ -48,21 +64,21 @@ public class Player implements Updateable {
      * Move backwards one space in the direction of the player's facing
      */
     public void moveBackwards() {
-        location = location.backward(facing);
+        setLocation(location.backward(facing));
     }
 
     /**
      * Rotate the 90 degrees player left
      */
     public void rotateLeft() {
-        facing = facing.left();
+        setFacing(facing.left());
     }
 
     /**
      * Rotate the 90 degrees player left
      */
     public void rotateRight() {
-        facing = facing.right();
+        setFacing(facing.right());
     }
 
     public void update() {
