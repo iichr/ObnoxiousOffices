@@ -128,7 +128,7 @@ public class Play extends BasicGameState {
 				break;
 			}
 
-			PlayerAnimation animation = new PlayerAnimation(n, s, e, w, p.getDirection());
+			PlayerAnimation animation = new PlayerAnimation(n, s, e, w, p.getFacing());
 			playerMap.put(p, animation);
 		}
 	}
@@ -175,7 +175,8 @@ public class Play extends BasicGameState {
 
 				// render the players
 				for (Player player : players) {
-					if (player.location.x == x && player.location.y == y) {
+					Location playerLocation = player.getLocation();
+					if (playerLocation.x == x && playerLocation.y == y) {
 						playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
 					}
 				}
