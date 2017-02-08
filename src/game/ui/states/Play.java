@@ -1,5 +1,7 @@
 package game.ui.states;
 
+
+import game.ui.EffectContainer;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,17 +18,23 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+
+import game.ui.PlayerContainer;
+
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
 import game.core.world.tile.TileType;
 import game.ui.StatusContainer;
+
 import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 import game.ui.player.PlayerAnimation;
+
+import java.time.Instant;
 
 public class Play extends BasicGameState {
 	private String mouseCoords = "No input yet!";
@@ -36,8 +44,11 @@ public class Play extends BasicGameState {
 	private World world;
 
 	// status container
-	private StatusContainer playerOverview;
-	private Image _avatar;
+	private PlayerContainer playerOverview;
+
+	// effect container
+	private EffectContainer effectOverview;
+	private Image _avatar, coffee;
 	boolean showOverview = false;
 
 	public Play(int state) {
@@ -57,9 +68,18 @@ public class Play extends BasicGameState {
 
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 
-		// Status container
+		// PlayerContainer container
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
-		playerOverview = new StatusContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
+		playerOverview = new PlayerContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
+
+	}
+
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+		// Effectcontainer
+		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
+		effectOverview.setCurrent(Instant.now());
+		effectOverview = new EffectContainer(coffee, 10);
 
 		SpriteLocations sp = new SpriteLocations();
 		tileMap = sp.getTileMap();
@@ -143,6 +163,10 @@ public class Play extends BasicGameState {
 
 		// add player status container
 		playerOverview.render(g, showOverview);
+		
+		// add effects overview container
+		effectOverview.render(g);
+
 	}
 
 	public void drawWorld() throws SlickException {
@@ -195,6 +219,9 @@ public class Play extends BasicGameState {
 				p1 = p;
 			}
 		}
+
+		effectOverview.update();
+		// Handle pause and movement
 		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
 			input.clearKeyPressedRecord();
 			game.enterState(Vals.PAUSE_STATE);
@@ -231,6 +258,7 @@ public class Play extends BasicGameState {
 		}
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
+
 	}
 
 }

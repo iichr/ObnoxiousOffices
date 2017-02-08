@@ -34,5 +34,9 @@ public interface ImageLocations{
 	
 	// PLAYER AVATAR IMAGES
 	public static final String TEMP_AVATAR = "res/player/avatar.png";
+
+	//STATUS IMAGES
+	public static final String COFFEE = "";
+	public static final String COFFEE_END = "";
 	
 }

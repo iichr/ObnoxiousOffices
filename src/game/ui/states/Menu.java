@@ -40,6 +40,7 @@ public class Menu extends BasicGameState implements MusicListener {
 		bg = new Image(ImageLocations.BG, false, Image.FILTER_NEAREST);
 		Image play = new Image(ImageLocations.PLAY);
 		Image playR = new Image(ImageLocations.PLAY_ROLLOVER);
+
 		playButton = new MenuButton(Vals.SCREEN_WIDTH/4 - (play.getWidth()/2), Vals.BUTTON_ALIGN_CENTRE_H - 50,
 				play.getWidth(), play.getHeight(), play, playR);
 
@@ -104,11 +105,16 @@ public class Menu extends BasicGameState implements MusicListener {
 		isEnterPressed = input.isKeyPressed(Vals.ENTER);
 		isWPressed = input.isKeyPressed(Vals.UP);
 		isSPressed = input.isKeyPressed(Vals.DOWN);
+
 		// set button properties
 		playButton.update(gc, game, mouseX, mouseY, Vals.CHARACTER_SELECT_STATE);
+		playButton.update(gc,game);
 		optionsButton.update(gc, game, mouseX, mouseY, Vals.OPTIONS_STATE);
+		optionsButton.update(gc,game);
 		rulesButton.update(gc, game, mouseX, mouseY, Vals.RULES_STATE);
+		rulesButton.update(gc,game);
 		exitButton.update(gc, game, mouseX, mouseY, Vals.EXIT);
+		exitButton.update(gc,game);
 
 		// Add a boolean function to button.update
 	}
