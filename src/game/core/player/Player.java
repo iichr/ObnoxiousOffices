@@ -33,7 +33,7 @@ public class Player implements Updateable {
      * Gets the current facing of the player
      * @return Direction the current facing of the player
      */
-    public Direction getDirection() {
+    public Direction getFacing() {
         return facing;
     }
 
