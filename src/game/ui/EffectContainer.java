@@ -10,7 +10,7 @@ import game.ui.interfaces.Vals;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import sun.plugin.dom.exception.InvalidStateException;
+//import sun.plugin.dom.exception.InvalidStateException;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
