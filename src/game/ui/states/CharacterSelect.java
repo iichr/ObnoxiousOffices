@@ -82,10 +82,10 @@ public class CharacterSelect extends BasicGameState {
 		g.drawString(mouseCoords, 10, 50);
 		// g.drawString(ipAddress.getText(), 700, 100);
 
-		// add back button
-		backButton.render(g);
-		circleButton.render(g);
-		connectButton.render(g);
+		// add necessary buttons
+		backButton.render();
+		circleButton.render();
+		connectButton.render();
 
 		// Text fields
 		serverAddress.render(gc, g);

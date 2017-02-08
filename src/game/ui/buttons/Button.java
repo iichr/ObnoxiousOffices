@@ -67,11 +67,8 @@ public class Button extends Rectangle {
 
 	/**
 	 * Renders the button to the graphics context using its coords.
-	 * 
-	 * @param g
-	 *            The graphics context to render to
 	 */
-	public void render(Graphics g) {
+	public void render() {
 		button.draw(this.x, this.y, this.width, this.height);
 	}
 }

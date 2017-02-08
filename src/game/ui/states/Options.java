@@ -67,7 +67,7 @@ public class Options extends BasicGameState {
 		soundStatus.draw(295, 150);
 
 		// add back button
-		backButton.render(g);
+		backButton.render();
 	}
 
 	@Override

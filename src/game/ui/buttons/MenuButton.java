@@ -26,9 +26,7 @@ public class MenuButton extends Button {
                                         Vals.EXIT
                                     };
 
-
     private static final long serialVersionUID = -6073162297979548251L;
-
 	/**
 	 * Update method for the button - enter a new state on button click.
 	 * 
