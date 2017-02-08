@@ -4,14 +4,14 @@ fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
-fl,fl,fl,fl,fl,fl,fl,fl,de,p1,de,fl,fl,fl,fl,fl,fl,fl,fl,de,p1,de,fl,fl,fl,fl,fl,fl,fl,fl
+fl,fl,fl,fl,fl,fl,fl,fl,d2,p2,d4,fl,fl,fl,fl,fl,fl,fl,fl,d2,p2,d4,fl,fl,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,c1,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,c1,fl,fl,fl,fl,fl,fl,fl,fl,fl
-fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
-fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
-fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
-fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
+d1,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,d1
+m2,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,m1
+d1,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,d1
+d3,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,d3
 fl,fl,fl,fl,fl,fl,fl,fl,fl,c3,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,c3,fl,fl,fl,fl,fl,fl,fl,fl,fl
-fl,fl,fl,fl,fl,fl,fl,fl,de,p2,de,fl,fl,fl,fl,fl,fl,fl,fl,de,p2,de,fl,fl,fl,fl,fl,fl,fl,fl
+fl,fl,fl,fl,fl,fl,fl,fl,d2,p1,d4,fl,fl,fl,fl,fl,fl,fl,fl,d2,p1,d4,fl,fl,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
@@ -20,7 +20,10 @@ fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 ###
 fl = floor
-de = desk
+d1 = desk,north
+d2 = desk,east
+d3 = desk,south
+d4 = desk,west
 c1 = chair,north
 c2 = chair,east
 c3 = chair,south

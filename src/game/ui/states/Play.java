@@ -72,7 +72,7 @@ public class Play extends BasicGameState {
 
 	// temporary method until classes integrated
 	private void createWorld() {
-		Path p = Paths.get("data/office.level");
+		Path p = Paths.get("data/office2.level");
 		try {
 			world = World.load(p, 4);
 		} catch (IOException e) {
@@ -165,14 +165,12 @@ public class Play extends BasicGameState {
 
 				// find out what to render at this location
 				Direction facing = world.getTile(x, y, 0).facing;
-				int spN = world.getTile(x, y, 0).multitileID;
 				TileType type = world.getTile(x, y, 0).type;
 				HashMap<Direction, Image[]> directionMap = tileMap.get(type);
 				Image[] images = directionMap.get(facing);
-
-				// render the tile
-				images[spN].draw(tileX, tileY, tileWidth, tileHeight);
-
+				
+				images[0].draw(tileX, tileY, tileWidth, tileHeight);
+				
 				// render the players
 				for (Player player : players) {
 					Location playerLocation = player.getLocation();
@@ -180,7 +178,6 @@ public class Play extends BasicGameState {
 						playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
 					}
 				}
-
 			}
 		}
 	}

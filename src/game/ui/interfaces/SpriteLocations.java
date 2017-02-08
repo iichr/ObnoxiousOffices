@@ -56,9 +56,21 @@ public class SpriteLocations {
 	private void addDeskImages() throws SlickException {
 		HashMap<Direction, Image[]> deskMap = new HashMap<>();
 
-		Image d = new Image(TILE_DESK, false, Image.FILTER_NEAREST);
-		Image[] desk = { d };
-		deskMap.put(Direction.NORTH, desk);
+		Image dN = new Image(TILE_DESK_END_NORTH, false, Image.FILTER_NEAREST);
+		Image[] deskNorth = { dN };
+		deskMap.put(Direction.NORTH, deskNorth);
+		
+		Image dS = new Image(TILE_DESK_END_SOUTH, false, Image.FILTER_NEAREST);
+		Image[] deskSouth = { dS };
+		deskMap.put(Direction.SOUTH, deskSouth);
+		
+		Image dE = new Image(TILE_DESK_END_EAST, false, Image.FILTER_NEAREST);
+		Image[] deskEast = { dE };
+		deskMap.put(Direction.EAST, deskEast);
+		
+		Image dW = new Image(TILE_DESK_END_WEST, false, Image.FILTER_NEAREST);
+		Image[] deskWest = { dW };
+		deskMap.put(Direction.WEST, deskWest);
 
 		tileMap.put(TileType.DESK, deskMap);
 	}
@@ -100,7 +112,19 @@ public class SpriteLocations {
 	}
 	
 	private void addSofaImages() throws SlickException {
-		// TODO get Sofa images
+		HashMap<Direction, Image[]> sofaMap = new HashMap<>();
+		
+		Image sNR = new Image(TILE_SOFA_NORTH_RIGHT, false, Image.FILTER_NEAREST);
+		Image sNL = new Image(TILE_SOFA_NORTH_LEFT, false, Image.FILTER_NEAREST);
+		Image[] sNorth = {sNL};
+		sofaMap.put(Direction.NORTH, sNorth);
+		
+		Image sSR = new Image(TILE_SOFA_SOUTH_RIGHT, false, Image.FILTER_NEAREST);
+		Image sSL = new Image(TILE_SOFA_SOUTH_LEFT, false, Image.FILTER_NEAREST);
+		Image[] sSouth = {sSL};
+		sofaMap.put(Direction.SOUTH, sSouth);
+		
+		tileMap.put(TileType.SOFA, sofaMap);
 	}
 	
 	private void addDecorativeImages() throws SlickException {
@@ -119,20 +143,27 @@ public class SpriteLocations {
 	public static final String TILE_PC_NORTH = "/res/sprites/tiles/computerNorth.png";
 	public static final String TILE_PC_SOUTH = "/res/sprites/tiles/computerSouth.png";
 
-	public static final String TILE_DESK = "/res/sprites/tiles/desk.png";
+	public static final String TILE_DESK_END_NORTH = "/res/sprites/tiles/deskEndNorth.png";
+	public static final String TILE_DESK_END_SOUTH = "/res/sprites/tiles/deskEndSouth.png";
+	public static final String TILE_DESK_END_EAST = "/res/sprites/tiles/deskEndEast.png";
+	public static final String TILE_DESK_END_WEST = "/res/sprites/tiles/deskEndWest.png";
 
 	public static final String TILE_CHAIR_NORTH = "/res/sprites/tiles/chairNorth.png";
 	public static final String TILE_CHAIR_SOUTH = "/res/sprites/tiles/chairSouth.png";
 	public static final String TILE_CHAIR_EAST = "/res/sprites/tiles/chair.png";
 	public static final String TILE_CHAIR_WEST = "/res/sprites/tiles/chair.png";
 
-	public static final String TILE_COFFEE_MACHINE_EAST = "/res/sprites/tiles/coffee.png";
-	public static final String TILE_COFFEE_MACHINE_WEST = "/res/sprites/tiles/coffee.png";
+	public static final String TILE_COFFEE_MACHINE_EAST = "/res/sprites/tiles/coffeeEast.png";
+	public static final String TILE_COFFEE_MACHINE_WEST = "/res/sprites/tiles/coffeeWest.png";
+	
+	public static final String TILE_SOFA_NORTH_LEFT = "/res/sprites/tiles/sofaNorthLeft.png";
+	public static final String TILE_SOFA_NORTH_RIGHT = "/res/sprites/tiles/sofaNorthRight.png";
+	public static final String TILE_SOFA_SOUTH_LEFT = "/res/sprites/tiles/sofaSouthLeft.png";
+	public static final String TILE_SOFA_SOUTH_RIGHT = "/res/sprites/tiles/sofaSouthRight.png";
 
 	public static final String TILE_PLANT = "/res/sprites/tiles/plant.png";
 
 	public static final String TILE_WALL = "/res/sprites/tiles/wall.png";
-	
 
 	// PLAYER SPRITE LOCATIONS
 	public static final String PLAYER_BLONDE_STANDING_NORTH = "/res/sprites/players/PlayerBlondeStandingNorth.png";
