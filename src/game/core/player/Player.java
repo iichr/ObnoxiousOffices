@@ -53,6 +53,10 @@ public class Player implements Updateable {
         this.location = location;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
     /**
      * Move forwards one space in the direction of the player's facing
      */
