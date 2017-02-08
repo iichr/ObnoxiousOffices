@@ -137,26 +137,16 @@ public class Player implements Updateable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null) return false;
+        if (!(o instanceof Player)) return false;
 
         Player player = (Player) o;
 
-        if (!name.equals(player.name)) return false;
-        if (facing != player.facing) return false;
-        return location.equals(player.location);
+        return name.equals(player.name);
 
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        temp = Double.doubleToLongBits(progress);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (facing != null ? facing.hashCode() : 0);
-        result = 31 * result + (location != null ? location.hashCode() : 0);
-        return result;
+        return name.hashCode();
     }
 }
