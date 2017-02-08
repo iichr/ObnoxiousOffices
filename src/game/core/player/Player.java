@@ -134,4 +134,24 @@ public class Player implements Updateable {
         return status.getAttribute(PlayerStatus.PlayerAttribute.PRODUCTIVITY);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+
+        Player player = (Player) o;
+
+        if (!name.equals(player.name)) return false;
+        if (facing != player.facing) return false;
+        return location.equals(player.location);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + facing.hashCode();
+        result = 31 * result + location.hashCode();
+        return result;
+    }
 }

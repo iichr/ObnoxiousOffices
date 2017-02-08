@@ -42,4 +42,26 @@ public class Location {
         return world.checkBounds(x, y, z);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+
+        Location location = (Location) o;
+
+        if (x != location.x) return false;
+        if (y != location.y) return false;
+        if (z != location.z) return false;
+        return world.equals(location.world);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        result = 31 * result + z;
+        result = 31 * result + world.hashCode();
+        return result;
+    }
 }
