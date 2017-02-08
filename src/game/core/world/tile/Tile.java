@@ -22,7 +22,7 @@ public class Tile {
     }
 
     Tile(Location location, TileType type, Direction facing) {
-        this(location, type, facing, 0);
+        this(location, type, facing, -1);
     }
 
     public void onWalkOver(Player player) {
@@ -54,5 +54,9 @@ public class Tile {
         result = 31 * result + facing.hashCode();
         result = 31 * result + multitileID;
         return result;
+    }
+
+    public boolean isMultiTile() {
+        return multitileID >= 0;
     }
 }
