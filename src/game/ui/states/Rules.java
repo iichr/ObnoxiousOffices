@@ -30,9 +30,12 @@ public class Rules extends BasicGameState {
 	private String rules;
 
 	// testing with some arbitrary sprites
+	// TODO fetch from the SpriteLocations interface once finalised.
 	private final String chairLoc = "/res/sprites/tiles/chair.png";
 	private final String deskLoc = "/res/sprites/tiles/desk.png";
-	private Image chair, desk;
+	private final String coffeeLoc = "/res/sprites/tiles/coffee.png";
+	private final String pcLoc = "/res/sprites/tiles/pc.png";
+	private Image chair, desk, coffee, pc;
 	
 
 	public Rules(int state) {
@@ -60,6 +63,8 @@ public class Rules extends BasicGameState {
 		// Object images
 		chair = new Image(chairLoc).getScaledCopy(50, 50);
 		desk = new Image(deskLoc).getScaledCopy(50, 50);
+		coffee = new Image(coffeeLoc).getScaledCopy(50, 50);
+		pc = new Image(pcLoc).getScaledCopy(50, 50);
 
 		gameTitle = "DevWars";
 		rules = " <insert catchy intro here> \n"
@@ -94,6 +99,9 @@ public class Rules extends BasicGameState {
 
 		g.drawImage(chair, Vals.RULES_SECT_LEFT_W / 2 + chair.getWidth() / 2, 100);
 		g.drawImage(desk, Vals.RULES_SECT_LEFT_W / 2 + desk.getWidth() / 2, 235);
+		g.drawImage(coffee, Vals.RULES_SECT_LEFT_W / 2 + desk.getWidth() / 2, 510);
+		g.drawImage(pc, Vals.RULES_SECT_LEFT_W / 2 + desk.getWidth() / 2, 715);
+		
 		// ^ + instead of - to push them closer to the text.
 		// TODO add all corresponding to the main actions listed above. + proper alignment
 
