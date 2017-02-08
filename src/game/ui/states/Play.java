@@ -72,7 +72,7 @@ public class Play extends BasicGameState {
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		// Effectcontainer
 		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
-		effectOverview.setCurrent(Instant.now());
+//		effectOverview.setCurrent(Instant.now());
 		effectOverview = new EffectContainer(coffee, 10);
 
 		SpriteLocations sp = new SpriteLocations();
