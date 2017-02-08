@@ -26,7 +26,7 @@ public class Player implements Updateable {
      * @param direction
      */
     public void move(Direction direction) {
-        location = location.forward(direction);
+        setLocation(location.forward(direction));
     }
     
     /**
@@ -64,7 +64,7 @@ public class Player implements Updateable {
      * Move backwards one space in the direction of the player's facing
      */
     public void moveBackwards() {
-        location = location.backward(facing);
+        setLocation(location.backward(facing));
     }
 
     /**
