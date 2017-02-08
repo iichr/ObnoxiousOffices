@@ -149,9 +149,14 @@ public class Player implements Updateable {
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + facing.hashCode();
-        result = 31 * result + location.hashCode();
+        int result;
+        long temp;
+        result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        temp = Double.doubleToLongBits(progress);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (facing != null ? facing.hashCode() : 0);
+        result = 31 * result + (location != null ? location.hashCode() : 0);
         return result;
     }
 }
