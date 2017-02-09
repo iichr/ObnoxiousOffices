@@ -28,7 +28,7 @@ public class SpriteLocations {
 		addCoffeeImages();
 		addSofaImages();
 		addDecorativeImages();
-		addFishTank();
+		addFishTankImages();
 	}
 
 	private void addFloorImages() throws SlickException {
@@ -143,10 +143,10 @@ public class SpriteLocations {
 
 		Image fTL = new Image(TILE_FISH_TANK_LEFT, false, Image.FILTER_NEAREST);
 		Image fTR = new Image(TILE_FISH_TANK_RIGHT, false, Image.FILTER_NEAREST);
-		Image[] fTSouth = { fTR, fTL };
-		fishTankMap.put(Direction.SOUTH, fTSouth);
+		Image[] fTSouth = { fTL, fTR };
+		fishTankMap.put(Direction.NORTH, fTSouth);
 
-		tileMap.put(TileType.FISH_TANK, fishTankMap);
+		tileMap.put(TileType.FISH, fishTankMap);
 	}
 
 	// TILE LOCATIONS
@@ -162,8 +162,8 @@ public class SpriteLocations {
 
 	public static final String TILE_CHAIR_NORTH = "/res/sprites/tiles/chairNorth.png";
 	public static final String TILE_CHAIR_SOUTH = "/res/sprites/tiles/chairSouth.png";
-	public static final String TILE_CHAIR_EAST = "/res/sprites/tiles/chair.png";
-	public static final String TILE_CHAIR_WEST = "/res/sprites/tiles/chair.png";
+	public static final String TILE_CHAIR_EAST = "/res/sprites/tiles/chairNorth.png";
+	public static final String TILE_CHAIR_WEST = "/res/sprites/tiles/chairNorth.png";
 
 	public static final String TILE_COFFEE_MACHINE_EAST = "/res/sprites/tiles/coffeeEast.png";
 	public static final String TILE_COFFEE_MACHINE_WEST = "/res/sprites/tiles/coffeeWest.png";
