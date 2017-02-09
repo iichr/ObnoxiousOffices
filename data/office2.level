@@ -13,7 +13,7 @@ fl,fl,fl,fl,fl,fl,d2,p1,d4,fl,fl,fl,fl,fl,fl,d2,p1,d4,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
-fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,s1,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
+fl,ft,fl,fl,fl,fl,fl,fl,fl,fl,fl,s1,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
 ###
 fl = floor
 d1 = desk,north
@@ -30,3 +30,4 @@ s1 = sofa,north
 s2 = sofa,south
 m1 = coffee,east
 m2 = coffee,west
+ft = fish_tank
