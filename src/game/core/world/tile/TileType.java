@@ -19,7 +19,7 @@ public abstract class TileType {
             DESK = new TileTypeDesk(),
             FLOOR = new TileTypeFloor(),
             CHAIR = new TileTypeChair(),
-            COFFEE_MACHINE = new TileTypeCoffeeMachine(), PLANT = new TileTypeDecoration(), SOFA = new TileTypeSofa();
+            COFFEE_MACHINE = new TileTypeCoffeeMachine(), PLANT = new TileTypeDecoration(), SOFA = new TileTypeSofa(), FISH = new TileTypeFish();
 
     static {
         addTileType("computer", COMPUTER);
@@ -29,6 +29,7 @@ public abstract class TileType {
         addTileType("coffee", COFFEE_MACHINE);
         addTileType("plant", PLANT);
         addTileType("sofa", SOFA);
+        addTileType("fish", FISH);
     }
 
     public static boolean addTileType(String levelSymbol, TileType type) {
