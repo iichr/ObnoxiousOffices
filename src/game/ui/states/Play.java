@@ -108,40 +108,11 @@ public class Play extends BasicGameState {
 
 	// map players to player animations, testing different sprites, not final
 	private void animatePlayers(Set<Player> players) throws SlickException {
-		for (Player p : players) {
-			Image n = null;
-			Image s = null;
-			Image e = null;
-			Image w = null;
+		for (Player p : players) {			
+			int colour = 0;
+			colour = Integer.parseInt(p.name);
 
-			switch (p.name) {
-			case "0":
-				n = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_NORTH, false, Image.FILTER_NEAREST);
-				s = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_SOUTH, false, Image.FILTER_NEAREST);
-				e = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_EAST, false, Image.FILTER_NEAREST);
-				w = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_WEST, false, Image.FILTER_NEAREST);
-				break;
-			case "1":
-				n = new Image(SpriteLocations.PLAYER_DARK_STANDING_NORTH, false, Image.FILTER_NEAREST);
-				s = new Image(SpriteLocations.PLAYER_DARK_STANDING_SOUTH, false, Image.FILTER_NEAREST);
-				e = new Image(SpriteLocations.PLAYER_DARK_STANDING_EAST, false, Image.FILTER_NEAREST);
-				w = new Image(SpriteLocations.PLAYER_DARK_STANDING_WEST, false, Image.FILTER_NEAREST);
-				break;
-			case "2":
-				n = new Image(SpriteLocations.PLAYER_BROWN_STANDING_NORTH, false, Image.FILTER_NEAREST);
-				s = new Image(SpriteLocations.PLAYER_BROWN_STANDING_SOUTH, false, Image.FILTER_NEAREST);
-				e = new Image(SpriteLocations.PLAYER_BROWN_STANDING_EAST, false, Image.FILTER_NEAREST);
-				w = new Image(SpriteLocations.PLAYER_BROWN_STANDING_WEST, false, Image.FILTER_NEAREST);
-				break;
-			case "3":
-				n = new Image(SpriteLocations.PLAYER_PINK_STANDING_NORTH, false, Image.FILTER_NEAREST);
-				s = new Image(SpriteLocations.PLAYER_PINK_STANDING_SOUTH, false, Image.FILTER_NEAREST);
-				e = new Image(SpriteLocations.PLAYER_PINK_STANDING_EAST, false, Image.FILTER_NEAREST);
-				w = new Image(SpriteLocations.PLAYER_PINK_STANDING_WEST, false, Image.FILTER_NEAREST);
-				break;
-			}
-
-			PlayerAnimation animation = new PlayerAnimation(n, s, e, w, p.getFacing());
+			PlayerAnimation animation = new PlayerAnimation(colour, p.getFacing());
 			playerMap.put(p, animation);
 		}
 	}
