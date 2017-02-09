@@ -17,7 +17,7 @@ class Client {
 	public static void main(String[] args) {
 
 	
-
+		//PLAYER OBJECT
 		// Initialize information:
 		String nickname = getName();
 		int port = 8942;

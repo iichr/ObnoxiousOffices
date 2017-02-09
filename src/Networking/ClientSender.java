@@ -49,7 +49,6 @@ public class ClientSender extends Thread {
 			if (Client.Connected) {
 				// Opens GUI
 				// gui.newGUI(this);
-				newGame();
 				notassigned = true;
 			}
 		}
@@ -61,30 +60,6 @@ public class ClientSender extends Thread {
 
 			}
 		}
-	}
-
-	/**
-	 * Sends a message to your opponent saying you have started a new game
-	 */
-	public void newGame() {
-		for(int i = 0; i < 4; i++){
-		server.println(players[i]);
-		server.println("newGame");
-		}
-	}
-
-	/**
-	 * Sends a message to yourself to quit the threads and says a message to
-	 * your oppenet to inform them you have quit
-	 */
-	public void endGame() {
-		server.println(nickname);
-		server.println("quit");
-		for(int i = 0; i < 4; i++){
-		server.println(players[1]);
-		server.println("give up");
-		}
-		NotQuit = false;
 	}
 
 }
