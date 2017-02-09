@@ -78,23 +78,27 @@ public class Play extends BasicGameState {
 		tileMap = sp.getTileMap();
 
 		// testing methods
-		createWorld();
-		addPlayers();
+		int noPlayers = 6;
+		createWorld(noPlayers);
+		addPlayers(noPlayers);
 		animatePlayers(world.getPlayers());
 	}
 
 	// temporary method until classes integrated
-	private void createWorld() {
-		Path p = Paths.get("data/office2.level");
+	private void createWorld(int noPlayers) {
+		Path p = Paths.get("data/office4Player.level");
+		if(noPlayers == 6){
+			p = Paths.get("data/office6Player.level");
+		}
 		try {
-			world = World.load(p, 4);
+			world = World.load(p, noPlayers);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	// temporary method until classes integrated
-	private void addPlayers() {
+	private void addPlayers(int noPlayers) {
 		Random r = new Random();
 		for (int i = 0; i < 4; i++) {
 			int x = r.nextInt(world.xSize);
