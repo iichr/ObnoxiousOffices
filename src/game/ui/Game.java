@@ -15,20 +15,38 @@ import game.ui.states.Play;
 import game.ui.states.Rules;
 
 public class Game extends StateBasedGame {
+	private Play playState;
+	private Menu menuState;
+	private Options optionsState;
+	private Rules rulesState;
+	private CharacterSelect chSelectState;
+	private Pause pauseState;
 
 	public Game(String gamename) {
 		super(gamename);
-		this.addState(new Menu(Vals.MENU_STATE));
-		this.addState(new Play(Vals.PLAY_STATE));
-		this.addState(new Options(Vals.OPTIONS_STATE));
-		this.addState(new Rules(Vals.RULES_STATE));
-		this.addState(new CharacterSelect(Vals.CHARACTER_SELECT_STATE));
-		this.addState(new Pause(Vals.PAUSE_STATE));
+		menuState = new Menu(Vals.MENU_STATE);
+		this.addState(menuState);
+		playState = new Play(Vals.PLAY_STATE);
+		this.addState(playState);
+		optionsState = new Options(Vals.OPTIONS_STATE);
+		this.addState(optionsState);
+		rulesState = new Rules(Vals.RULES_STATE);
+		this.addState(rulesState);
+		chSelectState = new CharacterSelect(Vals.CHARACTER_SELECT_STATE);
+		this.addState(chSelectState);
+		pauseState = new Pause(Vals.PAUSE_STATE);
+		this.addState(pauseState);
 	}
 
 	public void initStatesList(GameContainer gc) throws SlickException {
 		//initialises states automatically
 	}
+	
+//	@Subscriber
+//	public void onGameStart(gameStartEvent event) {
+//		playState.playSetup(world);
+//		this.enterState(Vals.PLAY_STATE);
+//	}
 
 	public static void init() {
 
