@@ -82,6 +82,7 @@ public class CharacterSelect extends BasicGameState {
 		// debugging
 		g.setFont(Vals.FONT_MAIN);
 		g.drawString(mouseCoords, 10, 50);
+		g.setColor(Color.white);
 		// g.drawString(ipAddress.getText(), 700, 100);
 
 		// add necessary buttons
