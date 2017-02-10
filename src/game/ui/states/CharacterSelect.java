@@ -14,13 +14,15 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import game.ui.buttons.ConnectButton;
 import game.ui.buttons.MenuButton;
 import game.ui.buttons.SelectionButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
 public class CharacterSelect extends BasicGameState {
-	private MenuButton connectButton, backButton;
+	private MenuButton backButton;
+	private ConnectButton connectButton;
 	private SelectionButton circleButton;
 	private String mouseCoords = "No input yet!";
 
@@ -41,7 +43,7 @@ public class CharacterSelect extends BasicGameState {
 
 		Image conn = new Image(ImageLocations.CONNECT);
 		Image connR = new Image(ImageLocations.CONNECT_ROLLOVER);
-		connectButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 150, Vals.BUTTON_WIDTH,
+		connectButton = new ConnectButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 150, Vals.BUTTON_WIDTH,
 				Vals.BUTTON_HEIGHT, conn, connR);
 
 		Image circleUnselected = new Image(ImageLocations.CIRCLE_UNSELECTED, false, Image.FILTER_NEAREST);
@@ -101,7 +103,7 @@ public class CharacterSelect extends BasicGameState {
 		mouseCoords = mouseX + " ," + mouseY;
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
-		connectButton.update(gc, game, mouseX, mouseY, Vals.PLAY_STATE);
+		connectButton.update(gc, game, mouseX, mouseY);
 		circleButton.update(gc, game, mouseX, mouseY);
 	}
 

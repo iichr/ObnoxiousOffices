@@ -66,24 +66,26 @@ public class Rules extends BasicGameState {
 		sofa1 = new Image(SpriteLocations.TILE_SOFA_NORTH_LEFT).getScaledCopy(tileSize, tileSize);
 		sofa2 = new Image(SpriteLocations.TILE_SOFA_NORTH_RIGHT).getScaledCopy(tileSize, tileSize);
 
+		// character encoding: \u0027 for apostrophe
 		gameTitle = "DevWars";
 		rules = " <insert catchy intro here> \n"
 				+ "The main game actions are:"
 				+ "\n\n"
-				+ "Work - increases project completion rate. That’s what they hired you for after all, better deliver!"
+				+ "Work - increases project completion rate. That\u0027s what they hired you for after all, better deliver!"
 				+ "\n\n"
-				+ "Hack - you need to interact with the other players’ computers to hinder their progress. Failure to engage in\n"
+				+ "Hack - you need to interact with the other players\u0027 computers to hinder their progress. Failure to engage in\n"
 				+ "the office politics will make your own progress plateau, there is only so much one could achieve alone…\n"
-				+ "That’s not all, hacking is not that easy, you will be faced with challenges along the way. It also goes\n "
-				+ "both waysso be wary of notifications that someone’s on your computer doing monkey business."
+				+ "That\u0027s not all, hacking is not that easy, you will be faced with challenges along the way. It also goes\n "
+				+ "both waysso be wary of notifications that someone\u0027s on your computer doing monkey business."
 				+ "\n\n"
-				+ "Coffee break - feeling tired of the incessant wörk wörk wörk? Why not head for a coffee then, your office\n"
+				+ "Coffee break - feeling tired of the incessant work work work? Why not head for a coffee then, your office\n"
 				+ "provides coffee machines, so you can go back to working reinvigorated. What could possibly go wrong?"
 				+ "\n\n"
 				+ "Naps - under new regulations from Brussels (?!!) the modern 21st century office ought to provide its employees\n"
 				+ "with a place for relaxation. Use that to reduce your fatigue, without negative consequences. I promise."
 				+ "\n\n"
-				+ "Share ideas (player-to-player interaction) - provides a boost to productivity to you and whom you’re chatting away with.";
+				+ "Share ideas (player-to-player interaction) - provides a boost to productivity to you\n"
+				+ "and whom you are chatting away with.";
 	}
 
 	@Override
