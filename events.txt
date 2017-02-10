@@ -1,0 +1,11 @@
+
+Events:
+
+* GameStarted
+* PlayerMoved
+* TileInteraction
+* PlayerAction
+* ProgressUpdate
+* PlayerInput
+* GameEnded
+* PlayerLeft
