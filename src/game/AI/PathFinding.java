@@ -1,4 +1,4 @@
-package game.AI;
+package game.ai;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -189,7 +189,7 @@ public class PathFinding implements Runnable {
 		closed = new boolean[colLength][rowLength];
 
 		// set the starting point
-		startCell(player.location.y, player.location.x);
+		startCell(player.getLocation().y, player.getLocation().x);
 
 		// add the starting location to the open list
 		open.add(grid[startI][startJ]);

@@ -1,7 +1,6 @@
-package game.AI;
+package game.ai;
 
 import game.core.player.Player;
-import game.core.player.PlayerStatus;
 import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.world.Direction;
 import game.core.world.Location;

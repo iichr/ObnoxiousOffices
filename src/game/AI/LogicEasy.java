@@ -1,15 +1,16 @@
-package game.AI;
+package game.ai;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import javax.xml.ws.handler.LogicalHandler;
-
 import game.core.player.Player;
+import game.core.player.PlayerStatus.PlayerAttribute;
+import game.core.world.Direction;
+import game.core.world.Location;
 import game.core.world.World;
 
 /**
- * @author Atanas Harbaliev Created on 18/01/2017
+ * @author Atanas K. Harbaliev. Created on 18/01/2017
  */
 
 public class LogicEasy implements Logic {
@@ -19,16 +20,14 @@ public class LogicEasy implements Logic {
 
 	// create a PathFinding object
 	public PathFinding pf;
-	
-	//paths
+
+	// paths
 	public ArrayList<Integer> toBed, toCM, fromBed, fromCM;
 
-
-	@Override
+	// @Override
 	public void reactToPlayerDrink() {
 		// TODO
 	}
-
 
 	@Override
 	public void reactToPlayerWork() {
@@ -38,11 +37,6 @@ public class LogicEasy implements Logic {
 	@Override
 	public void reactToPlayerHack() {
 		// TODO
-	}
-
-	@Override
-	public void goToCoffeeMachine() {
-
 	}
 
 	@Override
@@ -57,8 +51,8 @@ public class LogicEasy implements Logic {
 		// get the path so it is from goal to start, save it
 		path = pf.getPath();
 		fromCM = path;
-		
-		//reverse it, and save
+
+		// reverse it, and save
 		Collections.reverse(path);
 		toBed = path;
 	}
@@ -75,11 +69,126 @@ public class LogicEasy implements Logic {
 		// get the path so it is from goal to start, save it
 		path = pf.getPath();
 		fromBed = path;
-		
-		//reverse the path and save it
+
+		// reverse the path and save it
 		Collections.reverse(path);
 		toBed = path;
 
 	}
 
+	public void figureOutFacing(Player p, int i, int j) {
+
+		// get the i, j coords of the tile the player is on
+		// i == y; j == x;
+		Location location = p.getLocation();
+		
+		int x = location.x;
+		int y = location.y;
+
+		// if the player needs to move down, check his facing
+		// change it
+		if (y < i)
+			p.setFacing(Direction.SOUTH);
+
+		// if the player needs to move up, check his facing
+		// change it
+		if (y > i)
+			p.setFacing(Direction.NORTH);
+
+		// if the player needs to move left, check his facing
+		// change it
+		if (x > j)
+			p.setFacing(Direction.WEST);
+
+		// if the player needs to move right, check his facing
+		// change it
+		if (x < j)
+			p.setFacing(Direction.EAST);
+	}
+
+	@Override
+	public void goToCoffeeMachine(World w, Player p) {
+
+		// go through the array list of i, j coords
+		// to the coffee machine
+		for (int i = 0; i < toCM.size(); i++) {
+
+			// get the right facing
+			figureOutFacing(p, toCM.get(i), toCM.get(i + 1));
+
+			// make a move
+			p.moveForwards();
+
+			// make sure you get the coords of the next tile
+			i++;
+		}
+		//interact with the tile
+		w.getTile(p.getLocation().x, p.getLocation().y, 0).onInteraction(p);
+	}
+
+	@Override
+	public void goToBed(World w, Player p) {
+
+		// go through the array list of i, j coords
+		// to the sofa
+		for (int i = 0; i < toBed.size(); i++) {
+
+			// get the right facing
+			figureOutFacing(p, toBed.get(i), toBed.get(i + 1));
+
+			// make a move
+			p.moveForwards();
+
+			// make sure you get the coords of the next tile
+			i++;
+		}
+		//interact with the tile
+		w.getTile(p.getLocation().x, p.getLocation().y, 0).onInteraction(p);
+	}
+
+	@Override
+	public void toTheDesk(World w, Player p) {
+
+		// check whether the player is at the coffee machine or sofa
+		if (toCM.get(toCM.size() - 2) == fromCM.get(0) && toCM.get(toCM.size() - 1) == fromCM.get(1)) {
+			
+			// if at the coffee machine, go through the array list of i, j coords
+			// to the desk from the coffee machine
+			for (int i = 0; i < fromCM.size(); i++) {
+
+				// get the right facing
+				figureOutFacing(p, fromCM.get(i), fromCM.get(i + 1));
+
+				// make a move
+				p.moveForwards();
+
+				// make sure you get the coords of the next tile
+				i++;
+			}
+		} else {
+			
+			// if at the sofa, go through the array list of i, j coords
+			// to the desk from the sofa
+			for (int i = 0; i < fromBed.size(); i++) {
+
+				// get the right facing
+				figureOutFacing(p, fromBed.get(i), fromBed.get(i + 1));
+
+				// make a move
+				p.moveForwards();
+
+				// make sure you get the coords of the next tile
+				i++;
+			}
+		}
+		//interact with the tile
+		w.getTile(p.getLocation().x, p.getLocation().y, 0).onInteraction(p);
+	}
+
+	@Override
+	public boolean lowEngergy(Player p) {
+		if (p.status.getAttribute(PlayerAttribute.FATIGUE) < energyThreshold)
+			return true;
+		return false;
+	}
 }
