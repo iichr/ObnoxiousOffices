@@ -12,7 +12,7 @@ public class PlayerActionWork extends TimedPlayerAction {
     }
 
     @Override
-    protected void update() {
+    protected void timedUpdate() {
         player.addProgress();
     }
 

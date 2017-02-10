@@ -14,13 +14,13 @@ public abstract class TimedPlayerAction extends PlayerAction {
     }
 
     @Override
-    public void update(Player _) {
-        update();
+    public void update() {
+        timedUpdate();
         incrementCounter();
         if (ended()) stop();
     }
 
-    protected abstract void update();
+    protected abstract void timedUpdate();
 
     @Override
     public void start() {
@@ -52,6 +52,7 @@ public abstract class TimedPlayerAction extends PlayerAction {
     }
 
     protected void startCounter(int i) {
+        counter = 0;
         counterMax = i;
     }
 
