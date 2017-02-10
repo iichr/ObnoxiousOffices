@@ -87,7 +87,6 @@ public class Play extends BasicGameState {
 		// Effectcontainer
 		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
 		effectOverview = new EffectContainer(coffee, 10);
-
 		// setup tile sizes
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
 		tileHeight = 2 * (float) Vals.SCREEN_HEIGHT / (world.ySize + 2);
@@ -104,7 +103,13 @@ public class Play extends BasicGameState {
 	 * Sets up the play state which should be called at the start of each game
 	 * 
 	 * @param world
-	 *            The game world
+	 *            The game world =======
+	 * 
+	 *            /** Sets up the play state which should be called at the start
+	 *            of each game
+	 * @param world
+	 *            The game world >>>>>>>
+	 *            8989a825866f22cf4b338c6e04687052c3b05167
 	 */
 	public void playSetup(World world) {
 		this.world = world;
@@ -116,6 +121,7 @@ public class Play extends BasicGameState {
 	 * 
 	 * @param players
 	 *            the set of Players in the world
+	 * 
 	 * @throws SlickException
 	 */
 	private void animatePlayers(Set<Player> players) throws SlickException {
@@ -270,8 +276,10 @@ public class Play extends BasicGameState {
 				playerMap.get(p1).turnEast();
 
 				// actually send info to game logic
+
 			} else if (input.isKeyPressed(Input.KEY_B)) {
 				effectOverview.activate();
+
 			} else {
 				showOverview = false;
 			}
@@ -304,6 +312,7 @@ public class Play extends BasicGameState {
 	 * Generates a fake world and set of players to be used for testing
 	 */
 	private void testSetup() {
+
 		// testing methods
 		int noPlayers = 6;
 		World w = createWorld(noPlayers);
@@ -313,10 +322,13 @@ public class Play extends BasicGameState {
 	}
 
 	/**
-	 * Testing method used to create a fake world
+	 * Testing method used to create a fake world <<<<<<< HEAD
 	 * 
 	 * @param noPlayers
-	 *            the number of player in the game
+	 *            the number of player in the game =======
+	 * @param noPlayers
+	 *            the number of player in the game >>>>>>>
+	 *            8989a825866f22cf4b338c6e04687052c3b05167
 	 * @return The world
 	 */
 	private World createWorld(int noPlayers) {
@@ -334,12 +346,17 @@ public class Play extends BasicGameState {
 	}
 
 	/**
-	 * Testing method used to create a fake set of players
+	 * Testing method used to create a fake set of players <<<<<<< HEAD
 	 * 
 	 * @param w
 	 *            The world
 	 * @param noPlayers
-	 *            The number of players to be made
+	 *            The number of players to be made =======
+	 * @param w
+	 *            The world
+	 * @param noPlayers
+	 *            The number of players to be made >>>>>>>
+	 *            8989a825866f22cf4b338c6e04687052c3b05167
 	 * @return The world
 	 */
 	private World addPlayers(World w, int noPlayers) {

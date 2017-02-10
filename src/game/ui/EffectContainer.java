@@ -9,11 +9,7 @@ import org.newdawn.slick.SlickException;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * Created by Raymond on 5/2/17.
- */
 public class EffectContainer {
 
 	private Image img;
@@ -59,5 +55,4 @@ public class EffectContainer {
 		g.drawString("isActive : " + (isActive() ? "YES" : "NO"), Vals.SCREEN_WIDTH - 150,
 				Vals.SCREEN_HEIGHT - Vals.SCREEN_HEIGHT / 5 * 4 + 100);
 	}
-
 }
