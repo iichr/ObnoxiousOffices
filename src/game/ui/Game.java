@@ -57,7 +57,7 @@ public class Game extends StateBasedGame {
 		this.enterState(Vals.PLAY_STATE);
 	}
 
-	public static void init() {
+	public void init() {
 
 		File JGLLib = null;
 
