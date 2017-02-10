@@ -40,12 +40,8 @@ public interface Logic {
 	 *            the world
 	 * @param p
 	 *            the player that needs to go to the coffee machine
-	 * @param cordI
-	 *            the i coordinate of the coffee machine
-	 * @param cordJ
-	 *            the j coordinate of the coffee machine
 	 */
-	public void findCoffeeMachine(World w, Player p, int i, int j);
+	public void findCoffeeMachine(World w, Player p);
 
 	/**
 	 * Finds the shortest path to the bed from the current place

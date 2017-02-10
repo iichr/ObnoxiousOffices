@@ -120,9 +120,7 @@ public class PathFinding implements Runnable {
 
 				// if the current tile is a bed, and is closer than the previous
 				// one, save coordinates
-				if (tile.type == TileType.CHAIR && calcHeuristic(i, j) < heurB) { // TODO:
-																					// sofa
-																					// TILE!!
+				if (tile.type == TileType.SOFA && calcHeuristic(i, j) < heurB) { 
 					heurB = calcHeuristic(i, j);
 					bedI = i;
 					bedJ = j;

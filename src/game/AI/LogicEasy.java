@@ -40,7 +40,7 @@ public class LogicEasy implements Logic {
 	}
 
 	@Override
-	public void findCoffeeMachine(World w, Player p, int cordI, int cordJ) {
+	public void findCoffeeMachine(World w, Player p) {
 		// create the list of blocks in the grid that represents the path
 		ArrayList<Integer> path = new ArrayList<Integer>();
 
