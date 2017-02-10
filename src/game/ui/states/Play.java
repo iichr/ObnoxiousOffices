@@ -43,13 +43,14 @@ public class Play extends BasicGameState {
 	private MenuButton backButton;
 
 	// world information
-	private HashMap<TileType, HashMap<Direction, Image[]>> tileMap;
-	private HashMap<Player, PlayerAnimation> playerMap;
 	private World world;
+	private HashMap<Player, PlayerAnimation> playerMap;
 
 	// tile information
 	private float tileWidth;
 	private float tileHeight;
+	private HashMap<TileType, HashMap<Direction, Image[]>> tileMap;
+	
 	// status container
 	private PlayerContainer playerOverview;
 
@@ -306,7 +307,7 @@ public class Play extends BasicGameState {
 	/**
 	 * Generates a fake world and set of players to be used for testing
 	 */
-	public void testSetup(){
+	private void testSetup(){
 		// testing methods
 		int noPlayers = 6;
 		World w = createWorld(noPlayers);
