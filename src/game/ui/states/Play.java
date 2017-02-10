@@ -24,7 +24,6 @@ import game.core.world.World;
 import game.core.world.tile.TileType;
 import game.ui.EffectContainer;
 import game.ui.PlayerContainer;
-import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
@@ -32,7 +31,6 @@ import game.ui.player.PlayerAnimation;
 
 public class Play extends BasicGameState {
 	private String mouseCoords = "No input yet!";
-	private MenuButton backButton;
 
 	// world information
 	private World world;
@@ -58,6 +56,13 @@ public class Play extends BasicGameState {
 	private boolean coffeemach = false;
 	private boolean sofa = false;
 
+	private boolean paused = false;
+
+	private boolean moveNorth = false;
+	private boolean moveSouth = false;
+	private boolean moveEast = false;
+	private boolean moveWest = false;
+
 	public Play(int state) {
 	}
 
@@ -69,11 +74,6 @@ public class Play extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		playerMap = new HashMap<Player, PlayerAnimation>();
-
-		Image back = new Image(ImageLocations.BACK);
-		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
-
-		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 
 		// PlayerContainer container
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
@@ -103,7 +103,7 @@ public class Play extends BasicGameState {
 	 * Sets up the play state which should be called at the start of each game
 	 * 
 	 * @param world
-	 *            The game world 
+	 *            The game world
 	 */
 	public void playSetup(World world) {
 		this.world = world;
@@ -193,9 +193,6 @@ public class Play extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
-		float mouseX = Mouse.getX();
-		float mouseY = gc.getHeight() - Mouse.getY();
-		mouseCoords = mouseX + " ," + mouseY;
 
 		Player p1 = null;
 		for (Player p : world.getPlayers()) {
@@ -204,109 +201,119 @@ public class Play extends BasicGameState {
 			}
 		}
 
-		// TODO WIP 10/02
-		for (int y = 0; y < world.ySize; y++) {
-			for (int x = 0; x < world.xSize; x++) {
-				float tileX = x * tileWidth;
-				float tileY = (y - 1 + 2) * (tileHeight / 2);
+		if (moveNorth) {
+			p1.move(Direction.NORTH);
+			playerMap.get(p1).turnNorth();
+			moveNorth = false;
 
-				TileType type = world.getTile(x, y, 0).type;
-				if (inRange(tileX, tileY, mouseX, mouseY)) {
-					if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-						input.clearKeyPressedRecord();
-						objX = tileX;
-						objY = tileY;
-						if (type == TileType.COFFEE_MACHINE) {
-							coffeemach = true;
-							computer = false;
-							sofa = false;
-						} else if (type == TileType.COMPUTER) {
-							computer = true;
-							sofa = false;
-							coffeemach = false;
-						} else if (type == TileType.SOFA) {
-							sofa = true;
-							coffeemach = false;
-							computer = false;
-						} else {
-							// decor without user interaction
-							sofa = false;
-							coffeemach = false;
-							computer = false;
-						}
-					}
-				}
-			}
+			// actually send info to game logic
+		} else if (moveSouth) {
+			// for testing, move player one
+			p1.move(Direction.SOUTH);
+			playerMap.get(p1).turnSouth();
+			moveSouth = false;
 
-			// Handle pause and movement
-			if (input.isKeyPressed(Input.KEY_ESCAPE)) {
-				input.clearKeyPressedRecord();
-				game.enterState(Vals.PAUSE_STATE);
+			// actually send info to game logic
+		} else if (moveWest) {
+			// for testing, move player one
+			p1.move(Direction.WEST);
+			playerMap.get(p1).turnWest();
+			moveWest = false;
 
-			} else if (input.isKeyDown(Input.KEY_TAB)) {
-				showOverview = true;
+			// actually send info to game logic
+		} else if (moveEast) {
+			// for testing move player one
+			p1.move(Direction.EAST);
+			playerMap.get(p1).turnEast();
+			moveEast = false;
 
-			} else if (input.isKeyPressed(Input.KEY_UP)) {
-				// for testing, move player one
-				p1.move(Direction.NORTH);
-				playerMap.get(p1).turnNorth();
+			// actually send info to game logic
+		}
 
-				// actually send info to game logic
-			} else if (input.isKeyPressed(Input.KEY_DOWN)) {
-				// for testing, move player one
-				p1.move(Direction.SOUTH);
-				playerMap.get(p1).turnSouth();
+		if (input.isKeyPressed(Input.KEY_B)) {
+			effectOverview.activate();
+		}
 
-				// actually send info to game logic
-			} else if (input.isKeyPressed(Input.KEY_LEFT)) {
-				// for testing, move player one
-				p1.move(Direction.WEST);
-				playerMap.get(p1).turnWest();
+		if (paused) {
+			game.enterState(Vals.PAUSE_STATE);
+			paused = false;
+		}
 
-				// actually send info to game logic
-			} else if (input.isKeyPressed(Input.KEY_RIGHT)) {
-				// for testing move player one
-				p1.move(Direction.EAST);
-				playerMap.get(p1).turnEast();
+		input.clearKeyPressedRecord();
+	}
 
-				// actually send info to game logic
+	@Override
+	public void mousePressed(int button, int x, int y) {
+		if (button == Input.MOUSE_LEFT_BUTTON) {
+			// create event at location in world
 
-			} else if (input.isKeyPressed(Input.KEY_B)) {
-				effectOverview.activate();
+			int worldX = (int) (x / tileWidth);
+			int worldY = (int) (y / (tileHeight / 2) - 2);
+			System.out.println(worldX);
+			System.out.println(worldY);
+			TileType type = world.getTile(worldX, worldY, 0).type;
+			System.out.println(type);
+			objX = x;
+			objY = y;
 
+			if (type == TileType.COFFEE_MACHINE) {
+				System.out.println("hello");
+				coffeemach = true;
+				computer = false;
+				sofa = false;
+			} else if (type == TileType.COMPUTER) {
+				computer = true;
+				sofa = false;
+				coffeemach = false;
+			} else if (type == TileType.SOFA) {
+				sofa = true;
+				coffeemach = false;
+				computer = false;
 			} else {
-				showOverview = false;
+				// decor without user interaction
+				sofa = false;
+				coffeemach = false;
+				computer = false;
 			}
-
-			backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
-
 		}
 	}
 
-	// TODO WIP 10/02
-	/**
-	 * Check whether mouse cursor is within range of a game object to be
-	 * interacted with.
-	 * 
-	 * @param tileX
-	 * @param tileY
-	 * @param currentMouseX
-	 * @param currentMouseY
-	 * @return whether mouse is in the scope of the object
-	 */
-	private boolean inRange(float tileX, float tileY, float currentMouseX, float currentMouseY) {
-		if (currentMouseX > tileX && currentMouseX < tileX + tileWidth && currentMouseY > tileY
-				&& currentMouseY < tileY + tileHeight)
-			return true;
-		else
-			return false;
+	@Override
+	public void keyPressed(int key, char c) {
+		switch (key) {
+		case Input.KEY_ESCAPE:
+			paused = true;
+			break;
+		case Input.KEY_TAB:
+			showOverview = true;
+			break;
+		case Input.KEY_UP:
+			moveNorth = true;
+			break;
+		case Input.KEY_DOWN:
+			moveSouth = true;
+			break;
+		case Input.KEY_RIGHT:
+			moveEast = true;
+			break;
+		case Input.KEY_LEFT:
+			moveWest = true;
+			break;
+		}
+	}
+
+	@Override
+	public void keyReleased(int key, char c) {
+		switch (key) {
+		case Input.KEY_TAB:
+			showOverview = false;
+		}
 	}
 
 	/**
 	 * Generates a fake world and set of players to be used for testing
 	 */
 	private void testSetup() {
-
 		// testing methods
 		int noPlayers = 6;
 		World w = createWorld(noPlayers);
@@ -342,7 +349,7 @@ public class Play extends BasicGameState {
 	 * @param w
 	 *            The world
 	 * @param noPlayers
-	 *            The number of players to be made 
+	 *            The number of players to be made
 	 * @return The world
 	 */
 	private World addPlayers(World w, int noPlayers) {
