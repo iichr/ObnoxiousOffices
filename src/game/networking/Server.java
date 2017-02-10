@@ -1,4 +1,4 @@
-package newnetwork;
+package game.networking;
 
 
 import java.io.IOException;
@@ -6,7 +6,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import newnetwork.ServerListener;
 import game.core.player.Player;
 
 public class Server {
