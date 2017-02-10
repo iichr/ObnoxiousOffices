@@ -44,10 +44,10 @@ public class EffectContainer {
 	 * screen <- tick show effects vertically
 	 */
 	public void render(Graphics g) throws SlickException {
-		g.setColor(Color.black);
+		g.setColor(Color.red);
 		if(isActive()){
 			g.drawImage(this.img, Vals.SCREEN_WIDTH - 100, Vals.SCREEN_HEIGHT - Vals.SCREEN_HEIGHT / 5 * 4);
-			g.setColor(Color.black);
+			g.setColor(Color.red);
 			g.drawString( activeFor + " s", Vals.SCREEN_WIDTH - 100,
 					Vals.SCREEN_HEIGHT - Vals.SCREEN_HEIGHT / 5 * 4 + 50);
 			

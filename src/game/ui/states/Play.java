@@ -103,13 +103,7 @@ public class Play extends BasicGameState {
 	 * Sets up the play state which should be called at the start of each game
 	 * 
 	 * @param world
-	 *            The game world =======
-	 * 
-	 *            /** Sets up the play state which should be called at the start
-	 *            of each game
-	 * @param world
-	 *            The game world >>>>>>>
-	 *            8989a825866f22cf4b338c6e04687052c3b05167
+	 *            The game world 
 	 */
 	public void playSetup(World world) {
 		this.world = world;
@@ -322,13 +316,10 @@ public class Play extends BasicGameState {
 	}
 
 	/**
-	 * Testing method used to create a fake world <<<<<<< HEAD
+	 * Testing method used to create a fake world
 	 * 
 	 * @param noPlayers
-	 *            the number of player in the game =======
-	 * @param noPlayers
-	 *            the number of player in the game >>>>>>>
-	 *            8989a825866f22cf4b338c6e04687052c3b05167
+	 *            the number of player in the game
 	 * @return The world
 	 */
 	private World createWorld(int noPlayers) {
@@ -346,17 +337,12 @@ public class Play extends BasicGameState {
 	}
 
 	/**
-	 * Testing method used to create a fake set of players <<<<<<< HEAD
+	 * Testing method used to create a fake set of players
 	 * 
 	 * @param w
 	 *            The world
 	 * @param noPlayers
-	 *            The number of players to be made =======
-	 * @param w
-	 *            The world
-	 * @param noPlayers
-	 *            The number of players to be made >>>>>>>
-	 *            8989a825866f22cf4b338c6e04687052c3b05167
+	 *            The number of players to be made 
 	 * @return The world
 	 */
 	private World addPlayers(World w, int noPlayers) {
