@@ -21,10 +21,11 @@ public class ClientListner extends Thread{
 			boolean running = true;
 			while(running){
 				Object input = is.readObject();
-				System.out.println("The input is: " + input.toString());
+				System.out.println(input.toString());
 				
 				//WHAT TO DO WITH THE DATA
-				
+				//Get new data from server (e.g PlayerUpdate)
+				//update based on the object 
 			}
 			
 		} catch (IOException e) {

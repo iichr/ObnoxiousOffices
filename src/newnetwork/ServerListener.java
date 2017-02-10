@@ -47,7 +47,7 @@ public class ServerListener extends Thread {
 					String playerName = is.readObject().toString();
 					//System.out.println(playerName);
 					this.addPlayerToGame(playerName);
-					this.sendToAllClients("Player " + playerName + " has joined the game!");
+					//this.sendToAllClients("Player " + playerName + " has joined the game!");
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -63,6 +63,11 @@ public class ServerListener extends Thread {
 				
 				
 				//PLAYIN THE GAME
+				//Listen for user changes (e.g movement)
+				//update that player
+				//send info to everyone
+				//PlayerUpdate pu = (PlayerUpdate) is.readObject();
+				//Send info to all
 				
 			}
 		}
