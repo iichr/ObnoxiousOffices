@@ -24,6 +24,8 @@ public class Game extends StateBasedGame {
 
 	public Game(String gamename) {
 		super(gamename);
+//		EventDispatcher.subscribe2(this);
+		
 		menuState = new Menu(Vals.MENU_STATE);
 		this.addState(menuState);
 		playState = new Play(Vals.PLAY_STATE);
