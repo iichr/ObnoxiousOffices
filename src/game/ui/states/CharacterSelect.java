@@ -6,6 +6,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.gui.AbstractComponent;
@@ -29,6 +30,7 @@ public class CharacterSelect extends BasicGameState {
 	private TextField serverAddress, playerName;
 	private String serverStr = "Enter Server Address:";
 	private String playerStr = "Enter Player Name:";
+	private boolean toPlay = false;
 
 	public CharacterSelect(int state) {
 
@@ -105,6 +107,11 @@ public class CharacterSelect extends BasicGameState {
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 		connectButton.update(gc, game, mouseX, mouseY);
 		circleButton.update(gc, game, mouseX, mouseY);
+		
+		if(toPlay){
+			game.enterState(Vals.PLAY_STATE);
+			toPlay = false;
+		}
 	}
 
 	@Override
@@ -112,4 +119,10 @@ public class CharacterSelect extends BasicGameState {
 		return Vals.CHARACTER_SELECT_STATE;
 	}
 
+	public void keyPressed(int key, char c) {
+		switch(key){
+		case Input.KEY_P:
+			toPlay = true;
+		}
+	}
 }
