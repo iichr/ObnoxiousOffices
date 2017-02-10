@@ -3,6 +3,7 @@ package game.ui.states;
 import java.util.ArrayList;
 
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -90,9 +91,10 @@ public class Rules extends BasicGameState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
+		g.setColor(Color.white);
 		// debugging
 		g.drawString(mouseCoords, 10, 50);
-
+		
 		// title
 		g.setFont(Vals.FONT_HEADING1);
 		g.drawString(gameTitle, (Vals.SCREEN_WIDTH - Vals.FONT_MAIN.getWidth(gameTitle)) / 2, 30);
