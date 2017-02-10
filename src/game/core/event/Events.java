@@ -17,8 +17,12 @@ public class Events {
     public static <T extends Event> void trigger(T event) {
         if(subscribers.containsKey(event.getClass())) {
             List<Consumer> consumers = subscribers.get(event.getClass());
-            consumers.forEach(c -> c.accept(event));
+            consumers.forEach(c -> invoke(c, event));
         }
+    }
+
+    private static <T extends Event> void invoke(Consumer c, T event) {
+        Thread thread = new Thread(() -> c.accept(event));
     }
 
     public static <T extends Event> void on(Class<? extends Event> eventClass, Consumer<T> method) {
