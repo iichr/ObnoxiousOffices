@@ -30,17 +30,24 @@ import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 import game.ui.player.PlayerAnimation;
 
+/**
+ * @author mad-s
+ *
+ */
+/**
+ * @author mad-s
+ *
+ */
 public class Play extends BasicGameState {
 	private String mouseCoords = "No input yet!";
 	private MenuButton backButton;
-	
-	//world information
+
+	// world information
 	private HashMap<TileType, HashMap<Direction, Image[]>> tileMap;
 	private HashMap<Player, PlayerAnimation> playerMap;
 	private World world;
-	private Player localPlayer;
-	
-	//tile information
+
+	// tile information
 	private float tileWidth;
 	private float tileHeight;
 	// status container
@@ -78,6 +85,8 @@ public class Play extends BasicGameState {
 		// PlayerContainer container
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
 		playerOverview = new PlayerContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
+
+		testSetup();
 	}
 
 	@Override
@@ -86,73 +95,33 @@ public class Play extends BasicGameState {
 		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
 		// effectOverview.setCurrent(Instant.now());
 		effectOverview = new EffectContainer(coffee, 10);
-
-		SpriteLocations sp = new SpriteLocations();
-		tileMap = sp.getTileMap();
-
-		// testing methods
-		int noPlayers = 6;
-		World w = createWorld(noPlayers);
-		w = addPlayers(w, noPlayers);
 		
-		Player p1 = null;
-		for(Player p: w.getPlayers()){
-			if(p.name == "0"){
-				p1 = p;
-			}
-		}
-		
-		playSetup(w, p1);
-	}
-	
-	//currently not used, designed for integration
-	public void playSetup(World world, Player localPlayer) throws SlickException{
-		//load world and players
-		this.world = world;
-		this.localPlayer = localPlayer;
-		
-		//add player animations
-		animatePlayers(world.getPlayers());
-		
-		//get the tileMap
-		SpriteLocations sp = new SpriteLocations();
-		tileMap = sp.getTileMap();
-		
-		//setup tile sizes
+		// setup tile sizes
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
 		tileHeight = 2 * (float) Vals.SCREEN_HEIGHT / (world.ySize + 2);
-	}
+		
+		// add player animations
+		animatePlayers(world.getPlayers());
 
-	// temporary method until classes integrated
-	private World createWorld(int noPlayers) {
-		World w = null;
-		Path p = Paths.get("data/office4Player.level");
-		if (noPlayers == 6) {
-			p = Paths.get("data/office6Player.level");
-		}
-		try {
-			w = World.load(p, noPlayers);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return w;
+		// get the tileMap
+		SpriteLocations sp = new SpriteLocations();
+		tileMap = sp.getTileMap();
 	}
-
-	// temporary method until classes integrated
-	private World addPlayers(World w, int noPlayers) {
-		Random r = new Random();
-		for (int i = 0; i < 4; i++) {
-			int x = r.nextInt(w.xSize);
-			int y = r.nextInt(w.ySize - 1);
-			Location l = new Location(x, y, w);
-			Direction d = Direction.SOUTH;
-			Player p = new Player("" + i, d, l);
-			w.addPlayer(p);
-		}
-		return w;
+	
+	/**
+	 * Sets up the play state which should be called at the start of each game
+	 * @param world The game world
+	 */
+	public void playSetup(World world) {
+		this.world = world;
 	}
-
-	// map players to player animations, testing different sprites, not final
+	
+	/**
+	 * map players to player animations, testing different sprites
+	 * implementation not finalised
+	 * @param players the set of Players in the world
+	 * @throws SlickException
+	 */
 	private void animatePlayers(Set<Player> players) throws SlickException {
 		for (Player p : players) {
 			int colour = 0;
@@ -161,7 +130,7 @@ public class Play extends BasicGameState {
 			PlayerAnimation animation = new PlayerAnimation(colour, p.getFacing());
 			playerMap.put(p, animation);
 		}
-	}
+	}	
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
@@ -178,7 +147,8 @@ public class Play extends BasicGameState {
 		effectOverview.render(g);
 
 		// TODO WIP 10/02
-		// interaction with in-game objects on click, display string if successful.
+		// interaction with in-game objects on click, display string if
+		// successful.
 		if (computer)
 			Vals.FONT_MAIN.drawString(objX, objY, "WORK/HACK", Color.red);
 		if (coffeemach)
@@ -316,8 +286,10 @@ public class Play extends BasicGameState {
 
 	// TODO WIP 10/02
 	/**
-	 * Check whether mouse cursor is within range of a game object to be interacted with.
-	 * @param tileX 
+	 * Check whether mouse cursor is within range of a game object to be
+	 * interacted with.
+	 * 
+	 * @param tileX
 	 * @param tileY
 	 * @param currentMouseX
 	 * @param currentMouseY
@@ -329,6 +301,56 @@ public class Play extends BasicGameState {
 			return true;
 		else
 			return false;
+	}
+	
+	/**
+	 * Generates a fake world and set of players to be used for testing
+	 */
+	public void testSetup(){
+		// testing methods
+		int noPlayers = 6;
+		World w = createWorld(noPlayers);
+		w = addPlayers(w, noPlayers);
+
+		playSetup(w);
+	}
+
+	/**
+	 * Testing method used to create a fake world
+	 * @param noPlayers the number of player in the game
+	 * @return The world
+	 */
+	private World createWorld(int noPlayers) {
+		World w = null;
+		Path p = Paths.get("data/office4Player.level");
+		if (noPlayers == 6) {
+			p = Paths.get("data/office6Player.level");
+		}
+		try {
+			w = World.load(p, noPlayers);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return w;
+	}
+
+	/**
+	 * Testing method used to create a fake set of players
+	 * @param w The world
+	 * @param noPlayers The number of players to be made
+	 * @return The world
+	 */
+	private World addPlayers(World w, int noPlayers) {
+		Random r = new Random();
+		for (int i = 0; i < 4; i++) {
+			int x = r.nextInt(w.xSize);
+			int y = r.nextInt(w.ySize - 1);
+			Location l = new Location(x, y, w);
+			Direction d = Direction.SOUTH;
+			Player p = new Player("" + i, d, l);
+			w.addPlayer(p);
+		}
+		return w;
 	}
 
 }
