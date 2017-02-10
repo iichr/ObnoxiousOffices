@@ -33,10 +33,16 @@ import game.ui.player.PlayerAnimation;
 public class Play extends BasicGameState {
 	private String mouseCoords = "No input yet!";
 	private MenuButton backButton;
+	
+	//world information
 	private HashMap<TileType, HashMap<Direction, Image[]>> tileMap;
 	private HashMap<Player, PlayerAnimation> playerMap;
 	private World world;
-
+	private Player localPlayer;
+	
+	//tile information
+	private float tileWidth;
+	private float tileHeight;
 	// status container
 	private PlayerContainer playerOverview;
 
@@ -72,7 +78,6 @@ public class Play extends BasicGameState {
 		// PlayerContainer container
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
 		playerOverview = new PlayerContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
-
 	}
 
 	@Override
@@ -87,35 +92,64 @@ public class Play extends BasicGameState {
 
 		// testing methods
 		int noPlayers = 6;
-		createWorld(noPlayers);
-		addPlayers(noPlayers);
+		World w = createWorld(noPlayers);
+		w = addPlayers(w, noPlayers);
+		
+		Player p1 = null;
+		for(Player p: w.getPlayers()){
+			if(p.name == "0"){
+				p1 = p;
+			}
+		}
+		
+		playSetup(w, p1);
+	}
+	
+	//currently not used, designed for integration
+	public void playSetup(World world, Player localPlayer) throws SlickException{
+		//load world and players
+		this.world = world;
+		this.localPlayer = localPlayer;
+		
+		//add player animations
 		animatePlayers(world.getPlayers());
+		
+		//get the tileMap
+		SpriteLocations sp = new SpriteLocations();
+		tileMap = sp.getTileMap();
+		
+		//setup tile sizes
+		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
+		tileHeight = 2 * (float) Vals.SCREEN_HEIGHT / (world.ySize + 2);
 	}
 
 	// temporary method until classes integrated
-	private void createWorld(int noPlayers) {
+	private World createWorld(int noPlayers) {
+		World w = null;
 		Path p = Paths.get("data/office4Player.level");
 		if (noPlayers == 6) {
 			p = Paths.get("data/office6Player.level");
 		}
 		try {
-			world = World.load(p, noPlayers);
+			w = World.load(p, noPlayers);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return w;
 	}
 
 	// temporary method until classes integrated
-	private void addPlayers(int noPlayers) {
+	private World addPlayers(World w, int noPlayers) {
 		Random r = new Random();
 		for (int i = 0; i < 4; i++) {
-			int x = r.nextInt(world.xSize);
-			int y = r.nextInt(world.ySize - 1);
-			Location l = new Location(x, y, world);
+			int x = r.nextInt(w.xSize);
+			int y = r.nextInt(w.ySize - 1);
+			Location l = new Location(x, y, w);
 			Direction d = Direction.SOUTH;
 			Player p = new Player("" + i, d, l);
-			world.addPlayer(p);
+			w.addPlayer(p);
 		}
+		return w;
 	}
 
 	// map players to player animations, testing different sprites, not final
@@ -154,10 +188,6 @@ public class Play extends BasicGameState {
 	}
 
 	public void drawWorld() throws SlickException {
-		// find tile width and height
-		float tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
-		float tileHeight = 2 * (float) Vals.SCREEN_HEIGHT / (world.ySize + 2);
-
 		Image wall = new Image(SpriteLocations.TILE_WALL, false, Image.FILTER_NEAREST);
 		wall.draw(0, 0, Vals.SCREEN_WIDTH, tileHeight);
 
@@ -209,8 +239,6 @@ public class Play extends BasicGameState {
 		}
 
 		// TODO WIP 10/02
-		float tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
-		float tileHeight = 2 * (float) Vals.SCREEN_HEIGHT / (world.ySize + 2);
 		for (int y = 0; y < world.ySize; y++) {
 			for (int x = 0; x < world.xSize; x++) {
 				float tileX = x * tileWidth;
@@ -296,8 +324,6 @@ public class Play extends BasicGameState {
 	 * @return whether mouse is in the scope of the object
 	 */
 	private boolean inRange(float tileX, float tileY, float currentMouseX, float currentMouseY) {
-		float tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
-		float tileHeight = 2 * (float) Vals.SCREEN_HEIGHT / (world.ySize + 2);
 		if (currentMouseX > tileX && currentMouseX < tileX + tileWidth && currentMouseY > tileY
 				&& currentMouseY < tileY + tileHeight)
 			return true;
