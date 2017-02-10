@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import game.core.event.CreateAIPlayerRequest;
 import game.core.event.Event;
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
@@ -59,7 +60,12 @@ public class ServerListener extends Thread {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
+/*
+  //Allows hard coded AI player to be added for prototype
+				if (this.playerTable.size() == 3) {
+					Events.trigger(new CreateAIPlayerRequest());
+				}
+				*/
 				if (this.playerTable.size() == 4) {
 					try {
 						Events.trigger(new GameStartedEvent(World.load(Paths.get("data/office.level"), 4)));
@@ -71,7 +77,7 @@ public class ServerListener extends Thread {
 			} else {
 				try {
 					Event eventObject = (Event) is.readObject();
-					//this.sendToAllClients(eventObject);
+					// this.sendToAllClients(eventObject);
 					Events.trigger(eventObject);
 				} catch (Exception e) {
 					e.printStackTrace();
