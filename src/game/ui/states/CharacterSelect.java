@@ -100,12 +100,15 @@ public class CharacterSelect extends BasicGameState {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+		String addressValue = serverAddress.getText();
+		String nameValue = serverAddress.getText();
+		
 		int mouseX = Mouse.getX();
 		int mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
-		connectButton.update(gc, game, mouseX, mouseY);
+		connectButton.update(gc, game, mouseX, mouseY, addressValue, nameValue);
 		circleButton.update(gc, game, mouseX, mouseY);
 		
 		if(toPlay){

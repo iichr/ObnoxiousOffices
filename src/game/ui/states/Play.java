@@ -17,7 +17,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import game.core.Input.InputType;
 import game.core.event.Events;
+import game.core.event.PlayerInputEvent;
 import game.core.event.PlayerMovedEvent;
 import game.core.player.Player;
 import game.core.world.Direction;
@@ -290,17 +292,19 @@ public class Play extends BasicGameState {
 			showOverview = true;
 			break;
 		case Input.KEY_UP:
-//			Events.trigger(new PlayerMovedEvent(0,-1,0, playerName));
-			moveNorth = true;
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_UP));
 			break;
 		case Input.KEY_DOWN:
-			moveSouth = true;
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_DOWN));
 			break;
 		case Input.KEY_RIGHT:
-			moveEast = true;
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_RIGHT));
 			break;
 		case Input.KEY_LEFT:
-			moveWest = true;
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_LEFT));
+			break;
+		case Input.KEY_E:
+			Events.trigger(new PlayerInputEvent(InputType.INTERACT));
 			break;
 		}
 	}

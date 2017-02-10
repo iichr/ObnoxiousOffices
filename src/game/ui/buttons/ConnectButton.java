@@ -32,13 +32,13 @@ public class ConnectButton extends Button {
 	 * @param stateID
 	 *            The new state to enter.
 	 */
-	public void update(GameContainer gc, StateBasedGame game, float mouseX, float mouseY) {
+	public void update(GameContainer gc, StateBasedGame game, float mouseX, float mouseY, String serverAddress, String name) {
 		Input input = gc.getInput();
 
 		if (inRange(mouseX, mouseY)) {
 			button = select;
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				// Events.trigger(new Event());
+//				 Events.trigger(new connection());
 			}
 		} else {
 			button = unselect;
