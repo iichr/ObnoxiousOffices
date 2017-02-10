@@ -44,12 +44,12 @@ public class Play extends BasicGameState {
 	private EffectContainer effectOverview;
 	private Image _avatar, coffee;
 	boolean showOverview = false;
-	
-	// TEST 10/02
+
+	// TODO WIP 10/02
 	private float objX = 0;
 	private float objY = 0;
 	private boolean computer = false;
-	private boolean coffeemach =  false;
+	private boolean coffeemach = false;
 	private boolean sofa = false;
 
 	public Play(int state) {
@@ -95,7 +95,7 @@ public class Play extends BasicGameState {
 	// temporary method until classes integrated
 	private void createWorld(int noPlayers) {
 		Path p = Paths.get("data/office4Player.level");
-		if(noPlayers == 6){
+		if (noPlayers == 6) {
 			p = Paths.get("data/office6Player.level");
 		}
 		try {
@@ -120,7 +120,7 @@ public class Play extends BasicGameState {
 
 	// map players to player animations, testing different sprites, not final
 	private void animatePlayers(Set<Player> players) throws SlickException {
-		for (Player p : players) {			
+		for (Player p : players) {
 			int colour = 0;
 			colour = Integer.parseInt(p.name);
 
@@ -143,12 +143,13 @@ public class Play extends BasicGameState {
 		// add effects overview container
 		effectOverview.render(g);
 
-		// TEST 10/02
-		if(computer)
-			Vals.FONT_MAIN.drawString(objX, objY, "WORK/HACK", Color.red);	
-		if(coffeemach)
+		// TODO WIP 10/02
+		// interaction with in-game objects on click, display string if successful.
+		if (computer)
+			Vals.FONT_MAIN.drawString(objX, objY, "WORK/HACK", Color.red);
+		if (coffeemach)
 			Vals.FONT_MAIN.drawString(objX, objY, "DRINK COFFEE", Color.red);
-		if(sofa)
+		if (sofa)
 			Vals.FONT_MAIN.drawString(objX, objY, "SLEEP ON SOFA", Color.red);
 	}
 
@@ -165,7 +166,7 @@ public class Play extends BasicGameState {
 
 		// check every position in the world to render what is needed at that
 		// location
-		
+
 		for (int y = 0; y < world.ySize; y++) {
 			for (int x = 0; x < world.xSize; x++) {
 				float tileX = x * tileWidth;
@@ -175,13 +176,13 @@ public class Play extends BasicGameState {
 				Direction facing = world.getTile(x, y, 0).facing;
 				TileType type = world.getTile(x, y, 0).type;
 				int mtID = world.getTile(x, y, 0).multitileID;
-				if(mtID == -1){
+				if (mtID == -1) {
 					mtID++;
 				}
 				HashMap<Direction, Image[]> directionMap = tileMap.get(type);
 				Image[] images = directionMap.get(facing);
 				images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
-				
+
 				// render the players
 				for (Player player : players) {
 					Location playerLocation = player.getLocation();
@@ -206,8 +207,8 @@ public class Play extends BasicGameState {
 				p1 = p;
 			}
 		}
-		
-		// TEST 10/02
+
+		// TODO WIP 10/02
 		float tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
 		float tileHeight = 2 * (float) Vals.SCREEN_HEIGHT / (world.ySize + 2);
 		for (int y = 0; y < world.ySize; y++) {
@@ -216,27 +217,24 @@ public class Play extends BasicGameState {
 				float tileY = (y - 1 + 2) * (tileHeight / 2);
 
 				TileType type = world.getTile(x, y, 0).type;
-				if(inRange(tileX, tileY, mouseX, mouseY)) {
-					if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				if (inRange(tileX, tileY, mouseX, mouseY)) {
+					if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 						input.clearKeyPressedRecord();
 						objX = tileX;
 						objY = tileY;
-						if(type == TileType.COFFEE_MACHINE) {
+						if (type == TileType.COFFEE_MACHINE) {
 							coffeemach = true;
 							computer = false;
 							sofa = false;
-						}
-						else if(type == TileType.COMPUTER) {
+						} else if (type == TileType.COMPUTER) {
 							computer = true;
 							sofa = false;
 							coffeemach = false;
-						}
-						else if(type == TileType.SOFA) {
+						} else if (type == TileType.SOFA) {
 							sofa = true;
 							coffeemach = false;
 							computer = false;
-						}
-						else {
+						} else {
 							// decor without user interaction
 							sofa = false;
 							coffeemach = false;
@@ -245,55 +243,63 @@ public class Play extends BasicGameState {
 					}
 				}
 			}
-		
 
-		effectOverview.update();
-		// Handle pause and movement
-		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
-			input.clearKeyPressedRecord();
-			game.enterState(Vals.PAUSE_STATE);
+			effectOverview.update();
+			// Handle pause and movement
+			if (input.isKeyPressed(Input.KEY_ESCAPE)) {
+				input.clearKeyPressedRecord();
+				game.enterState(Vals.PAUSE_STATE);
 
-		} else if (input.isKeyDown(Input.KEY_TAB)) {
-			showOverview = true;
+			} else if (input.isKeyDown(Input.KEY_TAB)) {
+				showOverview = true;
 
-		} else if (input.isKeyPressed(Input.KEY_UP)) {
-			// for testing, move player one
-			p1.move(Direction.NORTH);
-			playerMap.get(p1).turnNorth();
+			} else if (input.isKeyPressed(Input.KEY_UP)) {
+				// for testing, move player one
+				p1.move(Direction.NORTH);
+				playerMap.get(p1).turnNorth();
 
-			// actually send info to game logic
-		} else if (input.isKeyPressed(Input.KEY_DOWN)) {
-			// for testing, move player one
-			p1.move(Direction.SOUTH);
-			playerMap.get(p1).turnSouth();
+				// actually send info to game logic
+			} else if (input.isKeyPressed(Input.KEY_DOWN)) {
+				// for testing, move player one
+				p1.move(Direction.SOUTH);
+				playerMap.get(p1).turnSouth();
 
-			// actually send info to game logic
-		} else if (input.isKeyPressed(Input.KEY_LEFT)) {
-			// for testing, move player one
-			p1.move(Direction.WEST);
-			playerMap.get(p1).turnWest();
+				// actually send info to game logic
+			} else if (input.isKeyPressed(Input.KEY_LEFT)) {
+				// for testing, move player one
+				p1.move(Direction.WEST);
+				playerMap.get(p1).turnWest();
 
-			// actually send info to game logic
-		} else if (input.isKeyPressed(Input.KEY_RIGHT)) {
-			// for testing move player one
-			p1.move(Direction.EAST);
-			playerMap.get(p1).turnEast();
+				// actually send info to game logic
+			} else if (input.isKeyPressed(Input.KEY_RIGHT)) {
+				// for testing move player one
+				p1.move(Direction.EAST);
+				playerMap.get(p1).turnEast();
 
-			// actually send info to game logic
-		} else {
-			showOverview = false;
+				// actually send info to game logic
+			} else {
+				showOverview = false;
+			}
+
+			backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
+
 		}
-
-		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
-
 	}
-	}
-	
-	// TEST 10/02
+
+	// TODO WIP 10/02
+	/**
+	 * Check whether mouse cursor is within range of a game object to be interacted with.
+	 * @param tileX 
+	 * @param tileY
+	 * @param currentMouseX
+	 * @param currentMouseY
+	 * @return whether mouse is in the scope of the object
+	 */
 	private boolean inRange(float tileX, float tileY, float currentMouseX, float currentMouseY) {
 		float tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
 		float tileHeight = 2 * (float) Vals.SCREEN_HEIGHT / (world.ySize + 2);
-		if(currentMouseX > tileX && currentMouseX < tileX + tileWidth && currentMouseY > tileY && currentMouseY < tileY + tileHeight)
+		if (currentMouseX > tileX && currentMouseX < tileX + tileWidth && currentMouseY > tileY
+				&& currentMouseY < tileY + tileHeight)
 			return true;
 		else
 			return false;
