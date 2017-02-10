@@ -1,4 +1,4 @@
-package game.ai;
+package game.AI;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +58,7 @@ public class LogicEasy implements Logic {
 	}
 
 	@Override
-	public void findBed(World w, Player p, int cordI, int cordJ) {
+	public void findBed(World w, Player p) {
 		// create the list of blocks in the grid that represents the path
 		ArrayList<Integer> path = new ArrayList<Integer>();
 

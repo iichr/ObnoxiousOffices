@@ -1,4 +1,4 @@
-package game.ai;
+package game.AI;
 
 import game.core.player.Player;
 import game.core.world.World;
@@ -11,7 +11,7 @@ import game.core.world.World;
 public interface Logic {
 
 	// if player's energy is below the threshold, he needs to go for a refresh
-	static double energyThreshold = 0.2;
+	static double energyThreshold = 0.8;
 
 	// might need it for something
 	static double something = 0.0;
@@ -50,12 +50,8 @@ public interface Logic {
 	 *            the world
 	 * @param p
 	 *            the player that needs to go to the coffee machine
-	 * @param cordI
-	 *            the i coordinate of the bed
-	 * @param cordJ
-	 *            the j coordinate of the bed
 	 */
-	public void findBed(World w, Player p, int i, int j);
+	public void findBed(World w, Player p);
 
 	/**
 	 * When player is low on energy, he goes to the coffee machine. It is a fast
