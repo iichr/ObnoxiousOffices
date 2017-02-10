@@ -8,6 +8,7 @@ import org.newdawn.slick.state.*;
 
 import game.ui.interfaces.Vals;
 import game.ui.states.CharacterSelect;
+import game.ui.states.Intro;
 import game.ui.states.Menu;
 import game.ui.states.Options;
 import game.ui.states.Pause;
@@ -15,6 +16,7 @@ import game.ui.states.Play;
 import game.ui.states.Rules;
 
 public class Game extends StateBasedGame {
+	private Intro introState;
 	private Play playState;
 	private Menu menuState;
 	private Options optionsState;
@@ -25,7 +27,8 @@ public class Game extends StateBasedGame {
 	public Game(String gamename) {
 		super(gamename);
 //		EventDispatcher.subscribe2(this);
-		
+		introState= new Intro(Vals.INTRO_STATE);
+		this.addState(introState);
 		menuState = new Menu(Vals.MENU_STATE);
 		this.addState(menuState);
 		playState = new Play(Vals.PLAY_STATE);

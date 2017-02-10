@@ -23,6 +23,7 @@ public interface Vals {
 	public static final int SCREEN_HEIGHT = (int) screenRes.getHeight();
 
 	// STATE IDs
+	public static final int INTRO_STATE = 999;
 	public static final int EXIT = -1;
 	public static final int MENU_STATE = 0;
 	public static final int CHARACTER_SELECT_STATE = 1;
