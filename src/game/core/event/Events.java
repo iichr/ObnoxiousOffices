@@ -1,9 +1,5 @@
 package game.core.event;
 
-import javafx.util.Pair;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.Consumer;
 
