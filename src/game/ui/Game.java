@@ -6,6 +6,8 @@ import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
+import game.core.event.Events;
+import game.core.event.GameStartedEvent;
 import game.ui.interfaces.Vals;
 import game.ui.states.CharacterSelect;
 import game.ui.states.Menu;
@@ -24,7 +26,6 @@ public class Game extends StateBasedGame {
 
 	public Game(String gamename) {
 		super(gamename);
-//		EventDispatcher.subscribe2(this);
 		
 		menuState = new Menu(Vals.MENU_STATE);
 		this.addState(menuState);
@@ -38,17 +39,18 @@ public class Game extends StateBasedGame {
 		this.addState(chSelectState);
 		pauseState = new Pause(Vals.PAUSE_STATE);
 		this.addState(pauseState);
+		
+		Events.on(GameStartedEvent.class, this::onGameStart);
 	}
 
 	public void initStatesList(GameContainer gc) throws SlickException {
 		//initialises states automatically
 	}
 	
-//	@Subscriber
-//	public void onGameStart(gameStartEvent event) {
-//		playState.playSetup(world);
-//		this.enterState(Vals.PLAY_STATE);
-//	}
+	public void onGameStart(GameStartedEvent event) {
+		playState.playSetup(event.world);
+		this.enterState(Vals.PLAY_STATE);
+	}
 
 	public static void init() {
 
