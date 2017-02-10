@@ -1,4 +1,4 @@
-package game.AI;
+package game.ai;
 
 import game.core.player.Player;
 import game.core.world.World;
