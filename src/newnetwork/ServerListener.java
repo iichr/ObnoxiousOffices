@@ -96,12 +96,6 @@ public class ServerListener extends Thread {
 		// if(this.playerTable.size() == 4){
 		// System.out.println("Four players Ready");
 		// waiting = false;
-		//
-		// ObjectOutputStream tom = new
-		// ObjectOutputStream(socket.getOutputStream());
-		// tom.writeObject("HAHAH");
-		// tom.flush();
-		// }
 
 	}
 
