@@ -124,7 +124,7 @@ public class CharacterSelect extends BasicGameState {
 
 	public void keyPressed(int key, char c) {
 		switch(key){
-		case Input.KEY_P:
+		case Input.KEY_ESCAPE:
 			toPlay = true;
 		}
 	}
