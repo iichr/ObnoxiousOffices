@@ -21,9 +21,6 @@ public class Menu extends BasicGameState implements MusicListener {
 	private String mouseCoords = "No input yet!";
 	private Music music;
 	private Image bg;
-	private static boolean isWPressed = false;
-	private static boolean isSPressed = false;
-	private static boolean isEnterPressed = false;
 
 	public Menu(int state) {
 
@@ -104,9 +101,6 @@ public class Menu extends BasicGameState implements MusicListener {
 		float mouseX = Mouse.getX();
 		float mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
-		isEnterPressed = input.isKeyPressed(Vals.ENTER);
-		isWPressed = input.isKeyPressed(Vals.UP);
-		isSPressed = input.isKeyPressed(Vals.DOWN);
 
 		// set button properties
 		playButton.update(gc, game, mouseX, mouseY, Vals.CHARACTER_SELECT_STATE);
@@ -131,17 +125,5 @@ public class Menu extends BasicGameState implements MusicListener {
 	public void musicSwapped(Music arg0, Music arg1) {
 		// TODO Auto-generated method stub
 
-	}
-
-	public static boolean isSPressed() {
-		return isSPressed;
-	}
-
-	public static boolean isWPressed() {
-		return isWPressed;
-	}
-
-	public static boolean isEnterPressed() {
-		return isEnterPressed;
 	}
 }
