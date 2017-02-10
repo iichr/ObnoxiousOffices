@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.Set;
 
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -43,6 +44,13 @@ public class Play extends BasicGameState {
 	private EffectContainer effectOverview;
 	private Image _avatar, coffee;
 	boolean showOverview = false;
+	
+	// TEST 10/02
+	private float objX = 0;
+	private float objY = 0;
+	private boolean computer = false;
+	private boolean coffeemach =  false;
+	private boolean sofa = false;
 
 	public Play(int state) {
 	}
@@ -135,6 +143,13 @@ public class Play extends BasicGameState {
 		// add effects overview container
 		effectOverview.render(g);
 
+		// TEST 10/02
+		if(computer)
+			Vals.FONT_MAIN.drawString(objX, objY, "WORK/HACK", Color.red);	
+		if(coffeemach)
+			Vals.FONT_MAIN.drawString(objX, objY, "DRINK COFFEE", Color.red);
+		if(sofa)
+			Vals.FONT_MAIN.drawString(objX, objY, "SLEEP ON SOFA", Color.red);
 	}
 
 	public void drawWorld() throws SlickException {
@@ -191,6 +206,46 @@ public class Play extends BasicGameState {
 				p1 = p;
 			}
 		}
+		
+		// TEST 10/02
+		float tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
+		float tileHeight = 2 * (float) Vals.SCREEN_HEIGHT / (world.ySize + 2);
+		for (int y = 0; y < world.ySize; y++) {
+			for (int x = 0; x < world.xSize; x++) {
+				float tileX = x * tileWidth;
+				float tileY = (y - 1 + 2) * (tileHeight / 2);
+
+				TileType type = world.getTile(x, y, 0).type;
+				if(inRange(tileX, tileY, mouseX, mouseY)) {
+					if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+						input.clearKeyPressedRecord();
+						objX = tileX;
+						objY = tileY;
+						if(type == TileType.COFFEE_MACHINE) {
+							coffeemach = true;
+							computer = false;
+							sofa = false;
+						}
+						else if(type == TileType.COMPUTER) {
+							computer = true;
+							sofa = false;
+							coffeemach = false;
+						}
+						else if(type == TileType.SOFA) {
+							sofa = true;
+							coffeemach = false;
+							computer = false;
+						}
+						else {
+							// decor without user interaction
+							sofa = false;
+							coffeemach = false;
+							computer = false;
+						}
+					}
+				}
+			}
+		
 
 		effectOverview.update();
 		// Handle pause and movement
@@ -231,6 +286,17 @@ public class Play extends BasicGameState {
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 
+	}
+	}
+	
+	// TEST 10/02
+	private boolean inRange(float tileX, float tileY, float currentMouseX, float currentMouseY) {
+		float tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
+		float tileHeight = 2 * (float) Vals.SCREEN_HEIGHT / (world.ySize + 2);
+		if(currentMouseX > tileX && currentMouseX < tileX + tileWidth && currentMouseY > tileY && currentMouseY < tileY + tileHeight)
+			return true;
+		else
+			return false;
 	}
 
 }
