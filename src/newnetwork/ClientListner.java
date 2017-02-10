@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
+import game.core.event.Event;
+import game.core.event.Events;
+
 public class ClientListner extends Thread{
 	private Socket server;
 	private ObjectInputStream is;
@@ -20,12 +23,9 @@ public class ClientListner extends Thread{
 			is = new ObjectInputStream(this.server.getInputStream());
 			boolean running = true;
 			while(running){
-				Object input = is.readObject();
+				Event input = (Event) is.readObject();
 				System.out.println(input.toString());
-				
-				//WHAT TO DO WITH THE DATA
-				//Get new data from server (e.g PlayerUpdate)
-				//update based on the object 
+				Events.trigger(input);
 			}
 			
 		} catch (IOException e) {
