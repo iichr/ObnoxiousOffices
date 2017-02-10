@@ -30,14 +30,6 @@ import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 import game.ui.player.PlayerAnimation;
 
-/**
- * @author mad-s
- *
- */
-/**
- * @author mad-s
- *
- */
 public class Play extends BasicGameState {
 	private String mouseCoords = "No input yet!";
 	private MenuButton backButton;
