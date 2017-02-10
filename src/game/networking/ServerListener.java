@@ -1,4 +1,4 @@
-package newnetwork;
+package game.networking;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import game.core.event.CreateAIPlayerRequest;
 import game.core.event.Event;
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;

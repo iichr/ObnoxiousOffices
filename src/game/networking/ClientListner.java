@@ -1,4 +1,4 @@
-package newnetwork;
+package game.networking;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
