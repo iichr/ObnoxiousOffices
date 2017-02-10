@@ -33,7 +33,7 @@ public class EffectContainer {
     		return false;
     	}else{
     		activeFor = ChronoUnit.SECONDS.between(Instant.now(), activatedAt);
-    		return activeFor >= 0 && activeFor <= DURATION;
+    		return activeFor >= 1 && activeFor <= DURATION;
     	}
        
     }

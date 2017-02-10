@@ -30,7 +30,7 @@ import game.ui.interfaces.Vals;
 import game.ui.player.PlayerAnimation;
 
 public class Play extends BasicGameState {
-	private String mouseCoords = "No input yet!";
+	//private String mouseCoords = "No input yet!";
 
 	// world information
 	private World world;
@@ -134,7 +134,7 @@ public class Play extends BasicGameState {
 		// drawPlayers();
 
 		// debugging
-		g.drawString(mouseCoords, 0, 0);
+		//g.drawString(mouseCoords, 0, 0);
 
 		// add player status container
 		playerOverview.render(g, showOverview);

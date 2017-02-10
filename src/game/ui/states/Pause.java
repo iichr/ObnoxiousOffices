@@ -43,6 +43,7 @@ public class Pause extends BasicGameState {
 			gc.exit();
 		}
 	}
+	
 	@Override
 	public int getID() {
 		return Vals.PAUSE_STATE;
