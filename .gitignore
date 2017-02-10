@@ -1,5 +1,8 @@
 ## Eclipse
 
+# Mac stuff
+.DS_Store
+
 .metadata
 bin/
 tmp/
