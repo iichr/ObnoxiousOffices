@@ -53,28 +53,63 @@ public class World implements Updateable {
         return false;
     }
 
+    /**
+     * Get's a tile at the given x, y and z. May return null.
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
     public Tile getTile(int x, int y, int z) {
         if(checkBounds(x, y, z)) return tiles[x][y][z];
         else return null;
     }
 
+    /**
+     * Set the tile at the given x, y, z.
+     * @param x
+     * @param y
+     * @param z
+     * @param tile
+     */
     public void setTile(int x, int y, int z, Tile tile) {
         if(checkBounds(x, y, z)) tiles[x][y][z] = tile;
     }
 
+    /**
+     * Add a tile to the world. Uses the tile's x, y and z.
+     * @param tile
+     */
     public void addTile(Tile tile) {
         Location loc = tile.location;
         setTile(loc.x, loc.y, loc.z, tile);
     }
 
+    /**
+     * @see #addTile(Tile)
+     * @param c
+     */
     public void addTiles(Collection<Tile> c) {
         c.forEach(this::addTile);
     }
 
+    /**
+     * Returns true if the given x, y, z are within the world's bounds, else false
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
     public boolean checkBounds(int x, int y, int z) {
         return x < tiles.length && x >= 0 && y < tiles[x].length && y >= 0 && z < tiles[x][y].length && z >= 0;
     }
 
+    /**
+     * Loads a world object from a String[].
+     * @param lines
+     * @param maxPlayers
+     * @return
+     */
     public static World load(String[] lines, int maxPlayers) {
         int i = Arrays.asList(lines).indexOf("###");
         if (i < 0) return null;
@@ -98,7 +133,12 @@ public class World implements Updateable {
         IntStream.range(0, tileStrings.length).forEach(y -> {
             IntStream.range(0, sizeX).forEach(x -> {
                 TilePrototype p = aliases.get(tileStrings[y][x]);
-                world.addTiles(p.type.getTiles(new Location(x, y, 0, world), p.facing));
+                Collection<Tile> tiles = p.type.getTiles(new Location(x, y, 0, world), p.facing);
+                tiles.forEach(t -> {
+                    Tile currTile = t.location.getTile();
+                    // Ensure that non-multitiles don't overwrite multitiles
+                    if(t.isMultiTile() || currTile == null || !currTile.isMultiTile()) world.addTile(t);
+                });
             });
         });
         return world;

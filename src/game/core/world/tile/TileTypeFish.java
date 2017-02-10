@@ -10,7 +10,7 @@ import java.util.Collection;
 /**
  * Created by samtebbs on 04/02/2017.
  */
-public class TileTypeSofa extends TileType {
+public class TileTypeFish extends TileType {
 
     @Override
     public void onWalkOver(Player player) {

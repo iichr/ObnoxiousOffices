@@ -22,7 +22,7 @@ public class Tile {
     }
 
     Tile(Location location, TileType type, Direction facing) {
-        this(location, type, facing, 0);
+        this(location, type, facing, -1);
     }
 
     public void onWalkOver(Player player) {
@@ -33,4 +33,30 @@ public class Tile {
         type.onInteraction(player);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+
+        Tile tile = (Tile) o;
+
+        if (multitileID != tile.multitileID) return false;
+        if (!location.equals(tile.location)) return false;
+        if (!type.equals(tile.type)) return false;
+        return facing == tile.facing;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = location.hashCode();
+        result = 31 * result + type.hashCode();
+        result = 31 * result + facing.hashCode();
+        result = 31 * result + multitileID;
+        return result;
+    }
+
+    public boolean isMultiTile() {
+        return multitileID >= 0;
+    }
 }

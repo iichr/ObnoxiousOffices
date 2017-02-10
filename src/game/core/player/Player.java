@@ -134,4 +134,19 @@ public class Player implements Updateable {
         return status.getAttribute(PlayerStatus.PlayerAttribute.PRODUCTIVITY);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Player)) return false;
+
+        Player player = (Player) o;
+
+        return name.equals(player.name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
 }
