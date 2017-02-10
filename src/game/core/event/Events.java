@@ -12,14 +12,18 @@ import java.util.function.Consumer;
  */
 public class Events {
 
-    private static final HashMap<Class<? extends Event>, List<Consumer<? extends Event>>> subscribers = new HashMap<>();
+    private static final HashMap<Class<? extends Event>, List<Consumer>> subscribers = new HashMap<>();
 
     public static <T extends Event> void trigger(T event) {
-        // TODO
+        if(subscribers.containsKey(event.getClass())) {
+            List<Consumer> consumers = subscribers.get(event.getClass());
+            consumers.forEach(c -> c.accept(event));
+        }
     }
 
     public static <T extends Event> void on(Class<? extends Event> eventClass, Consumer<T> method) {
-        // TODO
+        if(subscribers.containsKey(eventClass)) subscribers.get(eventClass).add(method);
+        else subscribers.put(eventClass, Arrays.asList(method));
     }
 
 }
