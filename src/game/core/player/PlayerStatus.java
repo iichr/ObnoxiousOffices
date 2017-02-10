@@ -44,6 +44,7 @@ public class PlayerStatus {
         effects = Updateable.updateAll(effects);
     }
 
+    // TODO: Change productivity based on fatigue
     /**
      * Set an attribute value
      * @param attribute

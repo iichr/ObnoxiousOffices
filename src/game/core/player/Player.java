@@ -130,6 +130,7 @@ public class Player implements Updateable {
      * Gets the player's progress multiplier, which depends on attributes and effects
      * @return
      */
+    // TODO: Consider fatigue
     private double getProgressMultiplier() {
         return status.getAttribute(PlayerStatus.PlayerAttribute.PRODUCTIVITY);
     }
