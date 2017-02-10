@@ -62,11 +62,6 @@ public class Play extends BasicGameState {
 
 	private boolean paused = false;
 
-	private boolean moveNorth = false;
-	private boolean moveSouth = false;
-	private boolean moveEast = false;
-	private boolean moveWest = false;
-
 	public Play(int state) {
 	}
 
@@ -82,8 +77,6 @@ public class Play extends BasicGameState {
 		// PlayerContainer container
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
 		playerOverview = new PlayerContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
-
-		testSetup();
 	}
 
 	@Override
@@ -135,10 +128,6 @@ public class Play extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		drawWorld();
-		// drawPlayers();
-
-		// debugging
-		//g.drawString(mouseCoords, 0, 0);
 
 		// add player status container
 		playerOverview.render(g, showOverview);
@@ -197,46 +186,6 @@ public class Play extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
-
-		Player p1 = null;
-		for (Player p : world.getPlayers()) {
-			if (p.name.equals("0")) {
-				p1 = p;
-			}
-		}
-
-		if (moveNorth) {
-			p1.move(Direction.NORTH);
-			playerMap.get(p1).turnNorth();
-			moveNorth = false;
-
-			// actually send info to game logic
-		} else if (moveSouth) {
-			// for testing, move player one
-			p1.move(Direction.SOUTH);
-			playerMap.get(p1).turnSouth();
-			moveSouth = false;
-
-			// actually send info to game logic
-		} else if (moveWest) {
-			// for testing, move player one
-			p1.move(Direction.WEST);
-			playerMap.get(p1).turnWest();
-			moveWest = false;
-
-			// actually send info to game logic
-		} else if (moveEast) {
-			// for testing move player one
-			p1.move(Direction.EAST);
-			playerMap.get(p1).turnEast();
-			moveEast = false;
-
-			// actually send info to game logic
-		}
-
-		if (input.isKeyPressed(Input.KEY_B)) {
-			effectOverview.activate();
-		}
 
 		if (paused) {
 			game.enterState(Vals.PAUSE_STATE);
@@ -305,6 +254,9 @@ public class Play extends BasicGameState {
 			break;
 		case Input.KEY_E:
 			Events.trigger(new PlayerInputEvent(InputType.INTERACT));
+			break;
+		case Input.KEY_B:
+			effectOverview.activate();
 			break;
 		}
 	}
