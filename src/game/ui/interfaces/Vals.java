@@ -31,6 +31,7 @@ public interface Vals {
 	public static final int RULES_STATE = 3;
 	public static final int PLAY_STATE = 4;
 	public static final int PAUSE_STATE = 5;
+	public static final int PLAY_TEST_STATE = 6;
 
 	// BUTTON SIZES
 	public static final int BUTTON_WIDTH = 200;

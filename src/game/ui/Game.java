@@ -15,6 +15,7 @@ import game.ui.states.Menu;
 import game.ui.states.Options;
 import game.ui.states.Pause;
 import game.ui.states.Play;
+import game.ui.states.PlayTest;
 import game.ui.states.Rules;
 
 public class Game extends StateBasedGame {
@@ -25,6 +26,7 @@ public class Game extends StateBasedGame {
 	private Rules rulesState;
 	private CharacterSelect chSelectState;
 	private Pause pauseState;
+	private PlayTest playtestState;
 
 	public Game(String gamename) {
 		super(gamename);
@@ -44,6 +46,8 @@ public class Game extends StateBasedGame {
 		this.addState(chSelectState);
 		pauseState = new Pause(Vals.PAUSE_STATE);
 		this.addState(pauseState);
+		playtestState = new PlayTest(Vals.PLAY_TEST_STATE);
+		this.addState(playtestState);
 		
 		Events.on(GameStartedEvent.class, this::onGameStart);
 	}

@@ -36,7 +36,6 @@ public class CharacterSelect extends BasicGameState {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		Image back = new Image(ImageLocations.BACK);
@@ -113,7 +112,7 @@ public class CharacterSelect extends BasicGameState {
 		circleButton.update(gc, game, mouseX, mouseY);
 		
 		if(toPlay){
-			game.enterState(Vals.PLAY_STATE);
+			game.enterState(Vals.PLAY_TEST_STATE);
 			toPlay = false;
 		}
 	}
@@ -123,6 +122,7 @@ public class CharacterSelect extends BasicGameState {
 		return Vals.CHARACTER_SELECT_STATE;
 	}
 
+	@Override
 	public void keyPressed(int key, char c) {
 		switch(key){
 		case Input.KEY_ESCAPE:
