@@ -4,10 +4,12 @@ import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
 
+import java.io.Serializable;
+
 /**
  * Created by samtebbs on 20/01/2017.
  */
-public class Tile {
+public class Tile implements Serializable {
 
     public final Location location;
     public final TileType type;

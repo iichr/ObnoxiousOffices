@@ -7,6 +7,7 @@ import game.core.world.tile.TilePrototype;
 import game.core.world.tile.TileType;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -16,7 +17,7 @@ import java.util.stream.IntStream;
 /**
  * Created by samtebbs on 19/01/2017.
  */
-public class World implements Updateable {
+public class World implements Updateable, Serializable {
 
     private final Set<Player> players;
     private final int maxPlayers;
