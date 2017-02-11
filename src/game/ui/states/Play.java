@@ -1,13 +1,8 @@
 package game.ui.states;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.Set;
 
-import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -20,7 +15,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import game.core.Input.InputType;
 import game.core.event.Events;
 import game.core.event.PlayerInputEvent;
-import game.core.event.PlayerMovedEvent;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -34,7 +28,7 @@ import game.ui.interfaces.Vals;
 import game.ui.player.PlayerAnimation;
 
 public class Play extends BasicGameState {
-	//private String mouseCoords = "No input yet!";
+	// private String mouseCoords = "No input yet!";
 
 	// world information
 	private World world;
@@ -210,7 +204,6 @@ public class Play extends BasicGameState {
 			objY = y;
 
 			if (type == TileType.COFFEE_MACHINE) {
-				System.out.println("hello");
 				coffeemach = true;
 				computer = false;
 				sofa = false;
@@ -268,60 +261,4 @@ public class Play extends BasicGameState {
 			showOverview = false;
 		}
 	}
-
-	/**
-	 * Generates a fake world and set of players to be used for testing
-	 */
-	private void testSetup() {
-		// testing methods
-		int noPlayers = 6;
-		World w = createWorld(noPlayers);
-		w = addPlayers(w, noPlayers);
-
-		playSetup(w);
-	}
-
-	/**
-	 * Testing method used to create a fake world
-	 * 
-	 * @param noPlayers
-	 *            the number of player in the game
-	 * @return The world
-	 */
-	private World createWorld(int noPlayers) {
-		World w = null;
-		Path p = Paths.get("data/office4Player.level");
-		if (noPlayers == 6) {
-			p = Paths.get("data/office6Player.level");
-		}
-		try {
-			w = World.load(p, noPlayers);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return w;
-	}
-
-	/**
-	 * Testing method used to create a fake set of players
-	 * 
-	 * @param w
-	 *            The world
-	 * @param noPlayers
-	 *            The number of players to be made
-	 * @return The world
-	 */
-	private World addPlayers(World w, int noPlayers) {
-		Random r = new Random();
-		for (int i = 0; i < 4; i++) {
-			int x = r.nextInt(w.xSize);
-			int y = r.nextInt(w.ySize - 1);
-			Location l = new Location(x, y, w);
-			Direction d = Direction.SOUTH;
-			Player p = new Player("" + i, d, l);
-			w.addPlayer(p);
-		}
-		return w;
-	}
-
 }
