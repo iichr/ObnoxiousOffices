@@ -1,6 +1,10 @@
 package game.core.player;
 
 import game.core.Updateable;
+import game.core.event.PlayerMovedEvent;
+import game.core.event.PlayerProgressUpdateEvent;
+import game.core.event.PlayerRotatedEvent;
+import game.core.ifc.Net;
 import game.core.world.Direction;
 import game.core.world.Location;
 
@@ -45,6 +49,7 @@ public class Player implements Updateable, Serializable {
      */
     public void setFacing(Direction facing) {
         this.facing = facing;
+        Net.broadcast(new PlayerRotatedEvent(facing, this.name));
     }
 
     /**
@@ -52,7 +57,9 @@ public class Player implements Updateable, Serializable {
      * @param location
      */
     public void setLocation(Location location) {
+        Location diff = location.diff(this.location)
         this.location = location;
+        Net.broadcast(new PlayerMovedEvent(diff.x, diff.y, diff.z, this.name));
     }
 
     public Location getLocation() {
@@ -101,11 +108,13 @@ public class Player implements Updateable, Serializable {
      * @param progress
      */
     public void setProgress(double progress) {
+        double diff = progress - this.progress;
         this.progress += progress;
         if(this.progress >= 100) {
             onProgressDone();
             this.progress = 0;
         }
+        Net.broadcast(new PlayerProgressUpdateEvent(diff, this.name));
     }
 
     public double getProgress() {
