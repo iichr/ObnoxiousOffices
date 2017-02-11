@@ -4,6 +4,7 @@ import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 /**
  * Created by samtebbs on 20/01/2017.
  */
-public abstract class TileType {
+public abstract class TileType implements Serializable {
 
     public static final HashMap<String, TileType> types = new HashMap<>();
 
