@@ -1,4 +1,4 @@
-package game.ai;
+package game.AI;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +58,7 @@ public class LogicEasy implements Logic {
 	}
 
 	@Override
-	public void findBed(World w, Player p, int cordI, int cordJ) {
+	public void findBed(World w, Player p) {
 		// create the list of blocks in the grid that represents the path
 		ArrayList<Integer> path = new ArrayList<Integer>();
 
@@ -124,6 +124,9 @@ public class LogicEasy implements Logic {
 		}
 		//interact with the tile
 		w.getTile(p.getLocation().x, p.getLocation().y, 0).onInteraction(p);
+		
+		//just for the presentation in week 6 TODO: remove that
+		p.status.setAttribute(PlayerAttribute.FATIGUE, 0.0);
 	}
 
 	@Override
