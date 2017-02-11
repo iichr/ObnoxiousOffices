@@ -15,12 +15,13 @@ import java.util.HashMap;
 public abstract class TileType implements Serializable {
 
     public static final HashMap<String, TileType> types = new HashMap<>();
+    public final int id;
 
-    public static final TileType COMPUTER = new TileTypeComputer(),
-            DESK = new TileTypeDesk(),
-            FLOOR = new TileTypeFloor(),
-            CHAIR = new TileTypeChair(),
-            COFFEE_MACHINE = new TileTypeCoffeeMachine(), PLANT = new TileTypeDecoration(), SOFA = new TileTypeSofa(), FISH = new TileTypeFish();
+    public static final TileType COMPUTER = new TileTypeComputer(0),
+            DESK = new TileTypeDesk(1),
+            FLOOR = new TileTypeFloor(2),
+            CHAIR = new TileTypeChair(3),
+            COFFEE_MACHINE = new TileTypeCoffeeMachine(4), PLANT = new TileTypeDecoration(5), SOFA = new TileTypeSofa(6), FISH = new TileTypeFish(7);
 
     static {
         addTileType("computer", COMPUTER);
@@ -31,6 +32,10 @@ public abstract class TileType implements Serializable {
         addTileType("plant", PLANT);
         addTileType("sofa", SOFA);
         addTileType("fish", FISH);
+    }
+
+    protected TileType(int id) {
+        this.id = id;
     }
 
     public static boolean addTileType(String levelSymbol, TileType type) {
@@ -55,5 +60,21 @@ public abstract class TileType implements Serializable {
 
     public static TileType getType(String symbol) {
         return types.get(symbol);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TileType tileType = (TileType) o;
+
+        return id == tileType.id;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 }

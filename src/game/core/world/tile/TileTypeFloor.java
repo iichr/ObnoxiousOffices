@@ -5,6 +5,10 @@ package game.core.world.tile;
  */
 public class TileTypeFloor extends TileTypeBasic {
 
+    public TileTypeFloor(int id) {
+        super(id);
+    }
+
     @Override
     public boolean canWalkOver() {
         return true;
