@@ -11,6 +11,8 @@ import game.core.event.Event;
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
 import game.core.player.Player;
+import game.core.world.Direction;
+import game.core.world.Location;
 import game.core.world.World;
 
 public class ServerListener extends Thread {
@@ -20,11 +22,18 @@ public class ServerListener extends Thread {
 	private Socket socket = null;
 	private ObjectInputStream is;
 	private ObjectOutputStream os;
+	public World world;
 
 	public ServerListener(Socket socket, ArrayList<Player> hash, ArrayList<ServerListener> connection) {
 		this.playerTable = hash;
 		this.socket = socket;
 		this.connections = connection;
+		try {
+			this.world = World.load(Paths.get("data/office4player.level"), 4);
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		try {
 			this.is = new ObjectInputStream(this.socket.getInputStream());
 			this.os = new ObjectOutputStream(this.socket.getOutputStream());
@@ -59,19 +68,19 @@ public class ServerListener extends Thread {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-/*
-  //Allows hard coded AI player to be added for prototype
-				if (this.playerTable.size() == 3) {
-					Events.trigger(new CreateAIPlayerRequest());
-				}
-				*/
+				/*
+				 * //Allows hard coded AI player to be added for prototype if
+				 * (this.playerTable.size() == 3) { Events.trigger(new
+				 * CreateAIPlayerRequest()); }
+				 */
 				if (this.playerTable.size() == 4) {
-					try {
-						Events.trigger(new GameStartedEvent(World.load(Paths.get("data/office.level"), 4)));
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					for(int i = 0; i < playerTable.size(); i++){
+						Player p = playerTable.get(i);
+						p.setLocation(new Location(i, i, world));
+						world.addPlayer(p);
 					}
+					Events.trigger(new GameStartedEvent(world));
+					sendToAllClients(new GameStartedEvent(world));
 				}
 			} else {
 				try {
@@ -146,7 +155,7 @@ public class ServerListener extends Thread {
 	 */
 	private void addPlayerToGame(String name) {
 		if (!this.playerNameUsed(name)) {
-			this.playerTable.add(new Player(name, null, null));
+			this.playerTable.add(new Player(name, Direction.SOUTH, null));
 			System.out.println("PLayer " + name + " added to the game!");
 		} else {
 			System.out.println("Player " + name + " has already been added to the game!");
