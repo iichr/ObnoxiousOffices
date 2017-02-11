@@ -1,13 +1,8 @@
 package game.ui.states;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.Set;
 
-import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -20,7 +15,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import game.core.Input.InputType;
 import game.core.event.Events;
 import game.core.event.PlayerInputEvent;
-import game.core.event.PlayerMovedEvent;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -34,7 +28,7 @@ import game.ui.interfaces.Vals;
 import game.ui.player.PlayerAnimation;
 
 public class Play extends BasicGameState {
-	//private String mouseCoords = "No input yet!";
+	// private String mouseCoords = "No input yet!";
 
 	// world information
 	private World world;
@@ -210,7 +204,6 @@ public class Play extends BasicGameState {
 			objY = y;
 
 			if (type == TileType.COFFEE_MACHINE) {
-				System.out.println("hello");
 				coffeemach = true;
 				computer = false;
 				sofa = false;
