@@ -25,6 +25,8 @@ public class World implements Updateable, Serializable {
     public final int xSize, ySize, zSize;
     // TODO: Add preset spawn points
 
+    public static World world;
+
     public World(int maxPlayers, int sizeX, int sizeY, int sizeZ) {
         this.tiles = new Tile[sizeX][sizeY][sizeZ];
         this.players = new HashSet<>(maxPlayers);
@@ -35,6 +37,10 @@ public class World implements Updateable, Serializable {
     }
 
     // TODO: getSpawnPoint(int i) = spawnPoints[i]
+
+    public Player getPlayer(String name) {
+        return players.stream().filter(p -> p.name.equals(name)).findFirst().orElse(null);
+    }
 
     public void addPlayer(Player player) {
         if(players.size() < maxPlayers) players.add(player);
