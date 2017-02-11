@@ -98,8 +98,7 @@ public class Game extends StateBasedGame {
 	}
 
 	public static void main(String[] args) {
-		Game g = new Game("DevWars");
-		g.init();
+		init();
 	}
 
 }

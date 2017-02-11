@@ -10,12 +10,18 @@ import game.core.test.Test;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
+import game.ui.interfaces.Vals;
 
 public class PlayTest extends Play{
 
 	public PlayTest(int state) {
 		super(state);
 		testSetup();
+	}
+	
+	@Override
+	public int getID() {
+		return Vals.PLAY_TEST_STATE;
 	}
 
 	/**
