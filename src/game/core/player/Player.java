@@ -4,10 +4,12 @@ import game.core.Updateable;
 import game.core.world.Direction;
 import game.core.world.Location;
 
+import java.io.Serializable;
+
 /**
  * Created by samtebbs on 15/01/2017.
  */
-public class Player implements Updateable {
+public class Player implements Updateable, Serializable {
 
     public final String name;
     public final PlayerStatus status = new PlayerStatus(this);

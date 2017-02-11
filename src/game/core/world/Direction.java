@@ -1,9 +1,11 @@
 package game.core.world;
 
+import java.io.Serializable;
+
 /**
  * Created by samtebbs on 20/01/2017.
  */
-public enum Direction {
+public enum Direction implements Serializable {
 
     NORTH(0, -1), EAST(1, 0), SOUTH(0, 1), WEST(-1, 0);
 
