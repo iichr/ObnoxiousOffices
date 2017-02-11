@@ -12,6 +12,10 @@ import java.util.Collection;
  */
 public class TileTypeSofa extends TileType {
 
+    public TileTypeSofa(int id) {
+        super(id);
+    }
+
     @Override
     public void onWalkOver(Player player) {
 

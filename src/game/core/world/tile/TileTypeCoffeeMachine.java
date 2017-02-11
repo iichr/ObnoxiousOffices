@@ -6,6 +6,10 @@ import game.core.player.Player;
  * Created by samtebbs on 27/01/2017.
  */
 public class TileTypeCoffeeMachine extends TileType {
+    public TileTypeCoffeeMachine(int id) {
+        super(id);
+    }
+
     @Override
     public void onWalkOver(Player player) {
 
