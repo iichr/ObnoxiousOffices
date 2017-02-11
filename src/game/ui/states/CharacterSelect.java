@@ -98,14 +98,14 @@ public class CharacterSelect extends BasicGameState {
 		circleButton.render();
 		if (connecting) {
 			if(connected){
-				g.drawString(waitingString, connectButton.getX() - Vals.FONT_MAIN.getWidth(waitingString) - 10, connectButton.getY() + 100);
+				g.drawString(waitingString, connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(waitingString)/2, connectButton.getY() + 100);
 			}else{
-				g.drawString(connectingString, connectButton.getX() - Vals.FONT_MAIN.getWidth(connectingString) - 10, connectButton.getY() + 100);
+				g.drawString(connectingString, connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(connectingString)/2, connectButton.getY() + 100);
 			}
 		}else{
 			connectButton.render();
 			if(connectFailed){
-				g.drawString(connectFailString, connectButton.getX() - Vals.FONT_MAIN.getWidth(connectFailString) - 10, connectButton.getY() + 100);
+				g.drawString(connectFailString, connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(connectFailString)/2, connectButton.getY() + 100);
 			}
 		}
 
