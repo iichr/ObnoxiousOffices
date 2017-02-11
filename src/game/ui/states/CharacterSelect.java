@@ -1,6 +1,5 @@
 package game.ui.states;
 
-
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -15,6 +14,8 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import game.core.event.ConnectionAttemptEvent;
+import game.core.event.Events;
 import game.ui.buttons.ConnectButton;
 import game.ui.buttons.MenuButton;
 import game.ui.buttons.SelectionButton;
@@ -25,15 +26,22 @@ public class CharacterSelect extends BasicGameState {
 	private MenuButton backButton;
 	private ConnectButton connectButton;
 	private SelectionButton circleButton;
-	private String mouseCoords = "No input yet!";
 
 	private TextField serverAddress, playerName;
 	private String serverStr = "Enter Server Address:";
 	private String playerStr = "Enter Player Name:";
+	private String connectingString = "Attempting to connect to server";
+	private String waitingString = "Waiting for more players";
+	private String connectFailString = "Connection failed: please try again";
 	private boolean toPlay = false;
+	private boolean connecting = false;
+	private boolean connected = false;
+	private boolean connectFailed = false;
 
 	public CharacterSelect(int state) {
-
+		Events.on(ConnectionAttemptEvent.class, this::showConnecting);
+		// Events.on(ConnectionSuccessfulEvent.class, this::connected);
+		// Events.on(ConnectionFailedEvent.class, this::connected);
 	}
 
 	@Override
@@ -44,8 +52,8 @@ public class CharacterSelect extends BasicGameState {
 
 		Image conn = new Image(ImageLocations.CONNECT);
 		Image connR = new Image(ImageLocations.CONNECT_ROLLOVER);
-		connectButton = new ConnectButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 150, Vals.BUTTON_WIDTH,
-				Vals.BUTTON_HEIGHT, conn, connR);
+		connectButton = new ConnectButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 150,
+				Vals.BUTTON_WIDTH, Vals.BUTTON_HEIGHT, conn, connR);
 
 		Image circleUnselected = new Image(ImageLocations.CIRCLE_UNSELECTED, false, Image.FILTER_NEAREST);
 		Image circleSelected = new Image(ImageLocations.CIRCLE_SELECTED, false, Image.FILTER_NEAREST);
@@ -68,8 +76,8 @@ public class CharacterSelect extends BasicGameState {
 		serverAddress.setTextColor(Color.black);
 
 		// Player name text field.
-		playerName = new TextField(gc, Vals.FONT_MAIN, Vals.TFIELD_ALIGN_CENTRE_W, 300, Vals.TFIELD_WIDTH, Vals.FONT_MAIN.getLineHeight(),
-				new ComponentListener() {
+		playerName = new TextField(gc, Vals.FONT_MAIN, Vals.TFIELD_ALIGN_CENTRE_W, 300, Vals.TFIELD_WIDTH,
+				Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
 					public void componentActivated(AbstractComponent src) {
 						playerName.setFocus(true);
 					}
@@ -82,14 +90,24 @@ public class CharacterSelect extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		// debugging
 		g.setFont(Vals.FONT_MAIN);
-		g.drawString(mouseCoords, 10, 50);
 		g.setColor(Color.white);
 		// g.drawString(ipAddress.getText(), 700, 100);
 
 		// add necessary buttons
 		backButton.render();
 		circleButton.render();
-		connectButton.render();
+		if (connecting) {
+			if(connected){
+				g.drawString(waitingString, connectButton.getX() - Vals.FONT_MAIN.getWidth(waitingString) - 10, connectButton.getY() + 100);
+			}else{
+				g.drawString(connectingString, connectButton.getX() - Vals.FONT_MAIN.getWidth(connectingString) - 10, connectButton.getY() + 100);
+			}
+		}else{
+			connectButton.render();
+			if(connectFailed){
+				g.drawString(connectFailString, connectButton.getX() - Vals.FONT_MAIN.getWidth(connectFailString) - 10, connectButton.getY() + 100);
+			}
+		}
 
 		// Text fields
 		serverAddress.render(gc, g);
@@ -102,20 +120,38 @@ public class CharacterSelect extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		String addressValue = serverAddress.getText();
 		String nameValue = playerName.getText();
-		
 		int mouseX = Mouse.getX();
 		int mouseY = gc.getHeight() - Mouse.getY();
-		mouseCoords = mouseX + " ," + mouseY;
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 		connectButton.update(gc, game, mouseX, mouseY, addressValue, nameValue);
 		circleButton.update(gc, game, mouseX, mouseY);
-		
-		if(toPlay){
+
+		if (toPlay) {
 			game.enterState(Vals.PLAY_TEST_STATE);
 			toPlay = false;
 		}
 	}
+
+	private void showConnecting(ConnectionAttemptEvent e) {
+		connecting = true;
+		connectFailed = false;
+		// remove connection button
+		// show attempting to connect to server text
+	}
+
+	// private void connected(ConnectionSuccessfulEvent e){
+	// connected = true;
+	// show spinning icon and text saying waiting for players
+	// }
+
+	// private void connectFail(ConnectionFailedEvent e){
+	// connectFailed = true;
+	// connected = false;
+	// connecting = false;
+	// show connection failed text
+	// display connect button again
+	// }
 
 	@Override
 	public int getID() {
@@ -124,7 +160,7 @@ public class CharacterSelect extends BasicGameState {
 
 	@Override
 	public void keyPressed(int key, char c) {
-		switch(key){
+		switch (key) {
 		case Input.KEY_ESCAPE:
 			toPlay = true;
 		}
