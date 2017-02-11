@@ -4,12 +4,13 @@ import game.core.Updateable;
 import game.core.player.action.PlayerAction;
 import game.core.player.effect.PlayerEffect;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by samtebbs on 15/01/2017.
  */
-public class PlayerStatus {
+public class PlayerStatus implements Serializable {
 
     private HashMap<PlayerAttribute, Double> attributes = new HashMap<>();
     private Set<PlayerAction> actions = new HashSet<>();

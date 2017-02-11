@@ -5,6 +5,9 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
+import game.core.event.ConnectionAttemptEvent;
+import game.core.event.Events;
+
 /**
  * Used to create a new labelled button for the menu. Label is centred to the
  * middle of the button.
@@ -38,7 +41,7 @@ public class ConnectButton extends Button {
 		if (inRange(mouseX, mouseY)) {
 			button = select;
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-//				 Events.trigger(new connection());
+				Events.trigger(new ConnectionAttemptEvent(name));
 			}
 		} else {
 			button = unselect;

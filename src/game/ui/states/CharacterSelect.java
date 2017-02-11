@@ -102,7 +102,7 @@ public class CharacterSelect extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		String addressValue = serverAddress.getText();
-		String nameValue = serverAddress.getText();
+		String nameValue = playerName.getText();
 		
 		int mouseX = Mouse.getX();
 		int mouseY = gc.getHeight() - Mouse.getY();

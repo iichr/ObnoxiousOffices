@@ -2,10 +2,12 @@ package game.core.world;
 
 import game.core.world.tile.Tile;
 
+import java.io.Serializable;
+
 /**
  * Created by samtebbs on 20/01/2017.
  */
-public class Location {
+public class Location implements Serializable {
 
     public final int x, y, z;
     public final World world;
