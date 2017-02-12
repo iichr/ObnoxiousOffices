@@ -113,9 +113,6 @@ public class Play extends BasicGameState {
 	 */
 	private void animatePlayers(Set<Player> players) throws SlickException {
 		for (Player p : players) {
-			int colour = 0;
-			colour = Integer.parseInt(p.name);
-
 			PlayerAnimation animation = new PlayerAnimation(p.getHair(), p.getFacing());
 			playerMap.put(p, animation);
 		}
