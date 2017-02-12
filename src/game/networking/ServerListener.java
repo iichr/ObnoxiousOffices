@@ -61,8 +61,15 @@ public class ServerListener extends Thread {
 	}
 
 	private void processConnectionAttempt(ConnectionAttemptEvent event) {
-		if(playerTable.size() <= 4) addPlayerToGame(event.name);
-		if(playerTable.size() == 4) sendToAllClients(new GameStartedEvent(world));
+		System.out.println("recieved connection attempt event");
+		if(playerTable.size() <= 4){
+			System.out.println("adding player" + event.name);
+			addPlayerToGame(event.name);
+		}
+		if(playerTable.size() == 4){
+			System.out.println("sending game started event");
+			sendToAllClients(new GameStartedEvent(world));
+		}
 	}
 
 	@Override
@@ -106,16 +113,10 @@ public class ServerListener extends Thread {
 		}
 	}
 	
-	public void sendToOne(Object recieved, String name) {
+	public void sendToOne(Object obj, String name) {
 		for (int i = 0; i < this.playerTable.size(); i++) {
 			if(this.playerTable.get(i).name.equals(name)){
-				try {
-					os.writeObject(recieved);
-					os.flush();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				this.connections.get(i).forwardInfo(obj);
 			}
 
 		}

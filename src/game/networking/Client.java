@@ -39,7 +39,6 @@ public class Client {
 	}
 
 	public void connectToServer(ConnectionAttemptEvent event) {
-		String name = event.name;
 		int port = 8942;
 		String hostname = "localhost";
 
@@ -53,23 +52,14 @@ public class Client {
 			System.err.println("The server doesn't seem to be running " + e.getMessage());
 			System.exit(1); // Give up.
 		}
-
-		this.sendDataToServer(name);
-
+		
 		new ClientListner(this.server).start();
+		
+		this.sendDataToServer(event);
 	}
 
 	public void setLocalPlayer(PlayerCreatedEvent e) {
 		Player.localPlayer = e.localPlayer;
-	}
-
-	/**
-	 * FOR TESTING!!!
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// new Client();
 	}
 
 }
