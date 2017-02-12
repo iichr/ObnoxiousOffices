@@ -106,24 +106,6 @@ public class ServerListener extends Thread {
 
 			}
 		}
-		// this.forwardInfo("Hello");
-
-		// // This is so that we can use readLine():
-		// BufferedReader fromClient = new BufferedReader(new
-		// InputStreamReader(socket.getInputStream()));
-		//
-		// // Ask the client what its name is:
-		// String clientName = fromClient.readLine();
-		// // For debugging:
-		// System.out.println(clientName + " connected");
-		//
-		// // We add the client to the table:
-		// this.addPlayerToGame(clientName);
-		//
-		// if(this.playerTable.size() == 4){
-		// System.out.println("Four players Ready");
-		// waiting = false;
-
 	}
 
 	/**
@@ -133,9 +115,9 @@ public class ServerListener extends Thread {
 	 *            The info to send
 	 */
 	public void sendToAllClients(Object obj) {
+		System.out.println("conections.size =" + connections.size());
 		for (int i = 0; i < this.connections.size(); i++) {
 			this.connections.get(i).forwardInfo(obj);
-			;
 		}
 	}
 
@@ -146,11 +128,6 @@ public class ServerListener extends Thread {
 	 *            The info to send
 	 */
 	private void forwardInfo(Object recieved) {
-		for (int i = 0; i < this.playerTable.size(); i++) {
-			System.out.println(this.playerTable.get(i).name);
-
-		}
-
 		try {
 			os.writeObject(recieved);
 			os.flush();
@@ -163,6 +140,7 @@ public class ServerListener extends Thread {
 	public void sendToOne(Object recieved, String name) {
 		for (int i = 0; i < this.playerTable.size(); i++) {
 			if (this.playerTable.get(i).name.equals(name)) {
+				this.connections.get(i).forwardInfo(recieved);
 				try {
 					os.writeObject(recieved);
 					os.flush();
@@ -185,8 +163,9 @@ public class ServerListener extends Thread {
 		if (!this.playerNameUsed(name)) {
 			int playerNumber = playerTable.size();
 			Player playerObject = new Player(name, Direction.SOUTH, world.getSpawnPoint(playerNumber));
+			playerObject.setHair(playerNumber);
 			this.playerTable.add(playerObject);
-			System.out.println("PLayer " + name + " added to the game!");
+			System.out.println("Player " + name + " added to the game!");
 			PlayerCreatedEvent event = new PlayerCreatedEvent(playerObject);
 			Events.trigger(event);
 			sendToOne(event, name);
