@@ -13,3 +13,8 @@ p1 = computer,north
 p2 = computer,south
 m1 = coffee,east
 m2 = coffee,west
+###
+0,0,0
+1,0,0
+2,0,0
+3,0,0
