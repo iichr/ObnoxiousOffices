@@ -61,7 +61,7 @@ public class ServerListener extends Thread {
 	}
 
 	private void processConnectionAttempt(ConnectionAttemptEvent event) {
-		if(playerTable.size() < 4) addPlayerToGame(event.name);
+		if(playerTable.size() <= 4) addPlayerToGame(event.name);
 		if(playerTable.size() == 4) sendToAllClients(new GameStartedEvent(world));
 	}
 
@@ -97,12 +97,6 @@ public class ServerListener extends Thread {
 	 *            The info to send
 	 */
 	private void forwardInfo(Object recieved) {
-		/*
-		for (int i = 0; i < this.playerTable.size(); i++) {
-			System.out.println(this.playerTable.get(i).name);
-		}
-		*/
-
 		try {
 			os.writeObject(recieved);
 			os.flush();
@@ -111,6 +105,7 @@ public class ServerListener extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
 	public void sendToOne(Object recieved, String name) {
 		for (int i = 0; i < this.playerTable.size(); i++) {
 			if(this.playerTable.get(i).name.equals(name)){

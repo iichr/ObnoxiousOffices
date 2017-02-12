@@ -1,6 +1,5 @@
 package game.networking;
 
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,21 +8,18 @@ import java.util.ArrayList;
 import game.core.player.Player;
 
 public class Server {
-	
-	//private ArrayList<Player> playerTable;
+
+	// private ArrayList<Player> playerTable;
 	private ArrayList<Player> playerTable;
 	public ArrayList<ServerListener> connections;
 	private ServerSocket serverSocket = null;
-	
-	public Server(){
-		//playerTable = new ArrayList<Player>();
+
+	public Server() {
 		playerTable = new ArrayList<Player>();
 		connections = new ArrayList<ServerListener>();
-		int port = 8942;
-		
-		// Open a server socket:
-		
+		final int port = 8942;
 
+		// Open a server socket:
 		// We must try because it may fail with a checked exception:
 		try {
 			this.serverSocket = new ServerSocket(port);
@@ -32,8 +28,7 @@ public class Server {
 			System.err.println("Couldn't listen on port " + port);
 			System.exit(1); // Give up.
 		}
-		
-		
+
 		boolean waiting = true;
 		// Must try again for the same reason:
 		try {
@@ -48,16 +43,15 @@ public class Server {
 		} catch (IOException e) {
 			System.err.println("IO error " + e.getMessage());
 		}
-			
+
 	}
-	
+
 	/**
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		new Server();
 	}
 
 }
-
