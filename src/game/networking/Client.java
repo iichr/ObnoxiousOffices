@@ -6,29 +6,15 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import game.core.event.ConnectionAttemptEvent;
+import game.core.event.Events;
+
 public class Client {
 	
 	private Socket server;
 	
 	public Client(String name){
-		
-		int port = 8942;
-		String hostname = "localhost";
-		
-		try {
-			this.server = new Socket(hostname, port);
-			System.out.println("Client Connected To Server!");
-		} catch (UnknownHostException e) {
-			System.err.println("Unknown host: " + hostname);
-			System.exit(1); // Give up.
-		} catch (IOException e) {
-			System.err.println("The server doesn't seem to be running " + e.getMessage());
-			System.exit(1); // Give up.
-		}
-		
-		this.sendDataToServer(name);
-
-		new ClientListner(this.server).start();
+		Events.on(ConnectionAttemptEvent.class, this::connectToServer);	
 	}
 	
 	/**
@@ -47,7 +33,25 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
-	
+	 public void connectToServer(ConnectionAttemptEvent event){
+		 String name = event.name;
+		 int port = 8942;
+			String hostname = "localhost";
+		 try {
+				this.server = new Socket(hostname, port);
+				System.out.println("Client Connected To Server!");
+			} catch (UnknownHostException e) {
+				System.err.println("Unknown host: " + hostname);
+				System.exit(1); // Give up.
+			} catch (IOException e) {
+				System.err.println("The server doesn't seem to be running " + e.getMessage());
+				System.exit(1); // Give up.
+			}
+			
+			this.sendDataToServer(name);
+
+			new ClientListner(this.server).start();
+	 }
 	
 	/**
 	 * FOR TESTING!!!

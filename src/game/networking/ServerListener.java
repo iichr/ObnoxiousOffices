@@ -30,6 +30,7 @@ public class ServerListener extends Thread {
 		this.connections = connection;
 		try {
 			this.world = World.load(Paths.get("data/office4player.level"), 4);
+			World.world = this.world;
 		} catch (IOException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
