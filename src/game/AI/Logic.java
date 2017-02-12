@@ -24,8 +24,11 @@ public interface Logic {
 	/**
 	 * Tells the bot/bots what to do while the player is working on his own
 	 * project.
+	 * 
+	 * @param w
+	 *            the world containing all players
 	 */
-	public void reactToPlayerWork();
+	public void reactToPlayerWork(World w);
 
 	/**
 	 * Tells the bot/bots what to do while the player is trying to hack
@@ -106,4 +109,14 @@ public interface Logic {
 	 *            the world of the player
 	 */
 	public void toTheDesk(World w, Player p);
+
+	/**
+	 * Checks all players and the work load they have completed. Then compare them to the AI palyer.
+	 * 
+	 * @param w
+	 *            the world where the players complete
+	 * @return the player who is closest to completing his project, and if the
+	 *         AI player is closest to the goal, return NULL
+	 */
+	public Player closestToWin(World w);
 }

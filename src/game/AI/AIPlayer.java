@@ -11,7 +11,10 @@ import game.core.world.World;
  */
 
 public class AIPlayer extends Player {
-
+	
+	//field that separates AI players from normal players
+	static final boolean amAI = true;
+	
 	//constructor from Player class
 	public AIPlayer(String name, Direction facing, Location location) {
 		super(name, facing, location);

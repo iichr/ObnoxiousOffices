@@ -30,8 +30,7 @@ public class LogicEasy implements Logic {
 	}
 
 	@Override
-	public void reactToPlayerWork() {
-		// TODO
+	public void reactToPlayerWork(World w) {		
 	}
 
 	@Override
@@ -194,4 +193,33 @@ public class LogicEasy implements Logic {
 			return true;
 		return false;
 	}
+
+	@Override
+	public Player closestToWin(World w) {
+		/*
+		//get all players from the world
+		Set<Player> players = w.getPlayers();
+		
+		Player winner = null; //the player who has done most towards completing his project
+		
+		double highestProgr = 0; //progress of the player with highest progress
+		
+		//compare the work each player has completed
+		for (Player player : players) {
+			//get the progress of the current player in the set
+			double currentPlayerProgress = player.getProgress();
+			//if the current player has done more than the previous one, set this player as the winner
+			if (currentPlayerProgress > highestProgr) { 
+				winner = player; //set the current player as the winner player 
+				highestProgr = player.getProgress(); //set the current player's progress as the highest
+			}
+		}
+		
+		if
+		 */
+		return null;
+	}
+
+
+
 }
