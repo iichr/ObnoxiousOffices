@@ -33,6 +33,8 @@ public class ServerListener extends Thread {
 	private ObjectOutputStream os;
 	public World world;
 
+	public static final int NUM_PLAYERS = 4;
+
 	public ServerListener(Socket socket, ArrayList<Player> hash, ArrayList<ServerListener> connection) {
 		Events.on(PlayerRotatedEvent.class, this::sendToAllClients);
 		Events.on(PlayerProgressUpdateEvent.class, this::sendToAllClients);
@@ -46,7 +48,7 @@ public class ServerListener extends Thread {
 		this.socket = socket;
 		this.connections = connection;
 		try {
-			this.world = World.load(Paths.get("data/office4player.level"), 4);
+			this.world = World.load(Paths.get("data/office" + NUM_PLAYERS + "player.level"), NUM_PLAYERS);
 			World.world = this.world;
 		} catch (IOException e2) {
 			// TODO Auto-generated catch block
@@ -72,7 +74,7 @@ public class ServerListener extends Thread {
 	public void run() {
 		boolean running = true;
 		while (running) {
-			if (this.playerTable.size() < 4) {
+			if (this.playerTable.size() < NUM_PLAYERS) {
 				try {
 					String playerName = is.readObject().toString();
 					this.addPlayerToGame(playerName);
@@ -86,7 +88,7 @@ public class ServerListener extends Thread {
 				 * (this.playerTable.size() == 3) { Events.trigger(new
 				 * CreateAIPlayerRequest()); }
 				 */
-				if (this.playerTable.size() == 4) {
+				if (this.playerTable.size() == NUM_PLAYERS) {
 					for (int i = 0; i < playerTable.size(); i++) {
 						Player p = playerTable.get(i);
 						world.addPlayer(p);
