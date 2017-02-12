@@ -32,8 +32,9 @@ public class Play extends BasicGameState {
 	// private String mouseCoords = "No input yet!";
 
 	// world information
-	private World world;
+	protected World world;
 	private HashMap<Player, PlayerAnimation> playerMap;
+	protected String localPlayerName;
 
 	// tile information
 	private float tileWidth;
@@ -100,7 +101,7 @@ public class Play extends BasicGameState {
 	 */
 	public void playSetup(World world) {
 		this.world = world;
-
+		this.localPlayerName = Player.localPlayerName;
 		
 	}
 
@@ -148,7 +149,7 @@ public class Play extends BasicGameState {
 
 		// get players
 		Set<Player> players = world.getPlayers();
-		playerOverview = new PlayerContainer(world,10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
+		playerOverview = new PlayerContainer(world, localPlayerName,10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
 		playerinfo= new PlayerInfo(world);
 		
 		// check every position in the world to render what is needed at that
@@ -238,19 +239,19 @@ public class Play extends BasicGameState {
 			showOverview = true;
 			break;
 		case Input.KEY_UP:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_UP, Player.localPlayerName));
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_UP, localPlayerName));
 			break;
 		case Input.KEY_DOWN:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_DOWN, Player.localPlayerName));
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_DOWN, localPlayerName));
 			break;
 		case Input.KEY_RIGHT:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_RIGHT, Player.localPlayerName));
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_RIGHT, localPlayerName));
 			break;
 		case Input.KEY_LEFT:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_LEFT, Player.localPlayerName));
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_LEFT, localPlayerName));
 			break;
 		case Input.KEY_E:
-			Events.trigger(new PlayerInputEvent(InputType.INTERACT, Player.localPlayerName));
+			Events.trigger(new PlayerInputEvent(InputType.INTERACT, localPlayerName));
 			break;
 		case Input.KEY_B:
 			effectOverview.activate();

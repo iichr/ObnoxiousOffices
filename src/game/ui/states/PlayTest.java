@@ -40,6 +40,13 @@ public class PlayTest extends Play{
 
 		playSetup(w);
 	}
+	
+	@Override
+	public void playSetup(World world) {
+		this.world = world;
+		this.localPlayerName = Player.localPlayerName;
+		
+	}
 
 	/**
 	 * Testing method used to create a fake world
@@ -59,6 +66,7 @@ public class PlayTest extends Play{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		World.world = w;
 		return w;
 	}
 
@@ -76,39 +84,10 @@ public class PlayTest extends Play{
 			int x = r.nextInt(w.xSize);
 			int y = r.nextInt(w.ySize - 1);
 			Location l = new Location(x, y, w);
-			Test.localPlayer = new Player("0", Direction.SOUTH, l);
-			Test.localPlayer.setHair(Player.BLONDE);
-			w.addPlayer(Test.localPlayer);
+			Player testPlayer = new Player("Test_Player", Direction.SOUTH, l);
+			testPlayer.setHair(Player.BLONDE);
+			Test.localPlayer = testPlayer.name;
+			w.addPlayer(testPlayer);
 		return w;
-	}
-	
-	@Override
-	public void keyPressed(int key, char c) {
-		switch (key) {
-		case Input.KEY_ESCAPE:
-			paused = true;
-			break;
-		case Input.KEY_TAB:
-			showOverview = true;
-			break;
-		case Input.KEY_UP:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_UP, Test.localPlayer.name));
-			break;
-		case Input.KEY_DOWN:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_DOWN, Test.localPlayer.name));
-			break;
-		case Input.KEY_RIGHT:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_RIGHT, Test.localPlayer.name));
-			break;
-		case Input.KEY_LEFT:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_LEFT, Test.localPlayer.name));
-			break;
-		case Input.KEY_E:
-			Events.trigger(new PlayerInputEvent(InputType.INTERACT, Test.localPlayer.name));
-			break;
-		case Input.KEY_B:
-			effectOverview.activate();
-			break;
-		}
 	}
 }

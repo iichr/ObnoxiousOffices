@@ -7,7 +7,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Rectangle;
 
 import game.core.player.Player;
-import game.core.test.Test;
 import game.core.world.World;
 
 /**
@@ -23,10 +22,10 @@ public class PlayerContainer extends Rectangle {
 
 	// player names
 	private String p1 = "Player 1";
-	private String p2 ;
-	private String p3 ;
-	private String p4 ;
-	private String[] others = new String[]{"Player 2","Player 3","Player 4"};
+	private String p2;
+	private String p3;
+	private String p4;
+	private String[] others = new String[] { "Player 2", "Player 3", "Player 4" };
 	private int i;
 
 	private Set<Player> players;
@@ -41,6 +40,7 @@ public class PlayerContainer extends Rectangle {
 	 * A constructor for the player status container
 	 * 
 	 * @param world
+	 * @param localPlayerName
 	 * @param x
 	 *            X coord
 	 * @param y
@@ -58,8 +58,8 @@ public class PlayerContainer extends Rectangle {
 	 * @param i4
 	 *            Player 4's avatar.
 	 */
-	public PlayerContainer(World world, float x, float y, float width, float height, Image i1, Image i2, Image i3,
-			Image i4) {
+	public PlayerContainer(World world, String localPlayerName, float x, float y, float width, float height, Image i1,
+			Image i2, Image i3, Image i4) {
 		super(x, y, width, height);
 		this.i1 = resize(i1);
 		this.i2 = resize(i2);
@@ -67,10 +67,8 @@ public class PlayerContainer extends Rectangle {
 		this.i4 = resize(i4);
 		this.world = world;
 		players = world.getPlayers();
-		p1 = Test.localPlayer.name;
-		players.remove(Test.localPlayer);
-		if (!players.isEmpty()) {
-			for (Player p : players) {
+		for (Player p : players) {
+			if (!p.name.equals(localPlayerName)) {
 				others[i] = p.name;
 				i++;
 			}
