@@ -21,6 +21,10 @@ public class Player implements Updateable, Serializable {
     private Direction facing;
     private Location location;
 
+    public boolean isAI = false;
+    
+    public static Player localPlayer;
+
     public Player(String name, Direction facing, Location location) {
         this.name = name;
         this.facing = facing;
