@@ -1,8 +1,10 @@
 package game.core.ifc;
 
+import game.DevWars;
 import game.core.event.Event;
 import game.core.player.Player;
 import game.core.world.World;
+import game.networking.Server;
 
 /**
  * Created by samtebbs on 11/02/2017.
@@ -23,10 +25,7 @@ public class Net {
     }
 
     public static void sendToServer(Event event) {
-        if (isClient) {
-            // TODO: Implement with net code on integration branch
-            // client.sendDataToServer
-        }
+        if (isClient) DevWars.client.sendDataToServer(event);
     }
 
     public static void initServer() {

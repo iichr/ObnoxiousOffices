@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import game.core.player.Player;
 
 public class Server {
+
+	public static Server server;
 	
 	//private ArrayList<Player> playerTable;
 	private ArrayList<Player> playerTable;
@@ -56,7 +58,7 @@ public class Server {
 	 * @param args
 	 */
 	public static void main(String[] args){
-		new Server();
+		server = new Server();
 	}
 
 }
