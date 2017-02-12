@@ -2,6 +2,7 @@ package game.ui;
 
 import java.io.File;
 
+import game.core.world.World;
 import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -59,6 +60,7 @@ public class Game extends StateBasedGame {
 	}
 	
 	public void onGameStart(GameStartedEvent event) {
+		World.world = event.world;
 		playState.playSetup(event.world);
 		this.enterState(Vals.PLAY_STATE);
 	}
