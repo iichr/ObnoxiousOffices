@@ -1,6 +1,7 @@
 package game.core.player;
 
 import game.core.Updateable;
+import game.core.event.Events;
 import game.core.event.PlayerMovedEvent;
 import game.core.event.PlayerProgressUpdateEvent;
 import game.core.event.PlayerRotatedEvent;
@@ -20,6 +21,8 @@ public class Player implements Updateable, Serializable {
     private double progress = 0;
     private Direction facing;
     private Location location;
+
+    public boolean isAI = false;
     
     public static Player localPlayer;
 
@@ -51,7 +54,7 @@ public class Player implements Updateable, Serializable {
      */
     public void setFacing(Direction facing) {
         this.facing = facing;
-        Net.broadcast(new PlayerRotatedEvent(facing, this.name));
+        Events.trigger(new PlayerRotatedEvent(facing, this.name));
     }
 
     /**
@@ -61,7 +64,7 @@ public class Player implements Updateable, Serializable {
     public void setLocation(Location location) {
         Location diff = location.diff(this.location);
         this.location = location;
-        Net.broadcast(new PlayerMovedEvent(diff.x, diff.y, diff.z, this.name));
+        Events.trigger(new PlayerMovedEvent(diff.x, diff.y, diff.z, this.name));
     }
 
     public Location getLocation() {

@@ -31,7 +31,7 @@ public class PlayerStatus implements Serializable {
      */
     public void addEffect(PlayerEffect effect) {
         effects.add(effect);
-        Net.broadcast(new PlayerEffectAddedEvent(effect, player.name));
+        Events.trigger(new PlayerEffectAddedEvent(effect, player.name));
     }
 
     /**
@@ -41,16 +41,16 @@ public class PlayerStatus implements Serializable {
     public void addAction(PlayerAction action) {
         actions.add(action);
         action.start();
-        Net.broadcast(new PlayerActionAddedEvent(action, player.name));
+        Events.trigger(new PlayerActionAddedEvent(action, player.name));
     }
 
     public void update(Player player) {
         Set<PlayerAction> actions2 = Updateable.updateAll(actions);
-        actions2.forEach(a -> Net.broadcast(new PlayerActionEndedEvent(a, player.name)));
+        actions2.forEach(a -> Events.trigger(new PlayerActionEndedEvent(a, player.name)));
         actions.removeAll(actions2);
 
         Set<PlayerEffect> effects2 = Updateable.updateAll(effects);
-        effects2.forEach(e -> Net.broadcast(new PlayerEffectEndedEvent(e, player.name)));
+        effects2.forEach(e -> Events.trigger(new PlayerEffectEndedEvent(e, player.name)));
         effects.removeAll(effects2);
     }
 
@@ -62,7 +62,7 @@ public class PlayerStatus implements Serializable {
      */
     public void setAttribute(PlayerAttribute attribute, double val) {
         attributes.put(attribute, Math.max(0, Math.min(val, attribute.maxVal)));
-        Net.broadcast(new PlayerAttributeChangedEvent(val, player.name, attribute));
+        Events.trigger(new PlayerAttributeChangedEvent(val, player.name, attribute));
     }
 
     /**
