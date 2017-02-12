@@ -12,6 +12,10 @@ import java.util.Collection;
  */
 public class TileTypeFish extends TileType {
 
+    public TileTypeFish(int id) {
+        super(id);
+    }
+
     @Override
     public void onWalkOver(Player player) {
 

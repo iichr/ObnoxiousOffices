@@ -7,6 +7,7 @@ import game.core.world.tile.TilePrototype;
 import game.core.world.tile.TileType;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -16,13 +17,15 @@ import java.util.stream.IntStream;
 /**
  * Created by samtebbs on 19/01/2017.
  */
-public class World implements Updateable {
+public class World implements Updateable, Serializable {
 
     private final Set<Player> players;
     private final int maxPlayers;
     private final Tile[][][] tiles;
     public final int xSize, ySize, zSize;
     // TODO: Add preset spawn points
+
+    public static World world;
 
     public World(int maxPlayers, int sizeX, int sizeY, int sizeZ) {
         this.tiles = new Tile[sizeX][sizeY][sizeZ];
@@ -34,6 +37,10 @@ public class World implements Updateable {
     }
 
     // TODO: getSpawnPoint(int i) = spawnPoints[i]
+
+    public Player getPlayer(String name) {
+        return players.stream().filter(p -> p.name.equals(name)).findFirst().orElse(null);
+    }
 
     public void addPlayer(Player player) {
         if(players.size() < maxPlayers) players.add(player);

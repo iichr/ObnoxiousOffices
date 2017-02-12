@@ -19,6 +19,7 @@ public class Events {
 
     private static <T extends Event> void invoke(Consumer c, T event) {
         Thread thread = new Thread(() -> c.accept(event));
+        thread.run();
     }
 
     public static <T extends Event> void on(Class<? extends Event> eventClass, Consumer<T> method) {
