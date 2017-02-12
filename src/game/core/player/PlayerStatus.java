@@ -2,7 +2,6 @@ package game.core.player;
 
 import game.core.Updateable;
 import game.core.event.*;
-import game.core.ifc.Net;
 import game.core.player.action.PlayerAction;
 import game.core.player.effect.PlayerEffect;
 

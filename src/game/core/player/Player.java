@@ -5,7 +5,6 @@ import game.core.event.Events;
 import game.core.event.PlayerMovedEvent;
 import game.core.event.PlayerProgressUpdateEvent;
 import game.core.event.PlayerRotatedEvent;
-import game.core.ifc.Net;
 import game.core.world.Direction;
 import game.core.world.Location;
 
@@ -119,7 +118,7 @@ public class Player implements Updateable, Serializable {
             onProgressDone();
             this.progress = 0;
         }
-        Net.broadcast(new PlayerProgressUpdateEvent(diff, this.name));
+        Events.trigger(new PlayerProgressUpdateEvent(diff, this.name));
     }
 
     public double getProgress() {
