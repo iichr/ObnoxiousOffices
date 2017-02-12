@@ -8,7 +8,6 @@ import org.newdawn.slick.state.*;
 
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
-import game.core.ifc.Net;
 import game.ui.interfaces.Vals;
 import game.ui.states.CharacterSelect;
 import game.ui.states.Intro;
@@ -99,7 +98,6 @@ public class Game extends StateBasedGame {
 	}
 
 	public static void main(String[] args) {
-		Net.initClient();
 		init();
 	}
 
