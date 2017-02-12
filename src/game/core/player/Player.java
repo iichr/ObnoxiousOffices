@@ -20,10 +20,16 @@ public class Player implements Updateable, Serializable {
     private double progress = 0;
     private Direction facing;
     private Location location;
+    
+    private int hair = BLONDE;
 
     public boolean isAI = false;
     
     public static Player localPlayer;
+    public static int BLONDE = 0;
+    public static int BROWN = 1;
+    public static int DARK = 2;
+    public static int PINK = 3;
 
     public Player(String name, Direction facing, Location location) {
         this.name = name;
@@ -165,4 +171,12 @@ public class Player implements Updateable, Serializable {
     public int hashCode() {
         return name.hashCode();
     }
+
+	public int getHair() {
+		return hair;
+	}
+
+	public void setHair(int hair) {
+		this.hair = hair;
+	}
 }
