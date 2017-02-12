@@ -24,7 +24,11 @@ public class Events {
 
     public static <T extends Event> void on(Class<? extends Event> eventClass, Consumer<T> method) {
         if(subscribers.containsKey(eventClass)) subscribers.get(eventClass).add(method);
-        else subscribers.put(eventClass, Arrays.asList(method));
+        else {
+            List<Consumer> list = new ArrayList<>();
+            list.add(method);
+            subscribers.put(eventClass, list);
+        }
     }
 
 }

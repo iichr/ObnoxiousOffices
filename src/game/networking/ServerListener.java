@@ -132,7 +132,7 @@ public class ServerListener extends Thread {
 	 * @param obj
 	 *            The info to send
 	 */
-	private void sendToAllClients(Object obj) {
+	public void sendToAllClients(Object obj) {
 		for (int i = 0; i < this.connections.size(); i++) {
 			this.connections.get(i).forwardInfo(obj);
 			;
@@ -159,7 +159,7 @@ public class ServerListener extends Thread {
 			e.printStackTrace();
 		}
 	}
-	private void sendToOne(Object recieved, String name) {
+	public void sendToOne(Object recieved, String name) {
 		for (int i = 0; i < this.playerTable.size(); i++) {
 			if(this.playerTable.get(i).name.equals(name)){
 				try {
@@ -182,7 +182,8 @@ public class ServerListener extends Thread {
 	 */
 	private void addPlayerToGame(String name) {
 		if (!this.playerNameUsed(name)) {
-			Player playerObject = new Player(name, Direction.SOUTH, null);
+			int playerNumber = playerTable.size();
+			Player playerObject = new Player(name, Direction.SOUTH, world.getSpawnPoint(playerNumber));
 			this.playerTable.add(playerObject);
 			System.out.println("PLayer " + name + " added to the game!");
 			PlayerCreatedEvent event = new PlayerCreatedEvent(playerObject);

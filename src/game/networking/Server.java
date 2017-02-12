@@ -12,7 +12,7 @@ public class Server {
 	
 	//private ArrayList<Player> playerTable;
 	private ArrayList<Player> playerTable;
-	private ArrayList<ServerListener> connections;
+	public ArrayList<ServerListener> connections;
 	private ServerSocket serverSocket = null;
 	
 	public Server(){
