@@ -29,6 +29,7 @@ public class Net {
 
     public static void initServer() {
         isClient = false;
+        ServerSync.init();
     }
 
     public static void initClient() {
