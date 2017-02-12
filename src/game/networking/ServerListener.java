@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import game.core.event.Event;
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
+import game.core.event.PlayerCreatedEvent;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -60,6 +61,7 @@ public class ServerListener extends Thread {
 					String playerName = is.readObject().toString();
 					// System.out.println(playerName);
 					this.addPlayerToGame(playerName);
+		
 					// this.sendToAllClients("Player " + playerName + " has
 					// joined the game!");
 				} catch (ClassNotFoundException e) {
@@ -147,6 +149,20 @@ public class ServerListener extends Thread {
 			e.printStackTrace();
 		}
 	}
+	private void sendToOne(Object recieved, String name) {
+		for (int i = 0; i < this.playerTable.size(); i++) {
+			if(this.playerTable.get(i).name == name){
+				try {
+					os.writeObject(recieved);
+					os.flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		}
+	}
 
 	/**
 	 * Adds a player to the game.
@@ -156,8 +172,12 @@ public class ServerListener extends Thread {
 	 */
 	private void addPlayerToGame(String name) {
 		if (!this.playerNameUsed(name)) {
-			this.playerTable.add(new Player(name, Direction.SOUTH, null));
+			Player playerObject = new Player(name, Direction.SOUTH, null);
+			this.playerTable.add(playerObject);
 			System.out.println("PLayer " + name + " added to the game!");
+			PlayerCreatedEvent event = new PlayerCreatedEvent(playerObject);
+			Events.trigger(event);
+			sendToOne(event, name);
 		} else {
 			System.out.println("Player " + name + " has already been added to the game!");
 		}
