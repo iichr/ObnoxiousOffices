@@ -72,7 +72,7 @@ public class Play extends BasicGameState {
 
 		// PlayerContainer container
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
-		playerOverview = new PlayerContainer(10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
+		
 	}
 
 	@Override
@@ -100,6 +100,8 @@ public class Play extends BasicGameState {
 	 */
 	public void playSetup(World world) {
 		this.world = world;
+
+		
 	}
 
 	/**
@@ -149,7 +151,9 @@ public class Play extends BasicGameState {
 
 		// get players
 		Set<Player> players = world.getPlayers();
-		playerinfo= new PlayerInfo( world);
+		playerOverview = new PlayerContainer(world,10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
+		playerinfo= new PlayerInfo(world);
+		
 		// check every position in the world to render what is needed at that
 		// location
 

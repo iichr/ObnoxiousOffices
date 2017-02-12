@@ -1,48 +1,83 @@
 package game.ui;
 
+import java.util.Set;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Rectangle;
 
+import game.core.player.Player;
+import game.core.test.Test;
+import game.core.world.World;
+
 /**
- * The player status container to appear on the left of the screen
- * upon invocation with the TAB key.
+ * The player status container to appear on the left of the screen upon
+ * invocation with the TAB key.
+ * 
  * @author iichr
  *
  */
 public class PlayerContainer extends Rectangle {
 
 	private static final long serialVersionUID = 7035477320220180349L;
-	
+
 	// player names
 	private String p1 = "Player 1";
-	private String p2 = "Player 2";
-	private String p3 = "Player 3";
-	private String p4 = "Player 4";
-	
+	private String p2 ;
+	private String p3 ;
+	private String p4 ;
+	private String[] others = new String[]{"Player 2","Player 3","Player 4"};
+	private int i;
+
+	private Set<Player> players;
+	private World world;
 	// player avatars
 	private Image i1, i2, i3, i4;
-	
+
 	// String padding
 	private int pad = 10;
 
 	/**
 	 * A constructor for the player status container
-	 * @param x X coord
-	 * @param y Y coord
-	 * @param width Width of container
-	 * @param height Height of container
-	 * @param i1 Player 1's avatar
-	 * @param i2 Player 2's avatar
-	 * @param i3 Player 3's avatar
-	 * @param i4 Player 4's avatar.
+	 * 
+	 * @param world
+	 * @param x
+	 *            X coord
+	 * @param y
+	 *            Y coord
+	 * @param width
+	 *            Width of container
+	 * @param height
+	 *            Height of container
+	 * @param i1
+	 *            Player 1's avatar
+	 * @param i2
+	 *            Player 2's avatar
+	 * @param i3
+	 *            Player 3's avatar
+	 * @param i4
+	 *            Player 4's avatar.
 	 */
-	public PlayerContainer(float x, float y, float width, float height, Image i1, Image i2, Image i3, Image i4) {
+	public PlayerContainer(World world, float x, float y, float width, float height, Image i1, Image i2, Image i3,
+			Image i4) {
 		super(x, y, width, height);
-		this.i1 = i1.getScaledCopy((int) width / 2, setImgHeight());
-		this.i2 = i2.getScaledCopy((int) width / 2, setImgHeight());
-		this.i3 = i3.getScaledCopy((int) width / 2, setImgHeight());
-		this.i4 = i4.getScaledCopy((int) width / 2, setImgHeight());
+		this.i1 = resize(i1);
+		this.i2 = resize(i2);
+		this.i3 = resize(i3);
+		this.i4 = resize(i4);
+		this.world = world;
+		players = world.getPlayers();
+		p1 = Test.localPlayer.name;
+		players.remove(Test.localPlayer);
+		if (!players.isEmpty()) {
+			for (Player p : players) {
+				others[i] = p.name;
+				i++;
+			}
+		}
+		p2 = others[0];
+		p3 = others[1];
+		p4 = others[2];
 	}
 
 	// TODO
@@ -53,8 +88,12 @@ public class PlayerContainer extends Rectangle {
 
 	/**
 	 * Render the status container.
-	 * @param g The graphics context
-	 * @param invoked Whether it has been invoked by the user or not. !! Used to update as well.
+	 * 
+	 * @param g
+	 *            The graphics context
+	 * @param invoked
+	 *            Whether it has been invoked by the user or not. !! Used to
+	 *            update as well.
 	 */
 	public void render(Graphics g, boolean invoked) {
 		if (invoked) {
@@ -78,6 +117,7 @@ public class PlayerContainer extends Rectangle {
 
 	/**
 	 * Set image height proportional to the rectangle container's size
+	 * 
 	 * @return Height of a single avatar.
 	 */
 	int setImgHeight() {
@@ -86,19 +126,31 @@ public class PlayerContainer extends Rectangle {
 
 	/**
 	 * Get the height of a player's avatar.
-	 * @param img The image
+	 * 
+	 * @param img
+	 *            The image
 	 * @return Height of said image
 	 */
-	int getImgHeight(Image img) {
+	private int getImgHeight(Image img) {
 		return img.getHeight();
 	}
 
 	/**
 	 * Get the width of a player's avatar.
-	 * @param img The image
+	 * 
+	 * @param img
+	 *            The image
 	 * @return Width of said image
 	 */
-	int getImgWidth(Image img) {
+	private int getImgWidth(Image img) {
 		return img.getWidth();
+	}
+
+	/**
+	 * 
+	 * 
+	 */
+	private Image resize(Image img) {
+		return img.getScaledCopy((int) img.getWidth() / 2, setImgHeight());
 	}
 }
