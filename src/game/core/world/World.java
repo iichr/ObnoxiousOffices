@@ -23,7 +23,7 @@ public class World implements Updateable, Serializable {
     private final int maxPlayers;
     private final Tile[][][] tiles;
     public final int xSize, ySize, zSize;
-    // TODO: Add preset spawn points
+    private List<Location> spawnPoints = new ArrayList<>();
 
     public static World world;
 
@@ -36,7 +36,9 @@ public class World implements Updateable, Serializable {
         xSize = sizeX;
     }
 
-    // TODO: getSpawnPoint(int i) = spawnPoints[i]
+    public Location getSpawnPoint(int i) {
+        return spawnPoints.get(i);
+    }
 
     public Player getPlayer(String name) {
         return players.stream().filter(p -> p.name.equals(name)).findFirst().orElse(null);
@@ -118,9 +120,9 @@ public class World implements Updateable, Serializable {
      * @return
      */
     public static World load(String[] lines, int maxPlayers) {
-        int i = Arrays.asList(lines).indexOf("###");
+        int i = Arrays.asList(lines).indexOf("###"), i2 = Arrays.asList(lines).lastIndexOf("###");
         if (i < 0) return null;
-        String[] aliasLines = Arrays.copyOfRange(lines, i+1, lines.length), worldLines = Arrays.copyOfRange(lines, 0, i);
+        String[] aliasLines = Arrays.copyOfRange(lines, i+1, i2), worldLines = Arrays.copyOfRange(lines, 0, i), spawnLines = Arrays.copyOfRange(lines, i2+1, lines.length);
 
         // Read tile aliases
         HashMap<String, TilePrototype> aliases = new HashMap<>();
@@ -148,7 +150,16 @@ public class World implements Updateable, Serializable {
                 });
             });
         });
+
+        Arrays.stream(spawnLines).forEach(l -> {
+            int[] coords = Arrays.stream(l.split(",")).mapToInt(Integer::parseInt).toArray();
+            world.addSpawnPoint(new Location(coords[0], coords[1], coords[2], world));
+        });
         return world;
+    }
+
+    private void addSpawnPoint(Location location) {
+        spawnPoints.add(location);
     }
 
     public static World load(Path path, int maxPlayers) throws IOException {
