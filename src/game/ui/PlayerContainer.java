@@ -67,6 +67,7 @@ public class PlayerContainer extends Rectangle {
 		this.i4 = resize(i4);
 		this.world = world;
 		players = world.getPlayers();
+		p1 = localPlayerName;
 		for (Player p : players) {
 			if (!p.name.equals(localPlayerName)) {
 				others[i] = p.name;
