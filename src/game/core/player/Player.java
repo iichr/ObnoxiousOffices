@@ -20,6 +20,8 @@ public class Player implements Updateable, Serializable {
     private double progress = 0;
     private Direction facing;
     private Location location;
+    
+    public static Player localPlayer;
 
     public Player(String name, Direction facing, Location location) {
         this.name = name;
