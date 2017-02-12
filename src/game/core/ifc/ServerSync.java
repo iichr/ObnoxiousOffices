@@ -35,7 +35,7 @@ public class ServerSync {
                 direction = Direction.SOUTH;
                 break;
             case MOVE_LEFT:
-                direction = Direction.WEST
+                direction = Direction.WEST;
                 break;
             case MOVE_RIGHT:
                 direction = Direction.EAST;
