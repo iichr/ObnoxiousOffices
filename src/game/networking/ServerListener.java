@@ -7,18 +7,7 @@ import java.net.Socket;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import game.core.event.Event;
-import game.core.event.Events;
-import game.core.event.GameStartedEvent;
-import game.core.event.PlayerActionAddedEvent;
-import game.core.event.PlayerActionEndedEvent;
-import game.core.event.PlayerAttributeChangedEvent;
-import game.core.event.PlayerCreatedEvent;
-import game.core.event.PlayerEffectAddedEvent;
-import game.core.event.PlayerEffectEndedEvent;
-import game.core.event.PlayerMovedEvent;
-import game.core.event.PlayerProgressUpdateEvent;
-import game.core.event.PlayerRotatedEvent;
+import game.core.event.*;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -42,6 +31,9 @@ public class ServerListener extends Thread {
 		Events.on(PlayerEffectAddedEvent.class,this::sendToAllClients);
 		Events.on(PlayerEffectEndedEvent.class,this::sendToAllClients);
 		Events.on(PlayerAttributeChangedEvent.class,this::sendToAllClients);
+
+		Events.on(ConnectionAttemptEvent.class, this::processConnectionAttempt);
+
 		this.playerTable = hash;
 		this.socket = socket;
 		this.connections = connection;
@@ -68,62 +60,22 @@ public class ServerListener extends Thread {
 
 	}
 
+	private void processConnectionAttempt(ConnectionAttemptEvent event) {
+		if(playerTable.size() < 4) addPlayerToGame(event.name);
+		if(playerTable.size() == 4) sendToAllClients(new GameStartedEvent(world));
+	}
+
 	@Override
 	public void run() {
-		boolean running = true;
-		while (running) {
-			if (this.playerTable.size() < 4) {
-				try {
-					String playerName = is.readObject().toString();
-					// System.out.println(playerName);
-					this.addPlayerToGame(playerName);
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				/*
-				 * //Allows hard coded AI player to be added for prototype if
-				 * (this.playerTable.size() == 3) { Events.trigger(new
-				 * CreateAIPlayerRequest()); }
-				 */
-				if (this.playerTable.size() == 4) {
-					for(int i = 0; i < playerTable.size(); i++){
-						Player p = playerTable.get(i);
-						p.setLocation(new Location(i, i, world));
-						world.addPlayer(p);
-					}
-					Events.trigger(new GameStartedEvent(world));
-					sendToAllClients(new GameStartedEvent(world));
-				}
-			} else {
-				try {
-					Event eventObject = (Event) is.readObject();
-					//this.sendToAllClients(eventObject);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
+		while (true) {
+			Event eventObject = null;
+			try {
+				eventObject = (Event) is.readObject();
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
 			}
+			Events.trigger(eventObject);
 		}
-		// this.forwardInfo("Hello");
-
-		// // This is so that we can use readLine():
-		// BufferedReader fromClient = new BufferedReader(new
-		// InputStreamReader(socket.getInputStream()));
-		//
-		// // Ask the client what its name is:
-		// String clientName = fromClient.readLine();
-		// // For debugging:
-		// System.out.println(clientName + " connected");
-		//
-		// // We add the client to the table:
-		// this.addPlayerToGame(clientName);
-		//
-		// if(this.playerTable.size() == 4){
-		// System.out.println("Four players Ready");
-		// waiting = false;
-
 	}
 
 	/**
@@ -135,7 +87,6 @@ public class ServerListener extends Thread {
 	public void sendToAllClients(Object obj) {
 		for (int i = 0; i < this.connections.size(); i++) {
 			this.connections.get(i).forwardInfo(obj);
-			;
 		}
 	}
 
@@ -149,7 +100,6 @@ public class ServerListener extends Thread {
 		/*
 		for (int i = 0; i < this.playerTable.size(); i++) {
 			System.out.println(this.playerTable.get(i).name);
-
 		}
 		*/
 
