@@ -146,10 +146,12 @@ public class ServerListener extends Thread {
 	 *            The info to send
 	 */
 	private void forwardInfo(Object recieved) {
+		/*
 		for (int i = 0; i < this.playerTable.size(); i++) {
 			System.out.println(this.playerTable.get(i).name);
 
 		}
+		*/
 
 		try {
 			os.writeObject(recieved);
