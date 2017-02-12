@@ -7,7 +7,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Rectangle;
 
 import game.core.player.Player;
-import game.core.test.Test;
 import game.core.world.World;
 
 /**
@@ -67,8 +66,7 @@ public class PlayerContainer extends Rectangle {
 		this.i4 = resize(i4);
 		this.world = world;
 		players = world.getPlayers();
-		p1 = Test.localPlayer.name;
-		players.remove(Test.localPlayer);
+		p1 = Player.localPlayerName;
 		if (!players.isEmpty()) {
 			for (Player p : players) {
 				others[i] = p.name;
