@@ -7,7 +7,18 @@ import java.net.Socket;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import game.core.event.*;
+import game.core.event.Event;
+import game.core.event.Events;
+import game.core.event.GameStartedEvent;
+import game.core.event.PlayerActionAddedEvent;
+import game.core.event.PlayerActionEndedEvent;
+import game.core.event.PlayerAttributeChangedEvent;
+import game.core.event.PlayerCreatedEvent;
+import game.core.event.PlayerEffectAddedEvent;
+import game.core.event.PlayerEffectEndedEvent;
+import game.core.event.PlayerMovedEvent;
+import game.core.event.PlayerProgressUpdateEvent;
+import game.core.event.PlayerRotatedEvent;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -23,17 +34,14 @@ public class ServerListener extends Thread {
 	public World world;
 
 	public ServerListener(Socket socket, ArrayList<Player> hash, ArrayList<ServerListener> connection) {
-		Events.on(PlayerRotatedEvent.class,this::sendToAllClients);
-		Events.on(PlayerProgressUpdateEvent.class,this::sendToAllClients);
-		Events.on(PlayerMovedEvent.class,this::sendToAllClients);
-		Events.on(PlayerActionAddedEvent.class,this::sendToAllClients);
-		Events.on(PlayerActionEndedEvent.class,this::sendToAllClients);
-		Events.on(PlayerEffectAddedEvent.class,this::sendToAllClients);
-		Events.on(PlayerEffectEndedEvent.class,this::sendToAllClients);
-		Events.on(PlayerAttributeChangedEvent.class,this::sendToAllClients);
-
-		Events.on(ConnectionAttemptEvent.class, this::processConnectionAttempt);
-
+		Events.on(PlayerRotatedEvent.class, this::sendToAllClients);
+		Events.on(PlayerProgressUpdateEvent.class, this::sendToAllClients);
+		Events.on(PlayerMovedEvent.class, this::sendToAllClients);
+		Events.on(PlayerActionAddedEvent.class, this::sendToAllClients);
+		Events.on(PlayerActionEndedEvent.class, this::sendToAllClients);
+		Events.on(PlayerEffectAddedEvent.class, this::sendToAllClients);
+		Events.on(PlayerEffectEndedEvent.class, this::sendToAllClients);
+		Events.on(PlayerAttributeChangedEvent.class, this::sendToAllClients);
 		this.playerTable = hash;
 		this.socket = socket;
 		this.connections = connection;
@@ -60,29 +68,62 @@ public class ServerListener extends Thread {
 
 	}
 
-	private void processConnectionAttempt(ConnectionAttemptEvent event) {
-		System.out.println("recieved connection attempt event");
-		if(playerTable.size() <= 4){
-			System.out.println("adding player" + event.name);
-			addPlayerToGame(event.name);
-		}
-		if(playerTable.size() == 4){
-			System.out.println("sending game started event");
-			sendToAllClients(new GameStartedEvent(world));
-		}
-	}
-
 	@Override
 	public void run() {
-		while (true) {
-			Event eventObject = null;
-			try {
-				eventObject = (Event) is.readObject();
-			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
+		boolean running = true;
+		while (running) {
+			if (this.playerTable.size() < 4) {
+				try {
+					String playerName = is.readObject().toString();
+					// System.out.println(playerName);
+					this.addPlayerToGame(playerName);
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				/*
+				 * //Allows hard coded AI player to be added for prototype if
+				 * (this.playerTable.size() == 3) { Events.trigger(new
+				 * CreateAIPlayerRequest()); }
+				 */
+				if (this.playerTable.size() == 4) {
+					for (int i = 0; i < playerTable.size(); i++) {
+						Player p = playerTable.get(i);
+						p.setLocation(new Location(i, i, world));
+						world.addPlayer(p);
+					}
+					Events.trigger(new GameStartedEvent(world));
+					sendToAllClients(new GameStartedEvent(world));
+				}
+			} else {
+				try {
+					Event eventObject = (Event) is.readObject();
+					// this.sendToAllClients(eventObject);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
 			}
-			Events.trigger(eventObject);
 		}
+		// this.forwardInfo("Hello");
+
+		// // This is so that we can use readLine():
+		// BufferedReader fromClient = new BufferedReader(new
+		// InputStreamReader(socket.getInputStream()));
+		//
+		// // Ask the client what its name is:
+		// String clientName = fromClient.readLine();
+		// // For debugging:
+		// System.out.println(clientName + " connected");
+		//
+		// // We add the client to the table:
+		// this.addPlayerToGame(clientName);
+		//
+		// if(this.playerTable.size() == 4){
+		// System.out.println("Four players Ready");
+		// waiting = false;
+
 	}
 
 	/**
@@ -94,6 +135,7 @@ public class ServerListener extends Thread {
 	public void sendToAllClients(Object obj) {
 		for (int i = 0; i < this.connections.size(); i++) {
 			this.connections.get(i).forwardInfo(obj);
+			;
 		}
 	}
 
@@ -104,6 +146,11 @@ public class ServerListener extends Thread {
 	 *            The info to send
 	 */
 	private void forwardInfo(Object recieved) {
+		for (int i = 0; i < this.playerTable.size(); i++) {
+			System.out.println(this.playerTable.get(i).name);
+
+		}
+
 		try {
 			os.writeObject(recieved);
 			os.flush();
@@ -112,11 +159,17 @@ public class ServerListener extends Thread {
 			e.printStackTrace();
 		}
 	}
-	
-	public void sendToOne(Object obj, String name) {
+
+	public void sendToOne(Object recieved, String name) {
 		for (int i = 0; i < this.playerTable.size(); i++) {
-			if(this.playerTable.get(i).name.equals(name)){
-				this.connections.get(i).forwardInfo(obj);
+			if (this.playerTable.get(i).name.equals(name)) {
+				try {
+					os.writeObject(recieved);
+					os.flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 		}
@@ -130,17 +183,10 @@ public class ServerListener extends Thread {
 	 */
 	private void addPlayerToGame(String name) {
 		if (!this.playerNameUsed(name)) {
-			//creates player
 			int playerNumber = playerTable.size();
 			Player playerObject = new Player(name, Direction.SOUTH, world.getSpawnPoint(playerNumber));
-			playerObject.setHair(playerNumber);
-			
-			//adds player to player table and world
 			this.playerTable.add(playerObject);
-			world.addPlayer(playerObject);
-			System.out.println("Player " + name + " added to the game!");
-			
-			//send player created event to client for that player
+			System.out.println("PLayer " + name + " added to the game!");
 			PlayerCreatedEvent event = new PlayerCreatedEvent(playerObject);
 			Events.trigger(event);
 			sendToOne(event, name);
