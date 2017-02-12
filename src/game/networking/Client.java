@@ -8,13 +8,16 @@ import java.net.UnknownHostException;
 
 import game.core.event.ConnectionAttemptEvent;
 import game.core.event.Events;
+import game.core.event.PlayerCreatedEvent;
+import game.core.player.Player;
 
 public class Client {
 	
 	private Socket server;
 	
 	public Client(){
-		Events.on(ConnectionAttemptEvent.class, this::connectToServer);	
+		Events.on(ConnectionAttemptEvent.class, this::connectToServer);
+		Events.on(PlayerCreatedEvent.class, this::setLocalPlayer);
 	}
 	
 	/**
@@ -53,6 +56,10 @@ public class Client {
 			new ClientListner(this.server).start();
 	 }
 	
+	 public void setLocalPlayer(PlayerCreatedEvent e){
+		 Player.localPlayer = e.localPlayer;
+	 }
+	 
 	/**
 	 * FOR TESTING!!!
 	 * @param args
