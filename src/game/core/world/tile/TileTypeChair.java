@@ -7,6 +7,10 @@ import game.core.player.Player;
  */
 public class TileTypeChair extends TileType {
 
+    public TileTypeChair(int id) {
+        super(id);
+    }
+
     @Override
     public void onWalkOver(Player player) {
 

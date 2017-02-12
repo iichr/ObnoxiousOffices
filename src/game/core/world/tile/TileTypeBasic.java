@@ -7,6 +7,10 @@ import game.core.player.Player;
  */
 public abstract class TileTypeBasic extends TileType {
 
+    public TileTypeBasic(int id) {
+        super(id);
+    }
+
     @Override
     public void onWalkOver(Player player) {
 
