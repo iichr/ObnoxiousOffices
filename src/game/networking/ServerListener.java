@@ -89,10 +89,8 @@ public class ServerListener extends Thread {
 				if (this.playerTable.size() == 4) {
 					for (int i = 0; i < playerTable.size(); i++) {
 						Player p = playerTable.get(i);
-						p.setLocation(new Location(i, i, world));
 						world.addPlayer(p);
 					}
-//					Events.trigger(new GameStartedEvent(world));
 					sendToAllClients(new GameStartedEvent(world));
 				}
 			} else {
@@ -140,13 +138,6 @@ public class ServerListener extends Thread {
 		for (int i = 0; i < this.playerTable.size(); i++) {
 			if (this.playerTable.get(i).name.equals(name)) {
 				this.connections.get(i).forwardInfo(recieved);
-				try {
-					os.writeObject(recieved);
-					os.flush();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 
 		}
@@ -164,10 +155,11 @@ public class ServerListener extends Thread {
 			Player playerObject = new Player(name, Direction.SOUTH, world.getSpawnPoint(playerNumber));
 			playerObject.setHair(playerNumber);
 			this.playerTable.add(playerObject);
-			System.out.println("Player " + name + " added to the game!");
-			PlayerCreatedEvent event = new PlayerCreatedEvent(playerObject);
+			
+			PlayerCreatedEvent event = new PlayerCreatedEvent(name);
 			Events.trigger(event);
 			sendToOne(event, name);
+			System.out.println("Player " + name + " added to the game!");
 		} else {
 			System.out.println("Player " + name + " has already been added to the game!");
 		}

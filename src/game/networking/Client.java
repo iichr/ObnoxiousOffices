@@ -58,7 +58,7 @@ public class Client {
 	}
 
 	public void setLocalPlayer(PlayerCreatedEvent e) {
-		Player.localPlayer = e.localPlayer;
+		Player.localPlayerName = e.localPlayerName;
 	}
 
 }
