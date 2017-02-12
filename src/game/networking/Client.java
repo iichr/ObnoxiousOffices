@@ -39,7 +39,7 @@ public class Client {
 	 public void connectToServer(ConnectionAttemptEvent event){
 		 String name = event.name;
 		 int port = 8942;
-			String hostname = "localhost";
+			String hostname = "192.168.0.32";
 		 try {
 				this.server = new Socket(hostname, port);
 				System.out.println("Client Connected To Server!");
