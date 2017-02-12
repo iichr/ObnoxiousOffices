@@ -27,11 +27,11 @@ public class Net {
         }
     }
 
-    public void initServer() {
+    public static void initServer() {
         isClient = false;
     }
 
-    public void initClient() {
+    public static void initClient() {
         isClient = true;
         ClientSync.init();
     }
