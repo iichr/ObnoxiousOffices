@@ -171,4 +171,12 @@ public class Player implements Updateable, Serializable {
     public int hashCode() {
         return name.hashCode();
     }
+
+	public int getHair() {
+		return hair;
+	}
+
+	public void setHair(int hair) {
+		this.hair = hair;
+	}
 }
