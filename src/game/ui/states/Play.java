@@ -22,6 +22,7 @@ import game.core.world.World;
 import game.core.world.tile.TileType;
 import game.ui.EffectContainer;
 import game.ui.PlayerContainer;
+import game.ui.PlayerInfo;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
@@ -44,6 +45,7 @@ public class Play extends BasicGameState {
 
 	// effect container
 	private EffectContainer effectOverview;
+	private PlayerInfo playerinfo;
 	private Image _avatar, coffee;
 	boolean showOverview = false;
 
@@ -80,7 +82,7 @@ public class Play extends BasicGameState {
 		effectOverview = new EffectContainer(coffee, 10);
 		// setup tile sizes
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
-		tileHeight = 2 * (float) Vals.SCREEN_HEIGHT / (world.ySize + 2);
+		tileHeight = 2 * (float) Vals.SCREEN_HEIGHT / (world.ySize);
 
 		// add player animations
 		animatePlayers(world.getPlayers());
@@ -122,7 +124,8 @@ public class Play extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		drawWorld();
-
+		g.setColor(Color.red);
+		playerinfo.render(g);
 		// add player status container
 		playerOverview.render(g, showOverview);
 
@@ -146,7 +149,7 @@ public class Play extends BasicGameState {
 
 		// get players
 		Set<Player> players = world.getPlayers();
-
+		playerinfo= new PlayerInfo( world);
 		// check every position in the world to render what is needed at that
 		// location
 
