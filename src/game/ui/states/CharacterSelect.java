@@ -16,6 +16,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import game.core.event.ConnectionAttemptEvent;
 import game.core.event.Events;
+import game.core.event.PlayerCreatedEvent;
 import game.ui.buttons.ConnectButton;
 import game.ui.buttons.MenuButton;
 import game.ui.buttons.SelectionButton;
@@ -40,7 +41,7 @@ public class CharacterSelect extends BasicGameState {
 
 	public CharacterSelect(int state) {
 		Events.on(ConnectionAttemptEvent.class, this::showConnecting);
-		// Events.on(ConnectionSuccessfulEvent.class, this::connected);
+		 Events.on(PlayerCreatedEvent.class, this::connected);
 		// Events.on(ConnectionFailedEvent.class, this::connected);
 	}
 
@@ -140,10 +141,10 @@ public class CharacterSelect extends BasicGameState {
 		// show attempting to connect to server text
 	}
 
-	// private void connected(ConnectionSuccessfulEvent e){
-	// connected = true;
-	// show spinning icon and text saying waiting for players
-	// }
+	 private void connected(PlayerCreatedEvent e){
+	 connected = true;
+//	 show spinning icon and text saying waiting for players
+	 }
 
 	// private void connectFail(ConnectionFailedEvent e){
 	// connectFailed = true;
