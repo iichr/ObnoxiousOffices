@@ -13,7 +13,7 @@ public class Client {
 	
 	private Socket server;
 	
-	public Client(String name){
+	public Client(){
 		Events.on(ConnectionAttemptEvent.class, this::connectToServer);	
 	}
 	
@@ -58,10 +58,7 @@ public class Client {
 	 * @param args
 	 */
 	public static void main(String[] args){
-		new Client("Test1");
-		//new Client("Test1");
-		//new Client("Test2");
-		//new Client("Test3");
+		//new Client();
 	}
 
 }
