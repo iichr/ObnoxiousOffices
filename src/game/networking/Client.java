@@ -14,6 +14,7 @@ import game.core.player.Player;
 public class Client {
 
 	private Socket server;
+	ObjectOutputStream od;
 
 	public Client() {
 		Events.on(ConnectionAttemptEvent.class, this::connectToServer);
@@ -29,7 +30,6 @@ public class Client {
 	 */
 	public void sendDataToServer(Object data) {
 		try {
-			ObjectOutputStream od = new ObjectOutputStream(this.server.getOutputStream());
 			od.writeObject(data);
 			od.flush();
 			System.out.println("Data Sent!");
@@ -46,6 +46,11 @@ public class Client {
 
 		try {
 			this.server = new Socket(hostname, port);
+			try {
+				od = new ObjectOutputStream(this.server.getOutputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			System.out.println("Client Connected To Server!");
 		} catch (UnknownHostException e) {
 			System.err.println("Unknown host: " + hostname);
