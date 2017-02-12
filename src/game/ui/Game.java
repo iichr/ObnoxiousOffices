@@ -49,8 +49,8 @@ public class Game extends StateBasedGame {
 		this.addState(chSelectState);
 		pauseState = new Pause(Vals.PAUSE_STATE);
 		this.addState(pauseState);
-		playtestState = new PlayTest(Vals.PLAY_TEST_STATE);
-		this.addState(playtestState);
+		//playtestState = new PlayTest(Vals.PLAY_TEST_STATE);
+		//this.addState(playtestState);
 		
 		Events.on(GameStartedEvent.class, this::onGameStart);
 	}

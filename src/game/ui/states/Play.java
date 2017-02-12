@@ -126,7 +126,7 @@ public class Play extends BasicGameState {
 		g.setColor(Color.red);
 		playerinfo.render(g);
 		// add player status container
-		playerOverview.render(g, showOverview);
+		//playerOverview.render(g, showOverview);
 
 		// add effects overview container
 		effectOverview.render(g);
@@ -148,7 +148,7 @@ public class Play extends BasicGameState {
 
 		// get players
 		Set<Player> players = world.getPlayers();
-		playerOverview = new PlayerContainer(world,10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
+		//playerOverview = new PlayerContainer(world,10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
 		playerinfo= new PlayerInfo(world);
 		
 		// check every position in the world to render what is needed at that
