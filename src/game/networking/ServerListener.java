@@ -75,7 +75,6 @@ public class ServerListener extends Thread {
 			if (this.playerTable.size() < 4) {
 				try {
 					String playerName = is.readObject().toString();
-					// System.out.println(playerName);
 					this.addPlayerToGame(playerName);
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
@@ -93,13 +92,13 @@ public class ServerListener extends Thread {
 						p.setLocation(new Location(i, i, world));
 						world.addPlayer(p);
 					}
-					Events.trigger(new GameStartedEvent(world));
+//					Events.trigger(new GameStartedEvent(world));
 					sendToAllClients(new GameStartedEvent(world));
 				}
 			} else {
 				try {
 					Event eventObject = (Event) is.readObject();
-					// this.sendToAllClients(eventObject);
+					this.sendToAllClients(eventObject);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
