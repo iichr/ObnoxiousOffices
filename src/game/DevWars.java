@@ -1,3 +1,5 @@
+package game;
+
 import game.networking.Client;
 import game.ui.Game;
 
