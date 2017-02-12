@@ -1,5 +1,6 @@
 package game.core.player;
 
+import game.DevWars;
 import game.core.Updateable;
 import game.core.event.Events;
 import game.core.event.PlayerMovedEvent;
@@ -59,7 +60,7 @@ public class Player implements Updateable, Serializable {
      */
     public void setFacing(Direction facing) {
         this.facing = facing;
-        Events.trigger(new PlayerRotatedEvent(facing, this.name));
+        if(!DevWars.isClient()) Events.trigger(new PlayerRotatedEvent(facing, this.name));
     }
 
     /**
@@ -69,7 +70,7 @@ public class Player implements Updateable, Serializable {
     public void setLocation(Location location) {
         Location diff = location.diff(this.location);
         this.location = location;
-        Events.trigger(new PlayerMovedEvent(diff.x, diff.y, diff.z, this.name));
+        if(!DevWars.isClient()) Events.trigger(new PlayerMovedEvent(diff.x, diff.y, diff.z, this.name));
     }
 
     public Location getLocation() {
@@ -124,7 +125,7 @@ public class Player implements Updateable, Serializable {
             onProgressDone();
             this.progress = 0;
         }
-        Events.trigger(new PlayerProgressUpdateEvent(diff, this.name));
+        if(!DevWars.isClient()) Events.trigger(new PlayerProgressUpdateEvent(diff, this.name));
     }
 
     public double getProgress() {
