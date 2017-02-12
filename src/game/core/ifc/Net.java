@@ -12,6 +12,7 @@ public class Net {
     private static boolean isClient;
 
     public static void broadcast(Event event) {
+        // server.sendToAll ????
         if(!isClient) World.world.getPlayers().forEach(p -> send(event, p));
     }
 
@@ -24,6 +25,7 @@ public class Net {
     public static void sendToServer(Event event) {
         if (isClient) {
             // TODO: Implement with net code on integration branch
+            // client.sendDataToServer
         }
     }
 
