@@ -102,7 +102,6 @@ public class Play extends BasicGameState {
 	public void playSetup(World world) {
 		this.world = world;
 		this.localPlayerName = Player.localPlayerName;
-		
 	}
 
 	/**
