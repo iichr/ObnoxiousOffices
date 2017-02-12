@@ -19,9 +19,7 @@ public class Net {
     }
 
     public static void send(Event event, Player player) {
-        if(!isClient) {
-            // TODO: Implement with net code on integration branch
-        }
+        if(!isClient) Server.server.connections.get(0).sendToOne(event, player.name);
     }
 
     public static void sendToServer(Event event) {
