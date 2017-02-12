@@ -5,6 +5,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
 
+import org.newdawn.slick.Input;
+
+import game.core.Input.InputType;
+import game.core.event.Events;
+import game.core.event.PlayerInputEvent;
 import game.core.player.Player;
 import game.core.test.Test;
 import game.core.world.Direction;
@@ -74,5 +79,35 @@ public class PlayTest extends Play{
 			Test.localPlayer = new Player("0", Direction.SOUTH, l);
 			w.addPlayer(Test.localPlayer);
 		return w;
+	}
+	
+	@Override
+	public void keyPressed(int key, char c) {
+		switch (key) {
+		case Input.KEY_ESCAPE:
+			paused = true;
+			break;
+		case Input.KEY_TAB:
+			showOverview = true;
+			break;
+		case Input.KEY_UP:
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_UP, Test.localPlayer.name));
+			break;
+		case Input.KEY_DOWN:
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_DOWN, Test.localPlayer.name));
+			break;
+		case Input.KEY_RIGHT:
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_RIGHT, Test.localPlayer.name));
+			break;
+		case Input.KEY_LEFT:
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_LEFT, Test.localPlayer.name));
+			break;
+		case Input.KEY_E:
+			Events.trigger(new PlayerInputEvent(InputType.INTERACT, Test.localPlayer.name));
+			break;
+		case Input.KEY_B:
+			effectOverview.activate();
+			break;
+		}
 	}
 }
