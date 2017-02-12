@@ -20,6 +20,8 @@ public class Player implements Updateable, Serializable {
     private double progress = 0;
     private Direction facing;
     private Location location;
+
+    public boolean isAI = false;
     
     public static Player localPlayer;
 
