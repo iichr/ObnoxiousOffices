@@ -153,7 +153,7 @@ public class World implements Updateable, Serializable {
 
         Arrays.stream(spawnLines).forEach(l -> {
             int[] coords = Arrays.stream(l.split(",")).mapToInt(Integer::parseInt).toArray();
-            world.addSpawnPoint(new Location(coords[0], coords[1], coords[3], world));
+            world.addSpawnPoint(new Location(coords[0], coords[1], coords[2], world));
         });
         return world;
     }
