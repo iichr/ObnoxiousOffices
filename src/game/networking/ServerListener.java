@@ -137,6 +137,7 @@ public class ServerListener extends Thread {
 			int playerNumber = playerTable.size();
 			Player playerObject = new Player(name, Direction.SOUTH, world.getSpawnPoint(playerNumber));
 			this.playerTable.add(playerObject);
+			world.addPlayer(playerObject);
 			System.out.println("PLayer " + name + " added to the game!");
 			PlayerCreatedEvent event = new PlayerCreatedEvent(playerObject);
 			Events.trigger(event);
