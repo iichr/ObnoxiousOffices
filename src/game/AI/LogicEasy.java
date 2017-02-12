@@ -2,9 +2,11 @@ package game.ai;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
 
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
+import game.core.player.action.PlayerActionHack;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
@@ -18,6 +20,9 @@ public class LogicEasy implements Logic {
 	// thresholds for attributes
 	public final double energyThreshold = 0.2;
 
+	// hack after what %
+	public final double hackAfter = 65;
+
 	// create a PathFinding object
 	public PathFinding pf;
 
@@ -30,7 +35,14 @@ public class LogicEasy implements Logic {
 	}
 
 	@Override
-	public void reactToPlayerWork(World w) {		
+	public void reactToPlayerWork(World w, Player ai) {
+		Player p = closestToWin(w); // player that's closest to winning the game
+		
+		//if the player is not AI and has done more than 65% of the project
+		//hack
+		if (!p.isAI && p.getProgress() < hackAfter) {
+			ai.status.addAction(new PlayerActionHack(ai, p));
+		}
 	}
 
 	@Override
@@ -80,7 +92,7 @@ public class LogicEasy implements Logic {
 		// get the i, j coords of the tile the player is on
 		// i == y; j == x;
 		Location location = p.getLocation();
-		
+
 		int x = location.x;
 		int y = location.y;
 
@@ -121,10 +133,10 @@ public class LogicEasy implements Logic {
 			// make sure you get the coords of the next tile
 			i++;
 		}
-		//interact with the tile
+		// interact with the tile
 		w.getTile(p.getLocation().x, p.getLocation().y, 0).onInteraction(p);
-		
-		//just for the presentation in week 6 TODO: remove that
+
+		// just for the presentation in week 6 TODO: remove that
 		p.status.setAttribute(PlayerAttribute.FATIGUE, 0.0);
 	}
 
@@ -144,7 +156,7 @@ public class LogicEasy implements Logic {
 			// make sure you get the coords of the next tile
 			i++;
 		}
-		//interact with the tile
+		// interact with the tile
 		w.getTile(p.getLocation().x, p.getLocation().y, 0).onInteraction(p);
 	}
 
@@ -153,8 +165,9 @@ public class LogicEasy implements Logic {
 
 		// check whether the player is at the coffee machine or sofa
 		if (toCM.get(toCM.size() - 2) == fromCM.get(0) && toCM.get(toCM.size() - 1) == fromCM.get(1)) {
-			
-			// if at the coffee machine, go through the array list of i, j coords
+
+			// if at the coffee machine, go through the array list of i, j
+			// coords
 			// to the desk from the coffee machine
 			for (int i = 0; i < fromCM.size(); i++) {
 
@@ -168,7 +181,7 @@ public class LogicEasy implements Logic {
 				i++;
 			}
 		} else {
-			
+
 			// if at the sofa, go through the array list of i, j coords
 			// to the desk from the sofa
 			for (int i = 0; i < fromBed.size(); i++) {
@@ -183,7 +196,7 @@ public class LogicEasy implements Logic {
 				i++;
 			}
 		}
-		//interact with the tile
+		// interact with the tile
 		w.getTile(p.getLocation().x, p.getLocation().y, 0).onInteraction(p);
 	}
 
@@ -196,30 +209,28 @@ public class LogicEasy implements Logic {
 
 	@Override
 	public Player closestToWin(World w) {
-		/*
-		//get all players from the world
+		// get all players from the world
 		Set<Player> players = w.getPlayers();
-		
-		Player winner = null; //the player who has done most towards completing his project
-		
-		double highestProgr = 0; //progress of the player with highest progress
-		
-		//compare the work each player has completed
+
+		Player winner = null; // the player who has done most towards completing
+								// his project
+
+		double highestProgr = 0; // progress of the player with highest progress
+
+		// compare the work each player has completed
 		for (Player player : players) {
-			//get the progress of the current player in the set
+			// get the progress of the current player in the set
 			double currentPlayerProgress = player.getProgress();
-			//if the current player has done more than the previous one, set this player as the winner
-			if (currentPlayerProgress > highestProgr) { 
-				winner = player; //set the current player as the winner player 
-				highestProgr = player.getProgress(); //set the current player's progress as the highest
+			// if the current player has done more than the previous one, set
+			// this player as the winner
+			if (currentPlayerProgress > highestProgr) {
+				winner = player; // set the current player as the winner player
+				highestProgr = player.getProgress(); // set the current player's
+														// progress as the
+														// highest
 			}
 		}
-		
-		if
-		 */
-		return null;
+		return winner;
 	}
-
-
 
 }

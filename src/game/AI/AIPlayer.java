@@ -7,13 +7,16 @@ import game.core.world.Location;
 import game.core.world.World;
 
 /**
- * @author Atanas Harbaliev Created on 18/01/2017
+ * @author Atanas K. Harbaliev Created on 18/01/2017
  */
 
 public class AIPlayer extends Player {
 	
+	//serialVersion to shut eclipse
+	private static final long serialVersionUID = 1L;
+	
 	//field that separates AI players from normal players
-	static final boolean amAI = true;
+	static final boolean isAI = true;
 	
 	//constructor from Player class
 	public AIPlayer(String name, Direction facing, Location location) {
