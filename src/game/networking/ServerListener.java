@@ -151,7 +151,7 @@ public class ServerListener extends Thread {
 	}
 	private void sendToOne(Object recieved, String name) {
 		for (int i = 0; i < this.playerTable.size(); i++) {
-			if(this.playerTable.get(i).name == name){
+			if(this.playerTable.get(i).name.equals(name)){
 				try {
 					os.writeObject(recieved);
 					os.flush();
