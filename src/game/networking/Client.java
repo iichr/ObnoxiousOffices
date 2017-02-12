@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import game.core.event.ConnectionAttemptEvent;
 import game.core.event.Events;
 import game.core.event.PlayerCreatedEvent;
+import game.core.event.PlayerInputEvent;
 import game.core.player.Player;
 
 public class Client {
@@ -17,6 +18,7 @@ public class Client {
 	public Client() {
 		Events.on(ConnectionAttemptEvent.class, this::connectToServer);
 		Events.on(PlayerCreatedEvent.class, this::setLocalPlayer);
+		Events.on(PlayerInputEvent.class, this::sendDataToServer);
 	}
 
 	/**
