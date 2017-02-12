@@ -44,7 +44,7 @@ public class Play extends BasicGameState {
 	private PlayerContainer playerOverview;
 
 	// effect container
-	private EffectContainer effectOverview;
+	protected EffectContainer effectOverview;
 	private PlayerInfo playerinfo;
 	private Image _avatar, coffee;
 	boolean showOverview = false;
@@ -56,7 +56,7 @@ public class Play extends BasicGameState {
 	private boolean coffeemach = false;
 	private boolean sofa = false;
 
-	private boolean paused = false;
+	protected boolean paused = false;
 
 	public Play(int state) {
 	}
