@@ -12,7 +12,7 @@ public class Net {
     private static boolean isClient;
 
     public static void broadcast(Event event) {
-        World.world.getPlayers().forEach(p -> send(event, p));
+        if(!isClient) World.world.getPlayers().forEach(p -> send(event, p));
     }
 
     public static void send(Event event, Player player) {
