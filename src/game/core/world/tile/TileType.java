@@ -7,6 +7,7 @@ import game.core.world.Location;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -45,7 +46,7 @@ public abstract class TileType implements Serializable {
     }
 
     public Collection<Tile> getTiles(Location location, Direction facing) {
-        return Arrays.asList(new Tile(location, this, facing));
+        return Collections.singletonList(new Tile(location, this, facing));
     }
 
     public abstract void onWalkOver(Player player);

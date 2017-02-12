@@ -24,7 +24,7 @@ public class Location implements Serializable {
     }
 
     public Location forward(Direction facing) {
-        return new Location(x + facing.xAdd, y + facing.yAdd, z, world);
+        return add(facing.xAdd, facing.yAdd, 0);
     }
 
     public Location backward(Direction facing) {
@@ -66,4 +66,18 @@ public class Location implements Serializable {
         result = 31 * result + world.hashCode();
         return result;
     }
+
+    public Location diff(Location location) {
+        Location location2 = location.neg();
+        return add(location2.x, location2.y, location2.z);
+    }
+
+    public Location add(int dX, int dY, int dZ) {
+        return new Location(x + dX, y + dY, z + dZ, world);
+    }
+
+    public Location neg() {
+        return new Location(-x, -y, -z, world);
+    }
+
 }

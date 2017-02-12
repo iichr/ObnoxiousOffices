@@ -237,19 +237,19 @@ public class Play extends BasicGameState {
 			showOverview = true;
 			break;
 		case Input.KEY_UP:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_UP));
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_UP, Player.localPlayer.name));
 			break;
 		case Input.KEY_DOWN:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_DOWN));
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_DOWN, Player.localPlayer.name));
 			break;
 		case Input.KEY_RIGHT:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_RIGHT));
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_RIGHT, Player.localPlayer.name));
 			break;
 		case Input.KEY_LEFT:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_LEFT));
+			Events.trigger(new PlayerInputEvent(InputType.MOVE_LEFT, Player.localPlayer.name));
 			break;
 		case Input.KEY_E:
-			Events.trigger(new PlayerInputEvent(InputType.INTERACT));
+			Events.trigger(new PlayerInputEvent(InputType.INTERACT, Player.localPlayer.name));
 			break;
 		case Input.KEY_B:
 			effectOverview.activate();
