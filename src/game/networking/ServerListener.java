@@ -33,7 +33,7 @@ public class ServerListener extends Thread {
 	private ObjectOutputStream os;
 	public World world;
 
-	public static final int NUM_PLAYERS = 4;
+	public static final int NUM_PLAYERS = 2;
 
 	public ServerListener(Socket socket, ArrayList<Player> hash, ArrayList<ServerListener> connection) {
 		Events.on(PlayerRotatedEvent.class, this::sendToAllClients);
@@ -98,7 +98,7 @@ public class ServerListener extends Thread {
 			} else {
 				try {
 					Event eventObject = (Event) is.readObject();
-					this.sendToAllClients(eventObject);
+					Events.trigger(eventObject);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
