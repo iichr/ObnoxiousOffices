@@ -39,6 +39,13 @@ public class PlayTest extends Play{
 
 		playSetup(w);
 	}
+	
+	@Override
+	public void playSetup(World world) {
+		this.world = world;
+		this.localPlayerName = Player.localPlayerName;
+		
+	}
 
 	/**
 	 * Testing method used to create a fake world
@@ -58,6 +65,7 @@ public class PlayTest extends Play{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		World.world = w;
 		return w;
 	}
 
@@ -75,9 +83,10 @@ public class PlayTest extends Play{
 			int x = r.nextInt(w.xSize);
 			int y = r.nextInt(w.ySize - 1);
 			Location l = new Location(x, y, w);
-			//Test.localPlayer = new Player("0", Direction.SOUTH, l);
-			//Test.localPlayer.setHair(Player.BLONDE);
-			//w.addPlayer(Test.localPlayer);
+			Player testPlayer = new Player("Test_Player", Direction.SOUTH, l);
+			testPlayer.setHair(Player.BLONDE);
+			Test.localPlayer = testPlayer.name;
+			w.addPlayer(testPlayer);
 		return w;
 	}
 	
