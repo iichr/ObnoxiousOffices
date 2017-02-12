@@ -25,7 +25,7 @@ public class Player implements Updateable, Serializable {
 
     public boolean isAI = false;
     
-    public static Player localPlayer;
+    public static String localPlayerName = "";
     public static int BLONDE = 0;
     public static int BROWN = 1;
     public static int DARK = 2;
