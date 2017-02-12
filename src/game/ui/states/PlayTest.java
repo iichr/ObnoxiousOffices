@@ -40,6 +40,13 @@ public class PlayTest extends Play{
 
 		playSetup(w);
 	}
+	
+	@Override
+	public void playSetup(World world) {
+		this.world = world;
+		this.localPlayerName = Player.localPlayerName;
+		
+	}
 
 	/**
 	 * Testing method used to create a fake world
