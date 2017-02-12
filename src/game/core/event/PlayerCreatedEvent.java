@@ -7,9 +7,9 @@ import game.core.player.Player;
  */
 public class PlayerCreatedEvent extends Event {
 
-    public final Player localPlayer;
+    public final String localPlayerName;
 
-    public PlayerCreatedEvent(Player localPlayer) {
-        this.localPlayer = localPlayer;
+    public PlayerCreatedEvent(String localPlayerName) {
+        this.localPlayerName = localPlayerName;
     }
 }
