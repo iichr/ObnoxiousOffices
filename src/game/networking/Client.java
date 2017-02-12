@@ -52,10 +52,9 @@ public class Client {
 			System.err.println("The server doesn't seem to be running " + e.getMessage());
 			System.exit(1); // Give up.
 		}
+		this.sendDataToServer(event.name);
 		
-		new ClientListner(this.server).start();
-		
-		this.sendDataToServer(event);
+		new ClientListner(this.server).start();		
 	}
 
 	public void setLocalPlayer(PlayerCreatedEvent e) {
