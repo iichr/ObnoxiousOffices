@@ -77,6 +77,7 @@ public class PlayTest extends Play{
 			int y = r.nextInt(w.ySize - 1);
 			Location l = new Location(x, y, w);
 			Test.localPlayer = new Player("0", Direction.SOUTH, l);
+			Test.localPlayer.setHair(Player.BLONDE);
 			w.addPlayer(Test.localPlayer);
 		return w;
 	}
