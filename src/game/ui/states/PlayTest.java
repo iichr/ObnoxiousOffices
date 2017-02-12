@@ -10,6 +10,7 @@ import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
 import game.ui.interfaces.Vals;
+import org.newdawn.slick.Input;
 
 public class PlayTest extends Play {
 
@@ -32,7 +33,7 @@ public class PlayTest extends Play {
 		w = addPlayers(w);
 
 		this.world = w;
-		this.localPlayerName = Test.localPlayer;
+		this.localPlayerName = Player.localPlayerName;
 		World.world = w;
 	}
 
@@ -76,7 +77,7 @@ public class PlayTest extends Play {
 		testPlayer.setHair(Player.BLONDE);
 
 		localPlayerName = testPlayer.name;
-		Test.localPlayer = localPlayerName;
+		Player.localPlayerName = localPlayerName;
 		w.addPlayer(testPlayer);
 		return w;
 	}
