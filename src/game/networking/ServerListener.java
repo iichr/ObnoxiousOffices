@@ -10,7 +10,15 @@ import java.util.ArrayList;
 import game.core.event.Event;
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
+import game.core.event.PlayerActionAddedEvent;
+import game.core.event.PlayerActionEndedEvent;
+import game.core.event.PlayerAttributeChangedEvent;
 import game.core.event.PlayerCreatedEvent;
+import game.core.event.PlayerEffectAddedEvent;
+import game.core.event.PlayerEffectEndedEvent;
+import game.core.event.PlayerMovedEvent;
+import game.core.event.PlayerProgressUpdateEvent;
+import game.core.event.PlayerRotatedEvent;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -26,6 +34,14 @@ public class ServerListener extends Thread {
 	public World world;
 
 	public ServerListener(Socket socket, ArrayList<Player> hash, ArrayList<ServerListener> connection) {
+		Events.on(PlayerRotatedEvent.class,this::sendToAllClients);
+		Events.on(PlayerProgressUpdateEvent.class,this::sendToAllClients);
+		Events.on(PlayerMovedEvent.class,this::sendToAllClients);
+		Events.on(PlayerActionAddedEvent.class,this::sendToAllClients);
+		Events.on(PlayerActionEndedEvent.class,this::sendToAllClients);
+		Events.on(PlayerEffectAddedEvent.class,this::sendToAllClients);
+		Events.on(PlayerEffectEndedEvent.class,this::sendToAllClients);
+		Events.on(PlayerAttributeChangedEvent.class,this::sendToAllClients);
 		this.playerTable = hash;
 		this.socket = socket;
 		this.connections = connection;
@@ -61,14 +77,9 @@ public class ServerListener extends Thread {
 					String playerName = is.readObject().toString();
 					// System.out.println(playerName);
 					this.addPlayerToGame(playerName);
-		
-					// this.sendToAllClients("Player " + playerName + " has
-					// joined the game!");
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				/*
@@ -88,8 +99,7 @@ public class ServerListener extends Thread {
 			} else {
 				try {
 					Event eventObject = (Event) is.readObject();
-					// this.sendToAllClients(eventObject);
-					Events.trigger(eventObject);
+					//this.sendToAllClients(eventObject);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
