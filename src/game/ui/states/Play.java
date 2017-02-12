@@ -116,7 +116,7 @@ public class Play extends BasicGameState {
 			int colour = 0;
 			colour = Integer.parseInt(p.name);
 
-			PlayerAnimation animation = new PlayerAnimation(colour, p.getFacing());
+			PlayerAnimation animation = new PlayerAnimation(p.getHair(), p.getFacing());
 			playerMap.put(p, animation);
 		}
 	}
