@@ -23,7 +23,7 @@ public class PlayerInfo {
 	public void render(Graphics g) {
 		for (Player p : players) {
 			g.drawString(p.name, (p.getLocation().x) * tileWidth,
-					((float) (p.getLocation().y + 0.5) / world.ySize) * Vals.SCREEN_HEIGHT);
+					((float) (p.getLocation().y + 0.5) / (world.ySize + 2)) * Vals.SCREEN_HEIGHT);
 
 		}
 
