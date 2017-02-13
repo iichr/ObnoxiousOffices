@@ -70,6 +70,7 @@ public class MenuButton extends Button {
                     button=select;
                 } else {
                     CURRENT += 1;
+                    button=unselect;
 
                 }
 

@@ -85,8 +85,20 @@ public class PlayerAnimation {
 		moveEast = new Animation(eastAnimations, duration, false);
 		moveSouth = new Animation(southAnimations, duration, false);
 		moveWest = new Animation(westAnimations, duration, false);
+		
+		turn(initialDirection);
+	}
 
-		switch (initialDirection) {
+	public void drawPlayer(float x, float y, float width, float height) {
+		if (move.equals(moveEast) || move.equals(moveWest)) {
+			move.draw(x + 8, y, width - 16, height);
+		} else {
+			move.draw(x, y, width, height);
+		}
+	}
+
+	public void turn(Direction facing) {
+		switch (facing) {
 		case NORTH:
 			move = moveNorth;
 			break;
@@ -100,29 +112,5 @@ public class PlayerAnimation {
 			move = moveWest;
 			break;
 		}
-	}
-
-	public void drawPlayer(float x, float y, float width, float height) {
-		if (move.equals(moveEast) || move.equals(moveWest)) {
-			move.draw(x + 8, y, width - 16, height);
-		} else {
-			move.draw(x, y, width, height);
-		}
-	}
-
-	public void turnNorth() {
-		move = moveNorth;
-	}
-
-	public void turnSouth() {
-		move = moveSouth;
-	}
-
-	public void turnEast() {
-		move = moveEast;
-	}
-
-	public void turnWest() {
-		move = moveWest;
 	}
 }
