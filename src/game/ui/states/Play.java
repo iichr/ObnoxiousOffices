@@ -35,6 +35,8 @@ public class Play extends BasicGameState {
 	protected World world;
 	private HashMap<Player, PlayerAnimation> playerMap;
 	protected String localPlayerName;
+	
+	private HashMap<Player, Player> previousPlayer;
 
 	// tile information
 	private float tileWidth;
@@ -70,6 +72,7 @@ public class Play extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		playerMap = new HashMap<Player, PlayerAnimation>();
+		previousPlayer = new HashMap<Player, Player>();
 
 		// PlayerContainer container
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
@@ -89,6 +92,7 @@ public class Play extends BasicGameState {
 
 		// add player animations
 		animatePlayers(world.getPlayers());
+		storePreviousLocations(world.getPlayers());
 
 		// get the tileMap
 		SpriteLocations sp = new SpriteLocations();
@@ -119,6 +123,13 @@ public class Play extends BasicGameState {
 		for (Player p : players) {
 			PlayerAnimation animation = new PlayerAnimation(p.getHair(), p.getFacing());
 			playerMap.put(p, animation);
+		}
+	}
+	
+	private void storePreviousLocations(Set<Player> players) throws SlickException {
+		for (Player p : players) {
+			Player pOld = new Player(p.name, p.getFacing(),p.getLocation());
+			previousPlayer.put(p, pOld);
 		}
 	}
 
@@ -172,14 +183,43 @@ public class Play extends BasicGameState {
 				Image[] images = directionMap.get(facing);
 				images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
 
-				// render the players
-				for (Player player : players) {
-					Location playerLocation = player.getLocation();
-					if (playerLocation.x == x && playerLocation.y == y) {
-						playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
-					}
-				}
+				drawPlayers(x, y, tileX, tileY);
 			}
+		}
+	}
+	
+	/**
+	 * Renders the players in the world
+	 * @param x the x location being checked
+	 * @param y the y location being checked
+	 * @param tileX the x location of the tiles on screen
+	 * @param tileY the y location of the tiles on screen
+	 */
+	public void drawPlayers(int x, int y, float tileX, float tileY){
+		// get players
+		Set<Player> players = world.getPlayers();
+		
+		// render the players
+		for (Player player : players) {
+			Location playerLocation = player.getLocation();
+			if (playerLocation.x == x && playerLocation.y == y) {
+				checkPreviousLocation(player);
+				playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
+			}
+		}
+	}
+	
+	/**
+	 * Animates the players turning by checking their previous location and adjusting appropriately
+	 * @param player the player to check
+	 */
+	public void checkPreviousLocation(Player player){
+		Location playerLocation = player.getLocation();
+		Direction playerFacing = player.getFacing();
+		if(previousPlayer.get(player).getFacing() != player.getFacing()){
+			playerMap.get(player).turn(player.getFacing());
+			previousPlayer.get(player).setLocation(playerLocation);
+			previousPlayer.get(player).setFacing(playerFacing);
 		}
 	}
 
