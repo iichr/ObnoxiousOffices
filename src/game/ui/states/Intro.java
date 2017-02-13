@@ -11,6 +11,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
@@ -20,28 +21,17 @@ import game.ui.interfaces.Vals;
 
 public class Intro extends BasicGameState {
 	
-	private BufferedImage logo;
+	private Image logo;
 	private int alpha;
 	private int ticks;
 	
-	private final int FADE_IN = 60;
-	private final int LENGTH = 60;
-	private final int FADE_OUT = 60;
+	private final int FADE_IN = 100;
+	private final int LENGTH = 900;
+	private final int FADE_OUT = 100;
 	
 	public Intro(int id) {
 		
 	}
-	
-	public void init() {
-		ticks = 0;
-		try {
-			//logo = ImageIO.read(getClass().getResourceAsStream("/Resources/Logo/logo.gif"));
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public void update() {
 		
 	}
@@ -59,7 +49,13 @@ public class Intro extends BasicGameState {
 
 	@Override
 	public void init(GameContainer gc ,StateBasedGame game) throws SlickException {
-		// TODO Auto-generated method stub
+		ticks = 0;
+		try {
+			logo = (new Image("/res/logo.png")).getScaledCopy((float) 2.5);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -67,7 +63,7 @@ public class Intro extends BasicGameState {
 	public void render(GameContainer gc ,StateBasedGame game, Graphics g) throws SlickException {
 		g.setColor(Color.white);
 		g.fillRect(0, 0, Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT);
-		//g.drawImage(logo, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT2, null);
+		g.drawImage(logo, Vals.SCREEN_WIDTH*1/18,Vals.SCREEN_HEIGHT*3/10);
 		g.setColor(new Color(0, 0, 0, alpha));
 		g.fillRect(0, 0, Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT);
 		
