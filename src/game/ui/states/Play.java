@@ -82,8 +82,10 @@ public class Play extends BasicGameState {
 		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
 		effectOverview = new EffectContainer(coffee, 10);
 		// setup tile sizes
+
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
-		tileHeight = 2 * (float) Vals.SCREEN_HEIGHT / (world.ySize);
+		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
+		System.out.println(tileHeight);
 
 		// add player animations
 		animatePlayers(world.getPlayers());
@@ -149,7 +151,7 @@ public class Play extends BasicGameState {
 		// get players
 		Set<Player> players = world.getPlayers();
 		playerOverview = new PlayerContainer(world, localPlayerName,10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
-		playerinfo= new PlayerInfo(world);
+		playerinfo = new PlayerInfo(world);
 		
 		// check every position in the world to render what is needed at that
 		// location
@@ -157,7 +159,7 @@ public class Play extends BasicGameState {
 		for (int y = 0; y < world.ySize; y++) {
 			for (int x = 0; x < world.xSize; x++) {
 				float tileX = x * tileWidth;
-				float tileY = (y - 1 + 2) * (tileHeight / 2);
+				float tileY = (y + 1) * (tileHeight / 2);
 
 				// find out what to render at this location
 				Direction facing = world.getTile(x, y, 0).facing;
