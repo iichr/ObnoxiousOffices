@@ -34,12 +34,15 @@ public class CharacterSelect extends BasicGameState {
 	private String connectingString = "Attempting to connect to server";
 	private String waitingString = "Waiting for more players";
 	private String connectFailString = "Connection failed: please try again";
+	
 	private boolean toPlay = false;
 	private boolean connecting = false;
 	private boolean connected = false;
 	private boolean connectFailed = false;
+	private PlayTest playTest;
 
-	public CharacterSelect(int state) {
+	public CharacterSelect(int state, PlayTest test) {
+		this.playTest = test;
 		Events.on(ConnectionAttemptEvent.class, this::showConnecting);
 		 Events.on(PlayerCreatedEvent.class, this::connected);
 		// Events.on(ConnectionFailedEvent.class, this::connected);
@@ -129,6 +132,7 @@ public class CharacterSelect extends BasicGameState {
 		circleButton.update(gc, game, mouseX, mouseY);
 
 		if (toPlay) {
+			playTest.testSetup();
 			game.enterState(Vals.PLAY_TEST_STATE);
 			toPlay = false;
 		}

@@ -32,24 +32,24 @@ public class Game extends StateBasedGame {
 
 	public Game(String gamename) {
 		super(gamename);
-
-//		EventDispatcher.subscribe2(this);
+		
 		introState= new Intro(Vals.INTRO_STATE);
 		this.addState(introState);
 		menuState = new Menu(Vals.MENU_STATE);
 		this.addState(menuState);
 		playState = new Play(Vals.PLAY_STATE);
 		this.addState(playState);
+		playtestState = new PlayTest(Vals.PLAY_TEST_STATE);
+		this.addState(playtestState);
 		optionsState = new Options(Vals.OPTIONS_STATE);
 		this.addState(optionsState);
 		rulesState = new Rules(Vals.RULES_STATE);
 		this.addState(rulesState);
-		chSelectState = new CharacterSelect(Vals.CHARACTER_SELECT_STATE);
+		chSelectState = new CharacterSelect(Vals.CHARACTER_SELECT_STATE, playtestState);
 		this.addState(chSelectState);
 		pauseState = new Pause(Vals.PAUSE_STATE);
 		this.addState(pauseState);
-		playtestState = new PlayTest(Vals.PLAY_TEST_STATE);
-		this.addState(playtestState);
+		
 		
 		Events.on(GameStartedEvent.class, this::onGameStart);
 	}
