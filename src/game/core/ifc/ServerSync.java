@@ -1,6 +1,8 @@
 package game.core.ifc;
 
+import game.AI.AIPlayer;
 import game.core.Input;
+import game.core.event.CreateAIPlayerRequest;
 import game.core.event.Event;
 import game.core.event.Events;
 import game.core.event.PlayerInputEvent;
@@ -8,6 +10,7 @@ import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
+import game.networking.ServerListener;
 
 /**
  * Created by samtebbs on 12/02/2017.
@@ -16,6 +19,12 @@ public class ServerSync {
 
     public static void init() {
         Events.on(PlayerInputEvent.class, ServerSync::onPlayerInput);
+        Events.on(CreateAIPlayerRequest.class, ServerSync::makeAIPlayer);
+    }
+
+    private static void makeAIPlayer(CreateAIPlayerRequest request) {
+        Player ai = AIPlayer.createAIPalyer("Volker", Direction.SOUTH,  new Location(4, 0, 0, World.world));
+        ((ServerListener)request.serverListener).addPlayerToGame(ai);
     }
 
     private static void onPlayerInput(PlayerInputEvent event) {
