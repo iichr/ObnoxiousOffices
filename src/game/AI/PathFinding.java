@@ -69,11 +69,11 @@ public class PathFinding implements Runnable, Serializable {
 	}
 
 	// the size of the world
-	int colLength = world.ySize; // i
-	int rowLength = world.xSize; // j
+	int colLength = World.world.ySize; // j
+	int rowLength = World.world.xSize; // i
 
 	// the grid that is going to be used for the A*
-	Cell[][] grid = new Cell[colLength][rowLength];
+	Cell[][] grid = new Cell[rowLength][colLength];
 
 	// create the arraylist of cells
 	ArrayList<Integer> path = new ArrayList<Integer>();
@@ -101,9 +101,11 @@ public class PathFinding implements Runnable, Serializable {
 	void worldToCell() {
 		int heurC = 1000;
 		int heurB = 1000;
-		for (int i = 0; i < colLength; i++) {
-			for (int j = 0; j < rowLength; j++) {
-				Tile tile = world.getTile(i, j, 0); // get the tile at i,j
+		for (int i = 0; i < rowLength; i++) {
+			for (int j = 0; j < colLength; j++) {
+				
+				grid[i][j] = new Cell(i, j);
+				Tile tile = World.world.getTile(i, j, 0); // get the tile at i,j
 				// if you can walk over a tile, calculate the
 				// heuristic function, else make it a null
 				if (tile.type.canWalkOver())
@@ -249,7 +251,7 @@ public class PathFinding implements Runnable, Serializable {
 		Cell current = grid[goalI][goalJ];
 
 		// loop through the parents of the cell
-		while (current.parent != null) {
+		while (current != null && current.parent != null) {
 			path.add(current.i);
 			path.add(current.j);
 			current = current.parent;

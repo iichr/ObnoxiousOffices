@@ -66,7 +66,7 @@ public class LogicEasy implements Logic, Serializable {
 
 		// reverse it, and save
 		Collections.reverse(path);
-		toBed = path;
+		toCM = path;
 	}
 
 	@Override
