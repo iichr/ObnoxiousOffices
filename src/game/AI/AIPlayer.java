@@ -15,12 +15,10 @@ public class AIPlayer extends Player {
 	//serialVersion to shut eclipse
 	private static final long serialVersionUID = 1L;
 	
-	//field that separates AI players from normal players
-	static final boolean isAI = true;
-	
 	//constructor from Player class
 	public AIPlayer(String name, Direction facing, Location location) {
 		super(name, facing, location);
+		isAI = true;
 		status.initialising = true;
 		// set bot attributes
 		//set the FATIGUE to 0.85 just for testing the demo for week 6
