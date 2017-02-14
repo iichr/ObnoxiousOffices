@@ -1,5 +1,6 @@
 package game.ai;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Set;
@@ -15,7 +16,7 @@ import game.core.world.World;
  * @author Atanas K. Harbaliev. Created on 18/01/2017
  */
 
-public class LogicEasy implements Logic {
+public class LogicEasy implements Logic, Serializable {
 
 	// thresholds for attributes
 	public final double energyThreshold = 0.2;
