@@ -85,12 +85,12 @@ public class ServerListener extends Thread {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			
-//				 Allows hard coded AI player to be added for prototype 
+
+				// Allows hard coded AI player to be added for prototype
 				if (this.playerTable.size() == 3) {
-					Events.trigger(new CreateAIPlayerRequest());
+					Events.trigger(new CreateAIPlayerRequest(this));
 				}
-				 
+
 				if (this.playerTable.size() == NUM_PLAYERS) {
 					for (int i = 0; i < playerTable.size(); i++) {
 						Player p = playerTable.get(i);
@@ -152,7 +152,7 @@ public class ServerListener extends Thread {
 			Player playerObject = new Player(name, Direction.SOUTH, world.getSpawnPoint(playerNumber));
 			playerObject.setHair(playerNumber);
 			this.playerTable.add(playerObject);
-			
+
 			PlayerCreatedEvent event = new PlayerCreatedEvent(name);
 			Events.trigger(event);
 			forwardInfo(event);
@@ -160,6 +160,11 @@ public class ServerListener extends Thread {
 		} else {
 			System.out.println("Player " + name + " has already been added to the game!");
 		}
+	}
+	
+	public void addPlayerToGame(Player playerToAdd){
+		playerToAdd.setHair(playerTable.size());
+		this.playerTable.add(playerToAdd);
 	}
 
 	/**
