@@ -18,6 +18,8 @@ import game.core.world.World;
 
 public class LogicEasy implements Logic, Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	// thresholds for attributes
 	public final double energyThreshold = 0.2;
 
@@ -28,7 +30,7 @@ public class LogicEasy implements Logic, Serializable {
 	public PathFinding pf;
 
 	// paths
-	public ArrayList<Integer> toBed, toCM, fromBed, fromCM;
+	public ArrayList<Pair<Integer, Integer>> toBed, toCM, fromBed, fromCM;
 
 	// @Override
 	public void reactToPlayerDrink() {
@@ -38,9 +40,9 @@ public class LogicEasy implements Logic, Serializable {
 	@Override
 	public void reactToPlayerWork(World w, Player ai) {
 		Player p = closestToWin(w); // player that's closest to winning the game
-		
-		//if the player is not AI and has done more than 65% of the project
-		//hack
+
+		// if the player is not AI and has done more than 65% of the project
+		// hack
 		if (!p.isAI && p.getProgress() < hackAfter) {
 			ai.status.addAction(new PlayerActionHack(ai, p));
 		}
@@ -54,7 +56,7 @@ public class LogicEasy implements Logic, Serializable {
 	@Override
 	public void findCoffeeMachine(World w, Player p) {
 		// create the list of blocks in the grid that represents the path
-		ArrayList<Integer> path = new ArrayList<Integer>();
+		ArrayList<Pair<Integer, Integer>> path = new ArrayList<Pair<Integer, Integer>>();
 
 		// call the constructor of PathFinding and run the run() method
 		pf = new PathFinding(w, p, "cm");
@@ -64,15 +66,19 @@ public class LogicEasy implements Logic, Serializable {
 		path = pf.getPath();
 		fromCM = path;
 
+		//create a new arraylist, in which you copy the first one, so you don't copy the first one
+		ArrayList<Pair<Integer, Integer>> pathRev = new ArrayList<Pair<Integer, Integer>>();
+		pathRev.addAll(path);
+		
 		// reverse it, and save
-		Collections.reverse(path);
+		Collections.reverse(pathRev);
 		toCM = path;
 	}
 
 	@Override
 	public void findBed(World w, Player p) {
 		// create the list of blocks in the grid that represents the path
-		ArrayList<Integer> path = new ArrayList<Integer>();
+		ArrayList<Pair<Integer, Integer>> path = new ArrayList<Pair<Integer, Integer>>();
 
 		// call the constructor of PathFinding and run the run() method
 		pf = new PathFinding(w, p, "b");
@@ -81,14 +87,18 @@ public class LogicEasy implements Logic, Serializable {
 		// get the path so it is from goal to start, save it
 		path = pf.getPath();
 		fromBed = path;
-
+		
+		//create a new arraylist, in which you copy the first one, so you don't copy the first one
+		ArrayList<Pair<Integer, Integer>> pathRev = new ArrayList<Pair<Integer, Integer>>();
+		pathRev.addAll(path);
+		
 		// reverse the path and save it
-		Collections.reverse(path);
+		Collections.reverse(pathRev);
 		toBed = path;
 
 	}
 
-	public void figureOutFacing(Player p, int i, int j) {
+	public void figureOutFacing(Player p, Pair<Integer, Integer> pair) {
 
 		// get the i, j coords of the tile the player is on
 		// i == y; j == x;
@@ -99,23 +109,31 @@ public class LogicEasy implements Logic, Serializable {
 
 		// if the player needs to move down, check his facing
 		// change it
-		if (y < i)
+		if (y < pair.getR()) {
 			p.setFacing(Direction.SOUTH);
+			return;
+		}
 
 		// if the player needs to move up, check his facing
 		// change it
-		if (y > i)
+		if (y > pair.getR()) {
 			p.setFacing(Direction.NORTH);
+			return;
+		}
 
 		// if the player needs to move left, check his facing
 		// change it
-		if (x > j)
+		if (x > pair.getL()) {
 			p.setFacing(Direction.WEST);
+			return;
+		}
 
 		// if the player needs to move right, check his facing
 		// change it
-		if (x < j)
+		if (x < pair.getL()) {
 			p.setFacing(Direction.EAST);
+			return;
+		}
 	}
 
 	@Override
@@ -126,7 +144,7 @@ public class LogicEasy implements Logic, Serializable {
 		for (int i = 0; i < toCM.size(); i++) {
 
 			// get the right facing
-			figureOutFacing(p, toCM.get(i), toCM.get(i + 1));
+			figureOutFacing(p, toCM.get(i));
 
 			// make a move
 			p.moveForwards();
@@ -149,7 +167,7 @@ public class LogicEasy implements Logic, Serializable {
 		for (int i = 0; i < toBed.size(); i++) {
 
 			// get the right facing
-			figureOutFacing(p, toBed.get(i), toBed.get(i + 1));
+			figureOutFacing(p, toBed.get(i));
 
 			// make a move
 			p.moveForwards();
@@ -165,7 +183,7 @@ public class LogicEasy implements Logic, Serializable {
 	public void toTheDesk(World w, Player p) {
 
 		// check whether the player is at the coffee machine or sofa
-		if (toCM.get(toCM.size() - 2) == fromCM.get(0) && toCM.get(toCM.size() - 1) == fromCM.get(1)) {
+		if (toCM.get(toCM.size() - 1) == fromCM.get(0)) {
 
 			// if at the coffee machine, go through the array list of i, j
 			// coords
@@ -173,7 +191,7 @@ public class LogicEasy implements Logic, Serializable {
 			for (int i = 0; i < fromCM.size(); i++) {
 
 				// get the right facing
-				figureOutFacing(p, fromCM.get(i), fromCM.get(i + 1));
+				figureOutFacing(p, fromCM.get(i));
 
 				// make a move
 				p.moveForwards();
@@ -188,7 +206,7 @@ public class LogicEasy implements Logic, Serializable {
 			for (int i = 0; i < fromBed.size(); i++) {
 
 				// get the right facing
-				figureOutFacing(p, fromBed.get(i), fromBed.get(i + 1));
+				figureOutFacing(p, fromBed.get(i));
 
 				// make a move
 				p.moveForwards();

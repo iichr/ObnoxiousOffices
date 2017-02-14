@@ -42,7 +42,6 @@ public class AIPlayer extends Player {
 	 *            location on the map
 	 * @return a bot
 	 */
-	@Deprecated
 	public static Player createAIPalyer(String name, Direction dir, Location loc) {
 		// calls Player constructor with: name, direction, location
 		AIPlayer aiPlayer = new AIPlayer(name, dir, loc);
@@ -61,7 +60,8 @@ public class AIPlayer extends Player {
 		if (this.status.getAttribute(PlayerAttribute.FATIGUE) > 0.8) {
 			easylogic.findCoffeeMachine(this.getLocation().world, this);
 			easylogic.goToCoffeeMachine(this.getLocation().world, this);
-			easylogic.toTheDesk(this.getLocation().world, this); 
+			if (this.status.getAttribute(PlayerAttribute.FATIGUE) == 0.0)
+				easylogic.toTheDesk(this.getLocation().world, this); 
 		}
     }
 }

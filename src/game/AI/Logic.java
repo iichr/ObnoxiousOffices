@@ -10,7 +10,7 @@ import game.core.world.World;
  * @author Atanas K. Harabliev. Created on 6/02/2017
  *
  */
-public interface Logic extends Serializable{
+public interface Logic extends Serializable {
 
 	// if player's energy is below the threshold, he needs to go for a refresh
 	static double energyThreshold = 0.8;
@@ -22,7 +22,7 @@ public interface Logic extends Serializable{
 	/**
 	 * Tells the bot/bots what to do while the player is drinking coffee.
 	 */
-	public void reactToPlayerDrink(); //TODO: possibly don't need that
+	public void reactToPlayerDrink(); // TODO: possibly don't need that
 
 	/**
 	 * Tells the bot/bots what to do while the player is working on his own
@@ -98,12 +98,10 @@ public interface Logic extends Serializable{
 	 * 
 	 * @param p
 	 *            player that needs to move
-	 * @param i
-	 *            i coordinate of the tile the player wants to go to
-	 * @param j
-	 *            j coordinate of the tile the player wants to go to
+	 * @param pair
+	 *            the pair of coordinates of the tile the player wants to go to
 	 */
-	public void figureOutFacing(Player p, int i, int j);
+	public void figureOutFacing(Player p, Pair<Integer, Integer> pair);
 
 	/**
 	 * Go back to the player's desk
