@@ -18,10 +18,13 @@ public class PlayerStatus implements Serializable {
     private Set<PlayerEffect> effects = new HashSet<>();
     public final Player player;
 
+    public boolean initialising = true;
+
     public PlayerStatus(Player player) {
         this.player = player;
         // Add all attributes with their initial values
         Arrays.stream(PlayerAttribute.values()).forEach(attr -> attributes.put(attr, attr.initialVal));
+        initialising = false;
     }
 
     /**
@@ -61,7 +64,7 @@ public class PlayerStatus implements Serializable {
      */
     public void setAttribute(PlayerAttribute attribute, double val) {
         attributes.put(attribute, Math.max(0, Math.min(val, attribute.maxVal)));
-        Events.trigger(new PlayerAttributeChangedEvent(val, player.name, attribute));
+        if(!initialising) Events.trigger(new PlayerAttributeChangedEvent(val, player.name, attribute));
     }
 
     /**

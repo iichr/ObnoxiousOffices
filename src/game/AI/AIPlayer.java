@@ -21,6 +21,13 @@ public class AIPlayer extends Player {
 	//constructor from Player class
 	public AIPlayer(String name, Direction facing, Location location) {
 		super(name, facing, location);
+		status.initialising = true;
+		// set bot attributes
+		//set the FATIGUE to 0.85 just for testing the demo for week 6
+		//TODO: change FATIGUE TO 0.0, once the presentation is over
+		status.setAttribute(PlayerAttribute.FATIGUE, 0.85);
+		status.setAttribute(PlayerAttribute.PRODUCTIVITY, 1.0);
+		status.initialising = false;
 	}
 	
 	//the logic for the AI player
@@ -37,16 +44,10 @@ public class AIPlayer extends Player {
 	 *            location on the map
 	 * @return a bot
 	 */
+	@Deprecated
 	public static Player createAIPalyer(String name, Direction dir, Location loc) {
 		// calls Player constructor with: name, direction, location
-		AIPlayer aiPlayer = new AIPlayer(name, dir, loc) {{
-			// set bot attributes
-			//set the FATIGUE to 0.85 just for testing the demo for week 6
-			//TODO: change FATIGUE TO 0.0, once the presentation is over
-			status.setAttribute(PlayerAttribute.FATIGUE, 0.85);
-			status.setAttribute(PlayerAttribute.PRODUCTIVITY, 1.0);
-		}};
-		
+		AIPlayer aiPlayer = new AIPlayer(name, dir, loc);
 		// return bot
 		return aiPlayer;
 	}
