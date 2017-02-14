@@ -43,8 +43,8 @@ public class AIPlayer extends Player {
 			// set bot attributes
 			//set the FATIGUE to 0.85 just for testing the demo for week 6
 			//TODO: change FATIGUE TO 0.0, once the presentation is over
-			aiPlayer.status.setAttribute(PlayerAttribute.FATIGUE, 0.85);
-			aiPlayer.status.setAttribute(PlayerAttribute.PRODUCTIVITY, 1.0);
+			status.setAttribute(PlayerAttribute.FATIGUE, 0.85);
+			status.setAttribute(PlayerAttribute.PRODUCTIVITY, 1.0);
 		}};
 		
 		// return bot
