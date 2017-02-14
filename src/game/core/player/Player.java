@@ -1,10 +1,10 @@
 package game.core.player;
 
 import game.core.Updateable;
+import game.core.event.Events;
 import game.core.event.PlayerMovedEvent;
 import game.core.event.PlayerProgressUpdateEvent;
 import game.core.event.PlayerRotatedEvent;
-import game.core.ifc.Net;
 import game.core.world.Direction;
 import game.core.world.Location;
 
@@ -20,10 +20,16 @@ public class Player implements Updateable, Serializable {
     private double progress = 0;
     private Direction facing;
     private Location location;
+    
+    private int hair = BLONDE;
 
     public boolean isAI = false;
     
-    public static Player localPlayer;
+    public static String localPlayerName = "";
+    public static int BLONDE = 0;
+    public static int BROWN = 1;
+    public static int DARK = 2;
+    public static int PINK = 3;
 
     public Player(String name, Direction facing, Location location) {
         this.name = name;
@@ -53,7 +59,7 @@ public class Player implements Updateable, Serializable {
      */
     public void setFacing(Direction facing) {
         this.facing = facing;
-        Net.broadcast(new PlayerRotatedEvent(facing, this.name));
+        Events.trigger(new PlayerRotatedEvent(facing, this.name));
     }
 
     /**
@@ -63,7 +69,7 @@ public class Player implements Updateable, Serializable {
     public void setLocation(Location location) {
         Location diff = location.diff(this.location);
         this.location = location;
-        Net.broadcast(new PlayerMovedEvent(diff.x, diff.y, diff.z, this.name));
+        Events.trigger(new PlayerMovedEvent(diff.x, diff.y, diff.z, this.name));
     }
 
     public Location getLocation() {
@@ -118,7 +124,7 @@ public class Player implements Updateable, Serializable {
             onProgressDone();
             this.progress = 0;
         }
-        Net.broadcast(new PlayerProgressUpdateEvent(diff, this.name));
+        Events.trigger(new PlayerProgressUpdateEvent(diff, this.name));
     }
 
     public double getProgress() {
@@ -165,4 +171,12 @@ public class Player implements Updateable, Serializable {
     public int hashCode() {
         return name.hashCode();
     }
+
+	public int getHair() {
+		return hair;
+	}
+
+	public void setHair(int hair) {
+		this.hair = hair;
+	}
 }

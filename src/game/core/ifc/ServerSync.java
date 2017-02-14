@@ -42,7 +42,7 @@ public class ServerSync {
                 break;
         }
         Location forwards = loc.forward(direction);
-        if(forwards.checkBounds()) {
+        if(forwards.checkBounds() && forwards.getTile().type.canWalkOver()) {
             player.setFacing(direction);
             player.setLocation(forwards);
         }
