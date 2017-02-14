@@ -54,11 +54,15 @@ public class AIPlayer extends Player {
 	//method for presentation in week 6
 	//if you are fatigued, find the coffee machine, go there, drink coffee, and go back to the desk
 	public void test(Player p, World w) {
-		if (p.status.getAttribute(PlayerAttribute.FATIGUE) > 0.8) {
-			easylogic.findCoffeeMachine(w, p);
-			easylogic.goToCoffeeMachine(w, p);
-			p.update();
-			easylogic.toTheDesk(w, p); 
-		}
+		
 	}
+	
+	@Override
+    public void update() {
+		if (this.status.getAttribute(PlayerAttribute.FATIGUE) > 0.8) {
+			easylogic.findCoffeeMachine(this.getLocation().world, this);
+			easylogic.goToCoffeeMachine(this.getLocation().world, this);
+			easylogic.toTheDesk(this.getLocation().world, this); 
+		}
+    }
 }
