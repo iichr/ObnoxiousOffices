@@ -168,7 +168,7 @@ public class ServerListener extends Thread {
 	public void addPlayerToGame(Player playerToAdd) {
 		playerToAdd.setHair(playerTable.size());
 		this.playerTable.add(playerToAdd);
-		makingAI = false;
+		if(playerToAdd.isAI) makingAI = false;
 	}
 
 	/**
