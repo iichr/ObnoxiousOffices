@@ -63,8 +63,6 @@ public class PlayTest extends Play {
 	 * 
 	 * @param w
 	 *            The world
-	 * @param noPlayers
-	 *            The number of players to be made
 	 * @return The world
 	 */
 	private World addPlayers(World w) {
