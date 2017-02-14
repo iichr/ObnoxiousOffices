@@ -24,6 +24,7 @@ public class ServerSync {
 
     private static void makeAIPlayer(CreateAIPlayerRequest request) {
         Player ai = AIPlayer.createAIPalyer("Volker", Direction.SOUTH,  new Location(4, 0, 0, World.world));
+        
         ((ServerListener)request.serverListener).addAIToGame(ai);
     }
 
@@ -31,7 +32,10 @@ public class ServerSync {
     	System.out.println("managing input event");
         Input.InputType type = event.inputType;
         Player player = World.world.getPlayer(event.playerName);
+//        Player ai = World.world.getPlayer("Volker");
+//        ai.update();
         if(type.isMovement) processMovement(type, player);
+        
     }
 
     private static void processMovement(Input.InputType type, Player player) {
