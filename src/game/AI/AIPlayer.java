@@ -7,11 +7,17 @@ import game.core.world.Location;
 import game.core.world.World;
 
 /**
- * @author Atanas Harbaliev Created on 18/01/2017
+ * @author Atanas K. Harbaliev Created on 18/01/2017
  */
 
 public class AIPlayer extends Player {
-
+	
+	//serialVersion to shut eclipse
+	private static final long serialVersionUID = 1L;
+	
+	//field that separates AI players from normal players
+	static final boolean isAI = true;
+	
 	//constructor from Player class
 	public AIPlayer(String name, Direction facing, Location location) {
 		super(name, facing, location);
@@ -31,7 +37,7 @@ public class AIPlayer extends Player {
 	 *            location on the map
 	 * @return a bot
 	 */
-	public Player createAIPalyer(String name, Direction dir, Location loc) {
+	public static Player createAIPalyer(String name, Direction dir, Location loc) {
 		// calls Player constructor with: name, direction, location
 		AIPlayer aiPlayer = new AIPlayer(name, dir, loc);
 		
@@ -45,14 +51,18 @@ public class AIPlayer extends Player {
 		return aiPlayer;
 	}
 
+	public void test(Player p, World w) {
+		
+	}
+	
 	//method for presentation in week 6
 	//if you are fatigued, find the coffee machine, go there, drink coffee, and go back to the desk
-	public void test(Player p, World w) {
-		if (p.status.getAttribute(PlayerAttribute.FATIGUE) > 0.8) {
-			easylogic.findCoffeeMachine(w, p);
-			easylogic.goToCoffeeMachine(w, p);
-			p.update();
-			easylogic.toTheDesk(w, p); 
+	@Override
+    public void update() {
+		if (this.status.getAttribute(PlayerAttribute.FATIGUE) > 0.8) {
+			easylogic.findCoffeeMachine(this.getLocation().world, this);
+			easylogic.goToCoffeeMachine(this.getLocation().world, this);
+			easylogic.toTheDesk(this.getLocation().world, this); 
 		}
-	}
+    }
 }

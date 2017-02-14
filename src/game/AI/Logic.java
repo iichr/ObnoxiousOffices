@@ -13,19 +13,25 @@ public interface Logic {
 	// if player's energy is below the threshold, he needs to go for a refresh
 	static double energyThreshold = 0.8;
 
-	// might need it for something
-	static double something = 0.0;
+	// if a player has done more work than the AI, and that player's progress
+	// is above 65, the AI must hack that player
+	static double hackAfter = 65;
 
 	/**
 	 * Tells the bot/bots what to do while the player is drinking coffee.
 	 */
-	public void reactToPlayerDrink();
+	public void reactToPlayerDrink(); //TODO: possibly don't need that
 
 	/**
 	 * Tells the bot/bots what to do while the player is working on his own
 	 * project.
+	 * 
+	 * @param w
+	 *            the world containing all players
+	 * @param p
+	 *            the ai player that needs to do the hacking
 	 */
-	public void reactToPlayerWork();
+	public void reactToPlayerWork(World w, Player p);
 
 	/**
 	 * Tells the bot/bots what to do while the player is trying to hack
@@ -106,4 +112,15 @@ public interface Logic {
 	 *            the world of the player
 	 */
 	public void toTheDesk(World w, Player p);
+
+	/**
+	 * Checks all players and the work load they have completed. Then compare
+	 * them to the AI palyer.
+	 * 
+	 * @param w
+	 *            the world where the players complete
+	 * @return the player who is closest to completing his project, and if the
+	 *         AI player is closest to the goal, return NULL
+	 */
+	public Player closestToWin(World w);
 }

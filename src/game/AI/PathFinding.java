@@ -12,7 +12,7 @@ import game.core.world.tile.TileType;
 /**
  * Created on 28.01.2017
  * 
- * @author Atanas Kostadinov Harbaliev
+ * @author Atanas K. Harbaliev
  */
 
 public class PathFinding implements Runnable {
