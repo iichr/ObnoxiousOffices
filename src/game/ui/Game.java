@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
+import game.core.world.World;
 import game.ui.interfaces.Vals;
 import game.ui.states.CharacterSelect;
 import game.ui.states.Intro;
@@ -59,7 +60,8 @@ public class Game extends StateBasedGame {
 	}
 	
 	public void onGameStart(GameStartedEvent event) {
-		playState.playSetup(event.world);
+		World.world = event.world;
+		playState.playSetup();
 		this.enterState(Vals.PLAY_STATE);
 	}
 

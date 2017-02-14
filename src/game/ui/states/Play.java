@@ -105,8 +105,8 @@ public class Play extends BasicGameState {
 	 * @param world
 	 *            The game world
 	 */
-	public void playSetup(World world) {
-		this.world = world;
+	public void playSetup() {
+		this.world = World.world;
 		this.localPlayerName = Player.localPlayerName;
 	}
 
