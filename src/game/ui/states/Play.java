@@ -139,7 +139,7 @@ public class Play extends BasicGameState {
 		g.setColor(Color.red);
 		playerinfo.render(g);
 		// add player status container
-		//playerOverview.render(g, showOverview);
+		playerOverview.render(g, showOverview);
 
 		// add effects overview container
 		effectOverview.render(g);

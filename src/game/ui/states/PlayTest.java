@@ -6,11 +6,11 @@ import java.nio.file.Paths;
 import java.util.Random;
 
 import game.core.player.Player;
+import game.core.test.Test;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
 import game.ui.interfaces.Vals;
-import org.newdawn.slick.Input;
 
 public class PlayTest extends Play {
 
@@ -33,7 +33,7 @@ public class PlayTest extends Play {
 		w = addPlayers(w);
 
 		this.world = w;
-		this.localPlayerName = Player.localPlayerName;
+		this.localPlayerName = Test.localPlayer;
 		World.world = w;
 	}
 
@@ -75,38 +75,8 @@ public class PlayTest extends Play {
 		testPlayer.setHair(Player.BLONDE);
 
 		localPlayerName = testPlayer.name;
-		Player.localPlayerName = localPlayerName;
+		Test.localPlayer = localPlayerName;
 		w.addPlayer(testPlayer);
 		return w;
-	}
-	
-	@Override
-	public void keyPressed(int key, char c) {
-		switch (key) {
-		case Input.KEY_ESCAPE:
-			paused = true;
-			break;
-		case Input.KEY_TAB:
-			showOverview = true;
-			break;
-		case Input.KEY_UP:
-			//Events.trigger(new PlayerInputEvent(InputType.MOVE_UP, Test.localPlayer.name));
-			break;
-		case Input.KEY_DOWN:
-			//Events.trigger(new PlayerInputEvent(InputType.MOVE_DOWN, Test.localPlayer.name));
-			break;
-		case Input.KEY_RIGHT:
-			//Events.trigger(new PlayerInputEvent(InputType.MOVE_RIGHT, Test.localPlayer.name));
-			break;
-		case Input.KEY_LEFT:
-			//Events.trigger(new PlayerInputEvent(InputType.MOVE_LEFT, Test.localPlayer.name));
-			break;
-		case Input.KEY_E:
-			//Events.trigger(new PlayerInputEvent(InputType.INTERACT, Test.localPlayer.name));
-			break;
-		case Input.KEY_B:
-			effectOverview.activate();
-			break;
-		}
 	}
 }
