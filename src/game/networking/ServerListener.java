@@ -105,7 +105,8 @@ public class ServerListener extends Thread {
 				} else {
 					try {
 						Event eventObject = (Event) is.readObject();
-						this.sendToAllClients(eventObject);
+						System.out.println("recieved: " + eventObject);
+						Events.trigger(eventObject);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
