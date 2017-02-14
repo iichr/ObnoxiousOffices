@@ -43,7 +43,7 @@ public class Client {
 
 	public void connectToServer(ConnectionAttemptEvent event) {
 		int port = 8942;
-		String hostname = "147.188.195.112";
+		String hostname = "localhost";
 
 		try {
 			this.server = new Socket(hostname, port);

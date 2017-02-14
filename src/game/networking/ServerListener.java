@@ -52,7 +52,7 @@ public class ServerListener extends Thread {
 		this.connections = connection;
 		this.playerNumber = connections.size();
 		try {
-			this.world = World.load(Paths.get("data/office" + NUM_PLAYERS + "player.level"), NUM_PLAYERS);
+			this.world = World.load(Paths.get("data/office" + NUM_PLAYERS + "Player.level"), NUM_PLAYERS);
 			World.world = this.world;
 		} catch (IOException e2) {
 			// TODO Auto-generated catch block
@@ -165,7 +165,7 @@ public class ServerListener extends Thread {
 		}
 	}
 
-	public void addPlayerToGame(Player playerToAdd) {
+	public void addAIToGame(Player playerToAdd) {
 		playerToAdd.setHair(playerTable.size());
 		this.playerTable.add(playerToAdd);
 		if(playerToAdd.isAI) makingAI = false;

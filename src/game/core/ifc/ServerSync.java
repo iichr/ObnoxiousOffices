@@ -24,7 +24,7 @@ public class ServerSync {
 
     private static void makeAIPlayer(CreateAIPlayerRequest request) {
         Player ai = AIPlayer.createAIPalyer("Volker", Direction.SOUTH,  new Location(4, 0, 0, World.world));
-        ((ServerListener)request.serverListener).addPlayerToGame(ai);
+        ((ServerListener)request.serverListener).addAIToGame(ai);
     }
 
     private static void onPlayerInput(PlayerInputEvent event) {
