@@ -37,7 +37,7 @@ public class AIPlayer extends Player {
 	 *            location on the map
 	 * @return a bot
 	 */
-	public Player createAIPalyer(String name, Direction dir, Location loc) {
+	public static Player createAIPalyer(String name, Direction dir, Location loc) {
 		// calls Player constructor with: name, direction, location
 		AIPlayer aiPlayer = new AIPlayer(name, dir, loc);
 		
@@ -51,12 +51,12 @@ public class AIPlayer extends Player {
 		return aiPlayer;
 	}
 
-	//method for presentation in week 6
-	//if you are fatigued, find the coffee machine, go there, drink coffee, and go back to the desk
 	public void test(Player p, World w) {
 		
 	}
 	
+	//method for presentation in week 6
+	//if you are fatigued, find the coffee machine, go there, drink coffee, and go back to the desk
 	@Override
     public void update() {
 		if (this.status.getAttribute(PlayerAttribute.FATIGUE) > 0.8) {
