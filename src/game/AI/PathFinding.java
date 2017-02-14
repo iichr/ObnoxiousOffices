@@ -1,5 +1,6 @@
 package game.AI;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -15,11 +16,11 @@ import game.core.world.tile.TileType;
  * @author Atanas K. Harbaliev
  */
 
-public class PathFinding implements Runnable {
+public class PathFinding implements Runnable, Serializable {
 
 	// the object that is going to be used to store heuristic value, g cost
 	// final value, coordinates and the parent
-	class Cell {
+	class Cell implements Serializable {
 		int hCost = 0; // heuristic cost
 		int fCost = 0; // total cost, f = g + h
 

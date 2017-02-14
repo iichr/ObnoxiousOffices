@@ -1,5 +1,7 @@
 package game.AI;
 
+import java.io.Serializable;
+
 import game.core.player.Player;
 import game.core.world.World;
 
@@ -8,7 +10,7 @@ import game.core.world.World;
  * @author Atanas K. Harabliev. Created on 6/02/2017
  *
  */
-public interface Logic {
+public interface Logic extends Serializable{
 
 	// if player's energy is below the threshold, he needs to go for a refresh
 	static double energyThreshold = 0.8;
