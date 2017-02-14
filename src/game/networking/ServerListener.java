@@ -28,6 +28,8 @@ public class ServerListener extends Thread {
 	private ArrayList<Player> playerTable;
 	private ArrayList<ServerListener> connections;
 
+	private boolean makingAI = false;
+
 	private Socket socket = null;
 	private ObjectInputStream is;
 	private ObjectOutputStream os;
@@ -76,37 +78,38 @@ public class ServerListener extends Thread {
 	public void run() {
 		boolean running = true;
 		while (running) {
-			if (this.playerTable.size() < NUM_PLAYERS) {
-				try {
-					String playerName = is.readObject().toString();
-					this.addPlayerToGame(playerName);
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-				// Allows hard coded AI player to be added for prototype
-				if (this.playerTable.size() == 3) {
-					Events.trigger(new CreateAIPlayerRequest(this));
-				}
-
-				if (this.playerTable.size() == NUM_PLAYERS) {
-					for (int i = 0; i < playerTable.size(); i++) {
-						Player p = playerTable.get(i);
-						world.addPlayer(p);
+			if (!makingAI) {
+				if (this.playerTable.size() < NUM_PLAYERS) {
+					try {
+						String playerName = is.readObject().toString();
+						this.addPlayerToGame(playerName);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-					sendToAllClients(new GameStartedEvent(world));
-				}
-			} else {
-				try {
-					Event eventObject = (Event) is.readObject();
-					System.out.println("recieved: " + eventObject);
-					Events.trigger(eventObject);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 
+					// Allows hard coded AI player to be added for prototype
+					if (this.playerTable.size() == 3) {
+						makingAI = true;
+						Events.trigger(new CreateAIPlayerRequest(this));
+					}
+
+					if (this.playerTable.size() == NUM_PLAYERS) {
+						for (int i = 0; i < playerTable.size(); i++) {
+							Player p = playerTable.get(i);
+							world.addPlayer(p);
+						}
+						sendToAllClients(new GameStartedEvent(world));
+					}
+				} else {
+					try {
+						Event eventObject = (Event) is.readObject();
+						this.sendToAllClients(eventObject);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 	}
@@ -161,10 +164,11 @@ public class ServerListener extends Thread {
 			System.out.println("Player " + name + " has already been added to the game!");
 		}
 	}
-	
-	public void addPlayerToGame(Player playerToAdd){
+
+	public void addPlayerToGame(Player playerToAdd) {
 		playerToAdd.setHair(playerTable.size());
 		this.playerTable.add(playerToAdd);
+		makingAI = false;
 	}
 
 	/**
