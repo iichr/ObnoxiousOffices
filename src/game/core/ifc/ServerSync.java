@@ -19,6 +19,7 @@ public class ServerSync {
     }
 
     private static void onPlayerInput(PlayerInputEvent event) {
+    	System.out.println("managing input event");
         Input.InputType type = event.inputType;
         Player player = World.world.getPlayer(event.playerName);
         if(type.isMovement) processMovement(type, player);

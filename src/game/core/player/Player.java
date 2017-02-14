@@ -60,7 +60,10 @@ public class Player implements Updateable, Serializable {
      */
     public void setFacing(Direction facing) {
         this.facing = facing;
-        if(!DevWars.isClient()) Events.trigger(new PlayerRotatedEvent(facing, this.name));
+        if(!DevWars.isClient()){
+        	System.out.println("sending player rotated event");
+        	Events.trigger(new PlayerRotatedEvent(facing, this.name));
+        }
     }
 
     /**
@@ -70,7 +73,10 @@ public class Player implements Updateable, Serializable {
     public void setLocation(Location location) {
         Location diff = location.diff(this.location);
         this.location = location;
-        if(!DevWars.isClient()) Events.trigger(new PlayerMovedEvent(diff.x, diff.y, diff.z, this.name));
+        if(!DevWars.isClient()) {
+        	System.out.println("sending player moved event");
+        	Events.trigger(new PlayerMovedEvent(diff.x, diff.y, diff.z, this.name));
+        }
     }
 
     public Location getLocation() {

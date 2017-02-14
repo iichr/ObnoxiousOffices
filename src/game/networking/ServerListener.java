@@ -98,6 +98,7 @@ public class ServerListener extends Thread {
 			} else {
 				try {
 					Event eventObject = (Event) is.readObject();
+					System.out.println("recieved: " + eventObject);
 					Events.trigger(eventObject);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -114,8 +115,8 @@ public class ServerListener extends Thread {
 	 *            The info to send
 	 */
 	public void sendToAllClients(Object obj) {
-		System.out.println("conections.size =" + connections.size());
 		for (int i = 0; i < this.connections.size(); i++) {
+			System.out.println("sending " + obj + "to connection " + i);
 			this.connections.get(i).forwardInfo(obj);
 		}
 	}
@@ -139,6 +140,7 @@ public class ServerListener extends Thread {
 	public void sendToOne(Object recieved, String name) {
 		for (int i = 0; i < this.playerTable.size(); i++) {
 			if (this.playerTable.get(i).name.equals(name)) {
+				System.out.println("sending in sendToOne " + recieved + " to connection " + i);
 				this.connections.get(i).forwardInfo(recieved);
 			}
 

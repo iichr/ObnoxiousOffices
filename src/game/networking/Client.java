@@ -30,6 +30,7 @@ public class Client {
 	 */
 	public void sendDataToServer(Object data) {
 		try {
+			System.out.println("sending to server: " + data);
 			od.writeObject(data);
 			od.flush();
 			System.out.println("Data Sent!");
