@@ -88,7 +88,7 @@ public class ServerListener extends Thread {
 
 				// Allows hard coded AI player to be added for prototype
 				if (this.playerTable.size() == 3) {
-					Events.trigger(new CreateAIPlayerRequest());
+					Events.trigger(new CreateAIPlayerRequest(this));
 				}
 
 				if (this.playerTable.size() == NUM_PLAYERS) {
