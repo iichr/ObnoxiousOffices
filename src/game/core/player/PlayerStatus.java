@@ -21,7 +21,7 @@ public class PlayerStatus implements Serializable {
     public PlayerStatus(Player player) {
         this.player = player;
         // Add all attributes with their initial values
-        Arrays.stream(PlayerAttribute.values()).forEach(attr -> setAttribute(attr, attr.initialVal));
+        Arrays.stream(PlayerAttribute.values()).forEach(attr -> attributes.put(attr, attr.initialVal));
     }
 
     /**
