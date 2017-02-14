@@ -79,7 +79,7 @@ public class ServerListener extends Thread {
 		boolean running = true;
 		while (running) {
 			if (!makingAI) {
-				if (this.playerTable.size() < NUM_PLAYERS) {
+				if (this.playerTable.size() < connections.size()) {
 					try {
 						String playerName = is.readObject().toString();
 						this.addPlayerToGame(playerName);
