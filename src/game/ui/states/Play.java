@@ -35,7 +35,7 @@ public class Play extends BasicGameState {
 	protected World world;
 	private HashMap<Player, PlayerAnimation> playerMap;
 	protected String localPlayerName;
-	
+
 	private HashMap<Player, Player> previousPlayer;
 
 	// tile information
@@ -76,7 +76,7 @@ public class Play extends BasicGameState {
 
 		// PlayerContainer container
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
-		
+
 	}
 
 	@Override
@@ -125,10 +125,10 @@ public class Play extends BasicGameState {
 			playerMap.put(p, animation);
 		}
 	}
-	
+
 	private void storePreviousLocations(Set<Player> players) throws SlickException {
 		for (Player p : players) {
-			Player pOld = new Player(p.name, p.getFacing(),p.getLocation());
+			Player pOld = new Player(p.name, p.getFacing(), p.getLocation());
 			previousPlayer.put(p, pOld);
 		}
 	}
@@ -161,9 +161,10 @@ public class Play extends BasicGameState {
 
 		// get players
 		Set<Player> players = world.getPlayers();
-		playerOverview = new PlayerContainer(world, localPlayerName,10, 100, 300, 500, _avatar, _avatar, _avatar, _avatar);
+		playerOverview = new PlayerContainer(world, localPlayerName, 10, 100, 300, 500, _avatar, _avatar, _avatar,
+				_avatar);
 		playerinfo = new PlayerInfo(world);
-		
+
 		// check every position in the world to render what is needed at that
 		// location
 
@@ -187,18 +188,23 @@ public class Play extends BasicGameState {
 			}
 		}
 	}
-	
+
 	/**
 	 * Renders the players in the world
-	 * @param x the x location being checked
-	 * @param y the y location being checked
-	 * @param tileX the x location of the tiles on screen
-	 * @param tileY the y location of the tiles on screen
+	 * 
+	 * @param x
+	 *            the x location being checked
+	 * @param y
+	 *            the y location being checked
+	 * @param tileX
+	 *            the x location of the tiles on screen
+	 * @param tileY
+	 *            the y location of the tiles on screen
 	 */
-	public void drawPlayers(int x, int y, float tileX, float tileY){
+	public void drawPlayers(int x, int y, float tileX, float tileY) {
 		// get players
 		Set<Player> players = world.getPlayers();
-		
+
 		// render the players
 		for (Player player : players) {
 			Location playerLocation = player.getLocation();
@@ -208,15 +214,18 @@ public class Play extends BasicGameState {
 			}
 		}
 	}
-	
+
 	/**
-	 * Animates the players turning by checking their previous location and adjusting appropriately
-	 * @param player the player to check
+	 * Animates the players turning by checking their previous location and
+	 * adjusting appropriately
+	 * 
+	 * @param player
+	 *            the player to check
 	 */
-	public void checkPreviousLocation(Player player){
+	public void checkPreviousLocation(Player player) {
 		Location playerLocation = player.getLocation();
 		Direction playerFacing = player.getFacing();
-		if(previousPlayer.get(player).getFacing() != player.getFacing()){
+		if (previousPlayer.get(player).getFacing() != player.getFacing()) {
 			playerMap.get(player).turn(player.getFacing());
 			previousPlayer.get(player).setLocation(playerLocation);
 			previousPlayer.get(player).setFacing(playerFacing);
@@ -242,30 +251,28 @@ public class Play extends BasicGameState {
 
 			int worldX = (int) (x / tileWidth);
 			int worldY = (int) (y / (tileHeight / 2) - 2);
-			System.out.println(worldX);
-			System.out.println(worldY);
-			TileType type = world.getTile(worldX, worldY, 0).type;
-			System.out.println(type);
-			objX = x;
-			objY = y;
-
-			if (type == TileType.COFFEE_MACHINE) {
-				coffeemach = true;
-				computer = false;
-				sofa = false;
-			} else if (type == TileType.COMPUTER) {
-				computer = true;
-				sofa = false;
-				coffeemach = false;
-			} else if (type == TileType.SOFA) {
-				sofa = true;
-				coffeemach = false;
-				computer = false;
-			} else {
-				// decor without user interaction
-				sofa = false;
-				coffeemach = false;
-				computer = false;
+			if (worldY >= 0) {
+				TileType type = world.getTile(worldX, worldY, 0).type;
+				objX = x;
+				objY = y;
+				if (type == TileType.COFFEE_MACHINE) {
+					coffeemach = true;
+					computer = false;
+					sofa = false;
+				} else if (type == TileType.COMPUTER) {
+					computer = true;
+					sofa = false;
+					coffeemach = false;
+				} else if (type == TileType.SOFA) {
+					sofa = true;
+					coffeemach = false;
+					computer = false;
+				} else {
+					// decor without user interaction
+					sofa = false;
+					coffeemach = false;
+					computer = false;
+				}
 			}
 		}
 	}
