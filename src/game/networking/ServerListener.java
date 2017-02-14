@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import game.core.event.CreateAIPlayerRequest;
 import game.core.event.Event;
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
@@ -21,7 +22,6 @@ import game.core.event.PlayerProgressUpdateEvent;
 import game.core.event.PlayerRotatedEvent;
 import game.core.player.Player;
 import game.core.world.Direction;
-import game.core.world.Location;
 import game.core.world.World;
 
 public class ServerListener extends Thread {
@@ -31,22 +31,24 @@ public class ServerListener extends Thread {
 	private Socket socket = null;
 	private ObjectInputStream is;
 	private ObjectOutputStream os;
+	private int playerNumber;
 	public World world;
 
 	public static final int NUM_PLAYERS = 4;
 
 	public ServerListener(Socket socket, ArrayList<Player> hash, ArrayList<ServerListener> connection) {
-		Events.on(PlayerRotatedEvent.class, this::sendToAllClients);
-		Events.on(PlayerProgressUpdateEvent.class, this::sendToAllClients);
-		Events.on(PlayerMovedEvent.class, this::sendToAllClients);
-		Events.on(PlayerActionAddedEvent.class, this::sendToAllClients);
-		Events.on(PlayerActionEndedEvent.class, this::sendToAllClients);
-		Events.on(PlayerEffectAddedEvent.class, this::sendToAllClients);
-		Events.on(PlayerEffectEndedEvent.class, this::sendToAllClients);
-		Events.on(PlayerAttributeChangedEvent.class, this::sendToAllClients);
+		Events.on(PlayerRotatedEvent.class, this::forwardInfo);
+		Events.on(PlayerProgressUpdateEvent.class, this::forwardInfo);
+		Events.on(PlayerMovedEvent.class, this::forwardInfo);
+		Events.on(PlayerActionAddedEvent.class, this::forwardInfo);
+		Events.on(PlayerActionEndedEvent.class, this::forwardInfo);
+		Events.on(PlayerEffectAddedEvent.class, this::forwardInfo);
+		Events.on(PlayerEffectEndedEvent.class, this::forwardInfo);
+		Events.on(PlayerAttributeChangedEvent.class, this::forwardInfo);
 		this.playerTable = hash;
 		this.socket = socket;
 		this.connections = connection;
+		this.playerNumber = connections.size();
 		try {
 			this.world = World.load(Paths.get("data/office" + NUM_PLAYERS + "player.level"), NUM_PLAYERS);
 			World.world = this.world;
@@ -83,11 +85,12 @@ public class ServerListener extends Thread {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				/*
-				 * //Allows hard coded AI player to be added for prototype if
-				 * (this.playerTable.size() == 3) { Events.trigger(new
-				 * CreateAIPlayerRequest()); }
-				 */
+
+				// Allows hard coded AI player to be added for prototype
+				if (this.playerTable.size() == 3) {
+					Events.trigger(new CreateAIPlayerRequest());
+				}
+
 				if (this.playerTable.size() == NUM_PLAYERS) {
 					for (int i = 0; i < playerTable.size(); i++) {
 						Player p = playerTable.get(i);
@@ -136,15 +139,6 @@ public class ServerListener extends Thread {
 		}
 	}
 
-	public void sendToOne(Object recieved, String name) {
-		for (int i = 0; i < this.playerTable.size(); i++) {
-			if (this.playerTable.get(i).name.equals(name)) {
-				this.connections.get(i).forwardInfo(recieved);
-			}
-
-		}
-	}
-
 	/**
 	 * Adds a player to the game.
 	 * 
@@ -153,18 +147,22 @@ public class ServerListener extends Thread {
 	 */
 	private void addPlayerToGame(String name) {
 		if (!this.playerNameUsed(name)) {
-			int playerNumber = playerTable.size();
 			Player playerObject = new Player(name, Direction.SOUTH, world.getSpawnPoint(playerNumber));
 			playerObject.setHair(playerNumber);
 			this.playerTable.add(playerObject);
-			
+
 			PlayerCreatedEvent event = new PlayerCreatedEvent(name);
 			Events.trigger(event);
-			sendToOne(event, name);
+			forwardInfo(event);
 			System.out.println("Player " + name + " added to the game!");
 		} else {
 			System.out.println("Player " + name + " has already been added to the game!");
 		}
+	}
+	
+	public void addPlayerToGame(Player playerToAdd){
+		playerToAdd.setHair(playerTable.size());
+		this.playerTable.add(playerToAdd);
 	}
 
 	/**
