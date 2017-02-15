@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import game.core.event.ConnectionAttemptEvent;
+import game.core.event.ConnectionFailedEvent;
 import game.core.event.Events;
 import game.core.event.PlayerCreatedEvent;
 import game.core.event.PlayerInputEvent;
@@ -41,6 +42,11 @@ public class Client {
 		}
 	}
 
+	/**
+	 * Attempt to connect to the server when ConnectionAttemptEvent is received
+	 * If it fails then send connectionFailedEvent
+	 * @param event The ConnectionAttemptEvent
+	 */
 	public void connectToServer(ConnectionAttemptEvent event) {
 		int port = 8942;
 		String hostname = "147.188.195.80";
@@ -52,19 +58,24 @@ public class Client {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			System.out.println("Client Connected To Server!");
+			
 		} catch (UnknownHostException e) {
 			System.err.println("Unknown host: " + hostname);
-			System.exit(1); // Give up.
+			Events.trigger(new ConnectionFailedEvent());
+			
 		} catch (IOException e) {
 			System.err.println("The server doesn't seem to be running " + e.getMessage());
-			System.exit(1); // Give up.
+			Events.trigger(new ConnectionFailedEvent());
 		}
 		this.sendDataToServer(event.name);
 		
 		new ClientListner(this.server).start();		
 	}
 
+	/**
+	 * Sets the local player name on PlayerCreatedEvent
+	 * @param e THe playerCreatedEvent
+	 */
 	public void setLocalPlayer(PlayerCreatedEvent e) {
 		Player.localPlayerName = e.localPlayerName;
 	}
