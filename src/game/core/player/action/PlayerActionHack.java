@@ -15,7 +15,7 @@ public class PlayerActionHack extends TimedPlayerAction {
     }
 
     @Override
-    protected void update() {
+    protected void timedUpdate() {
         target.removeProgress();
     }
 
