@@ -39,6 +39,26 @@ public class ServerListener extends Thread {
 	public static final int NUM_PLAYERS = 4;
 
 	public ServerListener(Socket socket, ArrayList<Player> hash, ArrayList<ServerListener> connection) {
+		this.playerTable = hash;
+		this.socket = socket;
+		this.connections = connection;
+		this.playerNumber = connections.size();
+		
+		//set up the event listeners
+		listenForEvents();
+		
+		//load the world
+		loadWorld();
+		
+		//make the object streams
+		createObjectStreams();
+
+	}
+	
+	/**
+	 * Set up the list of events that the server should listen for
+	 */
+	private void listenForEvents(){
 		Events.on(PlayerRotatedEvent.class, this::forwardInfo);
 		Events.on(PlayerProgressUpdateEvent.class, this::forwardInfo);
 		Events.on(PlayerMovedEvent.class, this::forwardInfo);
@@ -47,17 +67,25 @@ public class ServerListener extends Thread {
 		Events.on(PlayerEffectAddedEvent.class, this::forwardInfo);
 		Events.on(PlayerEffectEndedEvent.class, this::forwardInfo);
 		Events.on(PlayerAttributeChangedEvent.class, this::forwardInfo);
-		this.playerTable = hash;
-		this.socket = socket;
-		this.connections = connection;
-		this.playerNumber = connections.size();
+	}
+	
+	/**
+	 * Load the required world form file
+	 */
+	private void loadWorld(){
 		try {
 			this.world = World.load(Paths.get("data/office" + NUM_PLAYERS + "Player.level"), NUM_PLAYERS);
 			World.world = this.world;
 		} catch (IOException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Attempt to make the input and output object streams
+	 * If it fails then close the server socket 
+	 */
+	private void createObjectStreams(){
 		try {
 			this.is = new ObjectInputStream(this.socket.getInputStream());
 			this.os = new ObjectOutputStream(this.socket.getOutputStream());
@@ -71,7 +99,6 @@ public class ServerListener extends Thread {
 				e1.printStackTrace();
 			}
 		}
-
 	}
 
 	@Override
