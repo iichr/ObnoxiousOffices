@@ -1,6 +1,6 @@
 package game.core.event;
 
-import game.core.ifc.ClientSync;
+import game.core.sync.ClientSync;
 
 import java.util.*;
 import java.util.function.Consumer;
