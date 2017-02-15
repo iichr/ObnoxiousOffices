@@ -10,6 +10,7 @@ import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
+import game.core.world.tile.Tile;
 import game.networking.ServerListener;
 
 /**
@@ -33,7 +34,15 @@ public class ServerSync {
         Input.InputType type = event.inputType;
         Player player = World.world.getPlayer(event.playerName);
         if(type.isMovement) processMovement(type, player);
-        
+        else processInteraction(type, player);
+    }
+
+    private static void processInteraction(Input.InputType type, Player player) {
+        switch (type) {
+            case INTERACT:
+                Tile targetTile = player.getLocation().forward(player.getFacing()).getTile();
+                if(targetTile != null) targetTile.onInteraction(player);
+        }
     }
 
     private static void processMovement(Input.InputType type, Player player) {
@@ -53,11 +62,9 @@ public class ServerSync {
                 direction = Direction.EAST;
                 break;
         }
+        player.setFacing(direction);
         Location forwards = loc.forward(direction);
-        if(forwards.checkBounds() && forwards.getTile().type.canWalkOver()) {
-            player.setFacing(direction);
-            player.setLocation(forwards);
-        }
+        if(forwards.checkBounds() && forwards.getTile().type.canWalkOver()) player.setLocation(forwards);
     }
 
 }
