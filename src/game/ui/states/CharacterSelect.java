@@ -15,6 +15,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import game.core.event.ConnectionAttemptEvent;
+import game.core.event.ConnectionFailedEvent;
 import game.core.event.Events;
 import game.core.event.PlayerCreatedEvent;
 import game.ui.buttons.ConnectButton;
@@ -34,7 +35,7 @@ public class CharacterSelect extends BasicGameState {
 	private String connectingString = "Attempting to connect to server";
 	private String waitingString = "Waiting for more players";
 	private String connectFailString = "Connection failed: please try again";
-	
+
 	private boolean toPlay = false;
 	private boolean connecting = false;
 	private boolean connected = false;
@@ -44,8 +45,8 @@ public class CharacterSelect extends BasicGameState {
 	public CharacterSelect(int state, PlayTest test) {
 		this.playTest = test;
 		Events.on(ConnectionAttemptEvent.class, this::showConnecting);
-		 Events.on(PlayerCreatedEvent.class, this::connected);
-		// Events.on(ConnectionFailedEvent.class, this::connected);
+		Events.on(PlayerCreatedEvent.class, this::connected);
+		Events.on(ConnectionFailedEvent.class, this::connectFail);
 	}
 
 	@Override
@@ -101,15 +102,20 @@ public class CharacterSelect extends BasicGameState {
 		backButton.render();
 		circleButton.render();
 		if (connecting) {
-			if(connected){
-				g.drawString(waitingString, connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(waitingString)/2, connectButton.getY() + 100);
-			}else{
-				g.drawString(connectingString, connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(connectingString)/2, connectButton.getY() + 100);
+			if (connected) {
+				g.drawString(waitingString, connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(waitingString) / 2,
+						connectButton.getY() + 100);
+			} else {
+				g.drawString(connectingString,
+						connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(connectingString) / 2,
+						connectButton.getY() + 100);
 			}
-		}else{
+		} else {
 			connectButton.render();
-			if(connectFailed){
-				g.drawString(connectFailString, connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(connectFailString)/2, connectButton.getY() + 100);
+			if (connectFailed) {
+				g.drawString(connectFailString,
+						connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(connectFailString) / 2,
+						connectButton.getY() + 100);
 			}
 		}
 
@@ -145,18 +151,16 @@ public class CharacterSelect extends BasicGameState {
 		// show attempting to connect to server text
 	}
 
-	 private void connected(PlayerCreatedEvent e){
-	 connected = true;
-//	 show spinning icon and text saying waiting for players
-	 }
+	private void connected(PlayerCreatedEvent e) {
+		connected = true;
+		// show spinning icon and text saying waiting for players
+	}
 
-	// private void connectFail(ConnectionFailedEvent e){
-	// connectFailed = true;
-	// connected = false;
-	// connecting = false;
-	// show connection failed text
-	// display connect button again
-	// }
+	private void connectFail(ConnectionFailedEvent e) {
+		connectFailed = true;
+		connected = false;
+		connecting = false;
+	}
 
 	@Override
 	public int getID() {
