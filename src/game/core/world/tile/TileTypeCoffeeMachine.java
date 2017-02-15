@@ -1,13 +1,16 @@
 package game.core.world.tile;
 
 import game.core.player.Player;
+import game.core.player.action.PlayerAction;
+import game.core.player.action.PlayerActionDrink;
 
 /**
  * Created by samtebbs on 27/01/2017.
  */
-public class TileTypeCoffeeMachine extends TileType {
+public class TileTypeCoffeeMachine extends TileTypeAction {
+
     public TileTypeCoffeeMachine(int id) {
-        super(id);
+        super(id, PlayerActionDrink.class);
     }
 
     @Override
@@ -21,7 +24,7 @@ public class TileTypeCoffeeMachine extends TileType {
     }
 
     @Override
-    public void onInteraction(Player player) {
-        // TODO: Do some cool stuff here
+    protected PlayerAction getAction(Player player) {
+        return new PlayerActionDrink(player);
     }
 }
