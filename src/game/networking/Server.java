@@ -69,12 +69,16 @@ public class Server {
 	}
 
 	private void updateWorld(GameStartedEvent e) {
-		if (!gameStarted) {
-			gameStarted = true;
-			while (!gameEnded) {
-				e.world.update();
+		Thread updateThread = new Thread(() -> {
+			if (!gameStarted) {
+				gameStarted = true;
+				System.out.println("looping");
+				while (!gameEnded) {
+					e.world.update();
+				}
 			}
-		}
+		});
+		updateThread.start();
 	}
 
 	// TODO add GameEndedEvent

@@ -151,7 +151,6 @@ public class ServerListener extends Thread {
 	 *            The info to send
 	 */
 	public void sendToAllClients(Object obj) {
-		System.out.println("calling sendToAll with " + connections.size() + " connections");
 		for (int i = 0; i < this.connections.size(); i++) {
 			System.out.println("sending " + obj + "to connection " + i);
 			this.connections.get(i).forwardInfo(obj);
