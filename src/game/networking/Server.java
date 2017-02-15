@@ -16,20 +16,20 @@ public class Server {
 	private ArrayList<Player> playerTable;
 	public ArrayList<ServerListener> connections;
 	private ServerSocket serverSocket = null;
-	private boolean gameEnded;
+	private boolean gameEnded = false;
+	private boolean gameStarted = false;
 
 	public Server() {
 		playerTable = new ArrayList<Player>();
 		connections = new ArrayList<ServerListener>();
 		final int port = 8942;
+		Events.on(GameStartedEvent.class, this::updateWorld);
 
-		//create the server socket
+		// create the server socket
 		createSocket(port);
 
-		//listen for new connections
+		// listen for new connections
 		listenForConnections();
-		
-		Events.on(GameStartedEvent.class, this::updateWorld);
 	}
 
 	/**
@@ -51,8 +51,7 @@ public class Server {
 	}
 
 	/**
-	 * Listen for connections from clients
-	 * make a new server listener for each
+	 * Listen for connections from clients make a new server listener for each
 	 */
 	private void listenForConnections() {
 		boolean waiting = true;
@@ -68,17 +67,20 @@ public class Server {
 			System.err.println("IO error " + e.getMessage());
 		}
 	}
-	
-	private void updateWorld(GameStartedEvent e){
-		while(!gameEnded){
-			e.world.update();
+
+	private void updateWorld(GameStartedEvent e) {
+		if (!gameStarted) {
+			gameStarted = true;
+			while (!gameEnded) {
+				e.world.update();
+			}
 		}
 	}
-	
-	//TODO add GameEndedEvent
-//	private void gameEnd(GameEndedEvent e){
-//		gameEnded = true;
-//	}
+
+	// TODO add GameEndedEvent
+	// private void gameEnd(GameEndedEvent e){
+	// gameEnded = true;
+	// }
 
 	/**
 	 * 

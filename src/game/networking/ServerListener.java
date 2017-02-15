@@ -127,7 +127,9 @@ public class ServerListener extends Thread {
 							Player p = playerTable.get(i);
 							world.addPlayer(p);
 						}
-						sendToAllClients(new GameStartedEvent(world));
+						GameStartedEvent gameStart = new GameStartedEvent(world);
+						sendToAllClients(gameStart);
+						Events.trigger(gameStart);
 					}
 				} else {
 					try {
