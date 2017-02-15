@@ -18,9 +18,15 @@ import game.core.world.tile.TileType;
 
 public class PathFinding implements Runnable, Serializable {
 
+	//make eclipse happy
+	private static final long serialVersionUID = 1L;
+
 	// the object that is going to be used to store heuristic value, g cost
 	// final value, coordinates and the parent
 	class Cell implements Serializable {
+		//make eclipse happy
+		private static final long serialVersionUID = 1L;
+		
 		int hCost = 0; // heuristic cost
 		int fCost = 0; // total cost, f = g + h
 
@@ -59,7 +65,7 @@ public class PathFinding implements Runnable, Serializable {
 
 	int coffeeI, coffeeJ, bedI, bedJ;
 
-	String toGo; // input "cm" for Coffee Machine or "b" for bed
+	String toGo; // input "cm" for Coffee Machine or "b" for sofa
 
 	// constructor
 	public PathFinding(World w, Player p, String s) {
@@ -69,14 +75,14 @@ public class PathFinding implements Runnable, Serializable {
 	}
 
 	// the size of the world
-	int colLength = world.ySize; // i
-	int rowLength = world.xSize; // j
+	int colLength = World.world.ySize; // j
+	int rowLength = World.world.xSize; // i
 
 	// the grid that is going to be used for the A*
-	Cell[][] grid = new Cell[colLength][rowLength];
+	Cell[][] grid = new Cell[rowLength][colLength];
 
 	// create the arraylist of cells
-	ArrayList<Integer> path = new ArrayList<Integer>();
+	ArrayList<Pair<Integer, Integer>> path = new ArrayList<Pair<Integer, Integer>>();
 
 	/**
 	 * Calculate the heuristic /Manhattan distance/ using the coordinates of the
@@ -101,15 +107,17 @@ public class PathFinding implements Runnable, Serializable {
 	void worldToCell() {
 		int heurC = 1000;
 		int heurB = 1000;
-		for (int i = 0; i < colLength; i++) {
-			for (int j = 0; j < rowLength; j++) {
-				Tile tile = world.getTile(i, j, 0); // get the tile at i,j
+		for (int i = 0; i < rowLength; i++) {
+			for (int j = 0; j < colLength; j++) {
+				
+				grid[i][j] = new Cell(i, j);
+				Tile tile = World.world.getTile(i, j, 0); // get the tile at i,j
 				// if you can walk over a tile, calculate the
 				// heuristic function, else make it a null
 				if (tile.type.canWalkOver())
 					grid[i][j].hCost = calcHeuristic(i, j);
 				else
-					grid[i][j] = null;
+					grid[i][j].hCost = 1000;
 
 				// if the current tile is a coffee machine, and is closer than
 				// the previous one, save coordinates
@@ -156,7 +164,7 @@ public class PathFinding implements Runnable, Serializable {
 	void checkAndUpdateCost(Cell current, Cell c, int cost) {
 		// if cell c is reachable and not yet explored, calculate the cost of
 		// exploring it
-		if (c == null || closed[c.i][c.j])
+		if (closed[c.i][c.j]) //c == null || 
 			return;
 		int cCost = c.hCost + cost;
 
@@ -181,14 +189,11 @@ public class PathFinding implements Runnable, Serializable {
 	 */
 	void AStar(int goalI, int goalJ) {
 
-		// create a grid of cells from the world
-		worldToCell();
-
 		Cell current;
-		closed = new boolean[colLength][rowLength];
+		closed = new boolean[rowLength][colLength];
 
 		// set the starting point
-		startCell(player.getLocation().y, player.getLocation().x);
+		startCell(player.getLocation().x, player.getLocation().y);
 
 		// add the starting location to the open list
 		open.add(grid[startI][startJ]);
@@ -241,7 +246,7 @@ public class PathFinding implements Runnable, Serializable {
 	 * @return ArrayList of integer. Take the frist two elements and you have
 	 *         the i, coordinates of the first cell, then the second, then...
 	 */
-	public ArrayList<Integer> path(int goalI, int goalJ) {
+	public ArrayList<Pair<Integer, Integer>> path(int goalI, int goalJ) {
 
 		// make an arraylist from the path
 		// the first two digits are i, j coords of the final state
@@ -250,8 +255,7 @@ public class PathFinding implements Runnable, Serializable {
 
 		// loop through the parents of the cell
 		while (current.parent != null) {
-			path.add(current.i);
-			path.add(current.j);
+			path.add(new Pair<Integer, Integer>(current.i, current.j));
 			current = current.parent;
 		}
 		return path;
@@ -262,12 +266,16 @@ public class PathFinding implements Runnable, Serializable {
 	 * 
 	 * @return the path
 	 */
-	public ArrayList<Integer> getPath() {
+	public ArrayList<Pair<Integer, Integer>> getPath() {
 		return path;
 	}
 
 	@Override
 	public void run() {
+		
+		// create a grid of cells from the world
+		worldToCell();
+		
 		if (toGo == "cm") {
 			AStar(coffeeI, coffeeJ);
 			path(coffeeI, coffeeJ);
