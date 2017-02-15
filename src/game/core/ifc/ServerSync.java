@@ -41,11 +41,9 @@ public class ServerSync {
                 direction = Direction.EAST;
                 break;
         }
+        player.setFacing(direction);
         Location forwards = loc.forward(direction);
-        if(forwards.checkBounds() && forwards.getTile().type.canWalkOver()) {
-            player.setFacing(direction);
-            player.setLocation(forwards);
-        }
+        if(forwards.checkBounds() && forwards.getTile().type.canWalkOver()) player.setLocation(forwards);
     }
 
 }
