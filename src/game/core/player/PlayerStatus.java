@@ -46,6 +46,10 @@ public class PlayerStatus implements Serializable {
         Events.trigger(new PlayerActionAddedEvent(action, player.name));
     }
 
+    public <T extends PlayerAction> boolean hasAction(Class<T> actionClass) {
+        return actions.stream().anyMatch(a -> a.getClass() == actionClass);
+    }
+
     public void update(Player player) {
         Set<PlayerAction> actions2 = Updateable.updateAll(actions);
         actions2.forEach(a -> Events.trigger(new PlayerActionEndedEvent(a, player.name)));
