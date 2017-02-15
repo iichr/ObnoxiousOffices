@@ -101,29 +101,32 @@ public class CharacterSelect extends BasicGameState {
 		// add necessary buttons
 		backButton.render();
 		circleButton.render();
-		if (connecting) {
-			if (connected) {
-				g.drawString(waitingString, connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(waitingString) / 2,
-						connectButton.getY() + 100);
-			} else {
-				g.drawString(connectingString,
-						connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(connectingString) / 2,
-						connectButton.getY() + 100);
-			}
-		} else {
-			connectButton.render();
-			if (connectFailed) {
-				g.drawString(connectFailString,
-						connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(connectFailString) / 2,
-						connectButton.getY() + 100);
-			}
-		}
+		
+		connectStatus(g);
 
 		// Text fields
 		serverAddress.render(gc, g);
 		g.drawString(serverStr, serverAddress.getX() - Vals.FONT_MAIN.getWidth(serverStr) - 10, 200);
 		playerName.render(gc, g);
 		g.drawString(playerStr, serverAddress.getX() - Vals.FONT_MAIN.getWidth(playerStr) - 10, 300);
+	}
+	
+	private void connectStatus(Graphics g){
+		if(!connecting){
+			connectButton.render();
+			if(connectFailed){
+				g.drawString(connectFailString,
+						connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(connectFailString) / 2,
+						connectButton.getY() + 100);
+			}
+		}else if (connecting){
+			g.drawString(connectingString,
+					connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(connectingString) / 2,
+					connectButton.getY() + 100);
+		}else{
+			g.drawString(waitingString, connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(waitingString) / 2,
+					connectButton.getY() + 100);
+		}
 	}
 
 	@Override
@@ -147,13 +150,13 @@ public class CharacterSelect extends BasicGameState {
 	private void showConnecting(ConnectionAttemptEvent e) {
 		connecting = true;
 		connectFailed = false;
-		// remove connection button
-		// show attempting to connect to server text
+		connected = false;
 	}
 
 	private void connected(PlayerCreatedEvent e) {
+		connecting = false;
 		connected = true;
-		// show spinning icon and text saying waiting for players
+		connectFailed = false;
 	}
 
 	private void connectFail(ConnectionFailedEvent e) {
