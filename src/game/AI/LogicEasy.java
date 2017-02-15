@@ -167,7 +167,7 @@ public class LogicEasy implements Logic, Serializable {
 		w.getTile(p.getLocation().x, p.getLocation().y, 0).onInteraction(p);
 
 		// just for the presentation in week 6 TODO: remove that
-		// p.status.setAttribute(PlayerAttribute.FATIGUE, 0.0);
+		 p.status.setAttribute(PlayerAttribute.FATIGUE, 0.0);
 	}
 
 	@Override
