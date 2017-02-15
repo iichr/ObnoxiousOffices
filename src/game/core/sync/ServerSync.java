@@ -1,7 +1,6 @@
-package game.core.ifc;
+package game.core.sync;
 
 import game.core.Input;
-import game.core.event.Event;
 import game.core.event.Events;
 import game.core.event.PlayerInputEvent;
 import game.core.player.Player;
