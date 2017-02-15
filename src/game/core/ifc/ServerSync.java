@@ -53,7 +53,11 @@ public class ServerSync {
         }
         player.setFacing(direction);
         Location forwards = loc.forward(direction);
-        if(forwards.checkBounds() && forwards.getTile().type.canWalkOver()) player.setLocation(forwards);
+        Tile tile;
+        if(forwards.checkBounds() && (tile = forwards.getTile()).type.canWalkOver()) {
+            player.setLocation(forwards);
+            tile.onWalkOver(player);
+        }
     }
 
 }
