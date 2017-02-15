@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import game.core.ifc.ServerSync;
 import game.core.player.Player;
 
 public class Server {
@@ -51,6 +52,7 @@ public class Server {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		ServerSync.init();
 		new Server();
 	}
 

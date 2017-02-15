@@ -52,7 +52,7 @@ public class ServerListener extends Thread {
 		this.connections = connection;
 		this.playerNumber = connections.size();
 		try {
-			this.world = World.load(Paths.get("data/office" + NUM_PLAYERS + "player.level"), NUM_PLAYERS);
+			this.world = World.load(Paths.get("data/office" + NUM_PLAYERS + "Player.level"), NUM_PLAYERS);
 			World.world = this.world;
 		} catch (IOException e2) {
 			// TODO Auto-generated catch block
@@ -79,7 +79,7 @@ public class ServerListener extends Thread {
 		boolean running = true;
 		while (running) {
 			if (!makingAI) {
-				if (this.playerTable.size() < NUM_PLAYERS) {
+				if (this.playerTable.size() < connections.size()) {
 					try {
 						String playerName = is.readObject().toString();
 						this.addPlayerToGame(playerName);
@@ -90,10 +90,10 @@ public class ServerListener extends Thread {
 					}
 
 					// Allows hard coded AI player to be added for prototype
-					if (this.playerTable.size() == 3) {
-						makingAI = true;
-						Events.trigger(new CreateAIPlayerRequest(this));
-					}
+//					if (this.playerTable.size() == 3) {
+//						makingAI = true;
+//						Events.trigger(new CreateAIPlayerRequest(this));
+//					}
 
 					if (this.playerTable.size() == NUM_PLAYERS) {
 						for (int i = 0; i < playerTable.size(); i++) {
@@ -105,11 +105,11 @@ public class ServerListener extends Thread {
 				} else {
 					try {
 						Event eventObject = (Event) is.readObject();
-						this.sendToAllClients(eventObject);
+						System.out.println("recieved: " + eventObject);
+						Events.trigger(eventObject);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-
 				}
 			}
 		}
@@ -122,8 +122,9 @@ public class ServerListener extends Thread {
 	 *            The info to send
 	 */
 	public void sendToAllClients(Object obj) {
-		System.out.println("conections.size =" + connections.size());
+		System.out.println("calling sendToAll with " + connections.size() + " connections");
 		for (int i = 0; i < this.connections.size(); i++) {
+			System.out.println("sending " + obj + "to connection " + i);
 			this.connections.get(i).forwardInfo(obj);
 		}
 	}
@@ -165,7 +166,7 @@ public class ServerListener extends Thread {
 		}
 	}
 
-	public void addPlayerToGame(Player playerToAdd) {
+	public void addAIToGame(Player playerToAdd) {
 		playerToAdd.setHair(playerTable.size());
 		this.playerTable.add(playerToAdd);
 		if(playerToAdd.isAI) makingAI = false;
