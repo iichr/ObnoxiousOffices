@@ -64,7 +64,7 @@ public class PlayerStatus implements Serializable {
      */
     public void setAttribute(PlayerAttribute attribute, double val) {
         attributes.put(attribute, Math.max(0, Math.min(val, attribute.maxVal)));
-        if(!initialising) Events.trigger(new PlayerAttributeChangedEvent(val, player.name, attribute));
+        if(!initialising) Events.trigger(new PlayerAttributeChangedEvent(val, player.name, attribute), true);
     }
 
     /**
