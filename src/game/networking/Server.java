@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
-import game.core.ifc.ServerSync;
+import game.core.sync.ServerSync;
 import game.core.player.Player;
 
 public class Server {
