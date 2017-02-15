@@ -32,8 +32,8 @@ public class ServerSync {
     	System.out.println("managing input event");
         Input.InputType type = event.inputType;
         Player player = World.world.getPlayer(event.playerName);
-//        Player ai = World.world.getPlayer("Volker");
-//        ai.update();
+        Player ai = World.world.getPlayer("Volker");
+        ai.update();
         if(type.isMovement) processMovement(type, player);
         
     }
