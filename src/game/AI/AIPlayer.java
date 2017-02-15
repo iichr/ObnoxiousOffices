@@ -57,10 +57,17 @@ public class AIPlayer extends Player {
 	//if you are fatigued, find the coffee machine, go there, drink coffee, and go back to the desk
 	@Override
     public void update() {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (this.status.getAttribute(PlayerAttribute.FATIGUE) > 0.8) {
 			easylogic.findCoffeeMachine(this.getLocation().world, this);
 			easylogic.goToCoffeeMachine(this.getLocation().world, this);
-			easylogic.toTheDesk(this.getLocation().world, this); 
+			if (this.status.getAttribute(PlayerAttribute.FATIGUE) == 0)
+				easylogic.toTheDesk(this.getLocation().world, this); 
 		}
     }
 }
