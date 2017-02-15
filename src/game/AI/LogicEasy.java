@@ -73,7 +73,7 @@ public class LogicEasy implements Logic, Serializable {
 
 		// reverse it, and save
 		Collections.reverse(pathRev);
-		toCM = path;
+		toCM = pathRev;
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class LogicEasy implements Logic, Serializable {
 
 		// reverse the path and save it
 		Collections.reverse(pathRev);
-		toBed = path;
+		toBed = pathRev;
 
 	}
 
@@ -155,13 +155,19 @@ public class LogicEasy implements Logic, Serializable {
 
 				// make a move
 				p.moveForwards();
+
+				try {
+					Thread.sleep(250);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		// interact with the tile
 		w.getTile(p.getLocation().x, p.getLocation().y, 0).onInteraction(p);
 
 		// just for the presentation in week 6 TODO: remove that
-		p.status.setAttribute(PlayerAttribute.FATIGUE, 0.0);
+		// p.status.setAttribute(PlayerAttribute.FATIGUE, 0.0);
 	}
 
 	@Override
@@ -181,6 +187,12 @@ public class LogicEasy implements Logic, Serializable {
 
 				// make a move
 				p.moveForwards();
+
+				try {
+					Thread.sleep(250);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		// interact with the tile
@@ -191,42 +203,46 @@ public class LogicEasy implements Logic, Serializable {
 	public void toTheDesk(World w, Player p) {
 
 		// check whether the player is at the coffee machine or sofa
+		System.out.println(toCM.get(toCM.size() - 1));
+		System.out.println(fromCM.get(0));
 		if (toCM.get(toCM.size() - 1) == fromCM.get(0)) {
 
-			// if at the coffee machine, go through the array list of i, j coords
+			// if at the coffee machine, go through the array list of i, j
+			// coords
 			// to the desk from the coffee machine
-			for (int i = 0; i < fromCM.size(); i++) {
+			for (int i = 2; i < fromCM.size(); i++) {
 
-				// check if you are on the last element, if true - don't do the
-				// moving, just the facing
-				if (toCM.size() - i == 1)
-					figureOutFacing(p, toCM.get(i));
-				else {
-					// get the right facing
-					figureOutFacing(p, toCM.get(i));
+				// get the right facing
+				figureOutFacing(p, fromCM.get(i));
 
-					// make a move
-					p.moveForwards();
+				// make a move
+				p.moveForwards();
+
+				try {
+					Thread.sleep(250);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 		} else {
 
 			// if at the sofa, go through the array list of i, j coords
 			// to the desk from the sofa
-			for (int i = 0; i < fromBed.size(); i++) {
+			for (int i = 2; i < fromBed.size(); i++) {
 
-				// check if you are on the last element, if true - don't do the
-				// moving, just the facing
-				if (toCM.size() - i == 1)
-					figureOutFacing(p, toCM.get(i));
-				else {
-					// get the right facing
-					figureOutFacing(p, toCM.get(i));
+				// get the right facing
+				figureOutFacing(p, fromBed.get(i));
 
-					// make a move
-					p.moveForwards();
+				// make a move
+				p.moveForwards();
+
+				try {
+					Thread.sleep(250); //TODO: make 250 a variable and change it wtih difficulty
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
+
 		}
 		// interact with the tile
 		w.getTile(p.getLocation().x, p.getLocation().y, 0).onInteraction(p);

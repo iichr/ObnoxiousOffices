@@ -60,8 +60,7 @@ public class AIPlayer extends Player {
 		if (this.status.getAttribute(PlayerAttribute.FATIGUE) > 0.8) {
 			easylogic.findCoffeeMachine(this.getLocation().world, this);
 			easylogic.goToCoffeeMachine(this.getLocation().world, this);
-			if (this.status.getAttribute(PlayerAttribute.FATIGUE) == 0.0)
-				easylogic.toTheDesk(this.getLocation().world, this); 
+			easylogic.toTheDesk(this.getLocation().world, this); 
 		}
     }
 }
