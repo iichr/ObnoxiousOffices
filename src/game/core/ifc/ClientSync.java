@@ -9,7 +9,10 @@ import game.core.world.World;
  */
 public class ClientSync {
 
+    public static boolean isClient = false;
+
     public static void init() {
+        isClient = true;
         Events.on(PlayerActionAddedEvent.class, ClientSync::onPlayerActionAdded);
         Events.on(PlayerActionEndedEvent.class, ClientSync::onPlayerActionEnded);
         Events.on(PlayerEffectAddedEvent.class, ClientSync::onPlayerEffectAdded);
