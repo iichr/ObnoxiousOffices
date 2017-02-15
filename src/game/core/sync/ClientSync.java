@@ -1,4 +1,4 @@
-package game.core.ifc;
+package game.core.sync;
 
 import game.core.event.*;
 import game.core.player.Player;
