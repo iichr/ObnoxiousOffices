@@ -45,36 +45,44 @@ public class Client {
 	/**
 	 * Attempt to connect to the server when ConnectionAttemptEvent is received
 	 * If it fails then send connectionFailedEvent
-	 * @param event The ConnectionAttemptEvent
+	 * 
+	 * @param event
+	 *            The ConnectionAttemptEvent
 	 */
 	public void connectToServer(ConnectionAttemptEvent event) {
 		int port = 8942;
+		boolean connected = false;
 		String hostname = "147.188.195.80";
 
 		try {
 			this.server = new Socket(hostname, port);
 			try {
 				od = new ObjectOutputStream(this.server.getOutputStream());
+				connected = true;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 		} catch (UnknownHostException e) {
 			System.err.println("Unknown host: " + hostname);
 			Events.trigger(new ConnectionFailedEvent());
-			
+
 		} catch (IOException e) {
 			System.err.println("The server doesn't seem to be running " + e.getMessage());
 			Events.trigger(new ConnectionFailedEvent());
 		}
-		this.sendDataToServer(event.name);
-		
-		new ClientListner(this.server).start();		
+
+		if (connected) {
+			this.sendDataToServer(event.name);
+			new ClientListner(this.server).start();
+		}
 	}
 
 	/**
 	 * Sets the local player name on PlayerCreatedEvent
-	 * @param e THe playerCreatedEvent
+	 * 
+	 * @param e
+	 *            THe playerCreatedEvent
 	 */
 	public void setLocalPlayer(PlayerCreatedEvent e) {
 		Player.localPlayerName = e.localPlayerName;
