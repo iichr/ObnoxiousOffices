@@ -5,6 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import game.core.event.Events;
+import game.core.event.GameStartedEvent;
 import game.core.ifc.ServerSync;
 import game.core.player.Player;
 
@@ -14,6 +16,7 @@ public class Server {
 	private ArrayList<Player> playerTable;
 	public ArrayList<ServerListener> connections;
 	private ServerSocket serverSocket = null;
+	private boolean gameEnded;
 
 	public Server() {
 		playerTable = new ArrayList<Player>();
@@ -25,6 +28,8 @@ public class Server {
 
 		//listen for new connections
 		listenForConnections();
+		
+		Events.on(GameStartedEvent.class, this::updateWorld);
 	}
 
 	/**
@@ -63,6 +68,17 @@ public class Server {
 			System.err.println("IO error " + e.getMessage());
 		}
 	}
+	
+	private void updateWorld(GameStartedEvent e){
+		while(!gameEnded){
+			e.world.update();
+		}
+	}
+	
+	//TODO add GameEndedEvent
+//	private void gameEnd(GameEndedEvent e){
+//		gameEnded = true;
+//	}
 
 	/**
 	 * 
