@@ -79,7 +79,7 @@ public class PlayerStatus implements Serializable {
 
     private void updateAttributeCounter(PlayerAttribute attribute) {
         if(!attributeUpdateCounter.containsKey(attribute)) attributeUpdateCounter.put(attribute, 1);
-        else attributeUpdateCounter.put(attribute, attributeUpdateCounter.get(attribute));
+        else attributeUpdateCounter.put(attribute, attributeUpdateCounter.get(attribute) + 1);
     }
 
     /**
