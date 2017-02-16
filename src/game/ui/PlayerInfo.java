@@ -24,10 +24,11 @@ public class PlayerInfo {
 
 	public void render(Graphics g) {
 		for (Player p : players) {
-			float offset = (p.name.length()*9 - tileWidth)/2;
 			float playerX = p.getLocation().x * tileWidth;
 			float playerY = (p.getLocation().y + 1) * (tileHeight / 2);
-			g.drawString(p.name, (playerX - offset), playerY - 25);
+			float offsetX = (g.getFont().getWidth(p.name) - tileWidth)/2;
+			float offsetY = (g.getFont().getHeight(p.name) + 5);
+			g.drawString(p.name, (playerX - offsetX), (playerY - offsetY));
 
 		}
 	}
