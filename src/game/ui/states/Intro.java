@@ -63,7 +63,7 @@ public class Intro extends BasicGameState {
 	public void render(GameContainer gc ,StateBasedGame game, Graphics g) throws SlickException {
 		g.setColor(Color.white);
 		g.fillRect(0, 0, Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT);
-		g.drawImage(logo, Vals.SCREEN_WIDTH*1/18,Vals.SCREEN_HEIGHT*3/10);
+		g.drawImage(logo, Vals.SCREEN_WIDTH/2  - logo.getWidth()/2, Vals.SCREEN_HEIGHT/2 - logo.getHeight()/2);
 		g.setColor(new Color(0, 0, 0, alpha));
 		g.fillRect(0, 0, Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT);
 		
