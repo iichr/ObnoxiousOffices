@@ -163,7 +163,7 @@ public class Play extends BasicGameState {
 		Set<Player> players = world.getPlayers();
 		playerOverview = new PlayerContainer(world, localPlayerName, 10, 100, 300, 500, _avatar, _avatar, _avatar,
 				_avatar);
-		playerinfo = new PlayerInfo(world);
+		playerinfo = new PlayerInfo(world, tileWidth, tileHeight);
 
 		// check every position in the world to render what is needed at that
 		// location
