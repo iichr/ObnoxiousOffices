@@ -1,6 +1,5 @@
 package game.core.player;
 
-import game.DevWars;
 import game.core.Updateable;
 import game.core.event.Events;
 import game.core.event.PlayerMovedEvent;
@@ -21,11 +20,11 @@ public class Player implements Updateable, Serializable {
     private double progress = 0;
     private Direction facing;
     private Location location;
-    
+
     private int hair = BLONDE;
 
     public boolean isAI = false;
-    
+
     public static String localPlayerName = "";
     public static int BLONDE = 0;
     public static int BROWN = 1;
@@ -45,7 +44,7 @@ public class Player implements Updateable, Serializable {
     public void move(Direction direction) {
         setLocation(location.forward(direction));
     }
-    
+
     /**
      * Gets the current facing of the player
      * @return Direction the current facing of the player
@@ -60,10 +59,7 @@ public class Player implements Updateable, Serializable {
      */
     public void setFacing(Direction facing) {
         this.facing = facing;
-        if(!DevWars.isClient()){
-        	System.out.println("sending player rotated event");
-        	Events.trigger(new PlayerRotatedEvent(facing, this.name));
-        }
+        Events.trigger(new PlayerRotatedEvent(facing, this.name));
     }
 
     /**
@@ -73,10 +69,7 @@ public class Player implements Updateable, Serializable {
     public void setLocation(Location location) {
         Location diff = location.diff(this.location);
         this.location = location;
-        if(!DevWars.isClient()) {
-        	System.out.println("sending player moved event");
-        	Events.trigger(new PlayerMovedEvent(diff.x, diff.y, diff.z, this.name));
-        }
+        Events.trigger(new PlayerMovedEvent(diff.x, diff.y, diff.z, this.name));
     }
 
     public Location getLocation() {
@@ -131,7 +124,7 @@ public class Player implements Updateable, Serializable {
             onProgressDone();
             this.progress = 0;
         }
-        if(!DevWars.isClient()) Events.trigger(new PlayerProgressUpdateEvent(diff, this.name));
+        Events.trigger(new PlayerProgressUpdateEvent(diff, this.name));
     }
 
     public double getProgress() {
@@ -179,11 +172,11 @@ public class Player implements Updateable, Serializable {
         return name.hashCode();
     }
 
-	public int getHair() {
-		return hair;
-	}
+    public int getHair() {
+        return hair;
+    }
 
-	public void setHair(int hair) {
-		this.hair = hair;
-	}
+    public void setHair(int hair) {
+        this.hair = hair;
+    }
 }
