@@ -33,7 +33,7 @@ public class PlayerStatus implements Serializable {
      */
     public void addEffect(PlayerEffect effect) {
         effects.add(effect);
-        Events.trigger(new PlayerEffectAddedEvent(effect, player.name));
+        Events.trigger(new PlayerEffectAddedEvent(effect, player.name), true);
     }
 
     /**
@@ -43,7 +43,7 @@ public class PlayerStatus implements Serializable {
     public void addAction(PlayerAction action) {
         actions.add(action);
         action.start();
-        Events.trigger(new PlayerActionAddedEvent(action, player.name));
+        Events.trigger(new PlayerActionAddedEvent(action, player.name), true);
     }
 
     public <T extends PlayerAction> boolean hasAction(Class<T> actionClass) {
@@ -52,11 +52,11 @@ public class PlayerStatus implements Serializable {
 
     public void update(Player player) {
         Set<PlayerAction> actions2 = Updateable.updateAll(actions);
-        actions2.forEach(a -> Events.trigger(new PlayerActionEndedEvent(a, player.name)));
+        actions2.forEach(a -> Events.trigger(new PlayerActionEndedEvent(a, player.name), true));
         actions.removeAll(actions2);
 
         Set<PlayerEffect> effects2 = Updateable.updateAll(effects);
-        effects2.forEach(e -> Events.trigger(new PlayerEffectEndedEvent(e, player.name)));
+        effects2.forEach(e -> Events.trigger(new PlayerEffectEndedEvent(e, player.name), true));
         effects.removeAll(effects2);
     }
 
