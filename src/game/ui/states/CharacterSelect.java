@@ -26,7 +26,7 @@ import game.ui.interfaces.Vals;
 public class CharacterSelect extends BasicGameState {
 	private MenuButton backButton;
 	private ConnectButton connectButton;
-	private SelectionButton circleButton;
+	private SelectionButton blondeButton, darkButton, brownButton, pinkButton;
 
 	private TextField serverAddress, playerName;
 	private String serverStr = "Enter Server Address:";
@@ -56,23 +56,29 @@ public class CharacterSelect extends BasicGameState {
 		connectButton = new ConnectButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 150,
 				Vals.BUTTON_WIDTH, Vals.BUTTON_HEIGHT, conn, connR);
 
-		Image circleUnselected = new Image(ImageLocations.CIRCLE_UNSELECTED, false, Image.FILTER_NEAREST);
-		Image circleSelected = new Image(ImageLocations.CIRCLE_SELECTED, false, Image.FILTER_NEAREST);
-		circleButton = new SelectionButton(Vals.BUTTON_ALIGN_CENTRE_W - 200, Vals.BUTTON_ALIGN_CENTRE_H - 200, 50, 50,
-				circleUnselected, circleSelected);
+//		Image circleUnselected = new Image(ImageLocations.CIRCLE_UNSELECTED, false, Image.FILTER_NEAREST);
+//		Image circleSelected = new Image(ImageLocations.CIRCLE_SELECTED, false, Image.FILTER_NEAREST);
+//		circleButton = new SelectionButton(Vals.BUTTON_ALIGN_CENTRE_W - 200, Vals.BUTTON_ALIGN_CENTRE_H - 200, 50, 50,
+//				circleUnselected, circleSelected);
 
+		//adds the text fields
+		addTextFields(gc);
+	}
+	
+	private void addTextFields(GameContainer gc) throws SlickException{
 		// Server address text field.
 		Vals.FONT_MAIN.addAsciiGlyphs();
 		// necessary to load an effect otherwise an exception is thrown!!!
 		Vals.FONT_MAIN.getEffects().add(new ColorEffect());
 		Vals.FONT_MAIN.loadGlyphs();
-
+		
 		serverAddress = new TextField(gc, Vals.FONT_MAIN, Vals.TFIELD_ALIGN_CENTRE_W, 200, Vals.TFIELD_WIDTH,
 				Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
 					public void componentActivated(AbstractComponent src) {
 						serverAddress.setFocus(true);
 					}
 				});
+		
 		serverAddress.setBackgroundColor(Color.white);
 		serverAddress.setTextColor(Color.black);
 
@@ -96,7 +102,6 @@ public class CharacterSelect extends BasicGameState {
 
 		// add necessary buttons
 		backButton.render();
-		circleButton.render();
 
 		connectStatus(g);
 
@@ -109,9 +114,11 @@ public class CharacterSelect extends BasicGameState {
 
 	private void connectStatus(Graphics g) {
 		if (connected) {
+			connectButton.setActive(false);
 			g.drawString(waitingString, connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(waitingString) / 2,
 					connectButton.getY() + 100);
 		} else {
+			connectButton.setActive(true);
 			connectButton.render();
 			if (connectFailed) {
 				g.drawString(connectFailString,
@@ -130,7 +137,6 @@ public class CharacterSelect extends BasicGameState {
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 		connectButton.update(gc, game, mouseX, mouseY, addressValue, nameValue);
-		circleButton.update(gc, game, mouseX, mouseY);
 
 		if (toPlay) {
 			playTest.testSetup();
