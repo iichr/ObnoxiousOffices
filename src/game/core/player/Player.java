@@ -59,7 +59,7 @@ public class Player implements Updateable, Serializable {
      */
     public void setFacing(Direction facing) {
         this.facing = facing;
-        Events.trigger(new PlayerRotatedEvent(facing, this.name));
+        Events.trigger(new PlayerRotatedEvent(facing, this.name), true);
     }
 
     /**
@@ -69,7 +69,7 @@ public class Player implements Updateable, Serializable {
     public void setLocation(Location location) {
         Location diff = location.diff(this.location);
         this.location = location;
-        Events.trigger(new PlayerMovedEvent(diff.x, diff.y, diff.z, this.name));
+        Events.trigger(new PlayerMovedEvent(diff.x, diff.y, diff.z, this.name), true);
     }
 
     public Location getLocation() {
@@ -124,7 +124,7 @@ public class Player implements Updateable, Serializable {
             onProgressDone();
             this.progress = 0;
         }
-        Events.trigger(new PlayerProgressUpdateEvent(diff, this.name));
+        Events.trigger(new PlayerProgressUpdateEvent(diff, this.name), true);
     }
 
     public double getProgress() {
@@ -164,7 +164,6 @@ public class Player implements Updateable, Serializable {
         Player player = (Player) o;
 
         return name.equals(player.name);
-
     }
 
     @Override
