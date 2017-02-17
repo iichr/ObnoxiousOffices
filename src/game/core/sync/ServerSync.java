@@ -1,6 +1,9 @@
 package game.core.sync;
 
+import game.AI.AIPlayer;
 import game.core.Input;
+import game.core.event.CreateAIPlayerRequest;
+import game.core.event.Event;
 import game.core.event.Events;
 import game.core.event.PlayerInputEvent;
 import game.core.player.Player;
@@ -8,6 +11,7 @@ import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
 import game.core.world.tile.Tile;
+import game.networking.ServerListener;
 
 /**
  * Created by samtebbs on 12/02/2017.
@@ -16,6 +20,11 @@ public class ServerSync {
 
     public static void init() {
         Events.on(PlayerInputEvent.class, ServerSync::onPlayerInput);
+        Events.on(CreateAIPlayerRequest.class, ServerSync::addAIPLayer);
+    }
+
+    private static void addAIPLayer(CreateAIPlayerRequest event) {
+        ((ServerListener) event.serverListener).addAIToGame(AIPlayer.createAIPalyer("Volker", Direction.SOUTH, new Location(7, 0, World.world)));
     }
 
     private static void onPlayerInput(PlayerInputEvent event) {
