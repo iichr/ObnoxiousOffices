@@ -35,21 +35,22 @@ public class PlayerInfo {
 			float offsetX = (g.getFont().getWidth(p.name) - tileWidth) / 2;
 			float offsetY = (g.getFont().getHeight(p.name) + 5);
 			g.drawString(p.name, (playerX - offsetX), (playerY - offsetY));
-			
+
 			if (p.name.equals(Player.localPlayerName)) {
 				Location inFront = pLocation.forward(p.getFacing());
-				Tile t = inFront.getTile();
 
-				g.setColor(Color.black);
-				if (t.type.equals(TileType.COMPUTER)) {
-					g.drawString("WORK", (inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2));
-				} else if (t.type.equals(TileType.COFFEE_MACHINE)) {
-					g.drawString("DRINK", (inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2));
-				} else if (t.type.equals(TileType.SOFA)) {
-					g.drawString("NAP", (inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2));
+				if (inFront.checkBounds()) {
+					Tile t = inFront.getTile();
+					g.setColor(Color.black);
+					if (t.type.equals(TileType.COMPUTER)) {
+						g.drawString("WORK", (inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2));
+					} else if (t.type.equals(TileType.COFFEE_MACHINE)) {
+						g.drawString("DRINK", (inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2));
+					} else if (t.type.equals(TileType.SOFA)) {
+						g.drawString("NAP", (inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2));
+					}
 				}
 			}
 		}
 	}
-
 }
