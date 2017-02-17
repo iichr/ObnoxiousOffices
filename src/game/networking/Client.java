@@ -2,6 +2,7 @@ package game.networking;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -55,7 +56,8 @@ public class Client {
 		String hostname = event.ipAddress;
 
 		try {
-			this.server = new Socket(hostname, port);
+			this.server = new Socket();
+			this.server.connect(new InetSocketAddress(hostname, port), 5000);
 			try {
 				od = new ObjectOutputStream(this.server.getOutputStream());
 				connected = true;
