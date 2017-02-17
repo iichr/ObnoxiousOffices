@@ -13,20 +13,24 @@ public class PlayerInfo {
 	private World world;
 
 	private float tileWidth;
+	private float tileHeight;
 
-	public PlayerInfo(World world) {
+	public PlayerInfo(World world, float tileWidth, float tileHeight) {
 		this.world = world;
 		players = world.getPlayers();
-		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
+		this.tileWidth = tileWidth;
+		this.tileHeight = tileHeight;
 	}
 
 	public void render(Graphics g) {
 		for (Player p : players) {
-			g.drawString(p.name, (p.getLocation().x) * tileWidth,
-					((float) (p.getLocation().y + 0.5) / (world.ySize + 2)) * Vals.SCREEN_HEIGHT);
+			float playerX = p.getLocation().x * tileWidth;
+			float playerY = (p.getLocation().y + 1) * (tileHeight / 2);
+			float offsetX = (g.getFont().getWidth(p.name) - tileWidth)/2;
+			float offsetY = (g.getFont().getHeight(p.name) + 5);
+			g.drawString(p.name, (playerX - offsetX), (playerY - offsetY));
 
 		}
-
 	}
 
 }
