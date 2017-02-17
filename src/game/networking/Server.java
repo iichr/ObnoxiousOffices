@@ -43,6 +43,7 @@ public class Server {
 		// We must try because it may fail with a checked exception:
 		try {
 			this.serverSocket = new ServerSocket(port);
+			this.serverSocket.setSoTimeout(5000);
 			System.out.println("Server registered to port " + port);
 		} catch (IOException e) {
 			System.err.println("Couldn't listen on port " + port);
