@@ -5,7 +5,10 @@ import java.util.Set;
 import org.newdawn.slick.Graphics;
 
 import game.core.player.Player;
+import game.core.world.Location;
 import game.core.world.World;
+import game.core.world.tile.Tile;
+import game.core.world.tile.TileType;
 import game.ui.interfaces.Vals;
 
 public class PlayerInfo {
@@ -24,12 +27,24 @@ public class PlayerInfo {
 
 	public void render(Graphics g) {
 		for (Player p : players) {
-			float playerX = p.getLocation().x * tileWidth;
-			float playerY = (p.getLocation().y + 1) * (tileHeight / 2);
+			Location pLocation = p.getLocation();
+			
+			float playerX = pLocation.x * tileWidth;
+			float playerY = (pLocation.y + 1) * (tileHeight / 2);
 			float offsetX = (g.getFont().getWidth(p.name) - tileWidth)/2;
 			float offsetY = (g.getFont().getHeight(p.name) + 5);
 			g.drawString(p.name, (playerX - offsetX), (playerY - offsetY));
-
+			
+			Location inFront = pLocation.forward(p.getFacing());
+			Tile t = inFront.getTile();
+			
+			if(t.type == TileType.COMPUTER){
+				g.drawString("WORK", (inFront.x * tileWidth), (inFront.y + 1) * (tileHeight/2));
+			}else if(t.type == TileType.COFFEE_MACHINE){
+				g.drawString("DRINK COFFEE", (inFront.x * tileWidth), (inFront.y + 1) * (tileHeight/2));	
+			}else if(t.type == TileType.SOFA){
+				g.drawString("NAP", (inFront.x * tileWidth), (inFront.y + 1) * (tileHeight/2));
+			}
 		}
 	}
 
