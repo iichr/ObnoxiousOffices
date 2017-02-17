@@ -1,5 +1,7 @@
 package game.core.event;
 
+import game.core.sync.ClientSync;
+
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -31,4 +33,7 @@ public class Events {
         }
     }
 
+    public static void trigger(Event event, boolean serverSide) {
+        if(serverSide ^ ClientSync.isClient) trigger(event);
+    }
 }
