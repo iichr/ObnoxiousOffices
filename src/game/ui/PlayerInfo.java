@@ -42,13 +42,10 @@ public class PlayerInfo {
 
 				g.setColor(Color.black);
 				if (t.type.equals(TileType.COMPUTER)) {
-					System.out.println("show pc");
 					g.drawString("WORK", (inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2));
 				} else if (t.type.equals(TileType.COFFEE_MACHINE)) {
-					System.out.println("show cm");
 					g.drawString("DRINK", (inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2));
 				} else if (t.type.equals(TileType.SOFA)) {
-					System.out.println("show sofa");
 					g.drawString("NAP", (inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2));
 				}
 			}
