@@ -46,6 +46,7 @@ public class Server {
 		// We must try because it may fail with a checked exception:
 		try {
 			this.serverSocket = new ServerSocket(port);
+			this.serverSocket.setSoTimeout(5000);
 			URL url = new URL("http://checkip.amazonaws.com/");
 			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
 			System.out.println("Server IP : "+br.readLine());
