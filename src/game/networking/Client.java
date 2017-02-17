@@ -52,7 +52,7 @@ public class Client {
 	public void connectToServer(ConnectionAttemptEvent event) {
 		int port = 8942;
 		boolean connected = false;
-		String hostname = "147.188.195.80";
+		String hostname = event.ipAddress;
 
 		try {
 			this.server = new Socket(hostname, port);
