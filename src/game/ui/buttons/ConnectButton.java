@@ -43,7 +43,7 @@ public class ConnectButton extends Button {
 			if (inRange(mouseX, mouseY)) {
 				button = select;
 				if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-					Events.trigger(new ConnectionAttemptEvent(serverAddress, name));
+					Events.trigger(new ConnectionAttemptEvent(name, serverAddress));
 				}
 			} else {
 				button = unselect;
