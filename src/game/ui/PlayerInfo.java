@@ -35,17 +35,22 @@ public class PlayerInfo {
 			float offsetX = (g.getFont().getWidth(p.name) - tileWidth) / 2;
 			float offsetY = (g.getFont().getHeight(p.name) + 5);
 			g.drawString(p.name, (playerX - offsetX), (playerY - offsetY));
-
-			if (p.name == Player.localPlayerName) {
+			
+			if (p.name.equals(Player.localPlayerName)) {
+				System.out.println("in if statement");
 				Location inFront = pLocation.forward(p.getFacing());
 				Tile t = inFront.getTile();
+				System.out.println("tile type: " + t.type);
 
 				g.setColor(Color.black);
 				if (t.type == TileType.COMPUTER) {
+					System.out.println("show pc");
 					g.drawString("WORK", (inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2));
 				} else if (t.type == TileType.COFFEE_MACHINE) {
+					System.out.println("show cm");
 					g.drawString("DRINK", (inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2));
 				} else if (t.type == TileType.SOFA) {
+					System.out.println("show sofa");
 					g.drawString("NAP", (inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2));
 				}
 			}
