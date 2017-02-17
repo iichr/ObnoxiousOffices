@@ -3,10 +3,12 @@ package game.core.player.effect;
 import game.core.Updateable;
 import game.core.player.Player;
 
+import java.io.Serializable;
+
 /**
  * Created by samtebbs on 15/01/2017.
  */
-public abstract class PlayerEffect implements Updateable {
+public abstract class PlayerEffect implements Updateable, Serializable {
 
     protected final int duration;
     protected int elapsed;

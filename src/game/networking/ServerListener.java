@@ -36,7 +36,7 @@ public class ServerListener extends Thread {
 	private int playerNumber;
 	public World world;
 
-	public static final int NUM_PLAYERS = 4;
+	public static final int NUM_PLAYERS = 2, NUM_AI_PLAYERS = 1;
 
 	public ServerListener(Socket socket, ArrayList<Player> hash, ArrayList<ServerListener> connection) {
 		this.playerTable = hash;
@@ -117,7 +117,7 @@ public class ServerListener extends Thread {
 					}
 
 					// Allows hard coded AI player to be added for prototype
-					if (this.playerTable.size() == 3) {
+					if (this.playerTable.size() == NUM_PLAYERS - NUM_AI_PLAYERS) {
 						makingAI = true;
 						Events.trigger(new CreateAIPlayerRequest(this));
 					}
