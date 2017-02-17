@@ -3,6 +3,7 @@ package game.networking;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
@@ -46,9 +47,10 @@ public class Server {
 		// We must try because it may fail with a checked exception:
 		try {
 			this.serverSocket = new ServerSocket(port);
-			URL url = new URL("http://checkip.amazonaws.com/");
-			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-			System.out.println("Server IP : "+br.readLine());
+//			URL url = new URL("http://checkip.amazonaws.com/");
+//			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+//			System.out.println("Server IP : "+br.readLine());
+			System.out.println("local Address: " + Inet4Address.getLocalHost().getHostAddress());
 			System.out.println("Server registered to port " + port);
 		} catch (IOException e) {
 			System.err.println("Couldn't listen on port " + port);
