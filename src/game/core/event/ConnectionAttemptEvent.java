@@ -5,10 +5,11 @@ package game.core.event;
  */
 public class ConnectionAttemptEvent extends Event {
 
-    public final String name;
+    public final String name, ipAddress;
 
-    public ConnectionAttemptEvent(String name) {
+    public ConnectionAttemptEvent(String name, String ipAddress) {
         this.name = name;
+        this.ipAddress = ipAddress;
     }
     
 }
