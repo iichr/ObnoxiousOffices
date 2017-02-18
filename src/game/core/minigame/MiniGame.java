@@ -1,9 +1,7 @@
 package game.core.minigame;
 
 import game.core.Updateable;
-import game.core.event.Events;
-import game.core.event.MiniGameEndedEvent;
-import game.core.event.PlayerInputEvent;
+import game.core.event.*;
 import game.core.player.Player;
 
 import java.util.*;
@@ -17,6 +15,8 @@ public abstract class MiniGame implements Updateable {
     public static final String SCORE = "SCORE";
     protected boolean ended = false;
     public final int MAX_SCORE = 2;
+
+    public static MiniGame localMiniGame;
 
     private Map<String, Map<String, Integer>> stats = new HashMap<>();
     private Map<String, Integer> vars = new HashMap<>();
