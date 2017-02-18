@@ -26,6 +26,10 @@ public abstract class MiniGame implements Updateable {
         setVar(var, getVar(var) + val);
     }
 
+    protected void addStat(String player, String stat, int val) {
+        setStat(player, stat, getStat(player, stat) + val);
+    }
+
     protected void negVar(String var) {
         setVar(var, -getVar(var));
     }
