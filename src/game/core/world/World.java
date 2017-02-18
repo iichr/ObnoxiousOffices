@@ -2,6 +2,7 @@ package game.core.world;
 
 import game.core.Updateable;
 import game.core.event.Events;
+import game.core.event.MiniGameEndedEvent;
 import game.core.event.MiniGameStartedEvent;
 import game.core.minigame.MiniGame;
 import game.core.player.Player;
@@ -64,6 +65,7 @@ public class World implements Updateable, Serializable {
     @Override
     public void update() {
         Updateable.updateAll(players);
+        miniGames.removeAll(Updateable.updateAll(miniGames));
     }
 
     @Override
