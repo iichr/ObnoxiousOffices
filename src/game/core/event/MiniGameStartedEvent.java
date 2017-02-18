@@ -7,12 +7,11 @@ import java.util.List;
 /**
  * Created by samtebbs on 18/02/2017.
  */
-public class MiniGameStartedEvent extends MiniGameEvent {
+public class MiniGameStartedEvent extends Event {
 
     public final MiniGame game;
 
-    public MiniGameStartedEvent(List<String> players, MiniGame game) {
-        super(players);
+    public MiniGameStartedEvent(MiniGame game) {
         this.game = game;
     }
 }

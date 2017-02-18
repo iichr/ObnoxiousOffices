@@ -5,12 +5,13 @@ import java.util.List;
 /**
  * Created by samtebbs on 18/02/2017.
  */
-public class MiniGameEndedEvent extends MiniGameEvent {
+public class MiniGameEndedEvent extends Event {
 
-    private final String victor;
+    public final String victor;
+    public final List<String> players;
 
     public MiniGameEndedEvent(List<String> players, String victor) {
-        super(players);
+        this.players = players;
         this.victor = victor;
     }
 }
