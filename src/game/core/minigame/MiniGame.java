@@ -41,10 +41,12 @@ public abstract class MiniGame implements Updateable {
             addPlayer(player);
         }
         stats.get(player).put(stat, val);
+        Events.trigger(new MiniGameStatChangedEvent(player, stat, val), true);
     }
 
     protected void setVar(String var, int val) {
         vars.put(var, val);
+        Events.trigger(new MiniGameVarChangedEvent(var, val), true);
     }
 
     protected void addPlayer(String player) {
