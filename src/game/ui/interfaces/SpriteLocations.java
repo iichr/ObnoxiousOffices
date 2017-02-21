@@ -148,10 +148,6 @@ public class SpriteLocations {
 
 		tileMap.put(TileType.FISH, fishTankMap);
 	}
-
-	//PROGRESS BAR LOCATIONS
-	public static final String PROGRESS_BAR_BASE = "/res/sprites/progressBarBase.png";
-	public static final String PROGRESS_BAR_FULL = "/res/sprites/progressBarFull.png";
 	
 	// TILE LOCATIONS
 	public static final String TILE_FLOOR = "/res/sprites/tiles/floor.png";

@@ -70,8 +70,8 @@ public class PlayerContainer {
 		this.y = y;
 		
 		
-		progressBarBase = new Image(SpriteLocations.PROGRESS_BAR_BASE, false, Image.FILTER_NEAREST);
-		progressBarFull = new Image(SpriteLocations.PROGRESS_BAR_FULL, false, Image.FILTER_NEAREST);
+		progressBarBase = new Image(ImageLocations.PROGRESS_BAR_BASE, false, Image.FILTER_NEAREST);
+		progressBarFull = new Image(ImageLocations.PROGRESS_BAR_FULL, false, Image.FILTER_NEAREST);
 
 		int size = players.size();
 		playerNames = new String[size];
