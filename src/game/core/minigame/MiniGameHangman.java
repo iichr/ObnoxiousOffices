@@ -1,16 +1,12 @@
 package game.core.minigame;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import org.newdawn.slick.Input;
-
 /**
- * WIP 20/02 !!!!
- * Eventually this is going to become a testing class.
+ * A hangman mini-game
  * 
  * @author iichr
  */
@@ -20,19 +16,27 @@ public class MiniGameHangman {
 	private String[] dict = { "replace", "with", "dictionary", "ofatleast", "words" };
 	String word;
 	private int attempts = 0;
-	private int PERMITTED_ATTEMPTS;
+	private int PERMITTED_ATTEMPTS = 5;
 	private boolean guessed = false;
 	private ArrayList<Character> alreadyEntered;
-	
+
 	private Scanner input = new Scanner(System.in);
 
 	public MiniGameHangman() {
 		word = pickWord(dict);
 		alreadyEntered = new ArrayList<Character>();
+
 		setDifficulty();
-		
-		while(!allGuessed(word, alreadyEntered)) {
+		init(word, alreadyEntered);
+	}
+
+	public void init(String word, ArrayList<Character> alreadyEntered) {
+		while (!allGuessed(word, alreadyEntered) && !lost()) {
+			System.out.println(getAttempts());
 			inputLetter(word, alreadyEntered);
+		}
+		if (allGuessed(word, alreadyEntered)) {
+			System.out.println("WIN!");
 		}
 	}
 
@@ -71,7 +75,7 @@ public class MiniGameHangman {
 				System.out.print(letter);
 			else
 				System.out.print('_');
-				guessed = false;
+			guessed = false;
 		}
 		System.out.println();
 
@@ -79,36 +83,29 @@ public class MiniGameHangman {
 
 	private void inputLetter(String word, ArrayList<Character> entered) {
 		char userIn = input.next().toLowerCase().charAt(0);
-		if(Character.isLetter(userIn)) {
-			if(checkAlreadyEntered(userIn, entered)) {
-				// prompt again
+		if (Character.isLetter(userIn)) {
+			if (checkAlreadyEntered(userIn, entered)) {
+				System.out.println("Already entered: " + entered.toString());
 			} else {
-				// it's not been encountered before
+				// user's char hasn't been encountered before
 				entered.add(userIn);
-					if(isInWord(userIn, word)) {
-						displayWord(word, entered);
-					} else {
-						attempts++;
-						displayWord(word, entered);
-					}
+				displayWord(word, entered);
+				if (!isInWord(userIn, word)) {
+					attempts++;
+				}
 			}
 		} else {
 			System.out.println("Not a valid char.");
-		}	
+		}
 	}
 
 	private boolean lost() {
-		if (getAttempts() >= PERMITTED_ATTEMPTS)
+		if (getAttempts() > PERMITTED_ATTEMPTS) {
+			System.out.println("Game over.");
 			return true;
-		else
+		} else {
 			return false;
-	}
-
-	private boolean won() {
-		if (getAttempts() >= PERMITTED_ATTEMPTS) 
-			return false;
-		else
-			return true;
+		}
 	}
 
 	private int getAttempts() {
@@ -132,17 +129,14 @@ public class MiniGameHangman {
 
 		return word;
 	}
-	
+
 	// check if a given char is in a word
 	private boolean isInWord(char c, String word) {
-		for(char i: word.toCharArray()) {
-			if(c == i)
-				return true;
-				break;
-		}
-		return false;
+		return word.indexOf(c) >= 0;
 	}
-	
+
+	// check if the word has been guessed by using the list of characters
+	// entered so far
 	private boolean allGuessed(String word, ArrayList<Character> entered) {
 		return entered.containsAll(word.chars().mapToObj(c -> (char) c).collect(Collectors.toList()));
 	}
