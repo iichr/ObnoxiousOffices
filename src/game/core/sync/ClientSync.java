@@ -1,6 +1,7 @@
 package game.core.sync;
 
 import game.core.event.*;
+import game.core.minigame.MiniGame;
 import game.core.player.Player;
 import game.core.world.World;
 
@@ -18,10 +19,24 @@ public class ClientSync {
         Events.on(PlayerEffectAddedEvent.class, ClientSync::onPlayerEffectAdded);
         Events.on(PlayerEffectEndedEvent.class, ClientSync::onPlayerEffectEnded);
         Events.on(PlayerAttributeChangedEvent.class, ClientSync::onPlayerAttributeChanged);
+        Events.on(PlayerProgressUpdateEvent.class, ClientSync::onPlayerProgressUpdate);
         Events.on(PlayerMovedEvent.class, ClientSync::onPlayerMoved);
         Events.on(PlayerRotatedEvent.class, ClientSync::onPlayerRotated);
 
         Events.on(TileChangedEvent.class, ClientSync::onTileChanged);
+
+        Events.on(MiniGameStartedEvent.class, ClientSync::onMiniGameStarted);
+        Events.on(MiniGameEndedEvent.class, ClientSync::onMiniGameEnded);
+    }
+
+    private static void onMiniGameEnded(MiniGameEndedEvent event) {
+        System.out.printf("Mini game ended, %s won!%n", event.victor);
+        MiniGame.localMiniGame = null;
+    }
+
+    private static void onMiniGameStarted(MiniGameStartedEvent event) {
+        System.out.printf("Mini game started with %s%n", event.game.getPlayers());
+        MiniGame.localMiniGame = event.game;
     }
 
     private static void onTileChanged(TileChangedEvent event) {
@@ -45,6 +60,10 @@ public class ClientSync {
 
     private static void onPlayerAttributeChanged(PlayerAttributeChangedEvent event) {
         getPlayer(event.playerName).status.setAttribute(event.attribute, event.newVal);
+    }
+    
+    private static void onPlayerProgressUpdate(PlayerProgressUpdateEvent event) {
+        getPlayer(event.playerName).setProgress(event.change);
     }
 
     private static void onPlayerEffectEnded(PlayerEffectEndedEvent event) {

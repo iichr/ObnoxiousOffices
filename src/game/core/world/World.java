@@ -1,6 +1,10 @@
 package game.core.world;
 
 import game.core.Updateable;
+import game.core.event.Events;
+import game.core.event.MiniGameEndedEvent;
+import game.core.event.MiniGameStartedEvent;
+import game.core.minigame.MiniGame;
 import game.core.player.Player;
 import game.core.world.tile.Tile;
 import game.core.world.tile.TilePrototype;
@@ -24,6 +28,7 @@ public class World implements Updateable, Serializable {
     private final Tile[][][] tiles;
     public final int xSize, ySize, zSize;
     private List<Location> spawnPoints = new ArrayList<>();
+    private Set<MiniGame> miniGames = new HashSet<>();
 
     public static World world;
 
@@ -34,6 +39,11 @@ public class World implements Updateable, Serializable {
         zSize = sizeZ;
         ySize = sizeY;
         xSize = sizeX;
+    }
+
+    public void startMiniGame(MiniGame game) {
+        miniGames.add(game);
+        Events.trigger(new MiniGameStartedEvent(game));
     }
 
     public Location getSpawnPoint(int i) {
@@ -55,6 +65,7 @@ public class World implements Updateable, Serializable {
     @Override
     public void update() {
         Updateable.updateAll(players);
+        miniGames.removeAll(Updateable.updateAll(miniGames));
     }
 
     @Override
