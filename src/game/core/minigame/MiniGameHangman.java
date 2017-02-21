@@ -14,6 +14,7 @@ import org.newdawn.slick.Input;
  * 
  * @author iichr
  */
+
 public class MiniGameHangman {
 
 	private String[] dict = { "replace", "with", "dictionary", "ofatleast", "words" };
@@ -22,13 +23,11 @@ public class MiniGameHangman {
 	private int PERMITTED_ATTEMPTS;
 	private boolean guessed = false;
 	private ArrayList<Character> alreadyEntered;
-	private char[] wordAsChars;
 	
 	private Scanner input = new Scanner(System.in);
 
 	public MiniGameHangman() {
 		word = pickWord(dict);
-		wordAsChars = word2chars(word);
 		alreadyEntered = new ArrayList<Character>();
 		setDifficulty();
 		
@@ -86,7 +85,7 @@ public class MiniGameHangman {
 			} else {
 				// it's not been encountered before
 				entered.add(userIn);
-					if(isInWord(userIn, wordAsChars)) {
+					if(isInWord(userIn, word)) {
 						displayWord(word, entered);
 					} else {
 						attempts++;
@@ -134,16 +133,9 @@ public class MiniGameHangman {
 		return word;
 	}
 	
-	// Convert a string to an array of its chars.
-	// REDUNDANT - replaced with collector
-	private char[] word2chars(String word) {
-		char[] charArray = word.toCharArray();
-		return charArray;
-	}
-	
-	// check if a given char is in a word char array
-	private boolean isInWord(char c, char[] word) {
-		for(char i: word) {
+	// check if a given char is in a word
+	private boolean isInWord(char c, String word) {
+		for(char i: word.toCharArray()) {
 			if(c == i)
 				return true;
 				break;
