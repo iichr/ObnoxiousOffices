@@ -1,4 +1,4 @@
-package game.core.ifc;
+package game.core.sync;
 
 import game.AI.AIPlayer;
 import game.core.Input;
@@ -20,17 +20,14 @@ public class ServerSync {
 
     public static void init() {
         Events.on(PlayerInputEvent.class, ServerSync::onPlayerInput);
-        Events.on(CreateAIPlayerRequest.class, ServerSync::makeAIPlayer);
+        Events.on(CreateAIPlayerRequest.class, ServerSync::addAIPLayer);
     }
 
-    private static void makeAIPlayer(CreateAIPlayerRequest request) {
-        Player ai = AIPlayer.createAIPalyer("Volker", Direction.SOUTH,  new Location(4, 0, 0, World.world));
-        
-        ((ServerListener)request.serverListener).addAIToGame(ai);
+    private static void addAIPLayer(CreateAIPlayerRequest event) {
+        ((ServerListener) event.serverListener).addAIToGame(AIPlayer.createAIPalyer("Volker", Direction.SOUTH, new Location(7, 0, World.world)));
     }
 
     private static void onPlayerInput(PlayerInputEvent event) {
-    	System.out.println("managing input event");
         Input.InputType type = event.inputType;
         Player player = World.world.getPlayer(event.playerName);
         if(type.isMovement) processMovement(type, player);
@@ -64,7 +61,11 @@ public class ServerSync {
         }
         player.setFacing(direction);
         Location forwards = loc.forward(direction);
-        if(forwards.checkBounds() && forwards.getTile().type.canWalkOver()) player.setLocation(forwards);
+        Tile tile;
+        if(forwards.checkBounds() && (tile = forwards.getTile()).type.canWalkOver()) {
+            player.setLocation(forwards);
+            tile.onWalkOver(player);
+        }
     }
 
 }
