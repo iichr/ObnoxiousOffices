@@ -3,6 +3,8 @@ package game.core.minigame;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.stream.Collectors;
 
 /**
@@ -21,23 +23,62 @@ public class MiniGameHangman {
 	private ArrayList<Character> alreadyEntered;
 
 	private Scanner input = new Scanner(System.in);
+	private static Timer timer;
+	private static int interval = 30;
 
 	public MiniGameHangman() {
 		word = pickWord(dict);
 		alreadyEntered = new ArrayList<Character>();
 
 		setDifficulty();
+
 		init(word, alreadyEntered);
 	}
 
+	/**
+	 * Constructor for testing purposes only!
+	 * 
+	 * @param word
+	 *            The word to be guessed.
+	 */
+	public MiniGameHangman(String word) {
+		this.word = word;
+		alreadyEntered = new ArrayList<Character>();
+		init(word, alreadyEntered);
+	}
+
+	/**
+	 * Main game loop with timer. Manage victory and loss conditions
+	 * 
+	 * @param word
+	 * @param alreadyEntered
+	 */
 	public void init(String word, ArrayList<Character> alreadyEntered) {
+		displayWord(word, alreadyEntered);
+		// set up timer, 30 seconds, 1000 milliseconds delay
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				// debugging - countdown timer
+				System.out.println(setInterval());
+			} 
+		}, 1000, 1000);
+
 		while (!allGuessed(word, alreadyEntered) && !lost()) {
-			System.out.println(getAttempts());
-			inputLetter(word, alreadyEntered);
+				inputLetter(word, alreadyEntered);
 		}
 		if (allGuessed(word, alreadyEntered)) {
 			System.out.println("WIN!");
+			timer.cancel();
 		}
+	}
+
+	// countdown in intervals of 1 second.
+	private static final int setInterval() {
+		if(interval == 1) {
+			timer.cancel();
+		}
+		return --interval;
 	}
 
 	public void setDifficulty() {
@@ -102,6 +143,7 @@ public class MiniGameHangman {
 	private boolean lost() {
 		if (getAttempts() > PERMITTED_ATTEMPTS) {
 			System.out.println("Game over.");
+			timer.cancel();
 			return true;
 		} else {
 			return false;
