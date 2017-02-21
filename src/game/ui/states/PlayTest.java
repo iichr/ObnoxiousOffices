@@ -73,6 +73,7 @@ public class PlayTest extends Play {
 
 		Player testPlayer = new Player("Test_Player", Direction.SOUTH, l);
 		testPlayer.setHair(Player.BLONDE);
+		testPlayer.setProgress(80);
 
 		localPlayerName = testPlayer.name;
 		Test.localPlayer = localPlayerName;
