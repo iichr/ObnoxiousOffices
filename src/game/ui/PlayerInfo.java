@@ -20,7 +20,7 @@ public class PlayerInfo {
 
 	private float tileWidth;
 	private float tileHeight;
-	
+
 	private Image workDialogue, drinkDialogue, sleepDialogue;
 
 	public PlayerInfo(World world, float tileWidth, float tileHeight) throws SlickException {
@@ -28,7 +28,7 @@ public class PlayerInfo {
 		players = world.getPlayers();
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
-		
+
 		workDialogue = new Image(ImageLocations.WORK_DIALOGUE, false, Image.FILTER_NEAREST);
 		drinkDialogue = new Image(ImageLocations.DRINK_DIALOGUE, false, Image.FILTER_NEAREST);
 		sleepDialogue = new Image(ImageLocations.SLEEP_DIALOGUE, false, Image.FILTER_NEAREST);
@@ -52,11 +52,14 @@ public class PlayerInfo {
 					Tile t = inFront.getTile();
 					g.setColor(Color.black);
 					if (t.type.equals(TileType.COMPUTER)) {
-						workDialogue.draw((inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2), tileWidth, tileHeight/2);
+						workDialogue.draw((inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2), tileWidth,
+								tileHeight / 2);
 					} else if (t.type.equals(TileType.COFFEE_MACHINE)) {
-						drinkDialogue.draw((inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2), tileWidth, tileHeight/2);
+						drinkDialogue.draw((inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2), tileWidth,
+								tileHeight / 2);
 					} else if (t.type.equals(TileType.SOFA)) {
-						sleepDialogue.draw((inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2), tileWidth, tileHeight/2);
+						sleepDialogue.draw((inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2), tileWidth,
+								tileHeight / 2);
 					}
 				}
 			}

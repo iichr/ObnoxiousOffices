@@ -33,7 +33,7 @@ public interface ImageLocations {
 	// PLAYER AVATAR IMAGES
 	public static final String TEMP_AVATAR = "res/player/avatar.png";
 
-	//IN GAME UI ELEMENTS
+	// IN GAME UI ELEMENTS
 	public static final String PROGRESS_BAR_BASE = "/res/ui/progressBarBase.png";
 	public static final String PROGRESS_BAR_FULL = "/res/ui/progressBarFull.png";
 	public static final String WORK_DIALOGUE = "/res/ui/workDiag.png";
