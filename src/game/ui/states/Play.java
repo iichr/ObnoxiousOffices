@@ -137,6 +137,7 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+		playerOverview = new PlayerContainer(world, localPlayerName, 0, 100);
 		drawWorld();
 		
 		playerinfo.render(g);
@@ -164,9 +165,7 @@ public class Play extends BasicGameState {
 
 		// get players
 		Set<Player> players = world.getPlayers();
-		playerOverview = new PlayerContainer(world, localPlayerName, 10, 100, 300, 500, _avatar, _avatar, _avatar,
-				_avatar);
-
+		
 		// check every position in the world to render what is needed at that
 		// location
 
