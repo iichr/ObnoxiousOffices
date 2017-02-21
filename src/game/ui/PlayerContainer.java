@@ -4,10 +4,12 @@ import java.util.Set;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.SlickException;
 
 import game.core.player.Player;
 import game.core.world.World;
+import game.ui.interfaces.ImageLocations;
+import game.ui.interfaces.Vals;
 
 /**
  * The player status container to appear on the left of the screen upon
@@ -16,25 +18,25 @@ import game.core.world.World;
  * @author iichr
  *
  */
-public class PlayerContainer extends Rectangle {
+public class PlayerContainer {
 
 	private static final long serialVersionUID = 7035477320220180349L;
 
 	// player names
-	private String p1 = "Player 1";
-	private String p2;
-	private String p3;
-	private String p4;
-	private String[] others = new String[] { "Player 2", "Player 3", "Player 4" };
-	private int i;
+	private String[] playerNames;
+	private Image[] playerAvatars;
+	private double[] playerProgress;
+	private Image progressBarBase;
+	private Image progressBarFull;
+	private float x;
+	private float y;
 
-	private Set<Player> players;
 	private World world;
-	// player avatars
-	private Image i1, i2, i3, i4;
+	private Set<Player> players;
 
 	// String padding
-	private int pad = 10;
+	private final int xPad = 10;
+	private final int yPad = 20;
 
 	/**
 	 * A constructor for the player status container
@@ -57,26 +59,35 @@ public class PlayerContainer extends Rectangle {
 	 *            Player 3's avatar
 	 * @param i4
 	 *            Player 4's avatar.
+	 * @throws SlickException
 	 */
-	public PlayerContainer(World world, String localPlayerName, float x, float y, float width, float height, Image i1,
-			Image i2, Image i3, Image i4) {
-		super(x, y, width, height);
-		this.i1 = resize(i1);
-		this.i2 = resize(i2);
-		this.i3 = resize(i3);
-		this.i4 = resize(i4);
+	public PlayerContainer(World world, String localPlayerName, float x, float y) throws SlickException {
 		this.world = world;
 		players = world.getPlayers();
-		p1 = localPlayerName;
+		this.x = x;
+		this.y = y;
+
+		progressBarBase = new Image(ImageLocations.PROGRESS_BAR_BASE, false, Image.FILTER_NEAREST);
+		progressBarFull = new Image(ImageLocations.PROGRESS_BAR_FULL, false, Image.FILTER_NEAREST);
+
+		int size = players.size();
+		playerNames = new String[size];
+		playerAvatars = new Image[size];
+		playerProgress = new double[size];
+
+		int i = 1;
 		for (Player p : players) {
 			if (!p.name.equals(localPlayerName)) {
-				others[i] = p.name;
+				playerNames[i] = p.name;
+				playerAvatars[i] = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
+				playerProgress[i] = p.getProgress();
 				i++;
+			} else {
+				playerNames[0] = p.name;
+				playerAvatars[0] = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
+				playerProgress[0] = p.getProgress();
 			}
 		}
-		p2 = others[0];
-		p3 = others[1];
-		p4 = others[2];
 	}
 
 	// TODO
@@ -95,61 +106,26 @@ public class PlayerContainer extends Rectangle {
 	 *            update as well.
 	 */
 	public void render(Graphics g, boolean invoked) {
-		if (invoked) {
-			// Player names
-			g.drawString(p1, this.x + getImgWidth(i1) + pad, this.y + pad);
-			g.drawString(p2, this.x + getImgWidth(i2) + pad, this.y + getImgHeight(i1) + pad);
-			g.drawString(p3, this.x + getImgWidth(i3) + pad, this.y + getImgHeight(i1) + getImgHeight(i2) + pad);
-			g.drawString(p4, this.x + getImgWidth(i4) + pad,
-					this.y + getImgHeight(i1) + getImgHeight(i2) + getImgHeight(i3) + pad);
+		final float xSize = Vals.SCREEN_WIDTH / 30;
+		final float ySize = Vals.SCREEN_HEIGHT / 15;
 
-			// Player avatars
-			g.drawImage(i1, this.x, y);
-			g.drawImage(i2, this.x, y + i1.getHeight());
-			g.drawImage(i3, this.x, y + 2 * i2.getHeight());
-			g.drawImage(i4, this.x, y + 3 * i3.getHeight());
+		if (invoked) {
+			for (int i = 0; i < playerNames.length; i++) {
+				float xPos = this.x + xSize / 2;
+				float yPos = this.y + ySize * (i + 1);
+				float progress = (float) (playerProgress[i] / 100);
+				playerAvatars[i].draw(xPos, yPos, xSize, ySize);
+				g.drawString(playerNames[i], xPos + xPad + xSize, yPos);
+
+				float cornerX = xPos + xPad + xSize;
+				float cornerY = yPos + yPad;
+				progressBarBase.draw(cornerX, cornerY, xSize * 4, ySize - yPad);
+				progressBarFull.draw(cornerX, cornerY, cornerX + xSize * 4 * progress, cornerY + ySize - yPad, 0, 0,
+						progressBarBase.getWidth() * progress, progressBarBase.getHeight());
+			}
 		} else {
 			// leave empty
 			// do not invoke clear!
 		}
-	}
-
-	/**
-	 * Set image height proportional to the rectangle container's size
-	 * 
-	 * @return Height of a single avatar.
-	 */
-	int setImgHeight() {
-		return (int) (this.height / 4);
-	}
-
-	/**
-	 * Get the height of a player's avatar.
-	 * 
-	 * @param img
-	 *            The image
-	 * @return Height of said image
-	 */
-	private int getImgHeight(Image img) {
-		return img.getHeight();
-	}
-
-	/**
-	 * Get the width of a player's avatar.
-	 * 
-	 * @param img
-	 *            The image
-	 * @return Width of said image
-	 */
-	private int getImgWidth(Image img) {
-		return img.getWidth();
-	}
-
-	/**
-	 * 
-	 * 
-	 */
-	private Image resize(Image img) {
-		return img.getScaledCopy((int) img.getWidth() / 2, setImgHeight());
 	}
 }

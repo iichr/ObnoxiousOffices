@@ -148,7 +148,7 @@ public class SpriteLocations {
 
 		tileMap.put(TileType.FISH, fishTankMap);
 	}
-
+	
 	// TILE LOCATIONS
 	public static final String TILE_FLOOR = "/res/sprites/tiles/floor.png";
 
