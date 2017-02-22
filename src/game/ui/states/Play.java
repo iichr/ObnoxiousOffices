@@ -8,6 +8,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -56,14 +57,9 @@ public class Play extends BasicGameState {
 	private Image _avatar, coffee;
 	boolean showOverview = false;
 
-	// TODO WIP 10/02
-	private float objX = 0;
-	private float objY = 0;
-	private boolean computer = false;
-	private boolean coffeemach = false;
-	private boolean sofa = false;
-
 	protected boolean paused = false;
+	
+	Music bgmusic;
 
 	public Play(int state) {
 	}
@@ -86,6 +82,10 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+		// Music - now works! 
+		//bgmusic = new Music("res/music/toocheerful.ogg");
+		//bgmusic.loop();
+		
 		// Effectcontainer
 		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
 		effectOverview = new EffectContainer(coffee, 10);
