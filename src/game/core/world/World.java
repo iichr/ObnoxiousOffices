@@ -184,7 +184,7 @@ public class World implements Updateable, Serializable {
     }
 
     public Tile getTile(Coordinates coords) {
-        return getTile(coords.x, coords.y, coords.y);
+        return getTile(coords.x, coords.y, coords.z);
     }
 
     public boolean checkBounds(Coordinates coords) {
