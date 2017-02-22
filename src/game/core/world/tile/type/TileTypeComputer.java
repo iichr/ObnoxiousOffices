@@ -60,4 +60,8 @@ public class TileTypeComputer extends TileTypeAction {
         return Collections.singletonList(new MetaTile(location, this, facing, 0, null));
     }
 
+    public String getOwningPlayer(MetaTile computerTile) {
+        return (String) computerTile.metadata.getVar(ComputerMetadata.PLAYER);
+    }
+
 }
