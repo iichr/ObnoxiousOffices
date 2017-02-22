@@ -17,14 +17,14 @@ public class Tile implements Serializable {
     public final Direction facing;
     public final int multitileID;
 
-    Tile(Location location, TileType type, Direction facing, int multitileID) {
+    public Tile(Location location, TileType type, Direction facing, int multitileID) {
         this.location = location;
         this.type = type;
         this.facing = facing;
         this.multitileID = multitileID;
     }
 
-    Tile(Location location, TileType type, Direction facing) {
+    public Tile(Location location, TileType type, Direction facing) {
         this(location, type, facing, -1);
     }
 

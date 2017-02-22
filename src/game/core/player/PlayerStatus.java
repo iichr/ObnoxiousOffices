@@ -53,11 +53,11 @@ public class PlayerStatus implements Serializable {
     }
 
     public void update(Player player) {
-        Set<PlayerAction> actions2 = Updateable.updateAll(actions);
+        List<PlayerAction> actions2 = Updateable.updateAll(actions);
         actions2.forEach(a -> Events.trigger(new PlayerActionEndedEvent(a, player.name), true));
         actions.removeAll(actions2);
 
-        Set<PlayerEffect> effects2 = Updateable.updateAll(effects);
+        List<PlayerEffect> effects2 = Updateable.updateAll(effects);
         effects2.forEach(e -> Events.trigger(new PlayerEffectEndedEvent(e, player.name), true));
         effects.removeAll(effects2);
     }

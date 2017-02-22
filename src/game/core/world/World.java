@@ -24,7 +24,7 @@ import java.util.stream.IntStream;
  */
 public class World implements Updateable, Serializable {
 
-    private final Set<Player> players;
+    private final List<Player> players;
     private final int maxPlayers;
     private final Tile[][][] tiles;
     public final int xSize, ySize, zSize;
@@ -35,7 +35,7 @@ public class World implements Updateable, Serializable {
 
     public World(int maxPlayers, int sizeX, int sizeY, int sizeZ) {
         this.tiles = new Tile[sizeX][sizeY][sizeZ];
-        this.players = new HashSet<>(maxPlayers);
+        this.players = new ArrayList<>(maxPlayers);
         this.maxPlayers = maxPlayers;
         zSize = sizeZ;
         ySize = sizeY;
