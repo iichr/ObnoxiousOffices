@@ -1,84 +1,40 @@
 package game.core.minigame;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.stream.Collectors;
 
+import org.newdawn.slick.Input;
+
 /**
- * A hangman mini-game
+ * WIP 20/02 !!!!
+ * Eventually this is going to become a testing class.
  * 
  * @author iichr
  */
-
-public class MiniGameHangman {
+public class MiniGameHangman_Old {
 
 	private String[] dict = { "replace", "with", "dictionary", "ofatleast", "words" };
 	String word;
 	private int attempts = 0;
-	private int PERMITTED_ATTEMPTS = 5;
+	private int PERMITTED_ATTEMPTS;
 	private boolean guessed = false;
 	private ArrayList<Character> alreadyEntered;
-
+	private char[] wordAsChars;
+	
 	private Scanner input = new Scanner(System.in);
-	private static Timer timer;
-	private static int interval = 30;
 
-	public MiniGameHangman() {
+	public MiniGameHangman_Old() {
 		word = pickWord(dict);
+		wordAsChars = word2chars(word);
 		alreadyEntered = new ArrayList<Character>();
-
 		setDifficulty();
-
-		init(word, alreadyEntered);
-	}
-
-	/**
-	 * Constructor for testing purposes only!
-	 * 
-	 * @param word
-	 *            The word to be guessed.
-	 */
-	public MiniGameHangman(String word) {
-		this.word = word;
-		alreadyEntered = new ArrayList<Character>();
-		init(word, alreadyEntered);
-	}
-
-	/**
-	 * Main game loop with timer. Manage victory and loss conditions
-	 * 
-	 * @param word
-	 * @param alreadyEntered
-	 */
-	public void init(String word, ArrayList<Character> alreadyEntered) {
-		displayWord(word, alreadyEntered);
-		// set up timer, 30 seconds, 1000 milliseconds delay
-		timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-			public void run() {
-				// debugging - countdown timer
-				System.out.println(setInterval());
-			} 
-		}, 1000, 1000);
-
-		while (!allGuessed(word, alreadyEntered) && !lost()) {
-				inputLetter(word, alreadyEntered);
+		
+		while(!allGuessed(word, alreadyEntered)) {
+			inputLetter(word, alreadyEntered);
 		}
-		if (allGuessed(word, alreadyEntered)) {
-			System.out.println("WIN!");
-			timer.cancel();
-		}
-	}
-
-	// countdown in intervals of 1 second.
-	private static final int setInterval() {
-		if(interval == 1) {
-			timer.cancel();
-		}
-		return --interval;
 	}
 
 	public void setDifficulty() {
@@ -116,7 +72,7 @@ public class MiniGameHangman {
 				System.out.print(letter);
 			else
 				System.out.print('_');
-			guessed = false;
+				guessed = false;
 		}
 		System.out.println();
 
@@ -124,30 +80,36 @@ public class MiniGameHangman {
 
 	private void inputLetter(String word, ArrayList<Character> entered) {
 		char userIn = input.next().toLowerCase().charAt(0);
-		if (Character.isLetter(userIn)) {
-			if (checkAlreadyEntered(userIn, entered)) {
-				System.out.println("Already entered: " + entered.toString());
+		if(Character.isLetter(userIn)) {
+			if(checkAlreadyEntered(userIn, entered)) {
+				// prompt again
 			} else {
-				// user's char hasn't been encountered before
+				// it's not been encountered before
 				entered.add(userIn);
-				displayWord(word, entered);
-				if (!isInWord(userIn, word)) {
-					attempts++;
-				}
+					if(isInWord(userIn, wordAsChars)) {
+						displayWord(word, entered);
+					} else {
+						attempts++;
+						displayWord(word, entered);
+					}
 			}
 		} else {
 			System.out.println("Not a valid char.");
-		}
+		}	
 	}
 
 	private boolean lost() {
-		if (getAttempts() > PERMITTED_ATTEMPTS) {
-			System.out.println("Game over.");
-			timer.cancel();
+		if (getAttempts() >= PERMITTED_ATTEMPTS)
 			return true;
-		} else {
+		else
 			return false;
-		}
+	}
+
+	private boolean won() {
+		if (getAttempts() >= PERMITTED_ATTEMPTS) 
+			return false;
+		else
+			return true;
 	}
 
 	private int getAttempts() {
@@ -171,14 +133,24 @@ public class MiniGameHangman {
 
 		return word;
 	}
-
-	// check if a given char is in a word
-	private boolean isInWord(char c, String word) {
-		return word.indexOf(c) >= 0;
+	
+	// Convert a string to an array of its chars.
+	// REDUNDANT - replaced with collector
+	private char[] word2chars(String word) {
+		char[] charArray = word.toCharArray();
+		return charArray;
 	}
-
-	// check if the word has been guessed by using the list of characters
-	// entered so far
+	
+	// check if a given char is in a word char array
+	private boolean isInWord(char c, char[] word) {
+		for(char i: word) {
+			if(c == i)
+				return true;
+				break;
+		}
+		return false;
+	}
+	
 	private boolean allGuessed(String word, ArrayList<Character> entered) {
 		return entered.containsAll(word.chars().mapToObj(c -> (char) c).collect(Collectors.toList()));
 	}
