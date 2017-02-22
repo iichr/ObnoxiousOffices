@@ -155,16 +155,6 @@ public class Play extends BasicGameState {
 
 		// for testing
 		actionSelector.updateSelector(world, localPlayerName, tileWidth, tileHeight);
-
-		// TODO WIP 10/02
-		// interaction with in-game objects on click, display string if
-		// successful.
-		if (computer)
-			Vals.FONT_MAIN.drawString(objX, objY, "WORK/HACK", Color.red);
-		if (coffeemach)
-			Vals.FONT_MAIN.drawString(objX, objY, "DRINK COFFEE", Color.red);
-		if (sofa)
-			Vals.FONT_MAIN.drawString(objX, objY, "SLEEP ON SOFA", Color.red);
 	}
 
 	public void drawWorld() throws SlickException {
@@ -252,39 +242,6 @@ public class Play extends BasicGameState {
 		}
 
 		input.clearKeyPressedRecord();
-	}
-
-	@Override
-	public void mousePressed(int button, int x, int y) {
-		if (button == Input.MOUSE_LEFT_BUTTON) {
-			// create event at location in world
-
-			int worldX = (int) (x / tileWidth);
-			int worldY = (int) (y / (tileHeight / 2) - 2);
-			if (worldY >= 0) {
-				TileType type = world.getTile(worldX, worldY, 0).type;
-				objX = x;
-				objY = y;
-				if (type == TileType.COFFEE_MACHINE) {
-					coffeemach = true;
-					computer = false;
-					sofa = false;
-				} else if (type == TileType.COMPUTER) {
-					computer = true;
-					sofa = false;
-					coffeemach = false;
-				} else if (type == TileType.SOFA) {
-					sofa = true;
-					coffeemach = false;
-					computer = false;
-				} else {
-					// decor without user interaction
-					sofa = false;
-					coffeemach = false;
-					computer = false;
-				}
-			}
-		}
 	}
 
 	@Override
