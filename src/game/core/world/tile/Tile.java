@@ -3,6 +3,7 @@ package game.core.world.tile;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
+import game.core.world.tile.type.TileType;
 
 import java.io.Serializable;
 
