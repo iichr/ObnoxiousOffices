@@ -6,10 +6,12 @@ import game.core.event.TileMetadataUpdatedEvent;
 import game.core.util.Coordinates;
 import game.core.util.DataHolder;
 
+import java.io.Serializable;
+
 /**
  * Created by samtebbs on 22/02/2017.
  */
-public abstract class TileMetadata extends DataHolder {
+public abstract class TileMetadata extends DataHolder implements Serializable {
 
     public final Coordinates tile;
 

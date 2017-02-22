@@ -1,9 +1,11 @@
 package game.core.util;
 
+import java.io.Serializable;
+
 /**
  * Created by samtebbs on 22/02/2017.
  */
-public class Coordinates {
+public class Coordinates implements Serializable {
 
     public final int x, y, z;
 
