@@ -67,4 +67,9 @@ public abstract class MiniGame extends DataHolder implements Updateable {
         ended = true;
         Events.trigger(new MiniGameEndedEvent(getPlayers(), player));
     }
+
+    @Override
+    protected MiniGameVarChangedEvent getUpdateEvent(String var, Object val) {
+        return new MiniGameVarChangedEvent(var, val);
+    }
 }

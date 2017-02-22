@@ -1,6 +1,7 @@
 package game.core.world.tile.metadata;
 
 import game.core.event.Event;
+import game.core.event.MiniGameVarChangedEvent;
 import game.core.event.TileMetadataUpdatedEvent;
 import game.core.util.Coordinates;
 import game.core.util.DataHolder;
