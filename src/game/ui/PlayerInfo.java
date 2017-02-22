@@ -55,7 +55,6 @@ public class PlayerInfo {
 				// add pop-ups
 				Location inFront = pLocation.forward(p.getFacing());
 				if (inFront.checkBounds()) {
-					System.out.println("in front: " + inFront.coords.x + ", " + inFront.coords.y);
 					TileType type = inFront.getTile().type;
 					Coordinates coords = inFront.coords;
 					if (type.equals(TileType.CHAIR)) {
