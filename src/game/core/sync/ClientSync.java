@@ -19,6 +19,7 @@ public class ClientSync {
         Events.on(PlayerEffectAddedEvent.class, ClientSync::onPlayerEffectAdded);
         Events.on(PlayerEffectEndedEvent.class, ClientSync::onPlayerEffectEnded);
         Events.on(PlayerAttributeChangedEvent.class, ClientSync::onPlayerAttributeChanged);
+        Events.on(PlayerProgressUpdateEvent.class, ClientSync::onPlayerProgressUpdate);
         Events.on(PlayerMovedEvent.class, ClientSync::onPlayerMoved);
         Events.on(PlayerRotatedEvent.class, ClientSync::onPlayerRotated);
 
@@ -52,11 +53,15 @@ public class ClientSync {
 
     private static void onPlayerMoved(PlayerMovedEvent event) {
         Player player = getPlayer(event.playerName);
-        player.setLocation(player.getLocation().add(event.dX, event.dY, event.dZ));
+        player.setLocation(player.getLocation().add(event.coords.x, event.coords.y, event.coords.z));
     }
 
     private static void onPlayerAttributeChanged(PlayerAttributeChangedEvent event) {
         getPlayer(event.playerName).status.setAttribute(event.attribute, event.newVal);
+    }
+    
+    private static void onPlayerProgressUpdate(PlayerProgressUpdateEvent event) {
+        getPlayer(event.playerName).setProgress(event.change);
     }
 
     private static void onPlayerEffectEnded(PlayerEffectEndedEvent event) {

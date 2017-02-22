@@ -47,18 +47,6 @@ public class PlayerContainer {
 	 *            X coord
 	 * @param y
 	 *            Y coord
-	 * @param width
-	 *            Width of container
-	 * @param height
-	 *            Height of container
-	 * @param i1
-	 *            Player 1's avatar
-	 * @param i2
-	 *            Player 2's avatar
-	 * @param i3
-	 *            Player 3's avatar
-	 * @param i4
-	 *            Player 4's avatar.
 	 * @throws SlickException
 	 */
 	public PlayerContainer(World world, String localPlayerName, float x, float y) throws SlickException {

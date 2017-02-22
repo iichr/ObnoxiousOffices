@@ -19,13 +19,14 @@ import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
-import game.core.world.tile.TileType;
+import game.core.world.tile.type.TileType;
 import game.ui.EffectContainer;
 import game.ui.PlayerContainer;
 import game.ui.PlayerInfo;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
+import game.ui.player.ActionSelector;
 import game.ui.player.PlayerAnimation;
 
 public class Play extends BasicGameState {
@@ -45,6 +46,9 @@ public class Play extends BasicGameState {
 
 	// status container
 	private PlayerContainer playerOverview;
+
+	// actionSelector
+	private ActionSelector actionSelector;
 
 	// effect container
 	protected EffectContainer effectOverview;
@@ -77,6 +81,7 @@ public class Play extends BasicGameState {
 		// PlayerContainer container
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
 
+		actionSelector = new ActionSelector();
 	}
 
 	@Override
@@ -98,7 +103,7 @@ public class Play extends BasicGameState {
 		SpriteLocations sp = new SpriteLocations();
 		tileMap = sp.getTileMap();
 
-		playerinfo = new PlayerInfo(world, tileWidth, tileHeight);
+		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight);
 	}
 
 	/**
@@ -148,15 +153,8 @@ public class Play extends BasicGameState {
 		// add effects overview container
 		effectOverview.render(g);
 
-		// TODO WIP 10/02
-		// interaction with in-game objects on click, display string if
-		// successful.
-		if (computer)
-			Vals.FONT_MAIN.drawString(objX, objY, "WORK/HACK", Color.red);
-		if (coffeemach)
-			Vals.FONT_MAIN.drawString(objX, objY, "DRINK COFFEE", Color.red);
-		if (sofa)
-			Vals.FONT_MAIN.drawString(objX, objY, "SLEEP ON SOFA", Color.red);
+		// for testing
+		actionSelector.updateSelector(world, localPlayerName, tileWidth, tileHeight);
 	}
 
 	public void drawWorld() throws SlickException {
@@ -209,7 +207,7 @@ public class Play extends BasicGameState {
 		// render the players
 		for (Player player : players) {
 			Location playerLocation = player.getLocation();
-			if (playerLocation.x == x && playerLocation.y == y) {
+			if (playerLocation.coords.x == x && playerLocation.coords.y == y) {
 				checkPreviousLocation(player);
 				playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
 			}
@@ -247,36 +245,8 @@ public class Play extends BasicGameState {
 	}
 
 	@Override
-	public void mousePressed(int button, int x, int y) {
-		if (button == Input.MOUSE_LEFT_BUTTON) {
-			// create event at location in world
-
-			int worldX = (int) (x / tileWidth);
-			int worldY = (int) (y / (tileHeight / 2) - 2);
-			if (worldY >= 0) {
-				TileType type = world.getTile(worldX, worldY, 0).type;
-				objX = x;
-				objY = y;
-				if (type == TileType.COFFEE_MACHINE) {
-					coffeemach = true;
-					computer = false;
-					sofa = false;
-				} else if (type == TileType.COMPUTER) {
-					computer = true;
-					sofa = false;
-					coffeemach = false;
-				} else if (type == TileType.SOFA) {
-					sofa = true;
-					coffeemach = false;
-					computer = false;
-				} else {
-					// decor without user interaction
-					sofa = false;
-					coffeemach = false;
-					computer = false;
-				}
-			}
-		}
+	public void mouseWheelMoved(int newValue) {
+		actionSelector.changeSelection(newValue);
 	}
 
 	@Override
@@ -302,6 +272,8 @@ public class Play extends BasicGameState {
 			break;
 		case Input.KEY_E:
 			Events.trigger(new PlayerInputEvent(InputType.INTERACT, localPlayerName));
+			// TODO add way to send work/hack input events
+			// this section will be changing with new inputType system
 			break;
 		case Input.KEY_B:
 			effectOverview.activate();

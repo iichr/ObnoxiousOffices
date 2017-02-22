@@ -75,8 +75,7 @@ public class PlayTest extends Play {
 		testPlayer.setHair(Player.BLONDE);
 		testPlayer.setProgress(80);
 
-		localPlayerName = testPlayer.name;
-		Test.localPlayer = localPlayerName;
+		Test.localPlayer = testPlayer.name;
 		w.addPlayer(testPlayer);
 		return w;
 	}

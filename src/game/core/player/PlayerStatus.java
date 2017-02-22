@@ -7,6 +7,7 @@ import game.core.player.effect.PlayerEffect;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by samtebbs on 15/01/2017.
@@ -52,12 +53,16 @@ public class PlayerStatus implements Serializable {
         return actions.stream().anyMatch(a -> a.getClass() == actionClass);
     }
 
+    public Set<PlayerAction> getActions() {
+        return actions.stream().collect(Collectors.toSet());
+    }
+
     public void update(Player player) {
-        Set<PlayerAction> actions2 = Updateable.updateAll(actions);
+        List<PlayerAction> actions2 = Updateable.updateAll(actions);
         actions2.forEach(a -> Events.trigger(new PlayerActionEndedEvent(a, player.name), true));
         actions.removeAll(actions2);
 
-        Set<PlayerEffect> effects2 = Updateable.updateAll(effects);
+        List<PlayerEffect> effects2 = Updateable.updateAll(effects);
         effects2.forEach(e -> Events.trigger(new PlayerEffectEndedEvent(e, player.name), true));
         effects.removeAll(effects2);
     }
