@@ -20,9 +20,9 @@ public class MiniGamePong extends MiniGame2Player {
     public void update() {
         super.update();
         if(!ended) {
-            addVar(BALL_X_POS, getVar(BALL_X_VEL));
-            addVar(BALL_Y_POS, getVar(BALL_Y_VEL));
-            int ballX = getVar(BALL_X_POS), ballY = getVar(BALL_Y_POS);
+            addVar(BALL_X_POS, getIntVar(BALL_X_VEL));
+            addVar(BALL_Y_POS, getIntVar(BALL_Y_VEL));
+            int ballX = getIntVar(BALL_X_POS), ballY = getIntVar(BALL_Y_POS);
             if(ballX <= 0) {
                 addStat(player1, SCORE, 1);
                 newRound();
@@ -38,7 +38,7 @@ public class MiniGamePong extends MiniGame2Player {
     }
 
     private void checkPaddleBounce(String player, int ballX, int ballY) {
-        int playerX = getStat(player, X_POS), playerY = getStat(player, Y_POS);
+        int playerX = getIntStat(player, X_POS), playerY = getIntStat(player, Y_POS);
         int yDiff = ballY - playerY;
         if(ballX == playerX && yDiff >= 0 && yDiff < PADDLE_LEN) bounceBall(BALL_X_VEL, BALL_Y_VEL, PADDLE_LEN - yDiff);
     }
@@ -75,8 +75,10 @@ public class MiniGamePong extends MiniGame2Player {
                     yAdd = 1;
                     break;
             }
-            int newPos = yAdd + getStat(player, Y_POS);
-            if(newPos < BOUND_Y && newPos > 0) setStat(player, Y_POS, newPos);
+            if(yAdd != 0) {
+                int newPos = yAdd + getIntStat(player, Y_POS);
+                if (newPos < BOUND_Y && newPos > 0) setStat(player, Y_POS, newPos);
+            }
         }
     }
 
