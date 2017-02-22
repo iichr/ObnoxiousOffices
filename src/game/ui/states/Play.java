@@ -3,7 +3,6 @@ package game.ui.states;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -52,13 +51,6 @@ public class Play extends BasicGameState {
 	private Image _avatar, coffee;
 	boolean showOverview = false;
 
-	// TODO WIP 10/02
-	private float objX = 0;
-	private float objY = 0;
-	private boolean computer = false;
-	private boolean coffeemach = false;
-	private boolean sofa = false;
-
 	protected boolean paused = false;
 
 	public Play(int state) {
@@ -84,8 +76,8 @@ public class Play extends BasicGameState {
 		// Effectcontainer
 		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
 		effectOverview = new EffectContainer(coffee, 10);
+		
 		// setup tile sizes
-
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
 		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
 		System.out.println(tileHeight);
@@ -147,16 +139,6 @@ public class Play extends BasicGameState {
 
 		// add effects overview container
 		effectOverview.render(g);
-
-		// TODO WIP 10/02
-		// interaction with in-game objects on click, display string if
-		// successful.
-		if (computer)
-			Vals.FONT_MAIN.drawString(objX, objY, "WORK/HACK", Color.red);
-		if (coffeemach)
-			Vals.FONT_MAIN.drawString(objX, objY, "DRINK COFFEE", Color.red);
-		if (sofa)
-			Vals.FONT_MAIN.drawString(objX, objY, "SLEEP ON SOFA", Color.red);
 	}
 
 	public void drawWorld() throws SlickException {
@@ -244,39 +226,6 @@ public class Play extends BasicGameState {
 		}
 
 		input.clearKeyPressedRecord();
-	}
-
-	@Override
-	public void mousePressed(int button, int x, int y) {
-		if (button == Input.MOUSE_LEFT_BUTTON) {
-			// create event at location in world
-
-			int worldX = (int) (x / tileWidth);
-			int worldY = (int) (y / (tileHeight / 2) - 2);
-			if (worldY >= 0) {
-				TileType type = world.getTile(worldX, worldY, 0).type;
-				objX = x;
-				objY = y;
-				if (type == TileType.COFFEE_MACHINE) {
-					coffeemach = true;
-					computer = false;
-					sofa = false;
-				} else if (type == TileType.COMPUTER) {
-					computer = true;
-					sofa = false;
-					coffeemach = false;
-				} else if (type == TileType.SOFA) {
-					sofa = true;
-					coffeemach = false;
-					computer = false;
-				} else {
-					// decor without user interaction
-					sofa = false;
-					coffeemach = false;
-					computer = false;
-				}
-			}
-		}
 	}
 
 	@Override
