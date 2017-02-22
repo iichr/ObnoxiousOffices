@@ -315,6 +315,8 @@ public class Play extends BasicGameState {
 			break;
 		case Input.KEY_E:
 			Events.trigger(new PlayerInputEvent(InputType.INTERACT, localPlayerName));
+			//TODO add way to send work/hack input events
+			//this section will be changing with new inputType system
 			break;
 		case Input.KEY_B:
 			effectOverview.activate();
