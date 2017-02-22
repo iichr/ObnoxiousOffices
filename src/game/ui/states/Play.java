@@ -97,7 +97,7 @@ public class Play extends BasicGameState {
 		// get the tileMap
 		SpriteLocations sp = new SpriteLocations();
 		tileMap = sp.getTileMap();
-		
+
 		playerinfo = new PlayerInfo(world, tileWidth, tileHeight);
 	}
 
@@ -139,9 +139,9 @@ public class Play extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		playerOverview = new PlayerContainer(world, localPlayerName, 0, 100);
 		drawWorld();
-		
+
 		playerinfo.render(g);
-		
+
 		// add player status container
 		playerOverview.render(g, showOverview);
 
@@ -165,7 +165,7 @@ public class Play extends BasicGameState {
 
 		// get players
 		Set<Player> players = world.getPlayers();
-		
+
 		// check every position in the world to render what is needed at that
 		// location
 
@@ -230,8 +230,7 @@ public class Play extends BasicGameState {
 			playerMap.get(player).turn(player.getFacing());
 			previousPlayer.get(player).setLocation(playerLocation);
 			previousPlayer.get(player).setFacing(playerFacing);
-			
-			
+
 		}
 	}
 
