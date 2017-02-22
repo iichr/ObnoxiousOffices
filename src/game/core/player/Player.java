@@ -67,7 +67,6 @@ public class Player implements Updateable, Serializable {
      * @param location
      */
     public void setLocation(Location location) {
-        Location diff = location.diff(this.location);
         this.location = location;
         Events.trigger(new PlayerMovedEvent(location.coords, this.name), true);
     }
