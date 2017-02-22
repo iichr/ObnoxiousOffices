@@ -27,6 +27,7 @@ public class CharacterSelect extends BasicGameState {
 	private MenuButton backButton;
 	private ConnectButton connectButton;
 	private SelectionButton blondeButton, darkButton, brownButton, pinkButton;
+	private Image waiting;
 
 	private TextField serverAddress, playerName;
 	private String serverStr = "Enter Server Address:";
@@ -55,6 +56,8 @@ public class CharacterSelect extends BasicGameState {
 		Image connR = new Image(ImageLocations.CONNECT_ROLLOVER);
 		connectButton = new ConnectButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 150,
 				Vals.BUTTON_WIDTH, Vals.BUTTON_HEIGHT, conn, connR);
+		
+		waiting = new Image(ImageLocations.WAITING, false, Image.FILTER_NEAREST);
 
 //		Image circleUnselected = new Image(ImageLocations.CIRCLE_UNSELECTED, false, Image.FILTER_NEAREST);
 //		Image circleSelected = new Image(ImageLocations.CIRCLE_SELECTED, false, Image.FILTER_NEAREST);
@@ -103,6 +106,9 @@ public class CharacterSelect extends BasicGameState {
 		// add necessary buttons
 		backButton.render();
 
+		//testing
+		
+		
 		connectStatus(g);
 
 		// Text fields
@@ -114,9 +120,18 @@ public class CharacterSelect extends BasicGameState {
 
 	private void connectStatus(Graphics g) {
 		if (connected) {
+			//make button inactive 
 			connectButton.setActive(false);
+			
+			//draw waiting spinner
+			float waitingDiam = Vals.SCREEN_WIDTH/20;
+			waiting.setCenterOfRotation(waitingDiam/2, waitingDiam/2);
+			waiting.rotate((float) -0.05);
+			waiting.draw(Vals.SCREEN_WIDTH/2 - waitingDiam/2, connectButton.getY() - waitingDiam/2, waitingDiam, waitingDiam);
+			
+			//display text
 			g.drawString(waitingString, connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(waitingString) / 2,
-					connectButton.getY() + 100);
+					connectButton.getY() + waitingDiam/2 + 50);
 		} else {
 			connectButton.setActive(true);
 			connectButton.render();

@@ -22,6 +22,7 @@ public class PlayerInfo {
 	private float tileHeight;
 
 	private Image workDialogue, drinkDialogue, sleepDialogue;
+	private Image playerIdentifier;
 
 	public PlayerInfo(World world, float tileWidth, float tileHeight) throws SlickException {
 		this.world = world;
@@ -32,11 +33,12 @@ public class PlayerInfo {
 		workDialogue = new Image(ImageLocations.WORK_DIALOGUE, false, Image.FILTER_NEAREST);
 		drinkDialogue = new Image(ImageLocations.DRINK_DIALOGUE, false, Image.FILTER_NEAREST);
 		sleepDialogue = new Image(ImageLocations.SLEEP_DIALOGUE, false, Image.FILTER_NEAREST);
+		playerIdentifier = new Image(ImageLocations.PLAYER_IDENTIFIER, false, Image.FILTER_NEAREST);
 	}
 
 	public void render(Graphics g) {
 		for (Player p : players) {
-			g.setColor(Color.red);
+			g.setColor(Color.black);
 			Location pLocation = p.getLocation();
 
 			float playerX = pLocation.x * tileWidth;
@@ -46,11 +48,13 @@ public class PlayerInfo {
 			g.drawString(p.name, (playerX - offsetX), (playerY - offsetY));
 
 			if (p.name.equals(Player.localPlayerName)) {
-				Location inFront = pLocation.forward(p.getFacing());
+				// add identifier for player
+				playerIdentifier.draw(playerX + tileWidth / 4, playerY - tileHeight / 3, tileWidth / 2, tileHeight / 8);
 
+				// add pop-ups
+				Location inFront = pLocation.forward(p.getFacing());
 				if (inFront.checkBounds()) {
 					Tile t = inFront.getTile();
-					g.setColor(Color.black);
 					if (t.type.equals(TileType.COMPUTER)) {
 						workDialogue.draw((inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2), tileWidth,
 								tileHeight / 2);
