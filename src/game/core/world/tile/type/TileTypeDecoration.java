@@ -1,4 +1,4 @@
-package game.core.world.tile;
+package game.core.world.tile.type;
 
 /**
  * Created by samtebbs on 31/01/2017.

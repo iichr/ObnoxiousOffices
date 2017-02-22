@@ -1,5 +1,7 @@
 package game.core;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -11,9 +13,9 @@ public interface Updateable {
     public void update();
     public boolean ended();
 
-    public static <T extends Updateable> Set<T> updateAll(Set<T> updateables) {
+    public static <T extends Updateable> List<T> updateAll(Collection<T> updateables) {
         updateables.forEach(Updateable::update);
-        return updateables.stream().filter(Updateable::ended).collect(Collectors.toSet());
+        return updateables.stream().filter(Updateable::ended).collect(Collectors.toList());
     }
 
 }

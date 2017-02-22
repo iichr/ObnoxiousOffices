@@ -2,13 +2,14 @@ package game.core.world;
 
 import game.core.Updateable;
 import game.core.event.Events;
-import game.core.event.MiniGameEndedEvent;
 import game.core.event.MiniGameStartedEvent;
 import game.core.minigame.MiniGame;
 import game.core.player.Player;
+import game.core.util.Coordinates;
 import game.core.world.tile.Tile;
 import game.core.world.tile.TilePrototype;
-import game.core.world.tile.TileType;
+import game.core.world.tile.type.TileType;
+import game.core.world.tile.type.TileTypeComputer;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -23,7 +24,7 @@ import java.util.stream.IntStream;
  */
 public class World implements Updateable, Serializable {
 
-    private final Set<Player> players;
+    private final List<Player> players;
     private final int maxPlayers;
     private final Tile[][][] tiles;
     public final int xSize, ySize, zSize;
@@ -34,7 +35,7 @@ public class World implements Updateable, Serializable {
 
     public World(int maxPlayers, int sizeX, int sizeY, int sizeZ) {
         this.tiles = new Tile[sizeX][sizeY][sizeZ];
-        this.players = new HashSet<>(maxPlayers);
+        this.players = new ArrayList<>(maxPlayers);
         this.maxPlayers = maxPlayers;
         zSize = sizeZ;
         ySize = sizeY;
@@ -101,7 +102,7 @@ public class World implements Updateable, Serializable {
      * @param tile
      */
     public void addTile(Tile tile) {
-        Location loc = tile.location;
+        Coordinates loc = tile.location.coords;
         setTile(loc.x, loc.y, loc.z, tile);
     }
 
@@ -178,4 +179,26 @@ public class World implements Updateable, Serializable {
         return load(l.toArray(new String[l.size()]), maxPlayers);
     }
 
+    public void setTile(Coordinates coords, Tile tile) {
+        this.setTile(coords.x, coords.y, coords.z, tile);
+    }
+
+    public Tile getTile(Coordinates coords) {
+        return getTile(coords.x, coords.y, coords.z);
+    }
+
+    public boolean checkBounds(Coordinates coords) {
+        return checkBounds(coords.x, coords.y, coords.z);
+    }
+
+    public <T extends TileType> Set<Tile> getTiles(Class<T> tileTypeClass) {
+        Set<Tile> result = new HashSet<>();
+        for (int x = 0; x < tiles.length; x++)
+            for (int y = 0; y < tiles[x].length; y++)
+                for (int z = 0; z < tiles[x][y].length; z++) {
+                    Tile tile = getTile(x, y, z);
+                    if (tile != null && tileTypeClass.isInstance(tile.type)) result.add(tile);
+                }
+        return result;
+    }
 }
