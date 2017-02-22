@@ -108,8 +108,8 @@ public class LogicEasy implements Logic, Serializable {
 		// i == y; j == x;
 		Location location = p.getLocation();
 
-		int x = location.x;
-		int y = location.y;
+		int x = location.coords.x;
+		int y = location.coords.y;
 
 		// if the player needs to move down, check his facing
 		// change it
@@ -166,7 +166,7 @@ public class LogicEasy implements Logic, Serializable {
 			}
 		}
 		// interact with the tile
-		w.getTile(p.getLocation().x, p.getLocation().y, 0).onInteraction(p);
+		w.getTile(p.getLocation().coords.x, p.getLocation().coords.y, 0).onInteraction(p);
 
 		// just for the presentation in week 6 TODO: remove that
 		// p.status.setAttribute(PlayerAttribute.FATIGUE, 0.0);
@@ -198,7 +198,7 @@ public class LogicEasy implements Logic, Serializable {
 			}
 		}
 		// interact with the tile
-		w.getTile(p.getLocation().x, p.getLocation().y, 0).onInteraction(p);
+		w.getTile(p.getLocation().coords.x, p.getLocation().coords.y, 0).onInteraction(p);
 	}
 
 	@Override
@@ -247,7 +247,7 @@ public class LogicEasy implements Logic, Serializable {
 
 		}
 		// interact with the tile
-		w.getTile(p.getLocation().x, p.getLocation().y, 0).onInteraction(p);
+		w.getTile(p.getLocation().coords.x, p.getLocation().coords.y, 0).onInteraction(p);
 	}
 
 	@Override

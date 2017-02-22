@@ -8,7 +8,7 @@ import java.util.PriorityQueue;
 import game.core.player.Player;
 import game.core.world.World;
 import game.core.world.tile.Tile;
-import game.core.world.tile.TileType;
+import game.core.world.tile.type.TileType;
 
 /**
  * Created on 28.01.2017
@@ -193,7 +193,7 @@ public class PathFinding implements Runnable, Serializable {
 		closed = new boolean[rowLength][colLength];
 
 		// set the starting point
-		startCell(player.getLocation().x, player.getLocation().y);
+		startCell(player.getLocation().coords.x, player.getLocation().coords.y);
 
 		// add the starting location to the open list
 		open.add(grid[startI][startJ]);

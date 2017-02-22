@@ -1,5 +1,8 @@
 package game.ai.logic;
 
+import game.ai.AIPlayer;
+import game.core.player.Player;
+
 /**
  * @author Atanas K. Harbaliev. Created on 22.02.2017
  */
@@ -20,6 +23,14 @@ public class WorkingMemory {
 
 	// checks if a player has progressed more than the AI
 	private activityValues hasProgressedMore;
+	
+	//the player that you will monitor
+	@SuppressWarnings("unused")
+	private Player player;
+	
+	//the ai player
+	@SuppressWarnings("unused")
+	private AIPlayer ai;
 
 	/**
 	 * Constructonr
@@ -33,8 +44,10 @@ public class WorkingMemory {
 	 * @param hPM
 	 *            the value of the hasProgressedMore field
 	 */
-	public WorkingMemory(activityValues isW, activityValues isH, activityValues isR, activityValues hPM) {
-		setAll(isW, isH, isR, hPM);
+	public WorkingMemory(AIPlayer aiP, Player p) {
+		ai = aiP;
+		player = p;
+		setAll(activityValues.Unknown, activityValues.Unknown, activityValues.Unknown, activityValues.Unknown);
 	}
 
 	/**
