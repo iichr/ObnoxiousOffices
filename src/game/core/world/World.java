@@ -2,13 +2,13 @@ package game.core.world;
 
 import game.core.Updateable;
 import game.core.event.Events;
-import game.core.event.MiniGameEndedEvent;
 import game.core.event.MiniGameStartedEvent;
 import game.core.minigame.MiniGame;
 import game.core.player.Player;
+import game.core.util.Coordinates;
 import game.core.world.tile.Tile;
 import game.core.world.tile.TilePrototype;
-import game.core.world.tile.TileType;
+import game.core.world.tile.type.TileType;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -101,7 +101,7 @@ public class World implements Updateable, Serializable {
      * @param tile
      */
     public void addTile(Tile tile) {
-        Location loc = tile.location;
+        Coordinates loc = tile.location.coords;
         setTile(loc.x, loc.y, loc.z, tile);
     }
 
@@ -178,4 +178,15 @@ public class World implements Updateable, Serializable {
         return load(l.toArray(new String[l.size()]), maxPlayers);
     }
 
+    public void setTile(Coordinates coords, Tile tile) {
+        this.setTile(coords.x, coords.y, coords.z, tile);
+    }
+
+    public Tile getTile(Coordinates coords) {
+        return getTile(coords.x, coords.y, coords.y);
+    }
+
+    public boolean checkBounds(Coordinates coords) {
+        return checkBounds(coords.x, coords.y, coords.z);
+    }
 }
