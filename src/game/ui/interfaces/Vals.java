@@ -45,6 +45,9 @@ public interface Vals {
 	public static final UnicodeFont FONT_MAIN = new UnicodeFont(new Font("Arial", Font.BOLD, 20));
 	public static final UnicodeFont FONT_RULES = new UnicodeFont(new Font("Arial", Font.BOLD, 18));
 	public static final UnicodeFont FONT_HEADING1 = new UnicodeFont(new Font("Arial", Font.BOLD, 30));
+	// unsupporte on windows machines :(
+	//public static final UnicodeFont FONT_PLAY = new UnicodeFont(new Font("American Typewriter", Font.BOLD, 16));
+	public static final UnicodeFont FONT_PLAY = new UnicodeFont(new Font("Arial", Font.BOLD, 16));
 	
 	// RULES Alignment
 	public static final int RULES_SECT_LEFT_W = SCREEN_WIDTH/4;
