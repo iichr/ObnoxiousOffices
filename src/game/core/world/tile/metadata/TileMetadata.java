@@ -1,7 +1,8 @@
-package game.core.world.tile;
+package game.core.world.tile.metadata;
 
 import game.core.event.Event;
 import game.core.event.TileMetadataUpdatedEvent;
+import game.core.util.Coordinates;
 import game.core.util.DataHolder;
 
 /**
@@ -9,14 +10,15 @@ import game.core.util.DataHolder;
  */
 public abstract class TileMetadata extends DataHolder {
 
-    public final Tile tile;
+    public final Coordinates tile;
 
-    protected TileMetadata(Tile tile) {
+    protected TileMetadata(Coordinates tile) {
         this.tile = tile;
     }
 
     @Override
     protected Event getUpdateEvent(String var, Object val) {
-        return new TileMetadataUpdatedEvent(tile.location.coords, var, val);
+        return new TileMetadataUpdatedEvent(tile, var, val);
     }
+
 }

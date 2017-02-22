@@ -3,6 +3,7 @@ package game.core.world.tile;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.tile.type.TileType;
+import game.core.world.tile.metadata.TileMetadata;
 
 /**
  * Created by samtebbs on 22/02/2017.
