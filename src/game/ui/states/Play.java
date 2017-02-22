@@ -26,6 +26,7 @@ import game.ui.PlayerInfo;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
+import game.ui.player.ActionSelector;
 import game.ui.player.PlayerAnimation;
 
 public class Play extends BasicGameState {
@@ -45,6 +46,9 @@ public class Play extends BasicGameState {
 
 	// status container
 	private PlayerContainer playerOverview;
+	
+	//actionSelector
+	private ActionSelector actionSelector;
 
 	// effect container
 	protected EffectContainer effectOverview;
@@ -76,7 +80,8 @@ public class Play extends BasicGameState {
 
 		// PlayerContainer container
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
-
+		
+		actionSelector = new ActionSelector();
 	}
 
 	@Override
@@ -98,7 +103,7 @@ public class Play extends BasicGameState {
 		SpriteLocations sp = new SpriteLocations();
 		tileMap = sp.getTileMap();
 
-		playerinfo = new PlayerInfo(world, tileWidth, tileHeight);
+		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight);
 	}
 
 	/**
@@ -147,6 +152,9 @@ public class Play extends BasicGameState {
 
 		// add effects overview container
 		effectOverview.render(g);
+		
+		//for testing
+		actionSelector.updateSelector(world, localPlayerName, tileWidth, tileHeight);
 
 		// TODO WIP 10/02
 		// interaction with in-game objects on click, display string if
@@ -184,7 +192,7 @@ public class Play extends BasicGameState {
 				HashMap<Direction, Image[]> directionMap = tileMap.get(type);
 				Image[] images = directionMap.get(facing);
 				images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
-
+				
 				drawPlayers(x, y, tileX, tileY);
 			}
 		}
@@ -237,7 +245,7 @@ public class Play extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
-
+		
 		if (paused) {
 			game.enterState(Vals.PAUSE_STATE);
 			paused = false;
@@ -277,6 +285,11 @@ public class Play extends BasicGameState {
 				}
 			}
 		}
+	}
+	
+	@Override
+	public void mouseWheelMoved(int newValue) {
+		actionSelector.changeSelection(newValue);
 	}
 
 	@Override

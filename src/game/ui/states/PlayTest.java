@@ -34,6 +34,8 @@ public class PlayTest extends Play {
 
 		this.world = w;
 		this.localPlayerName = Test.localPlayer;
+		System.out.println(Test.localPlayer);
+		System.out.println(localPlayerName);
 		World.world = w;
 	}
 
@@ -75,8 +77,7 @@ public class PlayTest extends Play {
 		testPlayer.setHair(Player.BLONDE);
 		testPlayer.setProgress(80);
 
-		localPlayerName = testPlayer.name;
-		Test.localPlayer = localPlayerName;
+		Test.localPlayer = testPlayer.name;
 		w.addPlayer(testPlayer);
 		return w;
 	}
