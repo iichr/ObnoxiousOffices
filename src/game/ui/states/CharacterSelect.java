@@ -106,6 +106,9 @@ public class CharacterSelect extends BasicGameState {
 		// add necessary buttons
 		backButton.render();
 
+		//testing
+		
+		
 		connectStatus(g);
 
 		// Text fields
@@ -117,13 +120,18 @@ public class CharacterSelect extends BasicGameState {
 
 	private void connectStatus(Graphics g) {
 		if (connected) {
-			float waitingWidth = Vals.SCREEN_WIDTH/15;
-			float waitingHeight = Vals.SCREEN_HEIGHT/10;
-			waiting.rotate(2);
-			waiting.draw(Vals.SCREEN_WIDTH/2 - waitingWidth/2, connectButton.getY() - waitingHeight/2, waitingWidth, waitingHeight);
+			//make button inactive 
 			connectButton.setActive(false);
+			
+			//draw waiting spinner
+			float waitingDiam = Vals.SCREEN_WIDTH/20;
+			waiting.setCenterOfRotation(waitingDiam/2, waitingDiam/2);
+			waiting.rotate((float) -0.05);
+			waiting.draw(Vals.SCREEN_WIDTH/2 - waitingDiam/2, connectButton.getY() - waitingDiam/2, waitingDiam, waitingDiam);
+			
+			//display text
 			g.drawString(waitingString, connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(waitingString) / 2,
-					connectButton.getY() + waitingHeight/2 + 50);
+					connectButton.getY() + waitingDiam/2 + 50);
 		} else {
 			connectButton.setActive(true);
 			connectButton.render();
