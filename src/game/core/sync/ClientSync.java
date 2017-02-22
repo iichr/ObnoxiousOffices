@@ -3,6 +3,7 @@ package game.core.sync;
 import game.core.event.*;
 import game.core.minigame.MiniGame;
 import game.core.player.Player;
+import game.core.world.Location;
 import game.core.world.World;
 
 /**
@@ -55,7 +56,7 @@ public class ClientSync {
     private static void onPlayerMoved(PlayerMovedEvent event) {
     	System.out.println("managing player moved event");
         Player player = getPlayer(event.playerName);
-        player.setLocation(player.getLocation().add(event.coords.x, event.coords.y, event.coords.z));
+        player.setLocation(new Location(event.coords, player.getLocation().world));
     }
 
     private static void onPlayerAttributeChanged(PlayerAttributeChangedEvent event) {
