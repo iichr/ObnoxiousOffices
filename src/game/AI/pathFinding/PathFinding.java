@@ -1,4 +1,4 @@
-package game.ai;
+package game.ai.pathFinding;
 
 import java.io.Serializable;
 import java.util.ArrayList;

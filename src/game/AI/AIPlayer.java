@@ -1,5 +1,6 @@
 package game.ai;
 
+import game.ai.logic.LogicEasy;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.world.Direction;

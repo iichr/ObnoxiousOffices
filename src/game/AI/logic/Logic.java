@@ -1,7 +1,8 @@
-package game.ai;
+package game.ai.logic;
 
 import java.io.Serializable;
 
+import game.ai.pathFinding.Pair;
 import game.core.player.Player;
 import game.core.world.World;
 

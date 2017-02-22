@@ -1,10 +1,12 @@
-package game.ai;
+package game.ai.logic;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Set;
 
+import game.ai.pathFinding.Pair;
+import game.ai.pathFinding.PathFinding;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.player.action.PlayerActionHack;
