@@ -9,6 +9,7 @@ import game.core.util.Coordinates;
 import game.core.world.tile.Tile;
 import game.core.world.tile.TilePrototype;
 import game.core.world.tile.type.TileType;
+import game.core.world.tile.type.TileTypeComputer;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -188,5 +189,16 @@ public class World implements Updateable, Serializable {
 
     public boolean checkBounds(Coordinates coords) {
         return checkBounds(coords.x, coords.y, coords.z);
+    }
+
+    public <T extends TileType> Set<Tile> getTiles(Class<T> tileTypeClass) {
+        Set<Tile> result = new HashSet<>();
+        for (int x = 0; x < tiles.length; x++)
+            for (int y = 0; y < tiles[x].length; y++)
+                for (int z = 0; z < tiles[x][y].length; z++) {
+                    Tile tile = getTile(x, y, z);
+                    if (tile != null && tileTypeClass.isInstance(tile.type)) result.add(tile);
+                }
+        return result;
     }
 }
