@@ -6,7 +6,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import game.core.world.Direction;
-import game.core.world.tile.TileType;
+import game.core.world.tile.type.TileType;
 
 public class SpriteLocations {
 	private HashMap<TileType, HashMap<Direction, Image[]>> tileMap;
@@ -137,7 +137,7 @@ public class SpriteLocations {
 
 		tileMap.put(TileType.PLANT, decorationMap);
 	}
-	
+
 	private void addFishTankImages() throws SlickException {
 		HashMap<Direction, Image[]> fishTankMap = new HashMap<>();
 
@@ -148,7 +148,7 @@ public class SpriteLocations {
 
 		tileMap.put(TileType.FISH, fishTankMap);
 	}
-	
+
 	// TILE LOCATIONS
 	public static final String TILE_FLOOR = "/res/sprites/tiles/floor.png";
 
@@ -174,7 +174,7 @@ public class SpriteLocations {
 	public static final String TILE_SOFA_SOUTH_RIGHT = "/res/sprites/tiles/sofaSouthRight.png";
 
 	public static final String TILE_PLANT = "/res/sprites/tiles/plant.png";
-	
+
 	public static final String TILE_FISH_TANK_LEFT = "/res/sprites/tiles/fishTankLeft.png";
 	public static final String TILE_FISH_TANK_RIGHT = "/res/sprites/tiles/fishTankRight.png";
 
@@ -189,11 +189,10 @@ public class SpriteLocations {
 	public static final String PLAYER_BLONDE_NORTH_WALK6 = "/res/sprites/players/blonde/PlayerBlondeNorthWalk6.png";
 	public static final String PLAYER_BLONDE_NORTH_WALK7 = "/res/sprites/players/blonde/PlayerBlondeNorthWalk7.png";
 	public static final String PLAYER_BLONDE_NORTH_WALK8 = "/res/sprites/players/blonde/PlayerBlondeNorthWalk8.png";
-	
+
 	public static final String PLAYER_BLONDE_STANDING_SOUTH = "/res/sprites/players/blonde/PlayerBlondeStandingSouth.png";
 	public static final String PLAYER_BLONDE_STANDING_EAST = "/res/sprites/players/blonde/PlayerBlondeStandingEast.png";
 	public static final String PLAYER_BLONDE_STANDING_WEST = "/res/sprites/players/blonde/PlayerBlondeStandingWest.png";
-	
 
 	public static final String PLAYER_DARK_STANDING_NORTH = "/res/sprites/players/dark/PlayerDarkStandingNorth.png";
 	public static final String PLAYER_DARK_STANDING_SOUTH = "/res/sprites/players/dark/PlayerDarkStandingSouth.png";

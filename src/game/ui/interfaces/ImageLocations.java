@@ -39,10 +39,14 @@ public interface ImageLocations {
 	public static final String PROGRESS_BAR_FULL = "/res/ui/progressBarFull.png";
 	public static final String ACTION_BAR_BASE = "/res/ui/actionBarBase.png";
 	public static final String ACTION_BAR_FULL = "/res/ui/actionBarFull.png";
-	public static final String WORK_DIALOGUE = "/res/ui/workDiag.png";
+	
+	public static final String SIT_DIALOGUE = "/res/ui/sitDiag.png";
 	public static final String DRINK_DIALOGUE = "/res/ui/drinkDiag.png";
 	public static final String SLEEP_DIALOGUE = "/res/ui/sleepDiag.png";
-	public static final String HACK_DIALOGUE = "/res/ui/hackDiag.png";
+	
+	public static final String WORK_SELECTOR = "/res/ui/workSelector.png";
+	public static final String HACK_SELECTOR = "/res/ui/hackSelector.png";
+	
 	
 	//WAITING FOR PLAYERS IMAGE
 	public static final String WAITING = "/res/ui/waiting.png";

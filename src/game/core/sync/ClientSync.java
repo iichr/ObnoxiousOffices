@@ -55,7 +55,7 @@ public class ClientSync {
     private static void onPlayerMoved(PlayerMovedEvent event) {
     	System.out.println("managing player moved event");
         Player player = getPlayer(event.playerName);
-        player.setLocation(player.getLocation().add(event.dX, event.dY, event.dZ));
+        player.setLocation(player.getLocation().add(event.coords.x, event.coords.y, event.coords.z));
     }
 
     private static void onPlayerAttributeChanged(PlayerAttributeChangedEvent event) {

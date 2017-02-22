@@ -1,8 +1,9 @@
-package game.core.world.tile;
+package game.core.world.tile.type;
 
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
+import game.core.world.tile.Tile;
 
 import java.util.Arrays;
 import java.util.Collection;
