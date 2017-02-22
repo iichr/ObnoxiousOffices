@@ -3,10 +3,12 @@ package game.core.player.action;
 import game.core.Updateable;
 import game.core.player.Player;
 
+import java.io.Serializable;
+
 /**
  * Created by samtebbs on 16/01/2017.
  */
-public abstract class PlayerAction implements Updateable {
+public abstract class PlayerAction implements Updateable, Serializable {
 
     public final Player player;
 

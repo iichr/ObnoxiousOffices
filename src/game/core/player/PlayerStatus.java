@@ -13,7 +13,9 @@ import java.util.*;
  */
 public class PlayerStatus implements Serializable {
 
-    private HashMap<PlayerAttribute, Double> attributes = new HashMap<>();
+    private static final int ATTRIBUTE_UPDATE_THRESHOLD = 3;
+    private Map<PlayerAttribute, Double> attributes = new HashMap<>();
+    private Map<PlayerAttribute, Integer> attributeUpdateCounter = new HashMap<>();
     private Set<PlayerAction> actions = new HashSet<>();
     private Set<PlayerEffect> effects = new HashSet<>();
     public final Player player;
@@ -23,7 +25,7 @@ public class PlayerStatus implements Serializable {
     public PlayerStatus(Player player) {
         this.player = player;
         // Add all attributes with their initial values
-        Arrays.stream(PlayerAttribute.values()).forEach(attr -> attributes.put(attr, attr.initialVal));
+        Arrays.stream(PlayerAttribute.values()).forEach(attr -> setAttribute(attr, attr.initialVal));
         initialising = false;
     }
 
@@ -33,7 +35,7 @@ public class PlayerStatus implements Serializable {
      */
     public void addEffect(PlayerEffect effect) {
         effects.add(effect);
-        Events.trigger(new PlayerEffectAddedEvent(effect, player.name));
+        Events.trigger(new PlayerEffectAddedEvent(effect, player.name), true);
     }
 
     /**
@@ -43,16 +45,20 @@ public class PlayerStatus implements Serializable {
     public void addAction(PlayerAction action) {
         actions.add(action);
         action.start();
-        Events.trigger(new PlayerActionAddedEvent(action, player.name));
+        Events.trigger(new PlayerActionAddedEvent(action, player.name), true);
+    }
+
+    public <T extends PlayerAction> boolean hasAction(Class<T> actionClass) {
+        return actions.stream().anyMatch(a -> a.getClass() == actionClass);
     }
 
     public void update(Player player) {
         Set<PlayerAction> actions2 = Updateable.updateAll(actions);
-        actions2.forEach(a -> Events.trigger(new PlayerActionEndedEvent(a, player.name)));
+        actions2.forEach(a -> Events.trigger(new PlayerActionEndedEvent(a, player.name), true));
         actions.removeAll(actions2);
 
         Set<PlayerEffect> effects2 = Updateable.updateAll(effects);
-        effects2.forEach(e -> Events.trigger(new PlayerEffectEndedEvent(e, player.name)));
+        effects2.forEach(e -> Events.trigger(new PlayerEffectEndedEvent(e, player.name), true));
         effects.removeAll(effects2);
     }
 
@@ -63,8 +69,17 @@ public class PlayerStatus implements Serializable {
      * @param val
      */
     public void setAttribute(PlayerAttribute attribute, double val) {
+        updateAttributeCounter(attribute);
         attributes.put(attribute, Math.max(0, Math.min(val, attribute.maxVal)));
-        if(!initialising) Events.trigger(new PlayerAttributeChangedEvent(val, player.name, attribute));
+        if(!initialising && attributeUpdateCounter.get(attribute) >= ATTRIBUTE_UPDATE_THRESHOLD){
+            attributeUpdateCounter.put(attribute, 0);
+            Events.trigger(new PlayerAttributeChangedEvent(val, player.name, attribute), true);
+        }
+    }
+
+    private void updateAttributeCounter(PlayerAttribute attribute) {
+        if(!attributeUpdateCounter.containsKey(attribute)) attributeUpdateCounter.put(attribute, 1);
+        else attributeUpdateCounter.put(attribute, attributeUpdateCounter.get(attribute) + 1);
     }
 
     /**

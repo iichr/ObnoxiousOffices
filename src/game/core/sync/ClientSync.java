@@ -1,6 +1,7 @@
-package game.core.ifc;
+package game.core.sync;
 
 import game.core.event.*;
+import game.core.minigame.MiniGame;
 import game.core.player.Player;
 import game.core.world.World;
 
@@ -9,7 +10,10 @@ import game.core.world.World;
  */
 public class ClientSync {
 
+    public static boolean isClient = false;
+
     public static void init() {
+        isClient = true;
         Events.on(PlayerActionAddedEvent.class, ClientSync::onPlayerActionAdded);
         Events.on(PlayerActionEndedEvent.class, ClientSync::onPlayerActionEnded);
         Events.on(PlayerEffectAddedEvent.class, ClientSync::onPlayerEffectAdded);
@@ -19,6 +23,19 @@ public class ClientSync {
         Events.on(PlayerRotatedEvent.class, ClientSync::onPlayerRotated);
 
         Events.on(TileChangedEvent.class, ClientSync::onTileChanged);
+
+        Events.on(MiniGameStartedEvent.class, ClientSync::onMiniGameStarted);
+        Events.on(MiniGameEndedEvent.class, ClientSync::onMiniGameEnded);
+    }
+
+    private static void onMiniGameEnded(MiniGameEndedEvent event) {
+        System.out.printf("Mini game ended, %s won!%n", event.victor);
+        MiniGame.localMiniGame = null;
+    }
+
+    private static void onMiniGameStarted(MiniGameStartedEvent event) {
+        System.out.printf("Mini game started with %s%n", event.game.getPlayers());
+        MiniGame.localMiniGame = event.game;
     }
 
     private static void onTileChanged(TileChangedEvent event) {
