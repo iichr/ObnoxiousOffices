@@ -8,6 +8,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -68,6 +69,11 @@ public class Play extends BasicGameState {
 
 		// PlayerContainer container
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
+		
+		// Font
+		Vals.FONT_PLAY.addAsciiGlyphs();
+		Vals.FONT_PLAY.getEffects().add(new ColorEffect());
+		Vals.FONT_PLAY.loadGlyphs();
 
 	}
 
@@ -129,6 +135,8 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+		g.setFont(Vals.FONT_PLAY);
+		
 		playerOverview = new PlayerContainer(world, localPlayerName, 0, 100);
 		drawWorld();
 
