@@ -57,7 +57,7 @@ public class TileTypeComputer extends TileTypeAction {
 
     @Override
     public Collection<Tile> getTiles(Location location, Direction facing) {
-        return Collections.singletonList(new MetaTile(location, this, facing, 0, null));
+        return Collections.singletonList(new MetaTile(location, this, facing, 0, new ComputerMetadata(location.coords, "")));
     }
 
     public static String getOwningPlayer(MetaTile computerTile) {
