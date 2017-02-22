@@ -49,7 +49,7 @@ public class ActionSelector {
 				selector = animLoop[action];
 				render(inFront, tileWidth, tileHeight / 2);
 			} else {
-				// nothing to show, tile not valid
+				action = 0;
 			}
 		} else {
 			// nothing to show, off edge of map
