@@ -40,7 +40,7 @@ public class Location implements Serializable {
     }
 
     public Tile getTile() {
-        return world.getTile(coords);
+        return world.getTile(coords.x, coords.y, coords.z);
     }
 
     public boolean checkBounds() {

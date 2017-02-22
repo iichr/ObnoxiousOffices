@@ -8,10 +8,11 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import game.core.player.Player;
+import game.core.util.Coordinates;
 import game.core.world.Location;
 import game.core.world.World;
 import game.core.world.tile.Tile;
-import game.core.world.tile.TileType;
+import game.core.world.tile.type.TileType;
 import game.ui.interfaces.ImageLocations;
 
 public class PlayerInfo {
@@ -41,8 +42,8 @@ public class PlayerInfo {
 			g.setColor(Color.black);
 			Location pLocation = p.getLocation();
 
-			float playerX = pLocation.x * tileWidth;
-			float playerY = (pLocation.y + 1) * (tileHeight / 2);
+			float playerX = pLocation.coords.x * tileWidth;
+			float playerY = (pLocation.coords.y + 1) * (tileHeight / 2);
 			float offsetX = (g.getFont().getWidth(p.name) - tileWidth) / 2;
 			float offsetY = (g.getFont().getHeight(p.name) + 5);
 			g.drawString(p.name, (playerX - offsetX), (playerY - offsetY));
@@ -54,15 +55,17 @@ public class PlayerInfo {
 				// add pop-ups
 				Location inFront = pLocation.forward(p.getFacing());
 				if (inFront.checkBounds()) {
-					Tile t = inFront.getTile();
-					if (t.type.equals(TileType.CHAIR)) {
-						sitDialogue.draw((inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2), tileWidth,
+					System.out.println("in front: " + inFront.coords.x + ", " + inFront.coords.y);
+					TileType type = inFront.getTile().type;
+					Coordinates coords = inFront.coords;
+					if (type.equals(TileType.CHAIR)) {
+						sitDialogue.draw((coords.x * tileWidth), (coords.y + 1) * (tileHeight / 2), tileWidth,
 								tileHeight / 2);
-					} else if (t.type.equals(TileType.COFFEE_MACHINE)) {
-						drinkDialogue.draw((inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2), tileWidth,
+					} else if (type.equals(TileType.COFFEE_MACHINE)) {
+						drinkDialogue.draw((coords.x * tileWidth), (coords.y + 1) * (tileHeight / 2), tileWidth,
 								tileHeight / 2);
-					} else if (t.type.equals(TileType.SOFA)) {
-						sleepDialogue.draw((inFront.x * tileWidth), (inFront.y + 1) * (tileHeight / 2), tileWidth,
+					} else if (type.equals(TileType.SOFA)) {
+						sleepDialogue.draw((coords.x * tileWidth), (coords.y + 1) * (tileHeight / 2), tileWidth,
 								tileHeight / 2);
 					}
 				}

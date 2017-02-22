@@ -8,7 +8,10 @@ import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
-import game.core.world.tile.TileType;
+import game.core.world.tile.MetaTile;
+import game.core.world.tile.Tile;
+import game.core.world.tile.type.TileType;
+import game.core.world.tile.type.TileTypeComputer;
 import game.ui.interfaces.ImageLocations;
 
 public class ActionSelector {
@@ -21,26 +24,32 @@ public class ActionSelector {
 	public static final int HACK = 1;
 	private final int duration = 100;
 
-	public ActionSelector(){
+	public ActionSelector() {
 		action = 0;
 	}
-	
-	public void updateSelector(World world, String localPlayerName, float tileWidth, float tileHeight) throws SlickException{
+
+	public void updateSelector(World world, String localPlayerName, float tileWidth, float tileHeight)
+			throws SlickException {
 		Player localPlayer = world.getPlayer(localPlayerName);
 		Direction facing = localPlayer.getFacing();
 		Location inFront = localPlayer.getLocation().forward(facing);
 		if (inFront.checkBounds()) {
-			TileType actionTile = inFront.getTile().type;
-
+			Tile tile = inFront.getTile();
+			TileType actionTile = tile.type;
 			if (actionTile.equals(TileType.COMPUTER)) {
-				workSel = addAnimation(new Image(ImageLocations.WORK_SELECTOR, false, Image.FILTER_NEAREST));
-				hackSel = addAnimation(new Image(ImageLocations.HACK_SELECTOR, false, Image.FILTER_NEAREST));
-				animLoop = new Animation[] { workSel, hackSel };
+				String ownerName = TileTypeComputer.getOwningPlayer((MetaTile) tile);
+				if (ownerName.equals(localPlayerName)) {
+					workSel = addAnimation(new Image(ImageLocations.WORK_SELECTOR, false, Image.FILTER_NEAREST));
+					hackSel = addAnimation(new Image(ImageLocations.HACK_SELECTOR, false, Image.FILTER_NEAREST));
+					animLoop = new Animation[] { workSel, hackSel };
+				} else {
+					hackSel = addAnimation(new Image(ImageLocations.HACK_SELECTOR, false, Image.FILTER_NEAREST));
+					animLoop = new Animation[] { hackSel };
+				}
 				selector = animLoop[action];
-
 				render(inFront, tileWidth, tileHeight / 2);
 			} else {
-				// nothing to show
+				// nothing to show, tile not valid
 			}
 		} else {
 			// nothing to show, off edge of map
@@ -48,10 +57,10 @@ public class ActionSelector {
 	}
 
 	public void changeSelection(int i) {
-		if(i < 0){
+		if (i < 0) {
 			action = (action - 1) % animLoop.length;
 			action = Math.abs(action);
-		}else{
+		} else {
 			action = (action + 1) % animLoop.length;
 		}
 		System.out.println(action);
@@ -62,8 +71,8 @@ public class ActionSelector {
 	}
 
 	private void render(Location inFront, float width, float height) {
-		float x = inFront.x * width;
-		float y = inFront.y * height;
+		float x = inFront.coords.x * width;
+		float y = inFront.coords.y * height;
 		selector.draw(x, y, width, height);
 	}
 
