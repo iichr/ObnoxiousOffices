@@ -10,7 +10,7 @@ import game.core.world.tile.metadata.TileMetadata;
  */
 public class MetaTile extends Tile {
 
-    public final TileMetadata metadata;
+    public TileMetadata metadata;
 
     public MetaTile(Location location, TileType type, Direction facing, int multitileID, TileMetadata metadata) {
         super(location, type, facing, multitileID);
