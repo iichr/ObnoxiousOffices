@@ -1,8 +1,7 @@
-package game.core.world.tile;
+package game.core.world.tile.type;
 
 import game.core.player.Player;
 import game.core.player.action.PlayerAction;
-import game.core.player.action.PlayerActionDrink;
 import game.core.player.action.PlayerActionWork;
 
 /**
