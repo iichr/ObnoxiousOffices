@@ -3,13 +3,11 @@ package game.ai.logic;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Set;
 
 import game.ai.pathFinding.Pair;
 import game.ai.pathFinding.PathFinding;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
-import game.core.player.action.PlayerActionHack;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
@@ -41,13 +39,7 @@ public class LogicEasy implements Logic, Serializable {
 
 	@Override
 	public void reactToPlayerWork(World w, Player ai) {
-		Player p = closestToWin(w); // player that's closest to winning the game
-
-		// if the player is not AI and has done more than 65% of the project
-		// hack
-		if (!p.isAI && p.getProgress() < hackAfter) {
-			ai.status.addAction(new PlayerActionHack(ai, p));
-		}
+		// TODO
 	}
 
 	@Override
@@ -142,6 +134,8 @@ public class LogicEasy implements Logic, Serializable {
 
 	@Override
 	public void goToCoffeeMachine(World w, Player p) {
+		
+		findCoffeeMachine(World.world, p);
 
 		// go through the array list of i, j coords
 		// to the coffee machine
@@ -239,7 +233,8 @@ public class LogicEasy implements Logic, Serializable {
 				p.moveForwards();
 
 				try {
-					Thread.sleep(250); //TODO: make 250 a variable and change it wtih difficulty
+					Thread.sleep(250); // TODO: make 250 a variable and change
+										// it wtih difficulty
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -257,30 +252,27 @@ public class LogicEasy implements Logic, Serializable {
 		return false;
 	}
 
-	@Override
-	public Player closestToWin(World w) {
-		// get all players from the world
-		Set<Player> players = w.getPlayers();
+	/*
+	 * @Override public Player closestToWin(World w) { // get all players from
+	 * the world Set<Player> players = w.getPlayers();
+	 * 
+	 * Player winner = null; // the player who has done most towards completing
+	 * // his project
+	 * 
+	 * double highestProgr = 0; // progress of the player with highest progress
+	 * 
+	 * // compare the work each player has completed for (Player player :
+	 * players) { // get the progress of the current player in the set double
+	 * currentPlayerProgress = player.getProgress(); // if the current player
+	 * has done more than the previous one, set // this player as the winner if
+	 * (currentPlayerProgress > highestProgr) { winner = player; // set the
+	 * current player as the winner player highestProgr = player.getProgress();
+	 * // set the current player's // progress as the // highest } } return
+	 * winner; }
+	 */
 
-		Player winner = null; // the player who has done most towards completing
-								// his project
-
-		double highestProgr = 0; // progress of the player with highest progress
-
-		// compare the work each player has completed
-		for (Player player : players) {
-			// get the progress of the current player in the set
-			double currentPlayerProgress = player.getProgress();
-			// if the current player has done more than the previous one, set
-			// this player as the winner
-			if (currentPlayerProgress > highestProgr) {
-				winner = player; // set the current player as the winner player
-				highestProgr = player.getProgress(); // set the current player's
-														// progress as the
-														// highest
-			}
-		}
-		return winner;
+	public void hackPlayer(Player player) {
+		// TODO: hacking logic
 	}
 
 }

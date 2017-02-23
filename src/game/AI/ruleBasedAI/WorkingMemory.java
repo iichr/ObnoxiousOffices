@@ -1,7 +1,4 @@
-package game.ai.logic;
-
-import game.ai.AIPlayer;
-import game.core.player.Player;
+package game.ai.ruleBasedAI;
 
 /**
  * @author Atanas K. Harbaliev. Created on 22.02.2017
@@ -23,14 +20,6 @@ public class WorkingMemory {
 
 	// checks if a player has progressed more than the AI
 	private activityValues hasProgressedMore;
-	
-	//the player that you will monitor
-	@SuppressWarnings("unused")
-	private Player player;
-	
-	//the ai player
-	@SuppressWarnings("unused")
-	private AIPlayer ai;
 
 	/**
 	 * Constructonr
@@ -44,9 +33,7 @@ public class WorkingMemory {
 	 * @param hPM
 	 *            the value of the hasProgressedMore field
 	 */
-	public WorkingMemory(AIPlayer aiP, Player p) {
-		ai = aiP;
-		player = p;
+	public WorkingMemory() {
 		setAll(activityValues.Unknown, activityValues.Unknown, activityValues.Unknown, activityValues.Unknown);
 	}
 
@@ -131,7 +118,7 @@ public class WorkingMemory {
 	}
 
 	/**
-	 * Sets the initial values of all fields
+	 * Sets the initial values of all fields of a working memory
 	 * 
 	 * @param isW
 	 *            whether or not the player is working
@@ -148,5 +135,31 @@ public class WorkingMemory {
 		setIsHacking(isH);
 		setIsRefreshing(isR);
 		setHasProgressedMore(hasPM);
+	}
+
+	/**
+	 * Sets the initial values of all fields of a working memory
+	 * 
+	 * @param isW
+	 *            whether or not the player is working
+	 * @param isH
+	 *            whether or not the player is hacking
+	 * @param isR
+	 *            whether or not the player is refreshing
+	 * @param hasPM
+	 *            whether or not the player has progressed more than the AI
+	 *            towards the final goal
+	 * @return the working memory
+	 */
+	public WorkingMemory setAllAndReturn(activityValues isW, activityValues isH, activityValues isR,
+			activityValues hasPM) {
+		WorkingMemory wm = new WorkingMemory();
+
+		wm.setIsWorking(isW);
+		wm.setIsHacking(isH);
+		wm.setIsRefreshing(isR);
+		wm.setHasProgressedMore(hasPM);
+
+		return wm;
 	}
 }

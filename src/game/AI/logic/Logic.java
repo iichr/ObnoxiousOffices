@@ -123,5 +123,16 @@ public interface Logic extends Serializable {
 	 * @return the player who is closest to completing his project, and if the
 	 *         AI player is closest to the goal, return NULL
 	 */
-	public Player closestToWin(World w);
+	// public Player closestToWin(World w);
+
+	/**
+	 * AI starts hacking another player
+	 * 
+	 * @param ai
+	 *            the ai player which will initiate the hacking
+	 * @param player
+	 *            the player to be hacked
+	 * @return the player closest to winning the game
+	 */
+	public void hackPlayer(Player player);
 }
