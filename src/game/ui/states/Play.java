@@ -8,6 +8,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -56,14 +57,9 @@ public class Play extends BasicGameState {
 	private Image _avatar, coffee;
 	boolean showOverview = false;
 
-	// TODO WIP 10/02
-	private float objX = 0;
-	private float objY = 0;
-	private boolean computer = false;
-	private boolean coffeemach = false;
-	private boolean sofa = false;
-
 	protected boolean paused = false;
+	
+	Music bgmusic;
 
 	public Play(int state) {
 	}
@@ -82,10 +78,18 @@ public class Play extends BasicGameState {
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
 
 		actionSelector = new ActionSelector();
+		
+		// UNCOMMENT until everybody add the required libraries.
+		// Initialise the background music
+		// bgmusic = new Music("res/music/toocheerful.ogg");
 	}
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+		// UNCOMMENT until everybody add the required libraries.
+		// start the background music in a loop
+		// bgmusic.loop();
+		
 		// Effectcontainer
 		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
 		effectOverview = new EffectContainer(coffee, 10);
@@ -106,6 +110,13 @@ public class Play extends BasicGameState {
 		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight);
 	}
 
+	@Override
+    public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		// UNCOMMENT until everybody add the required libraries.
+		// used to stop the music from playing
+		// bgmusic.stop();
+	}
+	
 	/**
 	 * Sets up the play state which should be called at the start of each game
 	 * 
