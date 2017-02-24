@@ -9,6 +9,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -54,6 +55,7 @@ public class Play extends BasicGameState {
 
 	// player info
 	private PlayerInfo playerinfo;
+
 	private Image coffee;
 	boolean showOverview = false;
 
@@ -74,6 +76,11 @@ public class Play extends BasicGameState {
 		playerMap = new HashMap<Player, PlayerAnimation>();
 		previousPlayer = new HashMap<Player, Player>();
 
+		// Font
+		Vals.FONT_PLAY.addAsciiGlyphs();
+		Vals.FONT_PLAY.getEffects().add(new ColorEffect());
+		Vals.FONT_PLAY.loadGlyphs();
+
 		actionSelector = new ActionSelector();
 
 		// UNCOMMENT until everybody add the required libraries.
@@ -86,6 +93,10 @@ public class Play extends BasicGameState {
 		// UNCOMMENT until everybody add the required libraries.
 		// start the background music in a loop
 		// bgmusic.loop();
+
+		// setup tile sizes
+		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
+		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
 
 		// Effectcontainer
 		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
@@ -102,10 +113,6 @@ public class Play extends BasicGameState {
 
 		// set up player info
 		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight);
-		
-		// setup tile sizes
-		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
-		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
 	}
 
 	@Override
@@ -156,9 +163,6 @@ public class Play extends BasicGameState {
 		// renders world
 		drawWorld();
 
-		// show ui info to player
-		playerinfo.render(g);
-
 		// add player status container if invoked
 		if (showOverview) {
 			playerOverview.render(g);
@@ -170,6 +174,9 @@ public class Play extends BasicGameState {
 		// shows selectors
 		// TODO only show when seated
 		actionSelector.updateSelector(world, localPlayerName, tileWidth, tileHeight);
+
+		// show ui info to player
+		playerinfo.render(g);
 	}
 
 	public void drawWorld() throws SlickException {
