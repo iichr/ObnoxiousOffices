@@ -153,7 +153,7 @@ public class Play extends BasicGameState {
 		// add effects overview container
 		effectOverview.render(g);
 
-		// for testing
+		//TODO add check for seated
 		actionSelector.updateSelector(world, localPlayerName, tileWidth, tileHeight);
 	}
 
@@ -236,6 +236,7 @@ public class Play extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
 
+		//TODO change to pop up menu
 		if (paused) {
 			game.enterState(Vals.PAUSE_STATE);
 			paused = false;
@@ -246,6 +247,7 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void mouseWheelMoved(int newValue) {
+		//TODO add boolean check for seated
 		actionSelector.changeSelection(newValue);
 	}
 
