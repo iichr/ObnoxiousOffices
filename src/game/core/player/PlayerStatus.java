@@ -21,7 +21,6 @@ public class PlayerStatus implements Serializable {
     private Set<PlayerEffect> effects = new HashSet<>();
     public final Player player;
     public boolean initialising = true;
-    private int test = 0;
 
     public static double FATIGUE_INCREASE = 0.01;
 
@@ -60,17 +59,10 @@ public class PlayerStatus implements Serializable {
     }
 
     public void update(Player player) {
-    	System.out.println("updating" + test);
-        List<PlayerAction> actions2 = Updateable.updateAll(actions);
-        actions2.forEach(a -> Events.trigger(new PlayerActionEndedEvent(a, player.name), true));
-        actions.removeAll(actions2);
-
-        List<PlayerEffect> effects2 = Updateable.updateAll(effects);
-        effects2.forEach(e -> Events.trigger(new PlayerEffectEndedEvent(e, player.name), true));
-        effects.removeAll(effects2);
+        Updateable.updateAll(actions).forEach(this::removeAction);
+        Updateable.updateAll(effects).forEach(this::removeEffect);
 
         addToAttribute(PlayerAttribute.FATIGUE, FATIGUE_INCREASE);
-        test++;
     }
 
     // TODO: Change productivity based on fatigue
@@ -120,12 +112,19 @@ public class PlayerStatus implements Serializable {
         return attributes.getOrDefault(attribute, 0.0);
     }
 
+    public void cancelAction(PlayerAction action) {
+        action.cancel();
+        removeAction(action);
+    }
+
     public void removeAction(PlayerAction action) {
         actions.remove(action);
+        Events.trigger(new PlayerActionEndedEvent(action, player.name));
     }
 
     public void removeEffect(PlayerEffect effect) {
         effects.remove(effect);
+        Events.trigger(new PlayerEffectEndedEvent(effect, player.name));
     }
 
     public enum PlayerAttribute {
