@@ -1,5 +1,6 @@
-package game.core.event;
+package game.core.event.minigame;
 
+import game.core.event.Event;
 import game.core.minigame.MiniGame;
 
 import java.util.List;

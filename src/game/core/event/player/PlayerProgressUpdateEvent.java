@@ -1,4 +1,4 @@
-package game.core.event;
+package game.core.event.player;
 
 /**
  * Created by samtebbs on 11/02/2017.

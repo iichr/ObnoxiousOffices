@@ -1,8 +1,7 @@
 package game.core.test;
 
-import game.core.event.Event;
 import game.core.event.Events;
-import game.core.event.PlayerInputEvent;
+import game.core.event.player.PlayerInputEvent;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.World;

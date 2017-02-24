@@ -1,6 +1,14 @@
 package game.core.sync;
 
 import game.core.event.*;
+import game.core.event.player.action.PlayerActionAddedEvent;
+import game.core.event.player.action.PlayerActionEndedEvent;
+import game.core.event.minigame.MiniGameEndedEvent;
+import game.core.event.minigame.MiniGameStartedEvent;
+import game.core.event.player.*;
+import game.core.event.player.effect.PlayerEffectAddedEvent;
+import game.core.event.player.effect.PlayerEffectEndedEvent;
+import game.core.event.tile.TileChangedEvent;
 import game.core.minigame.MiniGame;
 import game.core.player.Player;
 import game.core.world.Location;

@@ -2,6 +2,11 @@ package game.core.player;
 
 import game.core.Updateable;
 import game.core.event.*;
+import game.core.event.player.action.PlayerActionAddedEvent;
+import game.core.event.player.action.PlayerActionEndedEvent;
+import game.core.event.player.PlayerAttributeChangedEvent;
+import game.core.event.player.effect.PlayerEffectAddedEvent;
+import game.core.event.player.effect.PlayerEffectEndedEvent;
 import game.core.player.action.PlayerAction;
 import game.core.player.effect.PlayerEffect;
 
