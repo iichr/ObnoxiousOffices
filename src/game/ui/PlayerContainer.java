@@ -93,11 +93,10 @@ public class PlayerContainer {
 	 *            Whether it has been invoked by the user or not. !! Used to
 	 *            update as well.
 	 */
-	public void render(Graphics g, boolean invoked) {
+	public void render(Graphics g) {
 		final float xSize = Vals.SCREEN_WIDTH / 30;
 		final float ySize = Vals.SCREEN_HEIGHT / 15;
 
-		if (invoked) {
 			for (int i = 0; i < playerNames.length; i++) {
 				float xPos = this.x + xSize / 2;
 				float yPos = this.y + ySize * (i + 1);
@@ -111,9 +110,7 @@ public class PlayerContainer {
 				progressBarFull.draw(cornerX, cornerY, cornerX + xSize * 4 * progress, cornerY + ySize - yPad, 0, 0,
 						progressBarBase.getWidth() * progress, progressBarBase.getHeight());
 			}
-		} else {
-			// leave empty
-			// do not invoke clear!
-		}
 	}
+	
+	
 }

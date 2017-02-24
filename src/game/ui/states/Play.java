@@ -7,6 +7,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.BasicGameState;
@@ -23,7 +24,6 @@ import game.core.world.tile.type.TileType;
 import game.ui.EffectContainer;
 import game.ui.PlayerContainer;
 import game.ui.PlayerInfo;
-import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 import game.ui.player.ActionSelector;
@@ -52,11 +52,15 @@ public class Play extends BasicGameState {
 
 	// effect container
 	protected EffectContainer effectOverview;
+
+	// player info
 	private PlayerInfo playerinfo;
-	private Image _avatar, coffee;
+	private Image coffee;
 	boolean showOverview = false;
 
 	protected boolean paused = false;
+
+	Music bgmusic;
 
 	public Play(int state) {
 	}
@@ -70,9 +74,6 @@ public class Play extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		playerMap = new HashMap<Player, PlayerAnimation>();
 		previousPlayer = new HashMap<Player, Player>();
-
-		// PlayerContainer container
-		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
 		
 		// Font
 		Vals.FONT_PLAY.addAsciiGlyphs();
@@ -80,18 +81,22 @@ public class Play extends BasicGameState {
 		Vals.FONT_PLAY.loadGlyphs();
 
 		actionSelector = new ActionSelector();
+
+		// UNCOMMENT until everybody add the required libraries.
+		// Initialise the background music
+		// bgmusic = new Music("res/music/toocheerful.ogg");
 	}
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+		// UNCOMMENT until everybody add the required libraries.
+		// start the background music in a loop
+		// bgmusic.loop();
+
 		// Effectcontainer
 		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
-		effectOverview = new EffectContainer(coffee, 10);
-		
-		// setup tile sizes
-		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
-		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
-		System.out.println(tileHeight);
+		effectOverview = new EffectContainer(coffee, 10, Vals.SCREEN_WIDTH - 100,
+				Vals.SCREEN_HEIGHT - Vals.SCREEN_HEIGHT / 5 * 4);
 
 		// add player animations
 		animatePlayers(world.getPlayers());
@@ -101,7 +106,19 @@ public class Play extends BasicGameState {
 		SpriteLocations sp = new SpriteLocations();
 		tileMap = sp.getTileMap();
 
+		// set up player info
 		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight);
+		
+		// setup tile sizes
+		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
+		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
+	}
+
+	@Override
+	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		// UNCOMMENT until everybody add the required libraries.
+		// used to stop the music from playing
+		// bgmusic.stop();
 	}
 
 	/**
@@ -143,17 +160,23 @@ public class Play extends BasicGameState {
 		g.setFont(Vals.FONT_PLAY);
 		
 		playerOverview = new PlayerContainer(world, localPlayerName, 0, 100);
+
+		// renders world
 		drawWorld();
 
+		// show ui info to player
 		playerinfo.render(g);
 
-		// add player status container
-		playerOverview.render(g, showOverview);
+		// add player status container if invoked
+		if (showOverview) {
+			playerOverview.render(g);
+		}
 
 		// add effects overview container
 		effectOverview.render(g);
 
-		// for testing
+		// shows selectors
+		// TODO only show when seated
 		actionSelector.updateSelector(world, localPlayerName, tileWidth, tileHeight);
 	}
 
@@ -161,12 +184,8 @@ public class Play extends BasicGameState {
 		Image wall = new Image(SpriteLocations.TILE_WALL, false, Image.FILTER_NEAREST);
 		wall.draw(0, 0, Vals.SCREEN_WIDTH, tileHeight);
 
-		// get players
-		Set<Player> players = world.getPlayers();
-
 		// check every position in the world to render what is needed at that
 		// location
-
 		for (int y = 0; y < world.ySize; y++) {
 			for (int x = 0; x < world.xSize; x++) {
 				float tileX = x * tileWidth;
@@ -228,7 +247,6 @@ public class Play extends BasicGameState {
 			playerMap.get(player).turn(player.getFacing());
 			previousPlayer.get(player).setLocation(playerLocation);
 			previousPlayer.get(player).setFacing(playerFacing);
-
 		}
 	}
 
@@ -246,6 +264,7 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void mouseWheelMoved(int newValue) {
+		// TODO only when seated
 		actionSelector.changeSelection(newValue);
 	}
 

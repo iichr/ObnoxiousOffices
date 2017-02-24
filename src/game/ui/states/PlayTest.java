@@ -35,6 +35,7 @@ public class PlayTest extends Play {
 		this.world = w;
 		this.localPlayerName = Test.localPlayer;
 		World.world = w;
+
 	}
 
 	/**

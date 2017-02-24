@@ -11,7 +11,6 @@ import game.core.player.Player;
 import game.core.util.Coordinates;
 import game.core.world.Location;
 import game.core.world.World;
-import game.core.world.tile.Tile;
 import game.core.world.tile.type.TileType;
 import game.ui.interfaces.ImageLocations;
 
@@ -37,6 +36,12 @@ public class PlayerInfo {
 		playerIdentifier = new Image(ImageLocations.PLAYER_IDENTIFIER, false, Image.FILTER_NEAREST);
 	}
 
+	/**
+	 * Render info about the world and other players
+	 * 
+	 * @param g
+	 *            Graphics object g
+	 */
 	public void render(Graphics g) {
 		for (Player p : players) {
 			g.setColor(Color.black);
@@ -46,6 +51,8 @@ public class PlayerInfo {
 			float playerY = (pLocation.coords.y + 1) * (tileHeight / 2);
 			float offsetX = (g.getFont().getWidth(p.name) - tileWidth) / 2;
 			float offsetY = (g.getFont().getHeight(p.name) + 5);
+
+			// draw player names
 			g.drawString(p.name, (playerX - offsetX), (playerY - offsetY));
 
 			if (p.name.equals(localPlayerName)) {
@@ -57,18 +64,39 @@ public class PlayerInfo {
 				if (inFront.checkBounds()) {
 					TileType type = inFront.getTile().type;
 					Coordinates coords = inFront.coords;
-					if (type.equals(TileType.CHAIR)) {
-						sitDialogue.draw((coords.x * tileWidth), (coords.y + 1) * (tileHeight / 2), tileWidth,
-								tileHeight / 2);
-					} else if (type.equals(TileType.COFFEE_MACHINE)) {
-						drinkDialogue.draw((coords.x * tileWidth), (coords.y + 1) * (tileHeight / 2), tileWidth,
-								tileHeight / 2);
-					} else if (type.equals(TileType.SOFA)) {
-						sleepDialogue.draw((coords.x * tileWidth), (coords.y + 1) * (tileHeight / 2), tileWidth,
-								tileHeight / 2);
-					}
+					checkDialogue(type, coords);
 				}
 			}
 		}
+	}
+
+	/**
+	 * Check if the tile has a pop-up
+	 * 
+	 * @param type
+	 *            The tile type to display dialogue about
+	 * @param coords
+	 *            the coordinates of the tile
+	 */
+	private void checkDialogue(TileType type, Coordinates coords) {
+		if (type.equals(TileType.CHAIR)) {
+			drawDialogue(sitDialogue, coords);
+		} else if (type.equals(TileType.COFFEE_MACHINE)) {
+			drawDialogue(drinkDialogue, coords);
+		} else if (type.equals(TileType.SOFA)) {
+			drawDialogue(sleepDialogue, coords);
+		}
+	}
+
+	/**
+	 * Display pop-up dialogue about a tile
+	 * 
+	 * @param toDraw
+	 *            the dialogue to draw
+	 * @param coords
+	 *            the coordinates of the tile
+	 */
+	private void drawDialogue(Image toDraw, Coordinates coords) {
+		toDraw.draw((coords.x * tileWidth), (coords.y + 1) * (tileHeight / 2), tileWidth, tileHeight / 2);
 	}
 }
