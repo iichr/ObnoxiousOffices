@@ -119,12 +119,12 @@ public class PlayerStatus implements Serializable {
 
     public void removeAction(PlayerAction action) {
         actions.remove(action);
-        Events.trigger(new PlayerActionEndedEvent(action, player.name));
+        Events.trigger(new PlayerActionEndedEvent(action, player.name), true);
     }
 
     public void removeEffect(PlayerEffect effect) {
         effects.remove(effect);
-        Events.trigger(new PlayerEffectEndedEvent(effect, player.name));
+        Events.trigger(new PlayerEffectEndedEvent(effect, player.name), true);
     }
 
     public enum PlayerAttribute {
