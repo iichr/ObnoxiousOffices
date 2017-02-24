@@ -59,13 +59,8 @@ public class PlayerStatus implements Serializable {
     }
 
     public void update(Player player) {
-        List<PlayerAction> actions2 = Updateable.updateAll(actions);
-        actions2.forEach(a -> Events.trigger(new PlayerActionEndedEvent(a, player.name), true));
-        actions.removeAll(actions2);
-
-        List<PlayerEffect> effects2 = Updateable.updateAll(effects);
-        effects2.forEach(e -> Events.trigger(new PlayerEffectEndedEvent(e, player.name), true));
-        effects.removeAll(effects2);
+        Updateable.updateAll(actions).forEach(this::removeAction);
+        Updateable.updateAll(effects).forEach(this::removeEffect);
 
         addToAttribute(PlayerAttribute.FATIGUE, FATIGUE_INCREASE);
     }
