@@ -1,4 +1,6 @@
-package game.core.event;
+package game.core.event.player;
+
+import game.core.event.Event;
 
 import java.io.Serializable;
 

@@ -2,9 +2,9 @@ package game.core.player;
 
 import game.core.Updateable;
 import game.core.event.Events;
-import game.core.event.PlayerMovedEvent;
-import game.core.event.PlayerProgressUpdateEvent;
-import game.core.event.PlayerRotatedEvent;
+import game.core.event.player.PlayerMovedEvent;
+import game.core.event.player.PlayerProgressUpdateEvent;
+import game.core.event.player.PlayerRotatedEvent;
 import game.core.world.Direction;
 import game.core.world.Location;
 

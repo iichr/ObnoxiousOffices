@@ -1,4 +1,4 @@
-package game.core.event;
+package game.core.event.player.effect;
 
 import game.core.player.effect.PlayerEffect;
 
