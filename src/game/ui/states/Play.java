@@ -92,7 +92,7 @@ public class Play extends BasicGameState {
 		
 		// Effectcontainer
 		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
-		effectOverview = new EffectContainer(coffee, 10);
+		effectOverview = new EffectContainer(coffee, 10, Vals.SCREEN_WIDTH - 100, Vals.SCREEN_HEIGHT - Vals.SCREEN_HEIGHT / 5 * 4);
 		// setup tile sizes
 
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;

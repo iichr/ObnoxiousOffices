@@ -9,6 +9,7 @@ import org.newdawn.slick.SlickException;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
 public class EffectContainer {
 
@@ -16,12 +17,15 @@ public class EffectContainer {
 	private int DURATION ;
     private Instant activatedAt;
     private long activeFor ;
-    
+    private int x ;
+    private int y;
+
 	// effect id
-	public EffectContainer(Image img, int duration) {
+	public EffectContainer(Image img, int duration,int x, int y) {
 		DURATION = duration;
 		this.img = img.getScaledCopy(50, 50);
-			
+		this.x=x;
+		this.y=y;
 	}
 	
     public void activate() {
@@ -46,7 +50,7 @@ public class EffectContainer {
 	public void render(Graphics g) throws SlickException {
 		g.setColor(Color.red);
 		if(isActive()){
-			g.drawImage(this.img, Vals.SCREEN_WIDTH - 100, Vals.SCREEN_HEIGHT - Vals.SCREEN_HEIGHT / 5 * 4);
+			g.drawImage(this.img, x, y);
 			g.setColor(Color.red);
 			g.drawString( activeFor + " s", Vals.SCREEN_WIDTH - 100,
 					Vals.SCREEN_HEIGHT - Vals.SCREEN_HEIGHT / 5 * 4 + 50);
