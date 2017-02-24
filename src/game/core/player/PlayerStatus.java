@@ -14,13 +14,14 @@ import java.util.stream.Collectors;
  */
 public class PlayerStatus implements Serializable {
 
-    private static final int ATTRIBUTE_UPDATE_THRESHOLD = 3;
+    private static final int ATTRIBUTE_UPDATE_THRESHOLD = 5;
     private Map<PlayerAttribute, Double> attributes = new HashMap<>();
     private Map<PlayerAttribute, Integer> attributeUpdateCounter = new HashMap<>();
     private Set<PlayerAction> actions = new HashSet<>();
     private Set<PlayerEffect> effects = new HashSet<>();
     public final Player player;
     public boolean initialising = true;
+    private int test = 0;
 
     public static double FATIGUE_INCREASE = 0.01;
 
@@ -59,6 +60,7 @@ public class PlayerStatus implements Serializable {
     }
 
     public void update(Player player) {
+    	System.out.println("updating" + test);
         List<PlayerAction> actions2 = Updateable.updateAll(actions);
         actions2.forEach(a -> Events.trigger(new PlayerActionEndedEvent(a, player.name), true));
         actions.removeAll(actions2);
@@ -68,6 +70,7 @@ public class PlayerStatus implements Serializable {
         effects.removeAll(effects2);
 
         addToAttribute(PlayerAttribute.FATIGUE, FATIGUE_INCREASE);
+        test++;
     }
 
     // TODO: Change productivity based on fatigue
