@@ -78,13 +78,17 @@ public class Play extends BasicGameState {
 		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
 
 		actionSelector = new ActionSelector();
+		
+		// UNCOMMENT until everybody add the required libraries.
+		// Initialise the background music
+		// bgmusic = new Music("res/music/toocheerful.ogg");
 	}
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
-		// Music - now works! 
-		//bgmusic = new Music("res/music/toocheerful.ogg");
-		//bgmusic.loop();
+		// UNCOMMENT until everybody add the required libraries.
+		// start the background music in a loop
+		// bgmusic.loop();
 		
 		// Effectcontainer
 		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
@@ -106,6 +110,13 @@ public class Play extends BasicGameState {
 		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight);
 	}
 
+	@Override
+    public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		// UNCOMMENT until everybody add the required libraries.
+		// used to stop the music from playing
+		// bgmusic.stop();
+	}
+	
 	/**
 	 * Sets up the play state which should be called at the start of each game
 	 * 
