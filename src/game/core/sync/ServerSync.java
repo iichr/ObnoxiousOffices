@@ -4,10 +4,14 @@ import game.core.Input;
 import game.core.event.Events;
 import game.core.event.PlayerInputEvent;
 import game.core.player.Player;
+import game.core.player.action.PlayerAction;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
 import game.core.world.tile.Tile;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * Created by samtebbs on 12/02/2017.
@@ -54,6 +58,7 @@ public class ServerSync {
         Location forwards = loc.forward(direction);
         Tile tile;
         if(forwards.checkBounds() && (tile = forwards.getTile()).type.canWalkOver()) {
+            player.status.getActions().stream().filter(PlayerAction::cancelsOnMove).forEach(player.status::cancelAction);
             player.setLocation(forwards);
             tile.onWalkOver(player);
         }
