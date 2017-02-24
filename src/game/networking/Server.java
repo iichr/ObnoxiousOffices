@@ -13,6 +13,7 @@ import game.core.event.Events;
 import game.core.event.GameStartedEvent;
 import game.core.sync.ServerSync;
 import game.core.player.Player;
+import game.core.sync.Updater;
 
 public class Server {
 
@@ -77,15 +78,8 @@ public class Server {
 	}
 
 	private void updateWorld(GameStartedEvent e) {
-		Thread updateThread = new Thread(() -> {
-			if (!gameStarted) {
-				gameStarted = true;
-				System.out.println("looping");
-				while (!gameEnded) {
-					e.world.update();
-				}
-			}
-		});
+		Updater worldUpdater = new Updater(e.world, 100, true);
+		Thread updateThread = new Thread(worldUpdater);
 		updateThread.start();
 	}
 
