@@ -1,4 +1,6 @@
-package game.core.event;
+package game.core.event.tile;
+
+import game.core.event.Event;
 
 /**
  * Created by samtebbs on 11/02/2017.

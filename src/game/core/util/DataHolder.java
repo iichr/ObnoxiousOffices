@@ -2,7 +2,6 @@ package game.core.util;
 
 import game.core.event.Event;
 import game.core.event.Events;
-import game.core.event.MiniGameVarChangedEvent;
 
 import java.util.HashMap;
 import java.util.Map;

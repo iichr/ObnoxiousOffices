@@ -1,4 +1,6 @@
-package game.core.event;
+package game.core.event.minigame;
+
+import game.core.event.Event;
 
 /**
  * Created by samtebbs on 18/02/2017.
