@@ -117,8 +117,14 @@ public class PlayerStatus implements Serializable {
         return attributes.getOrDefault(attribute, 0.0);
     }
 
+    public void cancelAction(PlayerAction action) {
+        action.cancel();
+        removeAction(action);
+    }
+
     public void removeAction(PlayerAction action) {
         actions.remove(action);
+        Events.trigger(new PlayerActionEndedEvent(action, player.name));
     }
 
     public void removeEffect(PlayerEffect effect) {
