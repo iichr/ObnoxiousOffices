@@ -20,8 +20,9 @@ public class PlayerStatus implements Serializable {
     private Set<PlayerAction> actions = new HashSet<>();
     private Set<PlayerEffect> effects = new HashSet<>();
     public final Player player;
-
     public boolean initialising = true;
+
+    public static double FATIGUE_INCREASE = 0.01;
 
     public PlayerStatus(Player player) {
         this.player = player;
@@ -65,6 +66,8 @@ public class PlayerStatus implements Serializable {
         List<PlayerEffect> effects2 = Updateable.updateAll(effects);
         effects2.forEach(e -> Events.trigger(new PlayerEffectEndedEvent(e, player.name), true));
         effects.removeAll(effects2);
+
+        addToAttribute(PlayerAttribute.FATIGUE, FATIGUE_INCREASE);
     }
 
     // TODO: Change productivity based on fatigue
