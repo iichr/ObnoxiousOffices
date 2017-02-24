@@ -67,12 +67,6 @@ public class World implements Updateable, Serializable {
     public void update() {
         Updateable.updateAll(players);
         miniGames.removeAll(Updateable.updateAll(miniGames));
-        try {
-        	//don't update 250000 times per second...
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
     }
 
     @Override
