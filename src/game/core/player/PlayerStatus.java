@@ -124,6 +124,7 @@ public class PlayerStatus implements Serializable {
 
     public void removeEffect(PlayerEffect effect) {
         effects.remove(effect);
+        Events.trigger(new PlayerEffectEndedEvent(effect, player.name));
     }
 
     public enum PlayerAttribute {
