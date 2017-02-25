@@ -64,6 +64,8 @@ public class ServerListener extends Thread {
 		Events.on(PlayerEffectAddedEvent.class, this::forwardInfo);
 		Events.on(PlayerEffectEndedEvent.class, this::forwardInfo);
 		Events.on(PlayerAttributeChangedEvent.class, this::forwardInfo);
+
+		Events.on(ChatMessageReceivedEvent.class, this::forwardInfo);
 	}
 	
 	/**
