@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
  */
 public class Chat {
 
+    public static Chat chat = new Chat();
     private final List<ChatMessage> messages = new ArrayList<>();
 
     public Chat() {

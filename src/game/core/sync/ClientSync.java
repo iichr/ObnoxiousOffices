@@ -1,6 +1,8 @@
 package game.core.sync;
 
+import game.core.chat.Chat;
 import game.core.event.*;
+import game.core.event.chat.ChatMessageReceivedEvent;
 import game.core.event.player.action.PlayerActionAddedEvent;
 import game.core.event.player.action.PlayerActionEndedEvent;
 import game.core.event.minigame.MiniGameEndedEvent;
@@ -36,6 +38,12 @@ public class ClientSync {
 
         Events.on(MiniGameStartedEvent.class, ClientSync::onMiniGameStarted);
         Events.on(MiniGameEndedEvent.class, ClientSync::onMiniGameEnded);
+
+        Events.on(ChatMessageReceivedEvent.class, ClientSync::onChatMessageReceived);
+    }
+
+    private static void onChatMessageReceived(ChatMessageReceivedEvent event) {
+        Chat.chat.addMessage(event.toChatMessage());
     }
 
     private static void onMiniGameEnded(MiniGameEndedEvent event) {
