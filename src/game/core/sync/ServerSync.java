@@ -5,6 +5,7 @@ import game.core.Input;
 import game.core.event.CreateAIPlayerRequest;
 import game.core.event.Event;
 import game.core.event.Events;
+import game.core.event.chat.ChatMessageCreatedEvent;
 import game.core.event.player.PlayerInputEvent;
 import game.core.player.Player;
 import game.core.player.action.PlayerAction;
@@ -21,7 +22,12 @@ public class ServerSync {
 
     public static void init() {
         Events.on(PlayerInputEvent.class, ServerSync::onPlayerInput);
+        Events.on(ChatMessageCreatedEvent.class, ServerSync::onChatMessageCreated);
         Events.on(CreateAIPlayerRequest.class, ServerSync::addAIPLayer);
+    }
+
+    private static void onChatMessageCreated(ChatMessageCreatedEvent event) {
+        Events.trigger(event.toChatReceivedEvent());
     }
 
     private static void addAIPLayer(CreateAIPlayerRequest event) {
