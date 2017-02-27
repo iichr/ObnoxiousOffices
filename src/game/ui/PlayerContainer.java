@@ -160,12 +160,12 @@ public class PlayerContainer {
 			temp[1] = new Image(ImageLocations.BLONDE_HEAD_SLEEP, false, Image.FILTER_NEAREST);
 			break;
 		case 1:
-			temp[0] = new Image(ImageLocations.BROWN_HEAD, false, Image.FILTER_NEAREST);
-			temp[1] = new Image(ImageLocations.BROWN_HEAD_SLEEP, false, Image.FILTER_NEAREST);
-			break;
-		case 2:
 			temp[0] = new Image(ImageLocations.DARK_HEAD, false, Image.FILTER_NEAREST);
 			temp[1] = new Image(ImageLocations.DARK_HEAD_SLEEP, false, Image.FILTER_NEAREST);
+			break;
+		case 2:
+			temp[0] = new Image(ImageLocations.BROWN_HEAD, false, Image.FILTER_NEAREST);
+			temp[1] = new Image(ImageLocations.BROWN_HEAD_SLEEP, false, Image.FILTER_NEAREST);
 			break;
 		case 3:
 			temp[0] = new Image(ImageLocations.PINK_HEAD, false, Image.FILTER_NEAREST);
