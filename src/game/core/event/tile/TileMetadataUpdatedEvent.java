@@ -1,5 +1,6 @@
-package game.core.event;
+package game.core.event.tile;
 
+import game.core.event.Event;
 import game.core.util.Coordinates;
 
 /**

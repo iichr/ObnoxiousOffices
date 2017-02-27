@@ -1,4 +1,4 @@
-package game.core.event;
+package game.core.event.player.action;
 
 import game.core.player.action.PlayerAction;
 
