@@ -15,7 +15,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import game.core.Input.InputType;
 import game.core.event.Events;
-import game.core.event.PlayerInputEvent;
+import game.core.event.player.PlayerInputEvent;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -158,7 +158,8 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		playerOverview = new PlayerContainer(world, localPlayerName, 0, 100);
+		g.setFont(Vals.FONT_PLAY);
+		playerOverview = new PlayerContainer(world, localPlayerName, 0, 0);
 
 		// renders world
 		drawWorld();
