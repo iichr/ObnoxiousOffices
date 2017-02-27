@@ -158,7 +158,7 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		playerOverview = new PlayerContainer(world, localPlayerName, 0, 100);
+		playerOverview = new PlayerContainer(world, localPlayerName, 0, 0);
 
 		// renders world
 		drawWorld();

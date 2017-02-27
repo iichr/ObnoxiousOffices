@@ -2,11 +2,13 @@ package game.ui;
 
 import java.util.Set;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import game.core.player.Player;
+import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.world.World;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
@@ -26,6 +28,8 @@ public class PlayerContainer {
 	private String[] playerNames;
 	private Image[] playerAvatars;
 	private double[] playerProgress;
+	private double[] playerFatigue;
+	
 	private Image progressBarBase;
 	private Image progressBarFull;
 	private float x;
@@ -62,6 +66,7 @@ public class PlayerContainer {
 		playerNames = new String[size];
 		playerAvatars = new Image[size];
 		playerProgress = new double[size];
+		playerFatigue = new double[size];
 
 		int i = 1;
 		for (Player p : players) {
@@ -69,46 +74,64 @@ public class PlayerContainer {
 				playerNames[i] = p.name;
 				playerAvatars[i] = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
 				playerProgress[i] = p.getProgress();
+				playerFatigue[i] = p.status.getAttribute(PlayerAttribute.FATIGUE);
 				i++;
 			} else {
 				playerNames[0] = p.name;
 				playerAvatars[0] = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
 				playerProgress[0] = p.getProgress();
+				playerFatigue[0] = p.status.getAttribute(PlayerAttribute.FATIGUE);
 			}
 		}
 	}
-
-	// TODO
-	// supply with player avatars
-	// Player one (current player should be bigger)
-	// supply with progress
-	// supply with player names
 
 	/**
 	 * Render the status container.
 	 * 
 	 * @param g
 	 *            The graphics context
-	 * @param invoked
-	 *            Whether it has been invoked by the user or not. !! Used to
-	 *            update as well.
-	 */
+	 **/
 	public void render(Graphics g) {
 		final float xSize = Vals.SCREEN_WIDTH / 30;
-		final float ySize = Vals.SCREEN_HEIGHT / 15;
+		final float ySize = Vals.SCREEN_HEIGHT / 9;
 
 			for (int i = 0; i < playerNames.length; i++) {
 				float xPos = this.x + xSize / 2;
 				float yPos = this.y + ySize * (i + 1);
 				float progress = (float) (playerProgress[i] / 100);
+				float fatigue = (float) (playerFatigue[i] / 1);
+				
+				//player avatar
 				playerAvatars[i].draw(xPos, yPos, xSize, ySize);
 				g.drawString(playerNames[i], xPos + xPad + xSize, yPos);
 
+				//set values
+				g.setColor(Color.white);
 				float cornerX = xPos + xPad + xSize;
 				float cornerY = yPos + yPad;
-				progressBarBase.draw(cornerX, cornerY, xSize * 4, ySize - yPad);
-				progressBarFull.draw(cornerX, cornerY, cornerX + xSize * 4 * progress, cornerY + ySize - yPad, 0, 0,
+				
+				//progress bar
+				progressBarBase.draw(cornerX, cornerY, xSize * 4, ySize/3);
+				progressBarFull.draw(cornerX, cornerY, cornerX + xSize * 4 * progress, cornerY + ySize/3, 0, 0,
 						progressBarBase.getWidth() * progress, progressBarBase.getHeight());
+				//draw label
+				String progressString = "PROGRESS";
+				float stringWidth = g.getFont().getWidth(progressString);
+				float stringHeight = g.getFont().getHeight(progressString);
+				g.drawString(progressString, cornerX + xSize*2 - stringWidth/2, cornerY + ySize/6 - stringHeight/2);
+				
+				//fatigue bar
+				progressBarBase.draw(cornerX, cornerY + ySize/3, xSize * 4, ySize/3);
+				progressBarFull.draw(cornerX, cornerY + ySize/3, cornerX + xSize * 4 * fatigue, cornerY + 2*ySize/3, 0, 0,
+						progressBarBase.getWidth() * fatigue, progressBarBase.getHeight(), Color.red);
+				//draw label
+				String fatigueString = "FATIGUE";
+				stringWidth = g.getFont().getWidth(fatigueString);
+				stringHeight = g.getFont().getHeight(fatigueString);
+				g.drawString(fatigueString, cornerX + xSize*2 - stringWidth/2, cornerY + ySize/2 - stringHeight/2);
+				
+				//set colour back to black
+				g.setColor(Color.black);
 			}
 	}
 	
