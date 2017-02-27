@@ -16,7 +16,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import game.core.event.ConnectionFailedEvent;
 import game.core.event.Events;
-import game.core.event.PlayerCreatedEvent;
+import game.core.event.player.PlayerCreatedEvent;
 import game.ui.buttons.ConnectButton;
 import game.ui.buttons.MenuButton;
 import game.ui.buttons.SelectionButton;
@@ -56,32 +56,35 @@ public class CharacterSelect extends BasicGameState {
 		Image connR = new Image(ImageLocations.CONNECT_ROLLOVER);
 		connectButton = new ConnectButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 150,
 				Vals.BUTTON_WIDTH, Vals.BUTTON_HEIGHT, conn, connR);
-		
+
 		waiting = new Image(ImageLocations.WAITING, false, Image.FILTER_NEAREST);
 
-//		Image circleUnselected = new Image(ImageLocations.CIRCLE_UNSELECTED, false, Image.FILTER_NEAREST);
-//		Image circleSelected = new Image(ImageLocations.CIRCLE_SELECTED, false, Image.FILTER_NEAREST);
-//		circleButton = new SelectionButton(Vals.BUTTON_ALIGN_CENTRE_W - 200, Vals.BUTTON_ALIGN_CENTRE_H - 200, 50, 50,
-//				circleUnselected, circleSelected);
+		// Image circleUnselected = new Image(ImageLocations.CIRCLE_UNSELECTED,
+		// false, Image.FILTER_NEAREST);
+		// Image circleSelected = new Image(ImageLocations.CIRCLE_SELECTED,
+		// false, Image.FILTER_NEAREST);
+		// circleButton = new SelectionButton(Vals.BUTTON_ALIGN_CENTRE_W - 200,
+		// Vals.BUTTON_ALIGN_CENTRE_H - 200, 50, 50,
+		// circleUnselected, circleSelected);
 
-		//adds the text fields
+		// adds the text fields
 		addTextFields(gc);
 	}
-	
-	private void addTextFields(GameContainer gc) throws SlickException{
+
+	private void addTextFields(GameContainer gc) throws SlickException {
 		// Server address text field.
 		Vals.FONT_MAIN.addAsciiGlyphs();
 		// necessary to load an effect otherwise an exception is thrown!!!
 		Vals.FONT_MAIN.getEffects().add(new ColorEffect());
 		Vals.FONT_MAIN.loadGlyphs();
-		
+
 		serverAddress = new TextField(gc, Vals.FONT_MAIN, Vals.TFIELD_ALIGN_CENTRE_W, 200, Vals.TFIELD_WIDTH,
 				Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
 					public void componentActivated(AbstractComponent src) {
 						serverAddress.setFocus(true);
 					}
 				});
-		
+
 		serverAddress.setBackgroundColor(Color.white);
 		serverAddress.setTextColor(Color.black);
 
@@ -106,9 +109,8 @@ public class CharacterSelect extends BasicGameState {
 		// add necessary buttons
 		backButton.render();
 
-		//testing
-		
-		
+		// testing
+
 		connectStatus(g);
 
 		// Text fields
@@ -120,18 +122,19 @@ public class CharacterSelect extends BasicGameState {
 
 	private void connectStatus(Graphics g) {
 		if (connected) {
-			//make button inactive 
+			// make button inactive
 			connectButton.setActive(false);
-			
-			//draw waiting spinner
-			float waitingDiam = Vals.SCREEN_WIDTH/20;
-			waiting.setCenterOfRotation(waitingDiam/2, waitingDiam/2);
+
+			// draw waiting spinner
+			float waitingDiam = Vals.SCREEN_WIDTH / 20;
+			waiting.setCenterOfRotation(waitingDiam / 2, waitingDiam / 2);
 			waiting.rotate((float) -0.05);
-			waiting.draw(Vals.SCREEN_WIDTH/2 - waitingDiam/2, connectButton.getY() - waitingDiam/2, waitingDiam, waitingDiam);
-			
-			//display text
+			waiting.draw(Vals.SCREEN_WIDTH / 2 - waitingDiam / 2, connectButton.getY() - waitingDiam / 2, waitingDiam,
+					waitingDiam);
+
+			// display text
 			g.drawString(waitingString, connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(waitingString) / 2,
-					connectButton.getY() + waitingDiam/2 + 50);
+					connectButton.getY() + waitingDiam / 2 + 50);
 		} else {
 			connectButton.setActive(true);
 			connectButton.render();
