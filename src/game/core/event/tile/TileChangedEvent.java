@@ -1,4 +1,4 @@
-package game.core.event;
+package game.core.event.tile;
 
 import game.core.world.tile.Tile;
 

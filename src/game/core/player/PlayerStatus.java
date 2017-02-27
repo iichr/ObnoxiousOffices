@@ -2,6 +2,11 @@ package game.core.player;
 
 import game.core.Updateable;
 import game.core.event.*;
+import game.core.event.player.action.PlayerActionAddedEvent;
+import game.core.event.player.action.PlayerActionEndedEvent;
+import game.core.event.player.PlayerAttributeChangedEvent;
+import game.core.event.player.effect.PlayerEffectAddedEvent;
+import game.core.event.player.effect.PlayerEffectEndedEvent;
 import game.core.player.action.PlayerAction;
 import game.core.player.effect.PlayerEffect;
 
@@ -59,13 +64,8 @@ public class PlayerStatus implements Serializable {
     }
 
     public void update(Player player) {
-        List<PlayerAction> actions2 = Updateable.updateAll(actions);
-        actions2.forEach(a -> Events.trigger(new PlayerActionEndedEvent(a, player.name), true));
-        actions.removeAll(actions2);
-
-        List<PlayerEffect> effects2 = Updateable.updateAll(effects);
-        effects2.forEach(e -> Events.trigger(new PlayerEffectEndedEvent(e, player.name), true));
-        effects.removeAll(effects2);
+        Updateable.updateAll(actions).forEach(this::removeAction);
+        Updateable.updateAll(effects).forEach(this::removeEffect);
 
         addToAttribute(PlayerAttribute.FATIGUE, FATIGUE_INCREASE);
     }
@@ -117,12 +117,19 @@ public class PlayerStatus implements Serializable {
         return attributes.getOrDefault(attribute, 0.0);
     }
 
+    public void cancelAction(PlayerAction action) {
+        action.cancel();
+        removeAction(action);
+    }
+
     public void removeAction(PlayerAction action) {
         actions.remove(action);
+        Events.trigger(new PlayerActionEndedEvent(action, player.name), true);
     }
 
     public void removeEffect(PlayerEffect effect) {
         effects.remove(effect);
+        Events.trigger(new PlayerEffectEndedEvent(effect, player.name), true);
     }
 
     public enum PlayerAttribute {

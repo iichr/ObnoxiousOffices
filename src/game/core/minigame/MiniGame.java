@@ -2,6 +2,10 @@ package game.core.minigame;
 
 import game.core.Updateable;
 import game.core.event.*;
+import game.core.event.minigame.MiniGameEndedEvent;
+import game.core.event.minigame.MiniGameStatChangedEvent;
+import game.core.event.minigame.MiniGameVarChangedEvent;
+import game.core.event.player.PlayerInputEvent;
 import game.core.util.DataHolder;
 
 import java.util.*;

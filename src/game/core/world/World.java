@@ -2,14 +2,13 @@ package game.core.world;
 
 import game.core.Updateable;
 import game.core.event.Events;
-import game.core.event.MiniGameStartedEvent;
+import game.core.event.minigame.MiniGameStartedEvent;
 import game.core.minigame.MiniGame;
 import game.core.player.Player;
 import game.core.util.Coordinates;
 import game.core.world.tile.Tile;
 import game.core.world.tile.TilePrototype;
 import game.core.world.tile.type.TileType;
-import game.core.world.tile.type.TileTypeComputer;
 
 import java.io.IOException;
 import java.io.Serializable;

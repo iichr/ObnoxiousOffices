@@ -1,7 +1,7 @@
 package game.core.minigame;
 
 import game.core.Input;
-import game.core.event.PlayerInputEvent;
+import game.core.event.player.PlayerInputEvent;
 
 /**
  * Created by samtebbs on 18/02/2017.

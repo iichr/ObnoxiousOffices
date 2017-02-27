@@ -17,6 +17,7 @@ import game.core.Input.InputType;
 import game.core.event.Events;
 import game.core.event.player.PlayerInputEvent;
 import game.core.player.Player;
+import game.core.player.action.PlayerAction;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
@@ -59,6 +60,7 @@ public class Play extends BasicGameState {
 	private Image coffee;
 	boolean showOverview = false;
 
+	// options toggles
 	protected boolean paused = false;
 
 	Music bgmusic;
@@ -98,7 +100,7 @@ public class Play extends BasicGameState {
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
 		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
 
-		// Effectcontainer
+		// Effect container
 		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
 		effectOverview = new EffectContainer(coffee, 10, Vals.SCREEN_WIDTH - 100,
 				Vals.SCREEN_HEIGHT - Vals.SCREEN_HEIGHT / 5 * 4);
@@ -244,6 +246,7 @@ public class Play extends BasicGameState {
 		Location playerLocation = player.getLocation();
 		Direction playerFacing = player.getFacing();
 		if (previousPlayer.get(player).getFacing() != player.getFacing()) {
+			//TODO add seated check
 			playerMap.get(player).turn(player.getFacing());
 			previousPlayer.get(player).setLocation(playerLocation);
 			previousPlayer.get(player).setFacing(playerFacing);
