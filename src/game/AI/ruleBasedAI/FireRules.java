@@ -27,7 +27,7 @@ public class FireRules {
 	/**
 	 * Update the working memory. Checks if a rules matches the working memory.
 	 * If it does, fire the rule, update memory when needed and always check for
-	 * the fatigue attribute of the AI
+	 * the fatigue attribute of the AI 
 	 */
 	public void fireRules() {
 		ArrayList<WorkingMemory> r = rules.getRules(); // the arraylist of rules
@@ -58,11 +58,10 @@ public class FireRules {
 				} else if (w.getIsWorking() == activityValues.Yes && w.getHasProgressedMore() == activityValues.No) {
 					// TODO: make sure the ai keeps working
 					// if the monitored player is hacking/being hacked and
-					// hasn't progressed more than ai -
+					// has progressed more than ai -
 					// wait for him to finish and then hack him
 				} else if (w.getIsHacking() == activityValues.Yes && w.getHasProgressedMore() == activityValues.Yes) {
-					while (w.getIsHacking() == activityValues.Yes
-							&& ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80) {
+					while (w.getIsHacking() == activityValues.Yes && ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80) {
 						// TODO: make sure the ai keeps working
 						uwm.updateInfo();
 					}
@@ -71,14 +70,15 @@ public class FireRules {
 						ai.easylogic.hackPlayer(player);
 					else
 						ai.easylogic.goToCoffeeMachine(World.world, ai);
+					// if the monitored player is hacking/being hacked and
+					// hasn't progressed more than ai -
+				    // keep doing what you were doing
 				} else if (w.getIsHacking() == activityValues.Yes && w.getHasProgressedMore() == activityValues.No) {
 					// TODO: make sure the ai keeps working
 					// if the monitored player is refreshing and has progressed
 					// more - wait for him to go back to his desk and hack him
-				} else if (w.getIsRefreshing() == activityValues.Yes
-						&& w.getHasProgressedMore() == activityValues.Yes) {
-					while (w.getIsHacking() == activityValues.Yes
-							&& ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80) {
+				} else if (w.getIsRefreshing() == activityValues.Yes && w.getHasProgressedMore() == activityValues.Yes) {
+					while (w.getIsHacking() == activityValues.Yes && ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80) {
 						// TODO: make sure the ai keeps working
 						uwm.updateInfo();
 					}
@@ -87,6 +87,8 @@ public class FireRules {
 						ai.easylogic.hackPlayer(player);
 					else
 						ai.easylogic.goToCoffeeMachine(World.world, ai);
+					// if the monitored player is refreshing and has not progressed
+					// more - keep doing what you were doing
 				} else if (w.getIsRefreshing() == activityValues.Yes && w.getHasProgressedMore() == activityValues.No) {
 					// TODO: make sure the ai keeps working
 				}
