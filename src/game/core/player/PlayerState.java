@@ -5,9 +5,22 @@ package game.core.player;
  */
 public abstract class PlayerState {
 
-    public static final PlayerState sitting = new PlayerStateSitting();
+    public static final PlayerState sitting = new PlayerStateSitting(), sleeping = new PlayerStateSleeping();
 
     private static class PlayerStateSitting extends game.core.player.PlayerState {
+
+        @Override
+        public void onStart(Player player) {
+
+        }
+
+        @Override
+        public void onEnd(Player player) {
+
+        }
+    }
+
+    private static class PlayerStateSleeping extends PlayerState {
 
         @Override
         public void onStart(Player player) {
