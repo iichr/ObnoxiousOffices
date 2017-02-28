@@ -2,6 +2,7 @@ package game.ai.logic;
 
 import java.io.Serializable;
 
+import game.ai.AIPlayer;
 import game.ai.pathFinding.Pair;
 import game.core.player.Player;
 import game.core.world.World;
@@ -23,7 +24,7 @@ public interface Logic extends Serializable {
 	/**
 	 * Tells the bot/bots what to do while the player is drinking coffee.
 	 */
-	public void reactToPlayerDrink(); // TODO: possibly don't need that
+	public void aiRefresh(AIPlayer p); // TODO: possibly don't need that
 
 	/**
 	 * Tells the bot/bots what to do while the player is working on his own
@@ -34,7 +35,7 @@ public interface Logic extends Serializable {
 	 * @param p
 	 *            the ai player that needs to do the hacking
 	 */
-	public void reactToPlayerWork(World w, Player p);
+	public void aiWork(AIPlayer p);
 
 	/**
 	 * Tells the bot/bots what to do while the player is trying to hack

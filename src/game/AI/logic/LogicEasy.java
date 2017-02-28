@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import game.ai.AIPlayer;
 import game.ai.pathFinding.Pair;
 import game.ai.pathFinding.PathFinding;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
+import game.core.player.action.PlayerActionDrink;
+import game.core.player.action.PlayerActionWork;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
@@ -33,13 +36,13 @@ public class LogicEasy implements Logic, Serializable {
 	public ArrayList<Pair<Integer, Integer>> toBed, toCM, fromBed, fromCM;
 
 	// @Override
-	public void reactToPlayerDrink() {
-		// TODO
+	public void aiRefresh(AIPlayer ai) {
+		ai.status.addAction(new PlayerActionDrink(ai)); //TODO: put some logic behind this
 	}
 
 	@Override
-	public void reactToPlayerWork(World w, Player ai) {
-		// TODO
+	public void aiWork(AIPlayer ai) {
+		ai.status.addAction(new PlayerActionWork(ai));
 	}
 
 	@Override
