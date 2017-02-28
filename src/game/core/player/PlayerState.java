@@ -7,7 +7,14 @@ public abstract class PlayerState {
 
     public static final PlayerState sitting = new PlayerStateSitting(), sleeping = new PlayerStateSleeping();
 
+    public abstract boolean cancelsOnMove();
+
     private static class PlayerStateSitting extends game.core.player.PlayerState {
+
+        @Override
+        public boolean cancelsOnMove() {
+            return true;
+        }
 
         @Override
         public void onStart(Player player) {
@@ -21,6 +28,11 @@ public abstract class PlayerState {
     }
 
     private static class PlayerStateSleeping extends PlayerState {
+
+        @Override
+        public boolean cancelsOnMove() {
+            return true;
+        }
 
         @Override
         public void onStart(Player player) {

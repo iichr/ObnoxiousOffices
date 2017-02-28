@@ -155,6 +155,10 @@ public class PlayerStatus implements Serializable {
         Events.trigger(new PlayerEffectEndedEvent(effect, player.name), true);
     }
 
+    public Set<PlayerState> getStates() {
+        return states.stream().collect(Collectors.toSet());
+    }
+
     public enum PlayerAttribute {
         FATIGUE(0.0, 1.0), PRODUCTIVITY(1.0, 1.0);
 
