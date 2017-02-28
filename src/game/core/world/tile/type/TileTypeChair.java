@@ -2,6 +2,7 @@ package game.core.world.tile.type;
 
 import game.core.player.Player;
 import game.core.player.PlayerState;
+import game.core.world.World;
 import game.core.world.tile.Tile;
 
 /**
@@ -25,9 +26,11 @@ public class TileTypeChair extends TileType {
 
     @Override
     public void onInteraction(Player player, Tile tile) {
-        player.status.addState(PlayerState.sitting);
-        player.setLocation(tile.location);
-        player.setFacing(tile.facing);
+        if(!World.world.playerAt(tile.location)) {
+            player.status.addState(PlayerState.sitting);
+            player.setLocation(tile.location);
+            player.setFacing(tile.facing);
+        }
     }
 
 }
