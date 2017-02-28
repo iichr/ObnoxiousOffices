@@ -42,6 +42,7 @@ public class PlayerStatus implements Serializable {
     public void addState(PlayerState state) {
         if(!states.contains(state)) {
             states.add(state);
+            state.onStart(player);
             Events.trigger(new PlayerStateAddedEvent(player.name, state), true);
         }
     }
@@ -49,6 +50,7 @@ public class PlayerStatus implements Serializable {
     public void removeState(PlayerState state) {
         if(states.contains(state)) {
             states.remove(state);
+            state.onEnd(player);
             Events.trigger(new PlayerStateRemovedEvent(player.name, state), true);
         }
     }
