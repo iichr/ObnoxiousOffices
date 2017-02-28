@@ -30,6 +30,7 @@ public class Player implements Updateable, Serializable {
     public static int BROWN = 1;
     public static int DARK = 2;
     public static int PINK = 3;
+    public int timesDrunkCoffee = 0;
 
     public Player(String name, Direction facing, Location location) {
         this.name = name;
@@ -131,7 +132,7 @@ public class Player implements Updateable, Serializable {
     }
 
     private void onProgressDone() {
-        // TODO
+
     }
 
     public void removeProgress() {
