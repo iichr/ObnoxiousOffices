@@ -1,6 +1,7 @@
 package game.core.world.tile.type;
 
 import game.core.player.Player;
+import game.core.player.PlayerState;
 
 /**
  * Created by samtebbs on 27/01/2017.
@@ -23,7 +24,7 @@ public class TileTypeChair extends TileType {
 
     @Override
     public void onInteraction(Player player) {
-        // TODO: Do some stuff
+        player.status.addState(PlayerState.sitting);
     }
 
 }
