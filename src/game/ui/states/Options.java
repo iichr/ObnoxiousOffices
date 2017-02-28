@@ -13,6 +13,8 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.sun.imageio.plugins.png.PNGImageReader;
+
 import game.ui.WordGenerator;
 import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
@@ -61,11 +63,7 @@ public class Options extends BasicGameState {
 		// TODO add music and sound
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
-		normal=new Image(ImageLocations.ALPHABET);
-		bold=new Image(ImageLocations.ALPHABET_BOLD);
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
-		//wg=new WordGenerator();
-		
 		
 	}
 
@@ -79,13 +77,6 @@ public class Options extends BasicGameState {
 		g.drawString("Screen Mode :" + (gc.isFullscreen()?"Full Screen":"Windowed"), Vals.BUTTON_ALIGN_CENTRE_W-Vals.BUTTON_ALIGN_CENTRE_W/10, Vals.BUTTON_ALIGN_CENTRE_H+Vals.BUTTON_ALIGN_CENTRE_H/10);
 		// add back button
 		backButton.render();
-		g.drawImage(normal.getSubImage(100, 100, 100, 100),100,100);
-		g.drawImage(normal.getSubImage(0, 0, 100, 100).getScaledCopy(50, 50),200,150);
-		g.drawImage(normal.getSubImage(100, 100, 100, 100),250,100);
-		g.drawImage(normal.getSubImage(0, 0, 100, 100).getScaledCopy(50, 50),350,150);
-		g.drawImage(normal.getSubImage(100, 100, 100, 100),400,100);
-		g.drawImage(normal.getSubImage(0, 0, 100, 100).getScaledCopy(50, 50),500,150);
-		
 
 	}
 
