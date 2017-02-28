@@ -4,6 +4,7 @@ import game.core.player.Player;
 import game.core.player.PlayerState;
 import game.core.world.Direction;
 import game.core.world.Location;
+import game.core.world.World;
 import game.core.world.tile.Tile;
 
 import java.util.Arrays;
@@ -30,9 +31,11 @@ public class TileTypeSofa extends TileType {
 
     @Override
     public void onInteraction(Player player, Tile tile) {
-        player.status.addState(PlayerState.sleeping);
-        player.setLocation(tile.location);
-        player.setFacing(tile.facing);
+        if(!World.world.playerAt(tile.location)) {
+            player.status.addState(PlayerState.sleeping);
+            player.setLocation(tile.location);
+            player.setFacing(tile.facing);
+        }
     }
 
     @Override
