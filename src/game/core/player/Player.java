@@ -2,6 +2,7 @@ package game.core.player;
 
 import game.core.Updateable;
 import game.core.event.Events;
+import game.core.event.GameFinishedEvent;
 import game.core.event.player.PlayerMovedEvent;
 import game.core.event.player.PlayerProgressUpdateEvent;
 import game.core.event.player.PlayerRotatedEvent;
@@ -132,11 +133,11 @@ public class Player implements Updateable, Serializable {
     }
 
     private void onProgressDone() {
-
+        Events.trigger(new GameFinishedEvent(), true);
     }
 
     public void removeProgress() {
-
+        setProgress(getProgress() - 1);
     }
 
     /**
