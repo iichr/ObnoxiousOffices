@@ -1,5 +1,6 @@
-package game.core.event;
+package game.core.event.player.effect;
 
+import game.core.event.player.PlayerEvent;
 import game.core.player.effect.PlayerEffect;
 
 /**

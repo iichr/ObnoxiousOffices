@@ -41,11 +41,6 @@ public abstract class TimedPlayerAction extends PlayerAction implements Serializ
     }
 
     @Override
-    public boolean cancelable() {
-        return true;
-    }
-
-    @Override
     public boolean ended() {
         return counterEnded();
     }
