@@ -26,6 +26,8 @@ public class TileTypeChair extends TileType {
     @Override
     public void onInteraction(Player player, Tile tile) {
         player.status.addState(PlayerState.sitting);
+        player.setLocation(tile.location);
+        player.setFacing(tile.facing);
     }
 
 }

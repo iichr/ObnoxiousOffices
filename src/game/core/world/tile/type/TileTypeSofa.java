@@ -31,6 +31,8 @@ public class TileTypeSofa extends TileType {
     @Override
     public void onInteraction(Player player, Tile tile) {
         player.status.addState(PlayerState.sleeping);
+        player.setLocation(tile.location);
+        player.setFacing(tile.facing);
     }
 
     @Override
