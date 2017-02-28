@@ -1,6 +1,7 @@
 package game.core.world.tile.type;
 
 import game.core.player.Player;
+import game.core.player.PlayerState;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.tile.Tile;
@@ -29,7 +30,7 @@ public class TileTypeSofa extends TileType {
 
     @Override
     public void onInteraction(Player player) {
-
+        player.status.addState(PlayerState.sleeping);
     }
 
     @Override
