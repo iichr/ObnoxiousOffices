@@ -2,6 +2,7 @@ package game.core.player;
 
 import game.core.Updateable;
 import game.core.event.Events;
+import game.core.event.GameFinishedEvent;
 import game.core.event.player.PlayerMovedEvent;
 import game.core.event.player.PlayerProgressUpdateEvent;
 import game.core.event.player.PlayerRotatedEvent;
@@ -30,6 +31,7 @@ public class Player implements Updateable, Serializable {
     public static int BROWN = 1;
     public static int DARK = 2;
     public static int PINK = 3;
+    public int timesDrunkCoffee = 0;
 
     public Player(String name, Direction facing, Location location) {
         this.name = name;
@@ -131,11 +133,11 @@ public class Player implements Updateable, Serializable {
     }
 
     private void onProgressDone() {
-        // TODO
+        Events.trigger(new GameFinishedEvent(), true);
     }
 
     public void removeProgress() {
-
+        setProgress(getProgress() - 1);
     }
 
     /**
