@@ -29,7 +29,7 @@ public class TileTypeSofa extends TileType {
     }
 
     @Override
-    public void onInteraction(Player player) {
+    public void onInteraction(Player player, Tile tile) {
         player.status.addState(PlayerState.sleeping);
     }
 
