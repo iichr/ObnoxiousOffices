@@ -73,7 +73,7 @@ public class PlayTest extends Play {
 		int y = r.nextInt(w.ySize - 1);
 		Location l = new Location(x, y, w);
 
-		Player testPlayer = new Player("Test_Player", Direction.SOUTH, l);
+		Player testPlayer = new Player("TestPlayer", Direction.SOUTH, l);
 		testPlayer.setHair(Player.BLONDE);
 		testPlayer.setProgress(80);
 		testPlayer.status.setAttribute(PlayerAttribute.FATIGUE, 0.2);
