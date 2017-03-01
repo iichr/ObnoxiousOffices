@@ -14,10 +14,9 @@ public class OptionsOverlay extends PopUpOverlay {
 		// draw the background
 		 background.draw(x, y, width, height);
 
-		// TODO position text nicely
-		wg.draw(g, "CLOSE", x + width / 2, y + height / 2 - 200, false, scale / 2);
-		wg.draw(g, "TOGGLE_SOUND", x + width / 2, y + height / 2, false, scale / 2);
-		wg.draw(g, "TOGGLE_FULLSCREEN", x + width / 2, y + height / 2 + 200, false, scale / 2);
+		wg.drawCenter(g, "CLOSE", x + width / 2, y + height / 2 - height/6, false, scale / 2);
+		wg.drawCenter(g, "TOGGLE_SOUND", x + width / 2, y + height / 2, false, scale / 2);
+		wg.drawCenter(g, "TOGGLE_FULLSCREEN", x + width / 2, y + height / 2 + height/6, false, scale / 2);
 		
 	}
 }
