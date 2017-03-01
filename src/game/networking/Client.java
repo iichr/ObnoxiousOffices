@@ -33,13 +33,11 @@ public class Client {
 	 */
 	public void sendDataToServer(Object data) {
 		try {
-			System.out.println("sending to server: " + data);
 			od.writeObject(data);
 			od.flush();
-			System.out.println("Data Sent!");
 
 		} catch (IOException e) {
-			System.out.println("ERROR: Can't create Object Stream to send");
+			System.err.println("ERROR: Can't create Object Stream to send");
 			e.printStackTrace();
 		}
 	}

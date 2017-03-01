@@ -41,7 +41,7 @@ public class ClientListner extends Thread {
 		Thread manageInputs = new Thread(() -> {
 			while (true) {
 				try {
-					Thread.sleep(10);
+					Thread.sleep(5);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
