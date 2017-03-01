@@ -21,13 +21,14 @@ import game.core.input.InteractionType;
 import game.core.input.MovementType;
 import game.core.player.Player;
 import game.core.player.PlayerState;
+import game.core.player.effect.PlayerEffectCoffeeBuzz;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
 import game.core.world.tile.type.TileType;
-import game.ui.EffectContainer;
 import game.ui.PlayerContainer;
 import game.ui.PlayerInfo;
+import game.ui.components.Effect;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 import game.ui.player.ActionSelector;
@@ -55,7 +56,7 @@ public class Play extends BasicGameState {
 	private ActionSelector actionSelector;
 
 	// effect container
-	protected EffectContainer effectOverview;
+	protected Effect effectOverview;
 
 	// player info
 	private PlayerInfo playerinfo;
@@ -108,10 +109,8 @@ public class Play extends BasicGameState {
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
 		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
 
-		// Effect container
-		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
-		effectOverview = new EffectContainer(coffee, 10, Vals.SCREEN_WIDTH - 100,
-				Vals.SCREEN_HEIGHT - Vals.SCREEN_HEIGHT / 5 * 4);
+		
+		
 
 		// add player animations
 		animatePlayers(world.getPlayers());
@@ -123,6 +122,8 @@ public class Play extends BasicGameState {
 
 		// set up player info
 		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight);
+		// Effect container
+		effectOverview = new Effect(world.getPlayer(localPlayerName));
 	}
 
 	@Override
@@ -270,8 +271,11 @@ public class Play extends BasicGameState {
 		//TODO change to pop up menu
 		if (paused) {
 			game.enterState(Vals.PAUSE_STATE);
-			paused = false;
+			paused = !paused;
 		}
+		
+		
+		
 
 		input.clearKeyPressedRecord();
 	}
@@ -287,7 +291,7 @@ public class Play extends BasicGameState {
 	public void keyPressed(int key, char c) {
 		switch (key) {
 		case Input.KEY_ESCAPE:
-			paused = true;
+			paused = !paused;
 			break;
 		case Input.KEY_TAB:
 			showOverview = true;
@@ -323,7 +327,7 @@ public class Play extends BasicGameState {
 			// this section will be changing with new inputType system
 			break;
 		case Input.KEY_B:
-			effectOverview.activate();
+			world.getPlayer(localPlayerName).status.addEffect(new PlayerEffectCoffeeBuzz(10,world.getPlayer(localPlayerName)));
 			break;
 		}
 	}
