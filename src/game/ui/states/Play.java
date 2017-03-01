@@ -14,6 +14,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import game.core.event.Events;
+import game.core.event.GameFinishedEvent;
 import game.core.event.player.PlayerInputEvent;
 import game.core.input.InputTypeInteraction;
 import game.core.input.InputTypeMovement;
@@ -31,6 +32,8 @@ import game.ui.PlayerInfo;
 import game.ui.components.Effect;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
+import game.ui.overlay.GameOverOverlay;
+import game.ui.overlay.OptionsOverlay;
 import game.ui.player.ActionSelector;
 import game.ui.player.PlayerAnimation;
 
@@ -61,11 +64,16 @@ public class Play extends BasicGameState {
 	// player info
 	private PlayerInfo playerinfo;
 
+	// overlays
+	private OptionsOverlay optionsOverlay;
+	private GameOverOverlay gameOverOverlay;
+
 	private Image coffee;
 	boolean showOverview = false;
 
 	// options toggles
-	protected boolean paused = false;
+	private boolean options = false;
+	private boolean gameOver = false;
 
 	Music bgmusic;
 
@@ -89,6 +97,8 @@ public class Play extends BasicGameState {
 
 		actionSelector = new ActionSelector();
 
+		Events.on(GameFinishedEvent.class, this::gameFinished);
+
 		// UNCOMMENT until everybody add the required libraries.
 		// Initialise the background music
 		// bgmusic = new Music("res/music/toocheerful.ogg");
@@ -104,9 +114,6 @@ public class Play extends BasicGameState {
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
 		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
 
-		
-		
-
 		// add player animations
 		animatePlayers(world.getPlayers());
 		storePreviousLocations(world.getPlayers());
@@ -117,9 +124,13 @@ public class Play extends BasicGameState {
 
 		// set up player info
 		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight);
-		
+
 		// Effect container
-		effectOverview = new Effect();
+		effectOverview = new Effect(tileWidth, tileHeight);
+
+		// popUps
+		optionsOverlay = new OptionsOverlay();
+		gameOverOverlay = new GameOverOverlay(world.getPlayers());
 	}
 
 	@Override
@@ -184,9 +195,17 @@ public class Play extends BasicGameState {
 
 		// show ui info to player
 		playerinfo.render(g);
+
+		if (options) {
+			optionsOverlay.render(g);
+		}
+		
+		if (gameOver){
+			gameOverOverlay.render(g);
+		}
 	}
 
-	public void drawWorld() throws SlickException {
+	private void drawWorld() throws SlickException {
 		Image wall = new Image(SpriteLocations.TILE_WALL, false, Image.FILTER_NEAREST);
 		wall.draw(0, 0, Vals.SCREEN_WIDTH, tileHeight);
 
@@ -225,7 +244,7 @@ public class Play extends BasicGameState {
 	 * @param tileY
 	 *            the y location of the tiles on screen
 	 */
-	public void drawPlayers(int x, int y, float tileX, float tileY) {
+	private void drawPlayers(int x, int y, float tileX, float tileY) {
 		// get players
 		Set<Player> players = world.getPlayers();
 
@@ -239,6 +258,10 @@ public class Play extends BasicGameState {
 		}
 	}
 
+	private void gameFinished(GameFinishedEvent e) {
+		gameOver = true;
+	}
+
 	/**
 	 * Animates the players turning by checking their previous location and
 	 * adjusting appropriately
@@ -246,7 +269,7 @@ public class Play extends BasicGameState {
 	 * @param player
 	 *            the player to check
 	 */
-	public void checkPreviousLocation(Player player) {
+	private void checkPreviousLocation(Player player) {
 		Location playerLocation = player.getLocation();
 		Direction playerFacing = player.getFacing();
 		if (previousPlayer.get(player).getFacing() != player.getFacing()) {
@@ -264,12 +287,6 @@ public class Play extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
 
-		//TODO change to pop up menu
-		if (paused) {
-			game.enterState(Vals.PAUSE_STATE);
-			paused = !paused;
-		}
-		
 		effectOverview.updateEffects(world.getPlayer(localPlayerName));
 
 		input.clearKeyPressedRecord();
@@ -284,46 +301,48 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void keyPressed(int key, char c) {
-		switch (key) {
-		case Input.KEY_ESCAPE:
-			paused = !paused;
-			break;
-		case Input.KEY_TAB:
-			showOverview = true;
-			break;
-		case Input.KEY_UP:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
-			break;
-		case Input.KEY_DOWN:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
-			break;
-		case Input.KEY_RIGHT:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
-			break;
-		case Input.KEY_LEFT:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
-			break;
-		case Input.KEY_E:
-			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-				switch (actionSelector.getAction()) {
-				case ActionSelector.WORK:
+		if (!gameOver) {
+			switch (key) {
+			case Input.KEY_ESCAPE:
+				options = !options;
+				break;
+			case Input.KEY_TAB:
+				showOverview = true;
+				break;
+			case Input.KEY_UP:
+				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
+				break;
+			case Input.KEY_DOWN:
+				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
+				break;
+			case Input.KEY_RIGHT:
+				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
+				break;
+			case Input.KEY_LEFT:
+				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
+				break;
+			case Input.KEY_E:
+				if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+					switch (actionSelector.getAction()) {
+					case ActionSelector.WORK:
+						Events.trigger(
+								new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
+						break;
+					case ActionSelector.HACK:
+						Events.trigger(
+								new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
+						break;
+					}
+				} else {
 					Events.trigger(
-							new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
-					break;
-				case ActionSelector.HACK:
-					Events.trigger(
-							new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
-					break;
+							new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
 				}
-			} else {
-				Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
+				break;
+			case Input.KEY_B:
+				world.getPlayer(localPlayerName).status
+						.addEffect(new PlayerEffectCoffeeBuzz(10, world.getPlayer(localPlayerName)));
+				break;
 			}
-			// TODO add way to send work/hack input events
-			// this section will be changing with new inputType system
-			break;
-		case Input.KEY_B:
-			world.getPlayer(localPlayerName).status.addEffect(new PlayerEffectCoffeeBuzz(10,world.getPlayer(localPlayerName)));
-			break;
 		}
 	}
 

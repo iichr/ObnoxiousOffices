@@ -17,7 +17,6 @@ import game.ui.states.CharacterSelect;
 import game.ui.states.Intro;
 import game.ui.states.Menu;
 import game.ui.states.Options;
-import game.ui.states.Pause;
 import game.ui.states.Play;
 import game.ui.states.PlayTest;
 import game.ui.states.Rules;
@@ -29,13 +28,12 @@ public class Game extends StateBasedGame {
 	private Options optionsState;
 	private Rules rulesState;
 	private CharacterSelect chSelectState;
-	private Pause pauseState;
 	private PlayTest playtestState;
 
 	public Game(String gamename) {
 		super(gamename);
-		
-		introState= new Intro(Vals.INTRO_STATE);
+
+		introState = new Intro(Vals.INTRO_STATE);
 		this.addState(introState);
 		menuState = new Menu(Vals.MENU_STATE);
 		this.addState(menuState);
@@ -49,17 +47,14 @@ public class Game extends StateBasedGame {
 		this.addState(rulesState);
 		chSelectState = new CharacterSelect(Vals.CHARACTER_SELECT_STATE, playtestState);
 		this.addState(chSelectState);
-		pauseState = new Pause(Vals.PAUSE_STATE);
-		this.addState(pauseState);
-		
-		
+
 		Events.on(GameStartedEvent.class, this::onGameStart);
 	}
 
 	public void initStatesList(GameContainer gc) throws SlickException {
-		//initialises states automatically
+		// initialises states automatically
 	}
-	
+
 	public void onGameStart(GameStartedEvent event) {
 		World.world = event.world;
 		playState.playSetup();

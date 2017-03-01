@@ -53,7 +53,6 @@ public class WordGenerator {
 
 	public Image get(char c,boolean bold){
 		 return wg.get(c);
-	
 	}
 
 }
