@@ -5,6 +5,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import game.ui.components.WordGenerator;
+import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
 public class PopUpOverlay {
@@ -26,8 +27,7 @@ public class PopUpOverlay {
 		
 		wg = new WordGenerator();
 		
-		//TODO make background image
-//		background = new image(null, false, Image.FILTER_NEAREST);
+		background = new Image(ImageLocations.OVERLAY_BACKGROUND, false, Image.FILTER_NEAREST);
 	}
 
 	/**
