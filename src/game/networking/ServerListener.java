@@ -33,7 +33,7 @@ public class ServerListener extends Thread {
 	private int playerNumber;
 	public World world;
 
-	public static final int NUM_PLAYERS = 2, NUM_AI_PLAYERS = 0;
+	public static final int NUM_PLAYERS = 4, NUM_AI_PLAYERS = 3;
 
 	public ServerListener(Socket socket, ArrayList<Player> hash, ArrayList<ServerListener> connection) {
 		this.playerTable = hash;

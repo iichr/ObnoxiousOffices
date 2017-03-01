@@ -35,8 +35,8 @@ public class ServerSync {
 	private static void addAIPLayer(CreateAIPlayerRequest event) {
 		ServerListener sl = (ServerListener) event.serverListener;
 		int aiNumber = event.aiNumber;
-		sl.addAIToGame(
-				AIPlayer.createAIPalyer("Volker" + aiNumber, Direction.SOUTH, World.world.getSpawnPoint(aiNumber)));
+		sl.addAIToGame(AIPlayer.createAIPalyer("Volker_" + aiNumber, Direction.SOUTH,
+				World.world.getSpawnPoint(ServerListener.NUM_PLAYERS - ServerListener.NUM_AI_PLAYERS + aiNumber)));
 	}
 
 	private static void onPlayerInput(PlayerInputEvent event) {
