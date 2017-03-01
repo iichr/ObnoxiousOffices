@@ -21,11 +21,11 @@ import game.core.input.InteractionType;
 import game.core.input.MovementType;
 import game.core.player.Player;
 import game.core.player.PlayerState;
+import game.core.player.effect.PlayerEffectCoffeeBuzz;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
 import game.core.world.tile.type.TileType;
-import game.ui.EffectsViewer;
 import game.ui.PlayerContainer;
 import game.ui.PlayerInfo;
 import game.ui.components.Effect;
@@ -321,7 +321,7 @@ public class Play extends BasicGameState {
 			// this section will be changing with new inputType system
 			break;
 		case Input.KEY_B:
-			
+			world.getPlayer(localPlayerName).status.addEffect(new PlayerEffectCoffeeBuzz(10,world.getPlayer(localPlayerName)));
 			break;
 		}
 	}

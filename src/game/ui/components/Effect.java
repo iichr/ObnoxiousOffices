@@ -11,6 +11,8 @@ import game.core.world.World;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Effect{
@@ -21,40 +23,39 @@ public class Effect{
     private long activeFor ;
     private int x ;
     private int y;
-    private WordGenerator wg;
-    private Player player;
-    private PlayerEffect pe;
+    private WordGenerator wg =new WordGenerator();;
+    private List<PlayerEffect> pe = new ArrayList<PlayerEffect>();
     
 
 	// effect id
 	public Effect(Player player) throws SlickException {
-		this.img = img.getScaledCopy(50, 50);
-		pe= player.status.getEffects();
+		this.img = new Image("/res/sprites/tiles/coffee.png").getScaledCopy(50, 50);
+		pe= player.status.getEffects();		
 		
-		wg=new WordGenerator();
 	}
 	
-    public void activate() {
-        activatedAt = Instant.now().plusSeconds(DURATION);  
-    }
+        //activatedAt = Instant.now().plusSeconds(DURATION);  
 
-    public boolean isActive() {
-    	if(activatedAt==null){
+    	/*if(activatedAt==null){
     		return false;
     	}else{
     		activeFor = ChronoUnit.SECONDS.between(Instant.now(), activatedAt);
     		return activeFor >= 1 && activeFor <= DURATION;
-    	}
-       
-    }
+    	}*/
+
 
 	public void render(Graphics g) throws SlickException {
-		if(isActive()){
-			g.drawImage(this.img, x, y);
-			g.setColor(Color.red);
-			wg.draw(g, activeFor+"", x, y+this.img.getHeight(), false, 0.15f);
-			
-		}
+		pe.forEach((e)->{			
+			if(!e.ended()){
+				activeFor=e.getDuration()-e.getElapsed();
+				g.drawImage(this.img, x, y);
+				g.setColor(Color.red);
+				wg.draw(g, activeFor+"", x, y+this.img.getHeight(), false, 0.15f);
+				g.drawString("isEnded"+e.ended() != null?"Yes":"No",x,y+this.img.getHeight()+50);
+			}
+
+		});
+		
 	}
 
 }
