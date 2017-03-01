@@ -56,7 +56,7 @@ public class PlayerStatus implements Serializable {
     }
 
     public boolean hasState(PlayerState state) {
-        return states.contains(state);
+        return states.stream().anyMatch(s -> state.getClass().isInstance(s));
     }
 
     /**
