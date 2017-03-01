@@ -1,5 +1,6 @@
 package game.ai.ruleBasedAI;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import game.ai.AIPlayer;
@@ -7,8 +8,9 @@ import game.ai.ruleBasedAI.WorkingMemory.activityValues;
 import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.world.World;
 
-public class FireRules {
+public class FireRules implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private AIPlayer ai; //the ai player that is being controled
 	private Rules rules; // the rules 
 	private WorkingMemory wm; // the working memory of the player

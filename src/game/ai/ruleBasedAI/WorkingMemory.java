@@ -1,12 +1,16 @@
 package game.ai.ruleBasedAI;
 
+import java.io.Serializable;
+
 import game.core.player.Player;
 
 /**
  * @author Atanas K. Harbaliev. Created on 22.02.2017
  */
 
-public class WorkingMemory {
+public class WorkingMemory implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	enum activityValues {
 		Yes, No, Unknown
 	}; // Work, Hack, Refresh, Progress, Unknown

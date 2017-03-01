@@ -1,5 +1,7 @@
 package game.ai.ruleBasedAI;
 
+import java.io.Serializable;
+
 import game.ai.AIPlayer;
 import game.ai.ruleBasedAI.WorkingMemory.activityValues;
 import game.core.player.action.PlayerActionDrink;
@@ -10,7 +12,9 @@ import game.core.player.action.PlayerActionWork;
 /**
  * @author Atanas K. Harbaliev. Created on 22.02.2017
  */
-public class UpdateMemory {
+public class UpdateMemory implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	private AIPlayer ai;
 	private WorkingMemory wm;

@@ -1,5 +1,6 @@
 package game.ai.ruleBasedAI;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import game.ai.ruleBasedAI.WorkingMemory.activityValues;
@@ -9,7 +10,9 @@ import game.ai.ruleBasedAI.WorkingMemory.activityValues;
  * @author Atanas K. Harbaliev. Created on 22.02.2017
  *
  */
-public class Rules {
+public class Rules implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	//arraylist containing all rules
 	private ArrayList<WorkingMemory> rules = new ArrayList<WorkingMemory>();
