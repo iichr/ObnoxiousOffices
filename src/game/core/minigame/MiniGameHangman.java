@@ -1,5 +1,9 @@
 package game.core.minigame;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -15,8 +19,7 @@ import java.util.stream.Collectors;
 
 public class MiniGameHangman {
 
-	private String[] dict = { "replace", "with", "dictionary", "ofatleast", "words" };
-	String word;
+	private String word;
 	private int attempts = 0;
 	private int PERMITTED_ATTEMPTS = 5;
 	private boolean guessed = false;
@@ -27,11 +30,8 @@ public class MiniGameHangman {
 	private static int interval = 30;
 
 	public MiniGameHangman() {
-		word = pickWord(dict);
+		word = pickWord(setDifficulty());
 		alreadyEntered = new ArrayList<Character>();
-
-		setDifficulty();
-
 		init(word, alreadyEntered);
 	}
 
@@ -59,8 +59,6 @@ public class MiniGameHangman {
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
-				// debugging - countdown timer
-				System.out.println(setInterval());
 			} 
 		}, 1000, 1000);
 
@@ -81,9 +79,23 @@ public class MiniGameHangman {
 		return --interval;
 	}
 
-	public void setDifficulty() {
-		// set dictionary
-		// set PERMITTED_ATTEMPTS
+	private ArrayList<String> setDifficulty() {
+		// TODO set PERMITTED_ATTEMPTS
+		ArrayList<String> dictionary  = new ArrayList<String>();
+		String str;
+		try {
+			BufferedReader in = new BufferedReader(new FileReader("data/long-words.txt"));
+			while((str = in.readLine()) !=null) {
+				dictionary.add(str);
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dictionary;
 	}
 
 	/**
@@ -164,10 +176,10 @@ public class MiniGameHangman {
 	 * @param dict
 	 * @return A random word.
 	 */
-	private String pickWord(String[] dict) {
+	private String pickWord(ArrayList<String> dict) {
 		Random randGenerator = new Random();
-		int i = randGenerator.nextInt(dict.length);
-		word = dict[i];
+		int i = randGenerator.nextInt(dict.size());
+		word = dict.get(i);
 
 		return word;
 	}
