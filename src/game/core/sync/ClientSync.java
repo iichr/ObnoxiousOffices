@@ -75,12 +75,10 @@ public class ClientSync {
     }
 
     private static void onPlayerRotated(PlayerRotatedEvent event) {
-    	System.out.println("managing player rotated event");
         getPlayer(event.playerName).setFacing(event.newFacing);
     }
 
     private static void onPlayerMoved(PlayerMovedEvent event) {
-    	System.out.println("managing player moved event");
         Player player = getPlayer(event.playerName);
         player.setLocation(new Location(event.coords, player.getLocation().world));
     }
