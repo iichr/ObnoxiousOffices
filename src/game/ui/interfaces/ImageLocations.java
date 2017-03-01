@@ -56,6 +56,8 @@ public interface ImageLocations {
 	public static final String WORK_SELECTOR = "/res/ui/workSelector.png";
 	public static final String HACK_SELECTOR = "/res/ui/hackSelector.png";
 	
+	public static final String OVERLAY_BACKGROUND = "/res/ui/overlayBackground.png";
+	
 	//WAITING FOR PLAYERS IMAGE
 	public static final String WAITING = "/res/ui/waiting.png";
 
