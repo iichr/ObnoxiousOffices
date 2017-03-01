@@ -2,6 +2,13 @@ package game.core.player;
 
 import game.core.Updateable;
 import game.core.event.*;
+import game.core.event.player.PlayerStateAddedEvent;
+import game.core.event.player.PlayerStateRemovedEvent;
+import game.core.event.player.action.PlayerActionAddedEvent;
+import game.core.event.player.action.PlayerActionEndedEvent;
+import game.core.event.player.PlayerAttributeChangedEvent;
+import game.core.event.player.effect.PlayerEffectAddedEvent;
+import game.core.event.player.effect.PlayerEffectEndedEvent;
 import game.core.player.action.PlayerAction;
 import game.core.player.effect.PlayerEffect;
 
@@ -14,20 +21,42 @@ import java.util.stream.Collectors;
  */
 public class PlayerStatus implements Serializable {
 
-    private static final int ATTRIBUTE_UPDATE_THRESHOLD = 3;
+    private static final int ATTRIBUTE_UPDATE_THRESHOLD = 5;
     private Map<PlayerAttribute, Double> attributes = new HashMap<>();
     private Map<PlayerAttribute, Integer> attributeUpdateCounter = new HashMap<>();
+    private Set<PlayerState> states = new HashSet<>();
     private Set<PlayerAction> actions = new HashSet<>();
-    private Set<PlayerEffect> effects = new HashSet<>();
+    private List<PlayerEffect> effects = new ArrayList<>();
     public final Player player;
-
     public boolean initialising = true;
+
+    public static double FATIGUE_INCREASE = 0.01;
 
     public PlayerStatus(Player player) {
         this.player = player;
         // Add all attributes with their initial values
         Arrays.stream(PlayerAttribute.values()).forEach(attr -> setAttribute(attr, attr.initialVal));
         initialising = false;
+    }
+
+    public void addState(PlayerState state) {
+        if(!states.contains(state)) {
+            states.add(state);
+            state.onStart(player);
+            Events.trigger(new PlayerStateAddedEvent(player.name, state), true);
+        }
+    }
+
+    public void removeState(PlayerState state) {
+        if(states.contains(state)) {
+            states.remove(state);
+            state.onEnd(player);
+            Events.trigger(new PlayerStateRemovedEvent(player.name, state), true);
+        }
+    }
+
+    public boolean hasState(PlayerState state) {
+        return states.stream().anyMatch(s -> state.getClass().isInstance(s));
     }
 
     /**
@@ -37,6 +66,10 @@ public class PlayerStatus implements Serializable {
     public void addEffect(PlayerEffect effect) {
         effects.add(effect);
         Events.trigger(new PlayerEffectAddedEvent(effect, player.name), true);
+    }
+
+    public List<PlayerEffect> getEffects() {
+        return effects.stream().collect(Collectors.toList());
     }
 
     /**
@@ -58,13 +91,10 @@ public class PlayerStatus implements Serializable {
     }
 
     public void update(Player player) {
-        List<PlayerAction> actions2 = Updateable.updateAll(actions);
-        actions2.forEach(a -> Events.trigger(new PlayerActionEndedEvent(a, player.name), true));
-        actions.removeAll(actions2);
+        Updateable.updateAll(actions).forEach(this::removeAction);
+        Updateable.updateAll(effects).forEach(this::removeEffect);
 
-        List<PlayerEffect> effects2 = Updateable.updateAll(effects);
-        effects2.forEach(e -> Events.trigger(new PlayerEffectEndedEvent(e, player.name), true));
-        effects.removeAll(effects2);
+        addToAttribute(PlayerAttribute.FATIGUE, FATIGUE_INCREASE);
     }
 
     // TODO: Change productivity based on fatigue
@@ -114,12 +144,23 @@ public class PlayerStatus implements Serializable {
         return attributes.getOrDefault(attribute, 0.0);
     }
 
+    public void cancelAction(PlayerAction action) {
+        action.cancel();
+        removeAction(action);
+    }
+
     public void removeAction(PlayerAction action) {
         actions.remove(action);
+        Events.trigger(new PlayerActionEndedEvent(action, player.name), true);
     }
 
     public void removeEffect(PlayerEffect effect) {
         effects.remove(effect);
+        Events.trigger(new PlayerEffectEndedEvent(effect, player.name), true);
+    }
+
+    public Set<PlayerState> getStates() {
+        return states.stream().collect(Collectors.toSet());
     }
 
     public enum PlayerAttribute {

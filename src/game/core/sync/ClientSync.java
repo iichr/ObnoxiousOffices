@@ -1,6 +1,16 @@
 package game.core.sync;
 
+import game.core.chat.Chat;
 import game.core.event.*;
+import game.core.event.chat.ChatMessageReceivedEvent;
+import game.core.event.player.action.PlayerActionAddedEvent;
+import game.core.event.player.action.PlayerActionEndedEvent;
+import game.core.event.minigame.MiniGameEndedEvent;
+import game.core.event.minigame.MiniGameStartedEvent;
+import game.core.event.player.*;
+import game.core.event.player.effect.PlayerEffectAddedEvent;
+import game.core.event.player.effect.PlayerEffectEndedEvent;
+import game.core.event.tile.TileChangedEvent;
 import game.core.minigame.MiniGame;
 import game.core.player.Player;
 import game.core.world.Location;
@@ -23,11 +33,27 @@ public class ClientSync {
         Events.on(PlayerProgressUpdateEvent.class, ClientSync::onPlayerProgressUpdate);
         Events.on(PlayerMovedEvent.class, ClientSync::onPlayerMoved);
         Events.on(PlayerRotatedEvent.class, ClientSync::onPlayerRotated);
+        Events.on(PlayerStateAddedEvent.class, ClientSync::onPlayerStateAdded);
+        Events.on(PlayerStateRemovedEvent.class, ClientSync::onPlayerStateRemoved);
 
         Events.on(TileChangedEvent.class, ClientSync::onTileChanged);
 
         Events.on(MiniGameStartedEvent.class, ClientSync::onMiniGameStarted);
         Events.on(MiniGameEndedEvent.class, ClientSync::onMiniGameEnded);
+
+        Events.on(ChatMessageReceivedEvent.class, ClientSync::onChatMessageReceived);
+    }
+
+    private static void onPlayerStateAdded(PlayerStateAddedEvent event) {
+        getPlayer(event.playerName).status.addState(event.state);
+    }
+
+    private static void onPlayerStateRemoved(PlayerStateRemovedEvent event) {
+        getPlayer(event.playerName).status.removeState(event.state);
+    }
+
+    private static void onChatMessageReceived(ChatMessageReceivedEvent event) {
+        Chat.chat.addMessage(event.toChatMessage());
     }
 
     private static void onMiniGameEnded(MiniGameEndedEvent event) {

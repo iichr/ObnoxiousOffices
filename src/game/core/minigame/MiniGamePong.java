@@ -1,7 +1,8 @@
 package game.core.minigame;
 
-import game.core.Input;
-import game.core.event.PlayerInputEvent;
+import game.core.event.player.PlayerInputEvent;
+import game.core.input.InputType;
+import game.core.input.InputTypeMovement;
 
 /**
  * Created by samtebbs on 18/02/2017.
@@ -62,12 +63,12 @@ public class MiniGamePong extends MiniGame2Player {
 
     @Override
     public void onInput(PlayerInputEvent event) {
-        Input.InputType type = event.inputType;
+        InputType type = event.inputType;
         String player = event.playerName;
         // Using this check as we may want to process other input types (like interaction)
-        if(type.isMovement) {
+        if(type.isMovement()) {
             int yAdd = 0;
-            switch (type) {
+            switch (((InputTypeMovement) type).type) {
                 case MOVE_UP:
                     yAdd = -1;
                     break;

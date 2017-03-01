@@ -7,15 +7,20 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import game.core.Input.InputType;
 import game.core.event.Events;
-import game.core.event.PlayerInputEvent;
+import game.core.event.player.PlayerInputEvent;
+import game.core.input.InputTypeInteraction;
+import game.core.input.InputTypeMovement;
+import game.core.input.InteractionType;
+import game.core.input.MovementType;
 import game.core.player.Player;
+import game.core.player.PlayerState;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
@@ -23,7 +28,6 @@ import game.core.world.tile.type.TileType;
 import game.ui.EffectContainer;
 import game.ui.PlayerContainer;
 import game.ui.PlayerInfo;
-import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 import game.ui.player.ActionSelector;
@@ -52,11 +56,17 @@ public class Play extends BasicGameState {
 
 	// effect container
 	protected EffectContainer effectOverview;
+
+	// player info
 	private PlayerInfo playerinfo;
-	private Image _avatar, coffee;
+
+	private Image coffee;
 	boolean showOverview = false;
 
+	// options toggles
 	protected boolean paused = false;
+
+	Music bgmusic;
 
 	public Play(int state) {
 	}
@@ -71,27 +81,37 @@ public class Play extends BasicGameState {
 		playerMap = new HashMap<Player, PlayerAnimation>();
 		previousPlayer = new HashMap<Player, Player>();
 
-		// PlayerContainer container
-		_avatar = new Image(ImageLocations.TEMP_AVATAR, false, Image.FILTER_NEAREST);
-		
+		// Font
+		Vals.FONT_PLAY.addAsciiGlyphs();
+		Vals.FONT_PLAY.getEffects().add(new ColorEffect());
+		Vals.FONT_PLAY.loadGlyphs();
+
 		// Font
 		Vals.FONT_PLAY.addAsciiGlyphs();
 		Vals.FONT_PLAY.getEffects().add(new ColorEffect());
 		Vals.FONT_PLAY.loadGlyphs();
 
 		actionSelector = new ActionSelector();
+
+		// UNCOMMENT until everybody add the required libraries.
+		// Initialise the background music
+		// bgmusic = new Music("res/music/toocheerful.ogg");
 	}
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
-		// Effectcontainer
-		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
-		effectOverview = new EffectContainer(coffee, 10);
-		
+		// UNCOMMENT until everybody add the required libraries.
+		// start the background music in a loop
+		// bgmusic.loop();
+
 		// setup tile sizes
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
 		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
-		System.out.println(tileHeight);
+
+		// Effect container
+		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
+		effectOverview = new EffectContainer(coffee, 10, Vals.SCREEN_WIDTH - 100,
+				Vals.SCREEN_HEIGHT - Vals.SCREEN_HEIGHT / 5 * 4);
 
 		// add player animations
 		animatePlayers(world.getPlayers());
@@ -101,14 +121,20 @@ public class Play extends BasicGameState {
 		SpriteLocations sp = new SpriteLocations();
 		tileMap = sp.getTileMap();
 
+		// set up player info
 		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight);
+	}
+
+	@Override
+	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		// UNCOMMENT until everybody add the required libraries.
+		// used to stop the music from playing
+		// bgmusic.stop();
 	}
 
 	/**
 	 * Sets up the play state which should be called at the start of each game
-	 * 
-	 * @param world
-	 *            The game world
+	 *
 	 */
 	public void playSetup() {
 		this.world = World.world;
@@ -141,32 +167,34 @@ public class Play extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setFont(Vals.FONT_PLAY);
-		
-		playerOverview = new PlayerContainer(world, localPlayerName, 0, 100);
+		playerOverview = new PlayerContainer(world, localPlayerName, 0, 0);
+
+		// renders world
 		drawWorld();
 
-		playerinfo.render(g);
-
-		// add player status container
-		playerOverview.render(g, showOverview);
+		// add player status container if invoked
+		if (showOverview) {
+			playerOverview.render(g);
+		}
 
 		// add effects overview container
 		effectOverview.render(g);
 
-		//TODO add check for seated
-		actionSelector.updateSelector(world, localPlayerName, tileWidth, tileHeight);
+		// shows selectors
+		if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+			actionSelector.updateSelector(world, localPlayerName, tileWidth, tileHeight);
+		}
+
+		// show ui info to player
+		playerinfo.render(g);
 	}
 
 	public void drawWorld() throws SlickException {
 		Image wall = new Image(SpriteLocations.TILE_WALL, false, Image.FILTER_NEAREST);
 		wall.draw(0, 0, Vals.SCREEN_WIDTH, tileHeight);
 
-		// get players
-		Set<Player> players = world.getPlayers();
-
 		// check every position in the world to render what is needed at that
 		// location
-
 		for (int y = 0; y < world.ySize; y++) {
 			for (int x = 0; x < world.xSize; x++) {
 				float tileX = x * tileWidth;
@@ -225,10 +253,13 @@ public class Play extends BasicGameState {
 		Location playerLocation = player.getLocation();
 		Direction playerFacing = player.getFacing();
 		if (previousPlayer.get(player).getFacing() != player.getFacing()) {
-			playerMap.get(player).turn(player.getFacing());
+			if (player.status.hasState(PlayerState.sitting)) {
+				playerMap.get(player).seated(playerFacing);
+			} else {
+				playerMap.get(player).turn(player.getFacing());
+			}
 			previousPlayer.get(player).setLocation(playerLocation);
 			previousPlayer.get(player).setFacing(playerFacing);
-
 		}
 	}
 
@@ -247,8 +278,9 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void mouseWheelMoved(int newValue) {
-		//TODO add boolean check for seated
-		actionSelector.changeSelection(newValue);
+		if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+			actionSelector.changeSelection(newValue);
+		}
 	}
 
 	@Override
@@ -261,19 +293,32 @@ public class Play extends BasicGameState {
 			showOverview = true;
 			break;
 		case Input.KEY_UP:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_UP, localPlayerName));
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
 			break;
 		case Input.KEY_DOWN:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_DOWN, localPlayerName));
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
 			break;
 		case Input.KEY_RIGHT:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_RIGHT, localPlayerName));
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
 			break;
 		case Input.KEY_LEFT:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_LEFT, localPlayerName));
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
 			break;
 		case Input.KEY_E:
-			Events.trigger(new PlayerInputEvent(InputType.INTERACT, localPlayerName));
+			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+				switch (actionSelector.getAction()) {
+				case ActionSelector.WORK:
+					Events.trigger(
+							new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
+					break;
+				case ActionSelector.HACK:
+					Events.trigger(
+							new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
+					break;
+				}
+			} else {
+				Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
+			}
 			// TODO add way to send work/hack input events
 			// this section will be changing with new inputType system
 			break;
