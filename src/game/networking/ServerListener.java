@@ -4,12 +4,23 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
-import game.core.event.*;
+import game.core.event.CreateAIPlayerRequest;
+import game.core.event.Event;
+import game.core.event.Events;
+import game.core.event.GameFinishedEvent;
+import game.core.event.GameStartedEvent;
 import game.core.event.chat.ChatMessageReceivedEvent;
-import game.core.event.player.*;
+import game.core.event.player.PlayerAttributeChangedEvent;
+import game.core.event.player.PlayerCreatedEvent;
+import game.core.event.player.PlayerMovedEvent;
+import game.core.event.player.PlayerProgressUpdateEvent;
+import game.core.event.player.PlayerRotatedEvent;
+import game.core.event.player.PlayerStateAddedEvent;
+import game.core.event.player.PlayerStateRemovedEvent;
 import game.core.event.player.action.PlayerActionAddedEvent;
 import game.core.event.player.action.PlayerActionEndedEvent;
 import game.core.event.player.effect.PlayerEffectAddedEvent;
@@ -28,6 +39,7 @@ public class ServerListener extends Thread {
 	private ObjectInputStream is;
 	private ObjectOutputStream os;
 	private int playerNumber;
+	private Queue<Object> outputQ;
 	public World world;
 
 	public static final int NUM_AI_PLAYERS = 1;
@@ -45,6 +57,9 @@ public class ServerListener extends Thread {
 		// make the object streams
 		createObjectStreams();
 
+		outputQ = new LinkedList<Object>();
+
+		sendQueue();
 	}
 
 	/**
@@ -104,7 +119,7 @@ public class ServerListener extends Thread {
 
 					// Allows hard coded AI player to be added for prototype
 					if (this.playerTable.size() == world.getMaxPlayers() - NUM_AI_PLAYERS && NUM_AI_PLAYERS > 0) {
-						for(int i = 0; i < NUM_AI_PLAYERS; i++){
+						for (int i = 0; i < NUM_AI_PLAYERS; i++) {
 							makingAI = true;
 							Events.trigger(new CreateAIPlayerRequest(this, i));
 						}
@@ -148,13 +163,29 @@ public class ServerListener extends Thread {
 	 *            The info to send
 	 */
 	private void forwardInfo(Object recieved) {
-		try {
-			os.writeObject(recieved);
-			os.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		outputQ.offer(recieved);
+	}
+
+	private void sendQueue() {
+		Thread outputThread = new Thread(() -> {
+			while (true) {
+				try {
+					Thread.sleep(5);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				Object output = outputQ.poll();
+				if (output != null) {
+					try {
+						os.writeObject(output);
+						os.flush();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		outputThread.start();
 	}
 
 	/**

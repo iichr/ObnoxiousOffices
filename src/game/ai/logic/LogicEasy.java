@@ -140,7 +140,7 @@ public class LogicEasy implements Logic, Serializable {
 	@Override
 	public void goToCoffeeMachineAndBack(World w, Player p) {
 
-		findCoffeeMachine(World.world, p);
+		findCoffeeMachine(w, p);
 
 		Thread move = new Thread(() -> {
 			// go through the array list of i, j coords
@@ -157,31 +157,33 @@ public class LogicEasy implements Logic, Serializable {
 
 					// make a move
 					p.moveForwards();
-					
-					try {
-						Thread.sleep(250);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 
 			// interact with the tile
-			Location l = p.getLocation().forward(p.getFacing());
-			l.getTile().onInteraction(p);
+			p.status.setAttribute(PlayerAttribute.FATIGUE, 0);
+//			Location l = p.getLocation().forward(p.getFacing());
+//			System.out.println(l.getTile().type);
+//			l.getTile().onInteraction(p);
+			
+			System.out.println(p.status.getAttribute(PlayerAttribute.FATIGUE));
 
 			while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
+//				System.out.println("doing nothing");
 				// do nothing
 			}
-
+			
+			// back to the dest
+			toTheDesk(w, p);
 		});
 
 		// start the thread
 		move.start();
-
-		// back to the dest
-		toTheDesk(w, p);
 	}
 
 	@Override
