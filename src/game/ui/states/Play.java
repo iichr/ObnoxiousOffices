@@ -45,8 +45,6 @@ public class Play extends BasicGameState {
 	private HashMap<Player, PlayerAnimation> playerMap;
 	protected String localPlayerName;
 
-	private HashMap<Player, Player> previousPlayer;
-
 	// tile information
 	private float tileWidth;
 	private float tileHeight;
@@ -88,7 +86,6 @@ public class Play extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		playerMap = new HashMap<Player, PlayerAnimation>();
-		previousPlayer = new HashMap<Player, Player>();
 
 		// Font
 		Vals.FONT_PLAY.addAsciiGlyphs();
@@ -168,7 +165,6 @@ public class Play extends BasicGameState {
 	private void storePreviousLocations(Set<Player> players) throws SlickException {
 		for (Player p : players) {
 			Player pOld = new Player(p.name, p.getFacing(), p.getLocation());
-			previousPlayer.put(p, pOld);
 		}
 	}
 
@@ -199,8 +195,8 @@ public class Play extends BasicGameState {
 		if (options) {
 			optionsOverlay.render(g);
 		}
-		
-		if (gameOver){
+
+		if (gameOver) {
 			gameOverOverlay.render(g);
 		}
 	}
@@ -252,7 +248,7 @@ public class Play extends BasicGameState {
 		for (Player player : players) {
 			Location playerLocation = player.getLocation();
 			if (playerLocation.coords.x == x && playerLocation.coords.y == y) {
-				checkPreviousLocation(player);
+				changeAnimation(player);
 				playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
 			}
 		}
@@ -269,17 +265,12 @@ public class Play extends BasicGameState {
 	 * @param player
 	 *            the player to check
 	 */
-	private void checkPreviousLocation(Player player) {
-		Location playerLocation = player.getLocation();
+	private void changeAnimation(Player player) {
 		Direction playerFacing = player.getFacing();
-		if (previousPlayer.get(player).getFacing() != player.getFacing()) {
-			if (player.status.hasState(PlayerState.sitting)) {
-				playerMap.get(player).seated(playerFacing);
-			} else {
-				playerMap.get(player).turn(player.getFacing());
-			}
-			previousPlayer.get(player).setLocation(playerLocation);
-			previousPlayer.get(player).setFacing(playerFacing);
+		if (player.status.hasState(PlayerState.sitting)) {
+			playerMap.get(player).seated(playerFacing);
+		} else {
+			playerMap.get(player).turn(player.getFacing());
 		}
 	}
 
