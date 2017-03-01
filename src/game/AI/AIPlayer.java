@@ -42,35 +42,15 @@ public class AIPlayer extends Player {
 		status.setAttribute(PlayerAttribute.FATIGUE, 0.85);
 		status.setAttribute(PlayerAttribute.PRODUCTIVITY, 1.0);
 		status.initialising = false;
+		
+		// initialise
+		initialise();
 	}
 
 	// the logic for the AI player
 	public LogicEasy easylogic = new LogicEasy();
 
-	/**
-	 * createAIPlayer creates an AI bot to play instead of real people.
-	 * 
-	 * @param name
-	 *            the name of the bot
-	 * @param dir
-	 *            facing of the bot on the map
-	 * @param loc
-	 *            location on the map
-	 * @return a bot
-	 */
-	public Player createAIPalyer(String name, Direction dir, Location loc) {
-		// calls Player constructor with: name, direction, location
-		AIPlayer aiPlayer = new AIPlayer(name, dir, loc);
-
-		// initialise
-		initialise();
-
-		// return bot
-		return aiPlayer;
-	}
-
 	public void initialise() {
-		
 		// get the player who's closest to winning the game
 		Player player = easylogic.closestToWin();
 		
