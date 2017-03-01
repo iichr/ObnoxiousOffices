@@ -59,11 +59,14 @@ public class MiniGameHangman {
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
-			} 
+				// debugging - countdown timer
+				System.out.println(setInterval());
+			}
 		}, 1000, 1000);
+		
 
 		while (!allGuessed(word, alreadyEntered) && !lost()) {
-				inputLetter(word, alreadyEntered);
+			inputLetter(word, alreadyEntered);
 		}
 		if (allGuessed(word, alreadyEntered)) {
 			System.out.println("WIN!");
@@ -73,7 +76,7 @@ public class MiniGameHangman {
 
 	// countdown in intervals of 1 second.
 	private static final int setInterval() {
-		if(interval == 1) {
+		if (interval == 1) {
 			timer.cancel();
 		}
 		return --interval;
@@ -81,12 +84,17 @@ public class MiniGameHangman {
 
 	private ArrayList<String> setDifficulty() {
 		// TODO set PERMITTED_ATTEMPTS
-		ArrayList<String> dictionary  = new ArrayList<String>();
+		ArrayList<String> dictionary = new ArrayList<String>();
 		String str;
+		BufferedReader in = null;
 		try {
-			BufferedReader in = new BufferedReader(new FileReader("data/long-words.txt"));
-			while((str = in.readLine()) !=null) {
-				dictionary.add(str);
+			try {
+				in = new BufferedReader(new FileReader("data/long-words.txt"));
+				while ((str = in.readLine()) != null) {
+					dictionary.add(str);
+				}
+			} finally {
+				in.close();
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
