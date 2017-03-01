@@ -19,8 +19,6 @@ import game.core.world.World;
 
 public class Server {
 
-	// private ArrayList<Player> playerTable;
-	private ArrayList<Player> playerTable;
 	public ArrayList<ServerListener> connections;
 	private ServerSocket serverSocket = null;
 	private World world;
@@ -30,7 +28,6 @@ public class Server {
 	private final int NUM_PLAYERS = 4;
 	
 	public Server() {
-		playerTable = new ArrayList<Player>();
 		connections = new ArrayList<ServerListener>();
 		final int port = 8942;
 		Events.on(GameStartedEvent.class, this::updateWorld);
@@ -76,7 +73,7 @@ public class Server {
 			while (waiting) {
 				// Listen to the socket, accepting connections from new clients:
 				Socket socket = this.serverSocket.accept();
-				ServerListener sl = new ServerListener(socket, this.playerTable, this.connections, world);
+				ServerListener sl = new ServerListener(socket, this.connections, world);
 				this.connections.add(sl);
 				sl.start();
 			}

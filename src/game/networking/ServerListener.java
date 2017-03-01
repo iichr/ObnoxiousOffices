@@ -30,7 +30,6 @@ import game.core.world.Direction;
 import game.core.world.World;
 
 public class ServerListener extends Thread {
-	private ArrayList<Player> playerTable;
 	private ArrayList<ServerListener> connections;
 
 	private boolean makingAI = false;
@@ -44,8 +43,7 @@ public class ServerListener extends Thread {
 
 	public static final int NUM_AI_PLAYERS = 0;
 
-	public ServerListener(Socket socket, ArrayList<Player> hash, ArrayList<ServerListener> connection, World world) {
-		this.playerTable = hash;
+	public ServerListener(Socket socket, ArrayList<ServerListener> connection, World world) {
 		this.socket = socket;
 		this.connections = connection;
 		this.playerNumber = connections.size();
@@ -91,7 +89,7 @@ public class ServerListener extends Thread {
 			this.is = new ObjectInputStream(this.socket.getInputStream());
 			this.os = new ObjectOutputStream(this.socket.getOutputStream());
 		} catch (IOException e) {
-			System.out.println("Can't make Input and Output for connect ~ Droping connection");
+			System.out.println("Can't make Input and Output for connect ~ Dropping connection");
 			e.printStackTrace();
 			try {
 				socket.close();
@@ -107,7 +105,7 @@ public class ServerListener extends Thread {
 		boolean running = true;
 		while (running) {
 			if (!makingAI) {
-				if (this.playerTable.size() < connections.size()) {
+				if (world.getPlayers().size() < connections.size()) {
 					try {
 						String playerName = is.readObject().toString();
 						this.addPlayerToGame(playerName);
@@ -118,14 +116,14 @@ public class ServerListener extends Thread {
 					}
 
 					// Allows hard coded AI player to be added for prototype
-					if (this.playerTable.size() == world.getMaxPlayers() - NUM_AI_PLAYERS && NUM_AI_PLAYERS > 0) {
+					if (world.getPlayers().size() == world.getMaxPlayers() - NUM_AI_PLAYERS && NUM_AI_PLAYERS > 0) {
 						for (int i = 0; i < NUM_AI_PLAYERS; i++) {
 							makingAI = true;
 							Events.trigger(new CreateAIPlayerRequest(this, i));
 						}
 					}
 
-					if (this.playerTable.size() == world.getMaxPlayers()) {
+					if (world.getPlayers().size() == world.getMaxPlayers()) {
 						GameStartedEvent gameStart = new GameStartedEvent(world);
 						sendToAllClients(gameStart);
 						Events.trigger(gameStart);
@@ -198,7 +196,6 @@ public class ServerListener extends Thread {
 		if (!this.playerNameUsed(name)) {
 			Player playerObject = new Player(name, Direction.SOUTH, world.getSpawnPoint(playerNumber));
 			playerObject.setHair(playerNumber);
-			this.playerTable.add(playerObject);
 			world.addPlayer(playerObject);
 
 			PlayerCreatedEvent event = new PlayerCreatedEvent(name);
@@ -211,8 +208,7 @@ public class ServerListener extends Thread {
 	}
 
 	public void addAIToGame(Player playerToAdd) {
-		playerToAdd.setHair(playerTable.size());
-		this.playerTable.add(playerToAdd);
+		playerToAdd.setHair(world.getPlayers().size());
 		world.addPlayer(playerToAdd);
 		if (playerToAdd.isAI)
 			makingAI = false;
@@ -226,7 +222,6 @@ public class ServerListener extends Thread {
 	 */
 	private void removePlayerFromGame(String name) {
 		if (this.playerNameUsed(name)) {
-			this.playerTable.remove(name);
 			System.out.println("Player " + name + " has been removed from the game!");
 		} else {
 			System.out.println("Player " + name + " is not currently in the game!");
@@ -241,8 +236,8 @@ public class ServerListener extends Thread {
 	 * @return Whether or not the name is being used
 	 */
 	private boolean playerNameUsed(String name) {
-		for (int i = 0; i < this.playerTable.size(); i++) {
-			if (this.playerTable.get(i).name.equals(name)) {
+		for (Player p: world.getPlayers()) {
+			if (p.name.equals(name)) {
 				return true;
 			}
 		}
