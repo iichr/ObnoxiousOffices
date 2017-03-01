@@ -2,6 +2,7 @@ package game.ui;
 
 import java.io.File;
 
+import game.core.world.World;
 import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -10,7 +11,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
-import game.core.world.World;
 import game.ui.interfaces.Vals;
 import game.ui.states.CharacterSelect;
 import game.ui.states.Intro;

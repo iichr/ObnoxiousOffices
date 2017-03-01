@@ -117,8 +117,9 @@ public class Play extends BasicGameState {
 
 		// set up player info
 		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight);
+		
 		// Effect container
-		effectOverview = new Effect(world.getPlayer(localPlayerName));
+		effectOverview = new Effect();
 	}
 
 	@Override
@@ -263,13 +264,13 @@ public class Play extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
 
+		//TODO change to pop up menu
 		if (paused) {
 			game.enterState(Vals.PAUSE_STATE);
 			paused = !paused;
 		}
 		
-		
-		
+		effectOverview.updateEffects(world.getPlayer(localPlayerName));
 
 		input.clearKeyPressedRecord();
 	}
