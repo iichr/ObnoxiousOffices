@@ -7,10 +7,7 @@ import java.net.Socket;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import game.core.event.CreateAIPlayerRequest;
-import game.core.event.Event;
-import game.core.event.Events;
-import game.core.event.GameStartedEvent;
+import game.core.event.*;
 import game.core.event.chat.ChatMessageReceivedEvent;
 import game.core.event.player.*;
 import game.core.event.player.action.PlayerActionAddedEvent;
@@ -64,6 +61,10 @@ public class ServerListener extends Thread {
 		Events.on(PlayerEffectAddedEvent.class, this::forwardInfo);
 		Events.on(PlayerEffectEndedEvent.class, this::forwardInfo);
 		Events.on(PlayerAttributeChangedEvent.class, this::forwardInfo);
+		Events.on(PlayerStateAddedEvent.class, this::forwardInfo);
+		Events.on(PlayerStateRemovedEvent.class, this::forwardInfo);
+
+		Events.on(GameFinishedEvent.class, this::forwardInfo);
 
 		Events.on(ChatMessageReceivedEvent.class, this::forwardInfo);
 	}
