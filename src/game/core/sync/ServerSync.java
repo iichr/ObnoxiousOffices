@@ -1,7 +1,6 @@
 package game.core.sync;
 
 import game.AI.AIPlayer;
-import game.core.Input;
 import game.core.event.CreateAIPlayerRequest;
 import game.core.event.Event;
 import game.core.event.Events;
