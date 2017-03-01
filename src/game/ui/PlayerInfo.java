@@ -20,7 +20,7 @@ public class PlayerInfo {
 
 	private float tileWidth;
 	private float tileHeight;
-
+	private WordGenerator wg;
 	private Image sitDialogue, drinkDialogue, sleepDialogue;
 	private Image playerIdentifier;
 
@@ -34,6 +34,7 @@ public class PlayerInfo {
 		drinkDialogue = new Image(ImageLocations.DRINK_DIALOGUE, false, Image.FILTER_NEAREST);
 		sleepDialogue = new Image(ImageLocations.SLEEP_DIALOGUE, false, Image.FILTER_NEAREST);
 		playerIdentifier = new Image(ImageLocations.PLAYER_IDENTIFIER, false, Image.FILTER_NEAREST);
+		wg=new WordGenerator();
 	}
 
 	/**
@@ -53,7 +54,8 @@ public class PlayerInfo {
 			float offsetY = (g.getFont().getHeight(p.name) + 5);
 
 			// draw player names
-			g.drawString(p.name, (playerX - offsetX), (playerY - offsetY));
+			wg.draw(g, p.name, (playerX - offsetX), (playerY - offsetY), false, 0.1f);
+			//g.drawString(p.name, (playerX - offsetX), (playerY - offsetY));
 
 			if (p.name.equals(localPlayerName)) {
 				// add identifier for player

@@ -59,8 +59,4 @@ public interface ImageLocations {
 	//WAITING FOR PLAYERS IMAGE
 	public static final String WAITING = "/res/ui/waiting.png";
 
-	// STATUS IMAGES
-	public static final String COFFEE = "";
-	public static final String COFFEE_END = "";
-
 }

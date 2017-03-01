@@ -13,6 +13,9 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.sun.imageio.plugins.png.PNGImageReader;
+
+import game.ui.WordGenerator;
 import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
@@ -31,6 +34,9 @@ public class Options extends BasicGameState {
 	private Sound sound;
 	private int mouseX, mouseY;
 	private String mouseCoords;
+	private WordGenerator wg;
+	private Image normal;
+	private Image bold;
 
 	private MenuButton backButton;
 
@@ -57,7 +63,6 @@ public class Options extends BasicGameState {
 		// TODO add music and sound
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
-
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 		
 	}
@@ -69,9 +74,10 @@ public class Options extends BasicGameState {
 		g.drawString(mouseCoords, 10, 50);
 		
 		soundStatus.draw(Vals.BUTTON_ALIGN_CENTRE_W,Vals.BUTTON_ALIGN_CENTRE_H-Vals.BUTTON_ALIGN_CENTRE_H/10);
-		g.drawString("Screen Mode :" + (gc.isFullscreen()?"Full Screen":"Windowed"), Vals.BUTTON_ALIGN_CENTRE_W-Vals.BUTTON_ALIGN_CENTRE_W/10, Vals.BUTTON_ALIGN_CENTRE_H+Vals.BUTTON_ALIGN_CENTRE_H/10);
+		g.drawString("Screen Mode :" + (gc.isFullscreen()?"Full Screen":"Windowed"), Vals.BUTTON_ALIGN_CENTRE_W-Vals.BUTTON_ALIGN_CENTRE_W/10, Vals.BUTTON_ALIGN_CENTRE_H+2*Vals.BUTTON_ALIGN_CENTRE_H/10);
 		// add back button
 		backButton.render();
+
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package game.ui;
 
+import game.core.world.World;
 import game.ui.interfaces.Vals;
 
 import org.newdawn.slick.Color;
@@ -10,6 +11,7 @@ import org.newdawn.slick.SlickException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Queue;
 
 public class EffectContainer {
 
@@ -19,6 +21,9 @@ public class EffectContainer {
     private long activeFor ;
     private int x ;
     private int y;
+    private World world;
+    private Queue queue;
+    
 
 	// effect id
 	public EffectContainer(Image img, int duration,int x, int y) {
@@ -41,12 +46,7 @@ public class EffectContainer {
     	}
        
     }
-	// TODO
-	/*
-	 * Draw the image(done) -> flash the image when less than 5 seconds Show the
-	 * time left (s) << has negative number *** effects are always on player's
-	 * screen <- tick show effects vertically
-	 */
+
 	public void render(Graphics g) throws SlickException {
 		g.setColor(Color.red);
 		if(isActive()){
