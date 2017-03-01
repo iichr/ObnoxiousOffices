@@ -26,6 +26,7 @@ import game.core.player.effect.PlayerEffectCoffeeBuzz;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
+import game.core.world.tile.Tile;
 import game.core.world.tile.type.TileType;
 import game.ui.PlayerContainer;
 import game.ui.PlayerInfo;
@@ -250,6 +251,10 @@ public class Play extends BasicGameState {
 			if (playerLocation.coords.x == x && playerLocation.coords.y == y) {
 				changeAnimation(player);
 				playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
+				Tile tile = playerLocation.getTile();
+				if(tile.type.equals(TileType.CHAIR) && tile.facing.equals(Direction.NORTH)){
+					tileMap.get(tile.type).get(tile.facing)[0].draw(tileX, tileY, tileWidth, tileHeight);
+				}
 			}
 		}
 	}
