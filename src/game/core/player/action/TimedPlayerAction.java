@@ -2,10 +2,12 @@ package game.core.player.action;
 
 import game.core.player.Player;
 
+import java.io.Serializable;
+
 /**
  * Created by samtebbs on 16/01/2017.
  */
-public abstract class TimedPlayerAction extends PlayerAction {
+public abstract class TimedPlayerAction extends PlayerAction implements Serializable {
 
     protected int counter = 0, counterMax;
 
@@ -36,11 +38,6 @@ public abstract class TimedPlayerAction extends PlayerAction {
 
     private void stop() {
         stopCounter();
-    }
-
-    @Override
-    public boolean cancelable() {
-        return true;
     }
 
     @Override

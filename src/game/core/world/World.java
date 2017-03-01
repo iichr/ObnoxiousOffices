@@ -1,10 +1,14 @@
 package game.core.world;
 
 import game.core.Updateable;
+import game.core.event.Events;
+import game.core.event.minigame.MiniGameStartedEvent;
+import game.core.minigame.MiniGame;
 import game.core.player.Player;
+import game.core.util.Coordinates;
 import game.core.world.tile.Tile;
 import game.core.world.tile.TilePrototype;
-import game.core.world.tile.TileType;
+import game.core.world.tile.type.TileType;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -19,21 +23,27 @@ import java.util.stream.IntStream;
  */
 public class World implements Updateable, Serializable {
 
-    private final Set<Player> players;
+    private final List<Player> players;
     private final int maxPlayers;
     private final Tile[][][] tiles;
     public final int xSize, ySize, zSize;
     private List<Location> spawnPoints = new ArrayList<>();
+    private Set<MiniGame> miniGames = new HashSet<>();
 
     public static World world;
 
     public World(int maxPlayers, int sizeX, int sizeY, int sizeZ) {
         this.tiles = new Tile[sizeX][sizeY][sizeZ];
-        this.players = new HashSet<>(maxPlayers);
+        this.players = new ArrayList<>(maxPlayers);
         this.maxPlayers = maxPlayers;
         zSize = sizeZ;
         ySize = sizeY;
         xSize = sizeX;
+    }
+
+    public void startMiniGame(MiniGame game) {
+        miniGames.add(game);
+        Events.trigger(new MiniGameStartedEvent(game));
     }
 
     public Location getSpawnPoint(int i) {
@@ -55,6 +65,7 @@ public class World implements Updateable, Serializable {
     @Override
     public void update() {
         Updateable.updateAll(players);
+        miniGames.removeAll(Updateable.updateAll(miniGames));
     }
 
     @Override
@@ -90,7 +101,7 @@ public class World implements Updateable, Serializable {
      * @param tile
      */
     public void addTile(Tile tile) {
-        Location loc = tile.location;
+        Coordinates loc = tile.location.coords;
         setTile(loc.x, loc.y, loc.z, tile);
     }
 
@@ -167,4 +178,30 @@ public class World implements Updateable, Serializable {
         return load(l.toArray(new String[l.size()]), maxPlayers);
     }
 
+    public void setTile(Coordinates coords, Tile tile) {
+        this.setTile(coords.x, coords.y, coords.z, tile);
+    }
+
+    public Tile getTile(Coordinates coords) {
+        return getTile(coords.x, coords.y, coords.z);
+    }
+
+    public boolean checkBounds(Coordinates coords) {
+        return checkBounds(coords.x, coords.y, coords.z);
+    }
+
+    public <T extends TileType> Set<Tile> getTiles(Class<T> tileTypeClass) {
+        Set<Tile> result = new HashSet<>();
+        for (int x = 0; x < tiles.length; x++)
+            for (int y = 0; y < tiles[x].length; y++)
+                for (int z = 0; z < tiles[x][y].length; z++) {
+                    Tile tile = getTile(x, y, z);
+                    if (tile != null && tileTypeClass.isInstance(tile.type)) result.add(tile);
+                }
+        return result;
+    }
+
+    public boolean playerAt(Location location) {
+        return players.stream().map(Player::getLocation).anyMatch(l -> l.equals(location));
+    }
 }

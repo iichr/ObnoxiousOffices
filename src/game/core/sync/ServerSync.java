@@ -2,8 +2,11 @@ package game.core.sync;
 
 import game.core.Input;
 import game.core.event.Events;
-import game.core.event.PlayerInputEvent;
+import game.core.event.chat.ChatMessageCreatedEvent;
+import game.core.event.player.PlayerInputEvent;
 import game.core.player.Player;
+import game.core.player.PlayerState;
+import game.core.player.action.PlayerAction;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
@@ -16,6 +19,11 @@ public class ServerSync {
 
     public static void init() {
         Events.on(PlayerInputEvent.class, ServerSync::onPlayerInput);
+        Events.on(ChatMessageCreatedEvent.class, ServerSync::onChatMessageCreated);
+    }
+
+    private static void onChatMessageCreated(ChatMessageCreatedEvent event) {
+        Events.trigger(event.toChatReceivedEvent());
     }
 
     private static void onPlayerInput(PlayerInputEvent event) {
@@ -54,6 +62,8 @@ public class ServerSync {
         Location forwards = loc.forward(direction);
         Tile tile;
         if(forwards.checkBounds() && (tile = forwards.getTile()).type.canWalkOver()) {
+            player.status.getActions().stream().filter(PlayerAction::cancelsOnMove).forEach(player.status::cancelAction);
+            player.status.getStates().stream().filter(PlayerState::cancelsOnMove).forEach(player.status::removeState);
             player.setLocation(forwards);
             tile.onWalkOver(player);
         }
