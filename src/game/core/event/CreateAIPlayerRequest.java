@@ -6,9 +6,11 @@ package game.core.event;
 public class CreateAIPlayerRequest extends Event {
 
     public final Object serverListener;
+    public final int aiNumber;
 
-    public CreateAIPlayerRequest(Object serverListener) {
+    public CreateAIPlayerRequest(Object serverListener, int aiNumber) {
         this.serverListener = serverListener;
+        this.aiNumber = aiNumber;
     }
     
 }

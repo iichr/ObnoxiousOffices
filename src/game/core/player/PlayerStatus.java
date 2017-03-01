@@ -2,6 +2,8 @@ package game.core.player;
 
 import game.core.Updateable;
 import game.core.event.*;
+import game.core.event.player.PlayerStateAddedEvent;
+import game.core.event.player.PlayerStateRemovedEvent;
 import game.core.event.player.action.PlayerActionAddedEvent;
 import game.core.event.player.action.PlayerActionEndedEvent;
 import game.core.event.player.PlayerAttributeChangedEvent;
@@ -22,6 +24,7 @@ public class PlayerStatus implements Serializable {
     private static final int ATTRIBUTE_UPDATE_THRESHOLD = 3;
     private Map<PlayerAttribute, Double> attributes = new HashMap<>();
     private Map<PlayerAttribute, Integer> attributeUpdateCounter = new HashMap<>();
+    private Set<PlayerState> states = new HashSet<>();
     private Set<PlayerAction> actions = new HashSet<>();
     private Set<PlayerEffect> effects = new HashSet<>();
     public final Player player;
@@ -34,6 +37,26 @@ public class PlayerStatus implements Serializable {
         // Add all attributes with their initial values
         Arrays.stream(PlayerAttribute.values()).forEach(attr -> setAttribute(attr, attr.initialVal));
         initialising = false;
+    }
+
+    public void addState(PlayerState state) {
+        if(!states.contains(state)) {
+            states.add(state);
+            state.onStart(player);
+            Events.trigger(new PlayerStateAddedEvent(player.name, state), true);
+        }
+    }
+
+    public void removeState(PlayerState state) {
+        if(states.contains(state)) {
+            states.remove(state);
+            state.onEnd(player);
+            Events.trigger(new PlayerStateRemovedEvent(player.name, state), true);
+        }
+    }
+
+    public boolean hasState(PlayerState state) {
+        return states.stream().anyMatch(s -> state.getClass().isInstance(s));
     }
 
     /**
@@ -130,6 +153,10 @@ public class PlayerStatus implements Serializable {
     public void removeEffect(PlayerEffect effect) {
         effects.remove(effect);
         Events.trigger(new PlayerEffectEndedEvent(effect, player.name), true);
+    }
+
+    public Set<PlayerState> getStates() {
+        return states.stream().collect(Collectors.toSet());
     }
 
     public enum PlayerAttribute {

@@ -190,8 +190,8 @@ public class World implements Updateable, Serializable {
         return checkBounds(coords.x, coords.y, coords.z);
     }
 
-    public <T extends TileType> Set<Tile> getTiles(Class<T> tileTypeClass) {
-        Set<Tile> result = new HashSet<>();
+    public <T extends TileType> List<Tile> getTiles(Class<T> tileTypeClass) {
+        List<Tile> result = new LinkedList<>();
         for (int x = 0; x < tiles.length; x++)
             for (int y = 0; y < tiles[x].length; y++)
                 for (int z = 0; z < tiles[x][y].length; z++) {
@@ -199,5 +199,9 @@ public class World implements Updateable, Serializable {
                     if (tile != null && tileTypeClass.isInstance(tile.type)) result.add(tile);
                 }
         return result;
+    }
+
+    public boolean playerAt(Location location) {
+        return players.stream().map(Player::getLocation).anyMatch(l -> l.equals(location));
     }
 }
