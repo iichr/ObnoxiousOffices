@@ -3,6 +3,10 @@ package game.ui.states;
 import java.util.HashMap;
 import java.util.Set;
 
+import game.core.input.InputTypeInteraction;
+import game.core.input.InputTypeMovement;
+import game.core.input.InteractionType;
+import game.core.input.MovementType;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -13,7 +17,6 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import game.core.Input.InputType;
 import game.core.event.Events;
 import game.core.event.player.PlayerInputEvent;
 import game.core.player.Player;
@@ -131,9 +134,7 @@ public class Play extends BasicGameState {
 
 	/**
 	 * Sets up the play state which should be called at the start of each game
-	 * 
-	 * @param world
-	 *            The game world
+	 *
 	 */
 	public void playSetup() {
 		this.world = World.world;
@@ -286,19 +287,19 @@ public class Play extends BasicGameState {
 			showOverview = true;
 			break;
 		case Input.KEY_UP:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_UP, localPlayerName));
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
 			break;
 		case Input.KEY_DOWN:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_DOWN, localPlayerName));
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
 			break;
 		case Input.KEY_RIGHT:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_RIGHT, localPlayerName));
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
 			break;
 		case Input.KEY_LEFT:
-			Events.trigger(new PlayerInputEvent(InputType.MOVE_LEFT, localPlayerName));
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
 			break;
 		case Input.KEY_E:
-			Events.trigger(new PlayerInputEvent(InputType.INTERACT, localPlayerName));
+			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
 			// TODO add way to send work/hack input events
 			// this section will be changing with new inputType system
 			break;
