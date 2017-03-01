@@ -119,7 +119,7 @@ public class Play extends BasicGameState {
 		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight);
 		
 		// Effect container
-		effectOverview = new Effect();
+		effectOverview = new Effect(tileWidth, tileHeight);
 	}
 
 	@Override

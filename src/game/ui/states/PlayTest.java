@@ -7,6 +7,8 @@ import java.util.Random;
 
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
+import game.core.player.effect.PlayerEffect;
+import game.core.player.effect.PlayerEffectCoffeeBuzz;
 import game.core.test.Test;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -77,6 +79,8 @@ public class PlayTest extends Play {
 		testPlayer.setHair(Player.BLONDE);
 		testPlayer.setProgress(80);
 		testPlayer.status.setAttribute(PlayerAttribute.FATIGUE, 0.2);
+		testPlayer.status.addEffect(new PlayerEffectCoffeeBuzz(15, testPlayer));
+		testPlayer.status.addEffect(new PlayerEffectCoffeeBuzz(9, testPlayer));
 
 		Test.localPlayer = testPlayer.name;
 		w.addPlayer(testPlayer);
