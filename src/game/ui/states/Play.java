@@ -3,10 +3,6 @@ package game.ui.states;
 import java.util.HashMap;
 import java.util.Set;
 
-import game.core.input.InputTypeInteraction;
-import game.core.input.InputTypeMovement;
-import game.core.input.InteractionType;
-import game.core.input.MovementType;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -19,8 +15,12 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import game.core.event.Events;
 import game.core.event.player.PlayerInputEvent;
+import game.core.input.InputTypeInteraction;
+import game.core.input.InputTypeMovement;
+import game.core.input.InteractionType;
+import game.core.input.MovementType;
 import game.core.player.Player;
-import game.core.player.action.PlayerAction;
+import game.core.player.PlayerState;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
@@ -176,8 +176,9 @@ public class Play extends BasicGameState {
 		effectOverview.render(g);
 
 		// shows selectors
-		// TODO only show when seated
-		actionSelector.updateSelector(world, localPlayerName, tileWidth, tileHeight);
+		if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+			actionSelector.updateSelector(world, localPlayerName, tileWidth, tileHeight);
+		}
 
 		// show ui info to player
 		playerinfo.render(g);
@@ -247,8 +248,11 @@ public class Play extends BasicGameState {
 		Location playerLocation = player.getLocation();
 		Direction playerFacing = player.getFacing();
 		if (previousPlayer.get(player).getFacing() != player.getFacing()) {
-			//TODO add seated check
-			playerMap.get(player).turn(player.getFacing());
+			if (player.status.hasState(PlayerState.sitting)) {
+				playerMap.get(player).seated(playerFacing);
+			} else {
+				playerMap.get(player).turn(player.getFacing());
+			}
 			previousPlayer.get(player).setLocation(playerLocation);
 			previousPlayer.get(player).setFacing(playerFacing);
 		}
@@ -268,8 +272,9 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void mouseWheelMoved(int newValue) {
-		// TODO only when seated
-		actionSelector.changeSelection(newValue);
+		if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+			actionSelector.changeSelection(newValue);
+		}
 	}
 
 	@Override
@@ -294,7 +299,20 @@ public class Play extends BasicGameState {
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
 			break;
 		case Input.KEY_E:
-			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
+			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+				switch (actionSelector.getAction()) {
+				case ActionSelector.WORK:
+					Events.trigger(
+							new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
+					break;
+				case ActionSelector.HACK:
+					Events.trigger(
+							new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
+					break;
+				}
+			} else {
+				Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
+			}
 			// TODO add way to send work/hack input events
 			// this section will be changing with new inputType system
 			break;
