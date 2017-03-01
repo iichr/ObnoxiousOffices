@@ -4,7 +4,6 @@ import game.core.event.Event;
 import game.core.event.chat.ChatMessageCreatedEvent;
 import game.core.event.chat.ChatMessageReceivedEvent;
 import game.core.player.Player;
-import game.ui.states.Play;
 
 /**
  * Created by samtebbs on 27/01/2017.
