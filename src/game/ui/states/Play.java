@@ -87,11 +87,6 @@ public class Play extends BasicGameState {
 		Vals.FONT_PLAY.getEffects().add(new ColorEffect());
 		Vals.FONT_PLAY.loadGlyphs();
 
-		// Font
-		Vals.FONT_PLAY.addAsciiGlyphs();
-		Vals.FONT_PLAY.getEffects().add(new ColorEffect());
-		Vals.FONT_PLAY.loadGlyphs();
-
 		actionSelector = new ActionSelector();
 
 		// UNCOMMENT until everybody add the required libraries.
@@ -122,8 +117,9 @@ public class Play extends BasicGameState {
 
 		// set up player info
 		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight);
+		
 		// Effect container
-		effectOverview = new Effect(world.getPlayer(localPlayerName));
+		effectOverview = new Effect();
 	}
 
 	@Override
@@ -274,8 +270,7 @@ public class Play extends BasicGameState {
 			paused = !paused;
 		}
 		
-		
-		
+		effectOverview.updateEffects(world.getPlayer(localPlayerName));
 
 		input.clearKeyPressedRecord();
 	}
