@@ -42,7 +42,7 @@ public class ServerListener extends Thread {
 	private Queue<Object> outputQ;
 	public World world;
 
-	public static final int NUM_AI_PLAYERS = 1;
+	public static final int NUM_AI_PLAYERS = 0;
 
 	public ServerListener(Socket socket, ArrayList<Player> hash, ArrayList<ServerListener> connection, World world) {
 		this.playerTable = hash;
