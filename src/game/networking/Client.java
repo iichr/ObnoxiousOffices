@@ -5,6 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Queue;
 
 import game.core.event.ConnectionAttemptEvent;
 import game.core.event.ConnectionFailedEvent;
@@ -16,7 +17,7 @@ import game.core.player.Player;
 public class Client {
 
 	private Socket server;
-	ObjectOutputStream od;
+	private ObjectOutputStream od;
 
 	public Client() {
 		Events.on(ConnectionAttemptEvent.class, this::connectToServer);
