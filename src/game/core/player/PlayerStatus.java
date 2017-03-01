@@ -26,7 +26,7 @@ public class PlayerStatus implements Serializable {
     private Map<PlayerAttribute, Integer> attributeUpdateCounter = new HashMap<>();
     private Set<PlayerState> states = new HashSet<>();
     private Set<PlayerAction> actions = new HashSet<>();
-    private Set<PlayerEffect> effects = new HashSet<>();
+    private List<PlayerEffect> effects = new ArrayList<>();
     public final Player player;
     public boolean initialising = true;
 
@@ -66,6 +66,10 @@ public class PlayerStatus implements Serializable {
     public void addEffect(PlayerEffect effect) {
         effects.add(effect);
         Events.trigger(new PlayerEffectAddedEvent(effect, player.name), true);
+    }
+
+    public List<PlayerEffect> getEffects() {
+        return effects.stream().collect(Collectors.toList());
     }
 
     /**
