@@ -4,21 +4,21 @@ import java.util.ArrayList;
 
 import game.ai.AIPlayer;
 import game.ai.ruleBasedAI.WorkingMemory.activityValues;
-import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.world.World;
 
 public class FireRules {
-	private AIPlayer ai;
-	private Player player;
-	private Rules rules;
-	private WorkingMemory wm;
-	private UpdateMemory uwm;
+	
+	private AIPlayer ai; //the ai player that is being controled
+	private Rules rules; // the rules 
+	private WorkingMemory wm; // the working memory of the player
+	private UpdateMemory uwm; // the update working memory object
+	
+	public boolean hasHacked = false;
 
 	// constructor
-	public FireRules(AIPlayer ai, Player player, Rules rules, WorkingMemory wm, UpdateMemory uwm) {
+	public FireRules(AIPlayer ai, Rules rules, WorkingMemory wm, UpdateMemory uwm) {
 		this.ai = ai;
-		this.player = player;
 		this.rules = rules;
 		this.wm = wm;
 		this.uwm = uwm;
@@ -51,7 +51,8 @@ public class FireRules {
 				// if the monitored player is working and has progressed more
 				// than ai - hack him
 				if (w.getIsWorking() == activityValues.Yes && w.getHasProgressedMore() == activityValues.Yes) {
-					ai.easylogic.hackPlayer(player);
+					ai.easylogic.hackPlayer(wm.getWMplayer());
+					hasHacked = true; // change the flag to true
 					// if the monitored player is working and hasn't progressed
 					// more than ai -
 					// keep doing what you were doing before
@@ -66,10 +67,11 @@ public class FireRules {
 						uwm.updateInfo();
 					}
 					// if the ai has enough energy - hack, else go to the CM
-					if (ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80)
-						ai.easylogic.hackPlayer(player);
-					else
-						ai.easylogic.goToCoffeeMachine(World.world, ai);
+					if (ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80) {
+						ai.easylogic.hackPlayer(wm.getWMplayer());
+						hasHacked = true; // change the flag to true
+					} else
+						ai.easylogic.goToCoffeeMachineAndBack(World.world, ai);
 					// if the monitored player is hacking/being hacked and
 					// hasn't progressed more than ai -
 				    // keep doing what you were doing
@@ -83,10 +85,11 @@ public class FireRules {
 						uwm.updateInfo();
 					}
 					// if the ai has enough energy - hack, else go to the CM
-					if (ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80)
-						ai.easylogic.hackPlayer(player);
-					else
-						ai.easylogic.goToCoffeeMachine(World.world, ai);
+					if (ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80) {
+						ai.easylogic.hackPlayer(wm.getWMplayer());
+						hasHacked = true; //change the flag to true
+					} else
+						ai.easylogic.goToCoffeeMachineAndBack(World.world, ai);
 					// if the monitored player is refreshing and has not progressed
 					// more - keep doing what you were doing
 				} else if (w.getIsRefreshing() == activityValues.Yes && w.getHasProgressedMore() == activityValues.No) {
@@ -95,7 +98,9 @@ public class FireRules {
 			}
 		}
 		// if the ai is being too fatigued, go refresh
-		if (ai.status.getAttribute(PlayerAttribute.FATIGUE) > 80)
+		if (ai.status.getAttribute(PlayerAttribute.FATIGUE) > 80) {
 			ai.easylogic.aiRefresh(ai);
+			hasHacked = true; //change the flag to true
+		}
 	}
 }

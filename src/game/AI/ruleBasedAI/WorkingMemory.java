@@ -1,5 +1,7 @@
 package game.ai.ruleBasedAI;
 
+import game.core.player.Player;
+
 /**
  * @author Atanas K. Harbaliev. Created on 22.02.2017
  */
@@ -20,6 +22,9 @@ public class WorkingMemory {
 
 	// checks if a player has progressed more than the AI
 	private activityValues hasProgressedMore;
+	
+	// the player whose working memory this is
+	private Player player;
 
 	/**
 	 * Constructonr
@@ -33,8 +38,9 @@ public class WorkingMemory {
 	 * @param hPM
 	 *            the value of the hasProgressedMore field
 	 */
-	public WorkingMemory() {
+	public WorkingMemory(Player player) {
 		setAll(activityValues.Unknown, activityValues.Unknown, activityValues.Unknown, activityValues.Unknown);
+		this.player = player;
 	}
 
 	/**
@@ -116,6 +122,13 @@ public class WorkingMemory {
 	public void setHasProgressedMore(activityValues val) {
 		hasProgressedMore = val;
 	}
+	/**
+	 * Get method
+	 * @return the player whose working memory this is
+	 */
+	public Player getWMplayer() {
+		return player;
+	}
 
 	/**
 	 * Sets the initial values of all fields of a working memory
@@ -153,7 +166,7 @@ public class WorkingMemory {
 	 */
 	public WorkingMemory setAllAndReturn(activityValues isW, activityValues isH, activityValues isR,
 			activityValues hasPM) {
-		WorkingMemory wm = new WorkingMemory();
+		WorkingMemory wm = new WorkingMemory(player);
 
 		wm.setIsWorking(isW);
 		wm.setIsHacking(isH);

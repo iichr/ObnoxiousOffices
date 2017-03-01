@@ -3,13 +3,13 @@ package game.ai.logic;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
 
 import game.ai.AIPlayer;
 import game.ai.pathFinding.Pair;
 import game.ai.pathFinding.PathFinding;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
-import game.core.player.action.PlayerActionDrink;
 import game.core.player.action.PlayerActionWork;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -37,7 +37,8 @@ public class LogicEasy implements Logic, Serializable {
 
 	// @Override
 	public void aiRefresh(AIPlayer ai) {
-		ai.status.addAction(new PlayerActionDrink(ai)); //TODO: put some logic behind this
+		ai.easylogic.goToCoffeeMachineAndBack(World.world, ai); // TODO: put some logic
+														// behind this
 	}
 
 	@Override
@@ -136,114 +137,124 @@ public class LogicEasy implements Logic, Serializable {
 	}
 
 	@Override
-	public void goToCoffeeMachine(World w, Player p) {
-		
+	public void goToCoffeeMachineAndBack(World w, Player p) {
+
 		findCoffeeMachine(World.world, p);
 
-		// go through the array list of i, j coords
-		// to the coffee machine
-		for (int i = 0; i < toCM.size(); i++) {
+		Thread move = new Thread(() -> {
+			// go through the array list of i, j coords
+			// to the coffee machine
+			for (int i = 0; i < toCM.size(); i++) {
 
-			// check if you are on the last element, if true - don't do the
-			// moving, just the facing
-			if (toCM.size() - i == 1)
-				figureOutFacing(p, toCM.get(i));
-			else {
-				// get the right facing
-				figureOutFacing(p, toCM.get(i));
+				// check if you are on the last element, if true - don't do the
+				// moving, just the facing
+				if (toCM.size() - i == 1)
+					figureOutFacing(p, toCM.get(i));
+				else {
+					// get the right facing
+					figureOutFacing(p, toCM.get(i));
 
-				// make a move
-				p.moveForwards();
-
-				try {
-					Thread.sleep(250);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+					// make a move
+					p.moveForwards();
 				}
 			}
-		}
+
+		});
+
+		//start the thread
+		move.start();
+		
 		// interact with the tile
 		w.getTile(p.getLocation().coords.x, p.getLocation().coords.y, 0).onInteraction(p);
 
-		// just for the presentation in week 6 TODO: remove that
-		// p.status.setAttribute(PlayerAttribute.FATIGUE, 0.0);
+		while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
+			//do nothing
+		}
+		//back to the dest
+		toTheDesk(w, p);
 	}
 
 	@Override
-	public void goToBed(World w, Player p) {
+	public void goToBedAndBack(World w, Player p) {
+		
+		Thread move = new Thread(()->{
+			// go through the array list of i, j coords
+			// to the sofa
+			for (int i = 0; i < toBed.size(); i++) {
 
-		// go through the array list of i, j coords
-		// to the sofa
-		for (int i = 0; i < toBed.size(); i++) {
+				// check if you are on the last element, if true - don't do the
+				// moving, just the facing
+				if (toCM.size() - i == 1)
+					figureOutFacing(p, toCM.get(i));
+				else {
+					// get the right facing
+					figureOutFacing(p, toCM.get(i));
 
-			// check if you are on the last element, if true - don't do the
-			// moving, just the facing
-			if (toCM.size() - i == 1)
-				figureOutFacing(p, toCM.get(i));
-			else {
-				// get the right facing
-				figureOutFacing(p, toCM.get(i));
+					// make a move
+					p.moveForwards();
 
-				// make a move
-				p.moveForwards();
-
-				try {
-					Thread.sleep(250);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+					try {
+						Thread.sleep(250);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 			}
-		}
+
+		});
+		
+		//start the thread
+		move.start();
+		
 		// interact with the tile
 		w.getTile(p.getLocation().coords.x, p.getLocation().coords.y, 0).onInteraction(p);
+		
+		//go back to your desk
+		while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
+			//do nothing
+		}
+		//back to the desk
+		toTheDesk(w, p);
 	}
 
 	@Override
 	public void toTheDesk(World w, Player p) {
+		
+		Thread move = new Thread(()->{
+			// check whether the player is at the coffee machine or sofa
+			if (toCM.get(toCM.size() - 1) == fromCM.get(0)) {
 
-		// check whether the player is at the coffee machine or sofa
-		System.out.println(toCM.get(toCM.size() - 1));
-		System.out.println(fromCM.get(0));
-		if (toCM.get(toCM.size() - 1) == fromCM.get(0)) {
+				// if at the coffee machine, go through the array list of i, j
+				// coords
+				// to the desk from the coffee machine
+				for (int i = 2; i < fromCM.size(); i++) {
 
-			// if at the coffee machine, go through the array list of i, j
-			// coords
-			// to the desk from the coffee machine
-			for (int i = 2; i < fromCM.size(); i++) {
+					// get the right facing
+					figureOutFacing(p, fromCM.get(i));
 
-				// get the right facing
-				figureOutFacing(p, fromCM.get(i));
-
-				// make a move
-				p.moveForwards();
-
-				try {
-					Thread.sleep(250);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+					// make a move
+					p.moveForwards();
 				}
-			}
-		} else {
+			} else {
 
-			// if at the sofa, go through the array list of i, j coords
-			// to the desk from the sofa
-			for (int i = 2; i < fromBed.size(); i++) {
+				// if at the sofa, go through the array list of i, j coords
+				// to the desk from the sofa
+				for (int i = 2; i < fromBed.size(); i++) {
 
-				// get the right facing
-				figureOutFacing(p, fromBed.get(i));
+					// get the right facing
+					figureOutFacing(p, fromBed.get(i));
 
-				// make a move
-				p.moveForwards();
-
-				try {
-					Thread.sleep(250); // TODO: make 250 a variable and change
-										// it wtih difficulty
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+					// make a move
+					p.moveForwards();
 				}
+
 			}
 
-		}
+		});
+
+		//start the thread
+		move.start();
+		
 		// interact with the tile
 		w.getTile(p.getLocation().coords.x, p.getLocation().coords.y, 0).onInteraction(p);
 	}
@@ -255,27 +266,34 @@ public class LogicEasy implements Logic, Serializable {
 		return false;
 	}
 
-	/*
-	 * @Override public Player closestToWin(World w) { // get all players from
-	 * the world Set<Player> players = w.getPlayers();
-	 * 
-	 * Player winner = null; // the player who has done most towards completing
-	 * // his project
-	 * 
-	 * double highestProgr = 0; // progress of the player with highest progress
-	 * 
-	 * // compare the work each player has completed for (Player player :
-	 * players) { // get the progress of the current player in the set double
-	 * currentPlayerProgress = player.getProgress(); // if the current player
-	 * has done more than the previous one, set // this player as the winner if
-	 * (currentPlayerProgress > highestProgr) { winner = player; // set the
-	 * current player as the winner player highestProgr = player.getProgress();
-	 * // set the current player's // progress as the // highest } } return
-	 * winner; }
-	 */
+	@Override
+	public Player closestToWin() {
+		// get all players from the world
+		Set<Player> players = World.world.getPlayers();
+
+		// progress of the current player we are looking at
+		double currentPlayerProgress;
+
+		// the player who has done most towards completing his project
+		Player winner = null;
+
+		double highestProgr = 0; // progress of the player with highest progress
+
+		for (Player player : players) {
+
+			// get the progress of the current player in the set double
+			currentPlayerProgress = player.getProgress();
+			// compare the work each player has completed
+			if (currentPlayerProgress > highestProgr) {
+				winner = player; // set the current player as the winner player
+				highestProgr = currentPlayerProgress;
+				// set the current player's progress as the highest
+			}
+		}
+		return winner;
+	}
 
 	public void hackPlayer(Player player) {
 		// TODO: hacking logic
 	}
-
 }

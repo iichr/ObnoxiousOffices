@@ -27,13 +27,8 @@ public interface Logic extends Serializable {
 	public void aiRefresh(AIPlayer p); // TODO: possibly don't need that
 
 	/**
-	 * Tells the bot/bots what to do while the player is working on his own
-	 * project.
-	 * 
-	 * @param w
-	 *            the world containing all players
-	 * @param p
-	 *            the ai player that needs to do the hacking
+	 * Make the ai work
+	 * @param p the ai that will start working
 	 */
 	public void aiWork(AIPlayer p);
 
@@ -71,7 +66,7 @@ public interface Logic extends Serializable {
 	 * @param p
 	 *            player who needs to go to the coffee machine
 	 */
-	public void goToCoffeeMachine(World w, Player p);
+	public void goToCoffeeMachineAndBack(World w, Player p);
 
 	/**
 	 * When player is low on energy, he goes to sleep on the sofa. It is a slow
@@ -82,7 +77,7 @@ public interface Logic extends Serializable {
 	 * @param w
 	 *            the world of the player
 	 */
-	public void goToBed(World w, Player p);
+	public void goToBedAndBack(World w, Player p);
 
 	/**
 	 * Checks if a player is low on energy
@@ -136,4 +131,6 @@ public interface Logic extends Serializable {
 	 * @return the player closest to winning the game
 	 */
 	public void hackPlayer(Player player);
+
+	public Player closestToWin();
 }
