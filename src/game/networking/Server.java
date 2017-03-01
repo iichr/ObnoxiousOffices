@@ -80,6 +80,12 @@ public class Server {
 	private void updateWorld(GameStartedEvent e) {
 		Updater worldUpdater = new Updater(e.world, 100, true);
 		Thread updateThread = new Thread(worldUpdater);
+		try {
+			// Give players a second to join
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		updateThread.start();
 	}
 
