@@ -1,19 +1,19 @@
-package game.ui;
-
-import game.core.world.World;
-import game.ui.interfaces.Vals;
+package game.ui.components;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import game.core.player.Player;
+import game.core.player.effect.PlayerEffect;
+import game.core.world.World;
+
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Queue;
 
-public class EffectContainer {
+
+public class Effect{
 
 	private Image img;
 	private int DURATION ;
@@ -21,16 +21,17 @@ public class EffectContainer {
     private long activeFor ;
     private int x ;
     private int y;
-    private World world;
-    private Queue queue;
+    private WordGenerator wg;
+    private Player player;
+    private PlayerEffect pe;
     
 
 	// effect id
-	public EffectContainer(Image img, int duration,int x, int y) {
-		DURATION = duration;
+	public Effect(Player player) throws SlickException {
 		this.img = img.getScaledCopy(50, 50);
-		this.x=x;
-		this.y=y;
+		pe= player.status.getEffects();
+		
+		wg=new WordGenerator();
 	}
 	
     public void activate() {
@@ -48,15 +49,12 @@ public class EffectContainer {
     }
 
 	public void render(Graphics g) throws SlickException {
-		g.setColor(Color.red);
 		if(isActive()){
 			g.drawImage(this.img, x, y);
 			g.setColor(Color.red);
-			g.drawString( activeFor + " s", Vals.SCREEN_WIDTH - 100,
-					Vals.SCREEN_HEIGHT - Vals.SCREEN_HEIGHT / 5 * 4 + 50);
+			wg.draw(g, activeFor+"", x, y+this.img.getHeight(), false, 0.15f);
 			
 		}
-		g.drawString("isActive : " + (isActive() ? "YES" : "NO"), Vals.SCREEN_WIDTH - 150,
-				Vals.SCREEN_HEIGHT - Vals.SCREEN_HEIGHT / 5 * 4 + 100);
 	}
+
 }
