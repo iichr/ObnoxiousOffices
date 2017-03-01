@@ -33,7 +33,7 @@ public class Tile implements Serializable {
     }
 
     public void onInteraction(Player player) {
-        type.onInteraction(player);
+        type.onInteraction(player, this);
     }
 
     @Override

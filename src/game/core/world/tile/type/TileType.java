@@ -53,7 +53,7 @@ public abstract class TileType implements Serializable {
 
     public abstract boolean canWalkOver();
 
-    public abstract void onInteraction(Player player);
+    public abstract void onInteraction(Player player, Tile tile);
 
     public static boolean typeExists(char ch) {
         return types.containsKey(ch);

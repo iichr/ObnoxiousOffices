@@ -28,7 +28,7 @@ public class TileTypeFish extends TileType {
     }
 
     @Override
-    public void onInteraction(Player player) {
+    public void onInteraction(Player player, Tile tile) {
 
     }
 
