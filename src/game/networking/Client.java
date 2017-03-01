@@ -9,8 +9,8 @@ import java.net.UnknownHostException;
 import game.core.event.ConnectionAttemptEvent;
 import game.core.event.ConnectionFailedEvent;
 import game.core.event.Events;
-import game.core.event.PlayerCreatedEvent;
-import game.core.event.PlayerInputEvent;
+import game.core.event.player.PlayerCreatedEvent;
+import game.core.event.player.PlayerInputEvent;
 import game.core.player.Player;
 
 public class Client {
@@ -53,7 +53,7 @@ public class Client {
 	public void connectToServer(ConnectionAttemptEvent event) {
 		int port = 8942;
 		boolean connected = false;
-		String hostname = "147.188.195.80";
+		String hostname = event.ipAddress;
 
 		try {
 			this.server = new Socket();

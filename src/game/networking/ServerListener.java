@@ -11,15 +11,12 @@ import game.core.event.CreateAIPlayerRequest;
 import game.core.event.Event;
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
-import game.core.event.PlayerActionAddedEvent;
-import game.core.event.PlayerActionEndedEvent;
-import game.core.event.PlayerAttributeChangedEvent;
-import game.core.event.PlayerCreatedEvent;
-import game.core.event.PlayerEffectAddedEvent;
-import game.core.event.PlayerEffectEndedEvent;
-import game.core.event.PlayerMovedEvent;
-import game.core.event.PlayerProgressUpdateEvent;
-import game.core.event.PlayerRotatedEvent;
+import game.core.event.chat.ChatMessageReceivedEvent;
+import game.core.event.player.*;
+import game.core.event.player.action.PlayerActionAddedEvent;
+import game.core.event.player.action.PlayerActionEndedEvent;
+import game.core.event.player.effect.PlayerEffectAddedEvent;
+import game.core.event.player.effect.PlayerEffectEndedEvent;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.World;
@@ -36,29 +33,29 @@ public class ServerListener extends Thread {
 	private int playerNumber;
 	public World world;
 
-	public static final int NUM_PLAYERS = 4, NUM_AI_PLAYERS = 1;
+	public static final int NUM_PLAYERS = 2, NUM_AI_PLAYERS = 0;
 
 	public ServerListener(Socket socket, ArrayList<Player> hash, ArrayList<ServerListener> connection) {
 		this.playerTable = hash;
 		this.socket = socket;
 		this.connections = connection;
 		this.playerNumber = connections.size();
-		
-		//set up the event listeners
+
+		// set up the event listeners
 		listenForEvents();
-		
-		//load the world
+
+		// load the world
 		loadWorld();
-		
-		//make the object streams
+
+		// make the object streams
 		createObjectStreams();
 
 	}
-	
+
 	/**
 	 * Set up the list of events that the server should listen for
 	 */
-	private void listenForEvents(){
+	private void listenForEvents() {
 		Events.on(PlayerRotatedEvent.class, this::forwardInfo);
 		Events.on(PlayerProgressUpdateEvent.class, this::forwardInfo);
 		Events.on(PlayerMovedEvent.class, this::forwardInfo);
@@ -67,12 +64,14 @@ public class ServerListener extends Thread {
 		Events.on(PlayerEffectAddedEvent.class, this::forwardInfo);
 		Events.on(PlayerEffectEndedEvent.class, this::forwardInfo);
 		Events.on(PlayerAttributeChangedEvent.class, this::forwardInfo);
+
+		Events.on(ChatMessageReceivedEvent.class, this::forwardInfo);
 	}
-	
+
 	/**
 	 * Load the required world form file
 	 */
-	private void loadWorld(){
+	private void loadWorld() {
 		try {
 			this.world = World.load(Paths.get("data/office" + NUM_PLAYERS + "Player.level"), NUM_PLAYERS);
 			World.world = this.world;
@@ -80,12 +79,12 @@ public class ServerListener extends Thread {
 			e2.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * Attempt to make the input and output object streams
-	 * If it fails then close the server socket 
+	 * Attempt to make the input and output object streams If it fails then
+	 * close the server socket
 	 */
-	private void createObjectStreams(){
+	private void createObjectStreams() {
 		try {
 			this.is = new ObjectInputStream(this.socket.getInputStream());
 			this.os = new ObjectOutputStream(this.socket.getOutputStream());
@@ -117,9 +116,11 @@ public class ServerListener extends Thread {
 					}
 
 					// Allows hard coded AI player to be added for prototype
-					if (this.playerTable.size() == NUM_PLAYERS - NUM_AI_PLAYERS) {
-						makingAI = true;
-						Events.trigger(new CreateAIPlayerRequest(this));
+					if (this.playerTable.size() == NUM_PLAYERS - NUM_AI_PLAYERS && NUM_AI_PLAYERS > 0) {
+						for(int i = 0; i < NUM_AI_PLAYERS; i++){
+							makingAI = true;
+							Events.trigger(new CreateAIPlayerRequest(this, i));
+						}
 					}
 
 					if (this.playerTable.size() == NUM_PLAYERS) {
@@ -197,7 +198,8 @@ public class ServerListener extends Thread {
 	public void addAIToGame(Player playerToAdd) {
 		playerToAdd.setHair(playerTable.size());
 		this.playerTable.add(playerToAdd);
-		if(playerToAdd.isAI) makingAI = false;
+		if (playerToAdd.isAI)
+			makingAI = false;
 	}
 
 	/**
