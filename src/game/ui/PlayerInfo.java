@@ -12,6 +12,7 @@ import game.core.util.Coordinates;
 import game.core.world.Location;
 import game.core.world.World;
 import game.core.world.tile.type.TileType;
+import game.ui.components.WordGenerator;
 import game.ui.interfaces.ImageLocations;
 
 public class PlayerInfo {

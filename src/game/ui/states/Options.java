@@ -15,8 +15,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import com.sun.imageio.plugins.png.PNGImageReader;
 
-import game.ui.WordGenerator;
 import game.ui.buttons.MenuButton;
+import game.ui.components.WordGenerator;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 

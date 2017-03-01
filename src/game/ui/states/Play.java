@@ -3,10 +3,6 @@ package game.ui.states;
 import java.util.HashMap;
 import java.util.Set;
 
-import game.core.input.InputTypeInteraction;
-import game.core.input.InputTypeMovement;
-import game.core.input.InteractionType;
-import game.core.input.MovementType;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -19,15 +15,20 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import game.core.event.Events;
 import game.core.event.player.PlayerInputEvent;
+import game.core.input.InputTypeInteraction;
+import game.core.input.InputTypeMovement;
+import game.core.input.InteractionType;
+import game.core.input.MovementType;
 import game.core.player.Player;
-import game.core.player.action.PlayerAction;
+import game.core.player.PlayerState;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
 import game.core.world.tile.type.TileType;
-import game.ui.EffectContainer;
+import game.ui.EffectsViewer;
 import game.ui.PlayerContainer;
 import game.ui.PlayerInfo;
+import game.ui.components.Effect;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 import game.ui.player.ActionSelector;
@@ -55,7 +56,7 @@ public class Play extends BasicGameState {
 	private ActionSelector actionSelector;
 
 	// effect container
-	protected EffectContainer effectOverview;
+	protected Effect effectOverview;
 
 	// player info
 	private PlayerInfo playerinfo;
@@ -103,10 +104,8 @@ public class Play extends BasicGameState {
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
 		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
 
-		// Effect container
-		coffee = new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST);
-		effectOverview = new EffectContainer(coffee, 10, Vals.SCREEN_WIDTH - 100,
-				Vals.SCREEN_HEIGHT - Vals.SCREEN_HEIGHT / 5 * 4);
+		
+		
 
 		// add player animations
 		animatePlayers(world.getPlayers());
@@ -118,6 +117,8 @@ public class Play extends BasicGameState {
 
 		// set up player info
 		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight);
+		// Effect container
+		effectOverview = new Effect(world.getPlayer(localPlayerName));
 	}
 
 	@Override
@@ -176,8 +177,9 @@ public class Play extends BasicGameState {
 		effectOverview.render(g);
 
 		// shows selectors
-		// TODO only show when seated
-		actionSelector.updateSelector(world, localPlayerName, tileWidth, tileHeight);
+		if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+			actionSelector.updateSelector(world, localPlayerName, tileWidth, tileHeight);
+		}
 
 		// show ui info to player
 		playerinfo.render(g);
@@ -247,8 +249,11 @@ public class Play extends BasicGameState {
 		Location playerLocation = player.getLocation();
 		Direction playerFacing = player.getFacing();
 		if (previousPlayer.get(player).getFacing() != player.getFacing()) {
-			//TODO add seated check
-			playerMap.get(player).turn(player.getFacing());
+			if (player.status.hasState(PlayerState.sitting)) {
+				playerMap.get(player).seated(playerFacing);
+			} else {
+				playerMap.get(player).turn(player.getFacing());
+			}
 			previousPlayer.get(player).setLocation(playerLocation);
 			previousPlayer.get(player).setFacing(playerFacing);
 		}
@@ -260,23 +265,27 @@ public class Play extends BasicGameState {
 
 		if (paused) {
 			game.enterState(Vals.PAUSE_STATE);
-			paused = false;
+			paused = !paused;
 		}
+		
+		
+		
 
 		input.clearKeyPressedRecord();
 	}
 
 	@Override
 	public void mouseWheelMoved(int newValue) {
-		// TODO only when seated
-		actionSelector.changeSelection(newValue);
+		if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+			actionSelector.changeSelection(newValue);
+		}
 	}
 
 	@Override
 	public void keyPressed(int key, char c) {
 		switch (key) {
 		case Input.KEY_ESCAPE:
-			paused = true;
+			paused = !paused;
 			break;
 		case Input.KEY_TAB:
 			showOverview = true;
@@ -294,12 +303,25 @@ public class Play extends BasicGameState {
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
 			break;
 		case Input.KEY_E:
-			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
+			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+				switch (actionSelector.getAction()) {
+				case ActionSelector.WORK:
+					Events.trigger(
+							new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
+					break;
+				case ActionSelector.HACK:
+					Events.trigger(
+							new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
+					break;
+				}
+			} else {
+				Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
+			}
 			// TODO add way to send work/hack input events
 			// this section will be changing with new inputType system
 			break;
 		case Input.KEY_B:
-			effectOverview.activate();
+			
 			break;
 		}
 	}
