@@ -33,6 +33,8 @@ public class ClientSync {
         Events.on(PlayerProgressUpdateEvent.class, ClientSync::onPlayerProgressUpdate);
         Events.on(PlayerMovedEvent.class, ClientSync::onPlayerMoved);
         Events.on(PlayerRotatedEvent.class, ClientSync::onPlayerRotated);
+        Events.on(PlayerStateAddedEvent.class, ClientSync::onPlayerStateAdded);
+        Events.on(PlayerStateRemovedEvent.class, ClientSync::onPlayerStateRemoved);
 
         Events.on(TileChangedEvent.class, ClientSync::onTileChanged);
 
@@ -40,6 +42,14 @@ public class ClientSync {
         Events.on(MiniGameEndedEvent.class, ClientSync::onMiniGameEnded);
 
         Events.on(ChatMessageReceivedEvent.class, ClientSync::onChatMessageReceived);
+    }
+
+    private static void onPlayerStateAdded(PlayerStateAddedEvent event) {
+        getPlayer(event.playerName).status.addState(event.state);
+    }
+
+    private static void onPlayerStateRemoved(PlayerStateRemovedEvent event) {
+        getPlayer(event.playerName).status.removeState(event.state);
     }
 
     private static void onChatMessageReceived(ChatMessageReceivedEvent event) {
