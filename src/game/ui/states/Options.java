@@ -74,7 +74,7 @@ public class Options extends BasicGameState {
 		g.drawString(mouseCoords, 10, 50);
 		
 		soundStatus.draw(Vals.BUTTON_ALIGN_CENTRE_W,Vals.BUTTON_ALIGN_CENTRE_H-Vals.BUTTON_ALIGN_CENTRE_H/10);
-		g.drawString("Screen Mode :" + (gc.isFullscreen()?"Full Screen":"Windowed"), Vals.BUTTON_ALIGN_CENTRE_W-Vals.BUTTON_ALIGN_CENTRE_W/10, Vals.BUTTON_ALIGN_CENTRE_H+Vals.BUTTON_ALIGN_CENTRE_H/10);
+		g.drawString("Screen Mode :" + (gc.isFullscreen()?"Full Screen":"Windowed"), Vals.BUTTON_ALIGN_CENTRE_W-Vals.BUTTON_ALIGN_CENTRE_W/10, Vals.BUTTON_ALIGN_CENTRE_H+2*Vals.BUTTON_ALIGN_CENTRE_H/10);
 		// add back button
 		backButton.render();
 

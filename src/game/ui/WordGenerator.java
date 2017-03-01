@@ -23,7 +23,11 @@ public class WordGenerator {
 		for(char c = 'A'; c <= 'Z';c++){
 			wg.put(c,new Image("/res/alphabets/"+c+".png"));
 			wg.put((char) (c+32),new Image("/res/alphabets/"+c+".png"));
-		}		
+		}
+		for(char c = '0';c<='9';c++){
+			wg.put(c,new Image("/res/alphabets/"+c+".png"));
+		}
+		wg.put('_', new Image("/res/alphabets/_.png"));
 	}
 	/**
 	 * @param Graphics g - the graphics object
