@@ -29,7 +29,7 @@ public class TileTypeComputer extends TileTypeAction {
 
     private static void onGameStarted(GameStartedEvent event) {
         int i = 0;
-        List<Tile> computers = event.world.getTiles(TileTypeComputer.class).stream().collect(Collectors.toList());
+        List<Tile> computers = event.world.getTiles(TileTypeComputer.class);
         for (Player player : event.world.getPlayers()) {
             MetaTile computer = (MetaTile) computers.get(i++);
             computer.metadata = new ComputerMetadata(computer.location.coords, player.name);
