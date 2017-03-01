@@ -1,6 +1,6 @@
 package game.core.sync;
 
-import game.AI.AIPlayer;
+import game.ai.AIPlayer;
 import game.core.event.CreateAIPlayerRequest;
 import game.core.event.Events;
 import game.core.event.chat.ChatMessageCreatedEvent;
