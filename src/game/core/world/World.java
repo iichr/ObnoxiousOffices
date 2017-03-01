@@ -204,4 +204,8 @@ public class World implements Updateable, Serializable {
     public boolean playerAt(Location location) {
         return players.stream().map(Player::getLocation).anyMatch(l -> l.equals(location));
     }
+    
+    public int getMaxPlayers(){
+    	return maxPlayers;
+    }
 }
