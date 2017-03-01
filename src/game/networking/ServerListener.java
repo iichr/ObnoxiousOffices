@@ -30,19 +30,17 @@ public class ServerListener extends Thread {
 	private int playerNumber;
 	public World world;
 
-	public static final int NUM_PLAYERS = 4, NUM_AI_PLAYERS = 3;
+	public static final int NUM_AI_PLAYERS = 1;
 
-	public ServerListener(Socket socket, ArrayList<Player> hash, ArrayList<ServerListener> connection) {
+	public ServerListener(Socket socket, ArrayList<Player> hash, ArrayList<ServerListener> connection, World world) {
 		this.playerTable = hash;
 		this.socket = socket;
 		this.connections = connection;
 		this.playerNumber = connections.size();
+		this.world = world;
 
 		// set up the event listeners
 		listenForEvents();
-
-		// load the world
-		loadWorld();
 
 		// make the object streams
 		createObjectStreams();
@@ -67,18 +65,6 @@ public class ServerListener extends Thread {
 		Events.on(GameFinishedEvent.class, this::forwardInfo);
 
 		Events.on(ChatMessageReceivedEvent.class, this::forwardInfo);
-	}
-
-	/**
-	 * Load the required world form file
-	 */
-	private void loadWorld() {
-		try {
-			this.world = World.load(Paths.get("data/office" + NUM_PLAYERS + "Player.level"), NUM_PLAYERS);
-			World.world = this.world;
-		} catch (IOException e2) {
-			e2.printStackTrace();
-		}
 	}
 
 	/**
@@ -117,18 +103,14 @@ public class ServerListener extends Thread {
 					}
 
 					// Allows hard coded AI player to be added for prototype
-					if (this.playerTable.size() == NUM_PLAYERS - NUM_AI_PLAYERS && NUM_AI_PLAYERS > 0) {
+					if (this.playerTable.size() == world.getMaxPlayers() - NUM_AI_PLAYERS && NUM_AI_PLAYERS > 0) {
 						for(int i = 0; i < NUM_AI_PLAYERS; i++){
 							makingAI = true;
 							Events.trigger(new CreateAIPlayerRequest(this, i));
 						}
 					}
 
-					if (this.playerTable.size() == NUM_PLAYERS) {
-						for (int i = 0; i < playerTable.size(); i++) {
-							Player p = playerTable.get(i);
-							world.addPlayer(p);
-						}
+					if (this.playerTable.size() == world.getMaxPlayers()) {
 						GameStartedEvent gameStart = new GameStartedEvent(world);
 						sendToAllClients(gameStart);
 						Events.trigger(gameStart);
@@ -186,6 +168,7 @@ public class ServerListener extends Thread {
 			Player playerObject = new Player(name, Direction.SOUTH, world.getSpawnPoint(playerNumber));
 			playerObject.setHair(playerNumber);
 			this.playerTable.add(playerObject);
+			world.addPlayer(playerObject);
 
 			PlayerCreatedEvent event = new PlayerCreatedEvent(name);
 			Events.trigger(event);
@@ -199,6 +182,7 @@ public class ServerListener extends Thread {
 	public void addAIToGame(Player playerToAdd) {
 		playerToAdd.setHair(playerTable.size());
 		this.playerTable.add(playerToAdd);
+		world.addPlayer(playerToAdd);
 		if (playerToAdd.isAI)
 			makingAI = false;
 	}

@@ -41,7 +41,11 @@ public class World implements Updateable, Serializable {
         xSize = sizeX;
     }
 
-    public void startMiniGame(MiniGame game) {
+    public int getMaxPlayers() {
+		return maxPlayers;
+	}
+
+	public void startMiniGame(MiniGame game) {
         miniGames.add(game);
         Events.trigger(new MiniGameStartedEvent(game));
     }

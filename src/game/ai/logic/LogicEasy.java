@@ -37,8 +37,9 @@ public class LogicEasy implements Logic, Serializable {
 
 	// @Override
 	public void aiRefresh(AIPlayer ai) {
-		ai.easylogic.goToCoffeeMachineAndBack(World.world, ai); // TODO: put some logic
-														// behind this
+		ai.easylogic.goToCoffeeMachineAndBack(World.world, ai); // TODO: put
+																// some logic
+		// behind this
 	}
 
 	@Override
@@ -156,28 +157,37 @@ public class LogicEasy implements Logic, Serializable {
 
 					// make a move
 					p.moveForwards();
+					
+					try {
+						Thread.sleep(250);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
+			}
+
+			// interact with the tile
+			Location l = p.getLocation().forward(p.getFacing());
+			l.getTile().onInteraction(p);
+
+			while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
+				// do nothing
 			}
 
 		});
 
-		//start the thread
+		// start the thread
 		move.start();
-		
-		// interact with the tile
-		w.getTile(p.getLocation().coords.x, p.getLocation().coords.y, 0).onInteraction(p);
 
-		while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
-			//do nothing
-		}
-		//back to the dest
+		// back to the dest
 		toTheDesk(w, p);
 	}
 
 	@Override
 	public void goToBedAndBack(World w, Player p) {
-		
-		Thread move = new Thread(()->{
+
+		Thread move = new Thread(() -> {
 			// go through the array list of i, j coords
 			// to the sofa
 			for (int i = 0; i < toBed.size(); i++) {
@@ -201,26 +211,27 @@ public class LogicEasy implements Logic, Serializable {
 				}
 			}
 
+			// interact with the tile
+			Location l = p.getLocation().forward(p.getFacing());
+			l.getTile().onInteraction(p);
+
+			// go back to your desk
+			while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
+				// do nothing
+			}
 		});
-		
-		//start the thread
+
+		// start the thread
 		move.start();
-		
-		// interact with the tile
-		w.getTile(p.getLocation().coords.x, p.getLocation().coords.y, 0).onInteraction(p);
-		
-		//go back to your desk
-		while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
-			//do nothing
-		}
-		//back to the desk
+
+		// back to the desk
 		toTheDesk(w, p);
 	}
 
 	@Override
 	public void toTheDesk(World w, Player p) {
-		
-		Thread move = new Thread(()->{
+
+		Thread move = new Thread(() -> {
 			// check whether the player is at the coffee machine or sofa
 			if (toCM.get(toCM.size() - 1) == fromCM.get(0)) {
 
@@ -249,14 +260,21 @@ public class LogicEasy implements Logic, Serializable {
 				}
 
 			}
+			try {
+				Thread.sleep(250);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// interact with the tile
+			Location l = p.getLocation().forward(p.getFacing());
+			l.getTile().onInteraction(p);
 
 		});
 
-		//start the thread
+		// start the thread
 		move.start();
-		
-		// interact with the tile
-		w.getTile(p.getLocation().coords.x, p.getLocation().coords.y, 0).onInteraction(p);
 	}
 
 	@Override
@@ -277,8 +295,10 @@ public class LogicEasy implements Logic, Serializable {
 		// the player who has done most towards completing his project
 		Player winner = null;
 
-		double highestProgr = 0; // progress of the player with highest progress
+		double highestProgr = -1; // progress of the player with highest
+									// progress
 
+		System.out.println(players);
 		for (Player player : players) {
 
 			// get the progress of the current player in the set double

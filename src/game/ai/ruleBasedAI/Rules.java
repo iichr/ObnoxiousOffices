@@ -17,13 +17,11 @@ public class Rules implements Serializable{
 	//arraylist containing all rules
 	private ArrayList<WorkingMemory> rules = new ArrayList<WorkingMemory>();
 	
-	WorkingMemory wm;
-	
 	/**
 	 * Get methond
 	 * @return returns an arraylist containing all rules
 	 */
-	public ArrayList<WorkingMemory> getRules() {
+	public ArrayList<WorkingMemory> getRules(WorkingMemory wm) {
 		//                               isWorking			 isHacking			isRefreshing	  hasProgressedMore
 		rules.add(wm.setAllAndReturn(activityValues.No,  activityValues.No,  activityValues.No,  activityValues.No));
 		rules.add(wm.setAllAndReturn(activityValues.Yes, activityValues.No,  activityValues.No,  activityValues.No));

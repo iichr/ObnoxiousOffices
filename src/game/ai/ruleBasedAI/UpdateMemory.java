@@ -30,13 +30,13 @@ public class UpdateMemory implements Serializable{
 	 */
 	public void updateInfo() {
 		// might be the wrong way of checking the the player is up to
-		if (wm.getWMplayer().status.getActions().contains(PlayerActionWork.class)) //checks if the player is currently working
+		if (wm.getWMplayer().status.hasAction(PlayerActionWork.class)) //checks if the player is currently working
 			wm.setAll(activityValues.Yes, activityValues.No, activityValues.No, wm.getHasProgressedMore());
 		//checks if the player is currently drinking coffee or sleeping on the sofa TODO: change the PlayerActionSleep
-		else if (wm.getWMplayer().status.getActions().contains(PlayerActionDrink.class) || wm.getWMplayer().status.getActions().contains(PlayerActionSleep.class)) 
+		else if (wm.getWMplayer().status.hasAction(PlayerActionDrink.class) || wm.getWMplayer().status.hasAction(PlayerActionSleep.class)) 
 			wm.setAll(activityValues.No, activityValues.No, activityValues.Yes, wm.getHasProgressedMore());
 		//checks if the player is currently hacking someone
-		else if (wm.getWMplayer().status.getActions().contains(PlayerActionHack.class))
+		else if (wm.getWMplayer().status.hasAction(PlayerActionHack.class))
 			wm.setAll(activityValues.No, activityValues.Yes, activityValues.No, wm.getHasProgressedMore());
 		else
 			wm.setAll(activityValues.No, activityValues.No, activityValues.No, wm.getHasProgressedMore());

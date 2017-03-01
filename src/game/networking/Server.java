@@ -7,6 +7,7 @@ import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import game.core.event.Events;
@@ -14,6 +15,7 @@ import game.core.event.GameStartedEvent;
 import game.core.sync.ServerSync;
 import game.core.player.Player;
 import game.core.sync.Updater;
+import game.core.world.World;
 
 public class Server {
 
@@ -21,9 +23,12 @@ public class Server {
 	private ArrayList<Player> playerTable;
 	public ArrayList<ServerListener> connections;
 	private ServerSocket serverSocket = null;
+	private World world;
 	private boolean gameEnded = false;
 	private boolean gameStarted = false;
 
+	private final int NUM_PLAYERS = 2;
+	
 	public Server() {
 		playerTable = new ArrayList<Player>();
 		connections = new ArrayList<ServerListener>();
@@ -33,6 +38,9 @@ public class Server {
 		// create the server socket
 		createSocket(port);
 
+		// load the world
+		loadWorld();
+		
 		// listen for new connections
 		listenForConnections();
 	}
@@ -68,7 +76,7 @@ public class Server {
 			while (waiting) {
 				// Listen to the socket, accepting connections from new clients:
 				Socket socket = this.serverSocket.accept();
-				ServerListener sl = new ServerListener(socket, this.playerTable, this.connections);
+				ServerListener sl = new ServerListener(socket, this.playerTable, this.connections, world);
 				this.connections.add(sl);
 				sl.start();
 			}
@@ -77,6 +85,18 @@ public class Server {
 		}
 	}
 
+	/**
+	 * Load the required world form file
+	 */
+	private void loadWorld() {
+		try {
+			this.world = World.load(Paths.get("data/office" + NUM_PLAYERS + "Player.level"), NUM_PLAYERS);
+			World.world = this.world;
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		}
+	}
+	
 	private void updateWorld(GameStartedEvent e) {
 		Updater worldUpdater = new Updater(e.world, 100, true);
 		Thread updateThread = new Thread(worldUpdater);
