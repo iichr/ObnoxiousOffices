@@ -21,17 +21,17 @@ public class Player implements Updateable, Serializable {
     private double progress = 0;
     private Direction facing;
     private Location location;
-
     private int hair = BLONDE;
-
     public boolean isAI = false;
-
+    private int progressUpdates = 0;
+    
     public static String localPlayerName = "";
     public static int BLONDE = 0;
     public static int BROWN = 1;
     public static int DARK = 2;
     public static int PINK = 3;
     public int timesDrunkCoffee = 0;
+    public static final int PROGRESS_UPDATE_THRESHOLD = 3;
 
     public Player(String name, Direction facing, Location location) {
         this.name = name;
@@ -126,7 +126,10 @@ public class Player implements Updateable, Serializable {
                 onProgressDone();
                 this.progress = 0;
             }
-            Events.trigger(new PlayerProgressUpdateEvent(this.progress, this.name), true);
+            if(++progressUpdates >= PROGRESS_UPDATE_THRESHOLD) {
+                Events.trigger(new PlayerProgressUpdateEvent(this.progress, this.name), true);
+                progressUpdates = 0;
+            }
         }
     }
 
