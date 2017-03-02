@@ -21,11 +21,12 @@ import game.ui.interfaces.Vals;
  * @author iichr
  *
  */
-public class PlayerContainer {
+public class PlayerOverview {
 
 	private static final long serialVersionUID = 7035477320220180349L;
 
 	// player names
+	private String localPlayerName;
 	private String[] playerNames;
 	private Animation[] playerAvatars;
 	private double[] playerProgress;
@@ -36,7 +37,6 @@ public class PlayerContainer {
 	private float x;
 	private float y;
 
-	private World world;
 	private List<Player> players;
 
 	/**
@@ -50,15 +50,19 @@ public class PlayerContainer {
 	 *            Y coord
 	 * @throws SlickException
 	 */
-	public PlayerContainer(World world, String localPlayerName, float x, float y) throws SlickException {
-		this.world = world;
-		players = world.getPlayers();
+	public PlayerOverview(String localPlayerName, float x, float y) throws SlickException {
+		this.localPlayerName = localPlayerName;
 		this.x = x;
 		this.y = y;
 
 		progressBarBase = new Image(ImageLocations.PROGRESS_BAR_BASE, false, Image.FILTER_NEAREST);
 		progressBarFull = new Image(ImageLocations.PROGRESS_BAR_FULL, false, Image.FILTER_NEAREST);
-
+		
+	}
+	
+	public void updateContainer(List<Player> players) throws SlickException{
+		this.players = players;
+		
 		int size = players.size();
 		playerNames = new String[size];
 		playerAvatars = new Animation[size];
@@ -147,9 +151,13 @@ public class PlayerContainer {
 		}
 	}
 
-	public void toggleSleep(Player p) {
+	public void toggleSleep(Player p, boolean b) {
 		Animation a = playerAvatars[p.getHair()];
-		a.setCurrentFrame((a.getFrame() + 1) % a.getFrameCount());
+		if(b){
+			a.setCurrentFrame(1);
+		}else{
+			a.setCurrentFrame(0);
+		}
 	}
 
 	private Image[] setImages(Player p) throws SlickException {
