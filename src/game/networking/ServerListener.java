@@ -41,7 +41,7 @@ public class ServerListener extends Thread {
 	private Queue<Object> outputQ;
 	public World world;
 
-	public static final int NUM_AI_PLAYERS = 0;
+	public static final int NUM_AI_PLAYERS = 1;
 
 	public ServerListener(Socket socket, ArrayList<ServerListener> connection, World world) {
 		this.socket = socket;
