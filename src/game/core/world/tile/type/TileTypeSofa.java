@@ -2,6 +2,7 @@ package game.core.world.tile.type;
 
 import game.core.player.Player;
 import game.core.player.PlayerState;
+import game.core.player.action.PlayerActionSleep;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
@@ -31,7 +32,8 @@ public class TileTypeSofa extends TileType {
 
     @Override
     public void onInteraction(Player player, Tile tile) {
-        if(!World.world.playerAt(tile.location)) {
+        if(!World.world.playerAt(tile.location) && !player.status.hasState(PlayerState.sleeping)) {
+            player.status.addAction(new PlayerActionSleep(player));
             player.status.addState(PlayerState.sleeping);
             player.setLocation(tile.location);
             player.setFacing(tile.facing);
