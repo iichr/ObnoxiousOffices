@@ -221,7 +221,7 @@ public class Play extends BasicGameState {
 					String ownerName = TileTypeComputer.getOwningPlayer((MetaTile) found);
 					if (ownerName.equals(localPlayerName)) {
 						Image identifier = new Image(ImageLocations.PLAYER_IDENTIFIER, false, Image.FILTER_NEAREST);
-						identifier.draw(tileX + tileWidth / 4, tileY + tileHeight/6, tileWidth/2, tileHeight/12, Color.orange);
+						identifier.draw(tileX + tileWidth / 3, tileY + tileHeight/8, 2*tileWidth/3, tileHeight/8, Color.red);
 					}
 				}
 				int mtID = world.getTile(x, y, 0).multitileID;
