@@ -1,11 +1,13 @@
 package game.core.sync;
 
+import game.core.event.CreateAIPlayerRequest;
 import game.core.event.Events;
 import game.core.event.chat.ChatMessageCreatedEvent;
 import game.core.event.player.PlayerInputEvent;
 import game.core.input.InputType;
 import game.core.input.InputTypeInteraction;
 import game.core.input.InputTypeMovement;
+import game.core.input.InteractionType;
 import game.core.player.Player;
 import game.core.player.PlayerState;
 import game.core.player.action.PlayerAction;
@@ -13,16 +15,30 @@ import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
 import game.core.world.tile.Tile;
+import game.core.world.tile.type.TileType;
+import game.core.world.tile.type.TileTypeComputer;
+import game.util.Sets;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by samtebbs on 12/02/2017.
  */
 public class ServerSync {
 
-    public static void init() {
-        Events.on(PlayerInputEvent.class, ServerSync::onPlayerInput);
-        Events.on(ChatMessageCreatedEvent.class, ServerSync::onChatMessageCreated);
-    }
+	static Map<InteractionType, Set<TileType>> interactionMap = new HashMap<InteractionType, Set<TileType>>() {{
+		put(InteractionType.HACK, Sets.asSet(TileType.COMPUTER));
+		put(InteractionType.WORK, Sets.asSet(TileType.COMPUTER));
+		put(InteractionType.OTHER, Sets.asSet(TileType.CHAIR, TileType.COFFEE_MACHINE, TileType.SOFA));
+	}};
+
+	public static void init() {
+		Events.on(PlayerInputEvent.class, ServerSync::onPlayerInput);
+		Events.on(ChatMessageCreatedEvent.class, ServerSync::onChatMessageCreated);
+	}
 
     private static void onChatMessageCreated(ChatMessageCreatedEvent event) {
         Events.trigger(event.toChatReceivedEvent());
@@ -32,13 +48,14 @@ public class ServerSync {
         InputType type = event.inputType;
         Player player = World.world.getPlayer(event.playerName);
         if(type.isMovement()) processMovement(type, player);
-        else processInteraction(type, player);
+        else processInteraction((InputTypeInteraction) type, player);
     }
 
-    private static void processInteraction(InputType type, Player player) {
-        if(type instanceof InputTypeInteraction) {
-                Tile targetTile = player.getLocation().forward(player.getFacing()).getTile();
-                if(targetTile != null) targetTile.onInteraction(player);
+    private static void processInteraction(InputTypeInteraction type, Player player) {
+        Tile targetTile = player.getLocation().forward(player.getFacing()).getTile();
+        if(targetTile != null) {
+            boolean valid = interactionMap.get(type.type).stream().anyMatch(t -> t.equals(targetTile.type));
+            if(valid) targetTile.onInteraction(player);
         }
     }
 

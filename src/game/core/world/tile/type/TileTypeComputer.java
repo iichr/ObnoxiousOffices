@@ -4,6 +4,7 @@ import game.core.event.Event;
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
 import game.core.player.Player;
+import game.core.player.PlayerState;
 import game.core.player.action.PlayerAction;
 import game.core.player.action.PlayerActionWork;
 import game.core.world.Direction;
@@ -11,6 +12,7 @@ import game.core.world.Location;
 import game.core.world.tile.MetaTile;
 import game.core.world.tile.Tile;
 import game.core.world.tile.metadata.ComputerMetadata;
+import game.util.Sets;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -48,6 +50,11 @@ public class TileTypeComputer extends TileTypeAction {
     @Override
     public boolean canWalkOver() {
         return false;
+    }
+
+    @Override
+    public Collection<PlayerState> getRequiredStates() {
+        return Sets.asSet(PlayerState.sitting);
     }
 
     @Override

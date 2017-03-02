@@ -1,61 +1,65 @@
 package game.ui.components;
 
-import org.newdawn.slick.Color;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import game.core.player.Player;
 import game.core.player.effect.PlayerEffect;
-import game.core.world.World;
+import game.ui.interfaces.ImageLocations;
+import game.ui.interfaces.Vals;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-
-
-public class Effect{
+public class Effect {
+	private long activeFor;
+	private float tileWidth;
+	private float tileHeight;
+	private float padding;
 
 	private Image img;
-	private int DURATION ;
-    private Instant activatedAt;
-    private long activeFor ;
-    private int x ;
-    private int y;
-    private WordGenerator wg =new WordGenerator();;
-    private List<PlayerEffect> pe = new ArrayList<PlayerEffect>();
-    
+	private Image timerBarBase;
+	private Image timerBarFull;
+
+	private List<PlayerEffect> pe = new ArrayList<PlayerEffect>();
 
 	// effect id
-	public Effect(Player player) throws SlickException {
-		this.img = new Image("/res/sprites/tiles/coffee.png").getScaledCopy(50, 50);
-		pe= player.status.getEffects();		
-		
+	public Effect(float tileWidth, float tileHeight) throws SlickException {
+		this.tileWidth = tileWidth;
+		this.tileHeight = tileHeight;
+		this.padding = tileWidth / 2;
+
+		img = new Image("/res/sprites/tiles/coffee.png").getScaledCopy(50, 50);
+		timerBarBase = new Image(ImageLocations.ACTION_BAR_BASE, false, Image.FILTER_NEAREST);
+		timerBarFull = new Image(ImageLocations.ACTION_BAR_FULL, false, Image.FILTER_NEAREST);
 	}
-	
-        //activatedAt = Instant.now().plusSeconds(DURATION);  
 
-    	/*if(activatedAt==null){
-    		return false;
-    	}else{
-    		activeFor = ChronoUnit.SECONDS.between(Instant.now(), activatedAt);
-    		return activeFor >= 1 && activeFor <= DURATION;
-    	}*/
-
+	public void updateEffects(Player player) {
+		pe = player.status.getEffects();
+	}
 
 	public void render(Graphics g) throws SlickException {
-		pe.forEach((e)->{			
-			if(!e.ended()){
-				activeFor=e.getDuration()-e.getElapsed();
-				g.drawImage(this.img, x, y);
-				g.setColor(Color.red);
-				wg.draw(g, activeFor+"", x, y+this.img.getHeight(), false, 0.15f);
-				g.drawString("isEnded"+e.ended() != null?"Yes":"No",x,y+this.img.getHeight()+50);
-			}
+		float width = 4 * tileWidth/3;
+		float height = 2* tileHeight/3;
+		float x = Vals.SCREEN_WIDTH - tileWidth - width;
+		float y = tileHeight + height;
 
-		});
-		
+		for (PlayerEffect e : pe) {
+			if (!e.ended()) {
+				activeFor = e.getDuration() - e.getElapsed();
+				
+				//draw image
+				//TODO add map between effect and image for effect
+				img.draw(x, y, width, height);
+				
+				//draw timer bars
+				timerBarBase.draw(x, y + height + padding / 10, width, height / 8);
+				timerBarFull.draw(x, y + height + padding / 10, x + width * activeFor / e.getDuration(), y + height + padding / 10 + height / 8,
+						0, 0, timerBarFull.getWidth() * activeFor / e.getDuration(), timerBarFull.getHeight());
+			}
+			y = y + height + padding;
+		}
 	}
 
 }
