@@ -22,6 +22,7 @@ import game.core.input.InteractionType;
 import game.core.input.MovementType;
 import game.core.player.Player;
 import game.core.player.PlayerState;
+import game.core.player.action.PlayerActionSleep;
 import game.core.player.effect.PlayerEffectCoffeeBuzz;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -165,7 +166,6 @@ public class Play extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setFont(Vals.FONT_PLAY);
-		playerOverview = new PlayerContainer(world, localPlayerName, 0, 0);
 
 		// renders world
 		drawWorld();
@@ -277,7 +277,12 @@ public class Play extends BasicGameState {
 		Input input = gc.getInput();
 
 		effectOverview.updateEffects(world.getPlayer(localPlayerName));
-
+		
+		playerOverview = new PlayerContainer(world, localPlayerName, 0, 0);
+		if(world.getPlayer(localPlayerName).status.hasAction(PlayerActionSleep.class)){
+			playerOverview.toggleSleep(world.getPlayer(localPlayerName), true);
+		}
+		
 		if (exit) {
 			game.enterState(Vals.MENU_STATE);
 		}

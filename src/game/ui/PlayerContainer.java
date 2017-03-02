@@ -36,7 +36,6 @@ public class PlayerContainer {
 	private float x;
 	private float y;
 
-	private World world;
 	private List<Player> players;
 
 	/**
@@ -51,7 +50,6 @@ public class PlayerContainer {
 	 * @throws SlickException
 	 */
 	public PlayerContainer(World world, String localPlayerName, float x, float y) throws SlickException {
-		this.world = world;
 		players = world.getPlayers();
 		this.x = x;
 		this.y = y;
@@ -147,9 +145,13 @@ public class PlayerContainer {
 		}
 	}
 
-	public void toggleSleep(Player p) {
+	public void toggleSleep(Player p, boolean b) {
 		Animation a = playerAvatars[p.getHair()];
-		a.setCurrentFrame((a.getFrame() + 1) % a.getFrameCount());
+		if(b){
+			a.setCurrentFrame(1);
+		}else{
+			a.setCurrentFrame(0);
+		}
 	}
 
 	private Image[] setImages(Player p) throws SlickException {

@@ -9,6 +9,7 @@ import game.core.event.Events;
 import game.core.event.GameFinishedEvent;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
+import game.core.player.action.PlayerActionSleep;
 import game.core.player.effect.PlayerEffect;
 import game.core.player.effect.PlayerEffectCoffeeBuzz;
 import game.core.test.Test;
@@ -42,7 +43,7 @@ public class PlayTest extends Play {
 		World.world = w;
 		
 		//test game finished screen
-		Events.trigger(new GameFinishedEvent());
+//		Events.trigger(new GameFinishedEvent());
 	}
 
 	/**
@@ -84,7 +85,7 @@ public class PlayTest extends Play {
 		testPlayer.setProgress(80);
 		testPlayer.status.setAttribute(PlayerAttribute.FATIGUE, 0.2);
 		testPlayer.status.addEffect(new PlayerEffectCoffeeBuzz(15, testPlayer));
-		testPlayer.status.addEffect(new PlayerEffectCoffeeBuzz(9, testPlayer));
+//		testPlayer.status.addAction(new PlayerActionSleep(testPlayer));
 
 		Test.localPlayer = testPlayer.name;
 		w.addPlayer(testPlayer);
