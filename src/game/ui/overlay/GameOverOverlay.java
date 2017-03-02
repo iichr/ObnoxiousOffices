@@ -28,7 +28,7 @@ public class GameOverOverlay extends PopUpOverlay {
 		// characters available
 		float playerNumber = 0;
 		for (Player p : players) {
-			wg.drawCenter(g, p.name + "   " + (int) p.getProgress() + "%", x + width / 2, y + height / 2 + height / 8 * playerNumber, false, scale / 4);
+			wg.drawCenter(g, p.name + "   " + (int) p.getProgress() + "%", x + width / 2, y + height / 3 + (height / 9) * playerNumber, false, scale / 4);
 			playerNumber++;
 		}
 
