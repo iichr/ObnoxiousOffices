@@ -33,10 +33,11 @@ public class TileTypeSofa extends TileType {
     @Override
     public void onInteraction(Player player, Tile tile) {
         if(!World.world.playerAt(tile.location) && !player.status.hasState(PlayerState.sleeping)) {
+        	player.setLocation(tile.location);
+            player.setFacing(tile.facing);
             player.status.addAction(new PlayerActionSleep(player));
             player.status.addState(PlayerState.sleeping);
-            player.setLocation(tile.location);
-            player.setFacing(tile.facing);
+            
         }
     }
 
