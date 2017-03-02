@@ -1,3 +1,4 @@
+
 package game.ai.ruleBasedAI;
 
 import java.io.Serializable;
@@ -35,8 +36,3 @@ public class Rules implements Serializable{
 		return rules;
 	}
 }
-
-
-/*
-
-*/

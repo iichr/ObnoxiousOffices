@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import game.ai.AIPlayer;
 import game.ai.ruleBasedAI.WorkingMemory.activityValues;
 import game.core.player.PlayerStatus.PlayerAttribute;
-import game.core.world.World;
 
 public class FireRules implements Serializable{
 	
@@ -15,6 +14,8 @@ public class FireRules implements Serializable{
 	private Rules rules; // the rules 
 	private WorkingMemory wm; // the working memory of the player
 	private UpdateMemory uwm; // the update working memory object
+	
+	public boolean isMoving = false;
 	
 	public boolean hasHacked = false;
 
@@ -73,8 +74,11 @@ public class FireRules implements Serializable{
 					if (ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80) {
 						ai.easylogic.hackPlayer(wm.getWMplayer());
 						hasHacked = true; // change the flag to true
-					} else
-						ai.easylogic.goToCoffeeMachineAndBack(World.world, ai);
+					} else {
+						isMoving = true; // the ai is moving so we need to stop the update method
+						ai.easylogic.aiRefresh(ai);
+						isMoving = false; // the ai is not moving so we need to reset the update method
+					}
 					// if the monitored player is hacking/being hacked and
 					// hasn't progressed more than ai -
 				    // keep doing what you were doing
@@ -91,8 +95,11 @@ public class FireRules implements Serializable{
 					if (ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80) {
 						ai.easylogic.hackPlayer(wm.getWMplayer());
 						hasHacked = true; //change the flag to true
-					} else
-						ai.easylogic.goToCoffeeMachineAndBack(World.world, ai);
+					} else {
+						isMoving = true; // the ai is moving so we need to stop the update method
+						ai.easylogic.aiRefresh(ai);
+						isMoving = false; // the ai is not moving so we need to reset the update method
+					}
 					// if the monitored player is refreshing and has not progressed
 					// more - keep doing what you were doing
 				} else if (w.getIsRefreshing() == activityValues.Yes && w.getHasProgressedMore() == activityValues.No) {

@@ -43,8 +43,6 @@ public class AIPlayer extends Player {
 		status.setAttribute(PlayerAttribute.PRODUCTIVITY, 1.0);
 		status.initialising = false;
 		
-		// initialise
-		initialise();
 	}
 
 	// the logic for the AI player
@@ -67,6 +65,15 @@ public class AIPlayer extends Player {
 	// then start the fireRules() method for every one of them
 	@Override
 	public void update() {
+		
+		//run the initialise method so that the wm is being updated
+		initialise();
+		
+		while (fr.isMoving) {
+			// do nothing
+			//let the ai move freely, without firing any more rules
+		}
+		
 		// start firing rules
 		fr.fireRules();
 	}
