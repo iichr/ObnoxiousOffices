@@ -42,7 +42,7 @@ public class PlayTest extends Play {
 		World.world = w;
 		
 		//test game finished screen
-//		Events.trigger(new GameFinishedEvent());
+		Events.trigger(new GameFinishedEvent());
 	}
 
 	/**
