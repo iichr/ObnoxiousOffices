@@ -119,8 +119,7 @@ public class Player implements Updateable, Serializable {
      * @param progress
      */
     public void setProgress(double progress) {
-    	Double diff = progress - this.progress;
-        this.progress += diff;
+        this.progress = progress;
         if(this.progress >= 100) {
             onProgressDone();
             this.progress = 0;
