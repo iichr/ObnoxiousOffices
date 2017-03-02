@@ -73,6 +73,7 @@ public class Play extends BasicGameState {
 	// options toggles
 	private boolean options = false;
 	private boolean gameOver = false;
+	private boolean exit = false;
 
 	Music bgmusic;
 
@@ -252,7 +253,7 @@ public class Play extends BasicGameState {
 				changeAnimation(player);
 				playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
 				Tile tile = playerLocation.getTile();
-				if(tile.type.equals(TileType.CHAIR) && tile.facing.equals(Direction.NORTH)){
+				if (tile.type.equals(TileType.CHAIR) && tile.facing.equals(Direction.NORTH)) {
 					tileMap.get(tile.type).get(tile.facing)[0].draw(tileX, tileY, tileWidth, tileHeight);
 				}
 			}
@@ -284,6 +285,10 @@ public class Play extends BasicGameState {
 		Input input = gc.getInput();
 
 		effectOverview.updateEffects(world.getPlayer(localPlayerName));
+		
+		if(exit){
+			game.enterState(Vals.MENU_STATE);
+		}
 
 		input.clearKeyPressedRecord();
 	}
@@ -339,6 +344,8 @@ public class Play extends BasicGameState {
 						.addEffect(new PlayerEffectCoffeeBuzz(10, world.getPlayer(localPlayerName)));
 				break;
 			}
+		}else{
+			exit = true;
 		}
 	}
 

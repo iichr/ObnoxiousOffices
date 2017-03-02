@@ -14,7 +14,7 @@ import game.core.world.Location;
  * @author Atanas K. Harbaliev Created on 18/01/2017
  */
 
-public class AIPlayer extends Player {
+public class AIPlayer extends Player {;
 
 	// the working memory for a given player
 	public WorkingMemory wm;
@@ -42,7 +42,9 @@ public class AIPlayer extends Player {
 		status.setAttribute(PlayerAttribute.FATIGUE, 0.85);
 		status.setAttribute(PlayerAttribute.PRODUCTIVITY, 1.0);
 		status.initialising = false;
-		
+
+		// initialise everything
+		initialise();
 	}
 
 	// the logic for the AI player
@@ -51,7 +53,7 @@ public class AIPlayer extends Player {
 	public void initialise() {
 		// get the player who's closest to winning the game
 		Player player = easylogic.closestToWin();
-		
+
 		wm = new WorkingMemory(player); // create the working memory
 		// create the object to update working memory
 		uwm = new UpdateMemory(this, wm);
@@ -65,16 +67,17 @@ public class AIPlayer extends Player {
 	// then start the fireRules() method for every one of them
 	@Override
 	public void update() {
-		
-		//run the initialise method so that the wm is being updated
-		initialise();
-		
-		while (fr.isMoving) {
-			// do nothing
-			//let the ai move freely, without firing any more rules
+
+		// get the player who's closest to winning the game
+		Player player = easylogic.closestToWin();
+
+		wm = new WorkingMemory(player); // create the working memory
+
+		if (!fr.isMoving) {
+			Thread fire = new Thread(() -> {
+				fr.fireRules();
+			});
+			fire.start();
 		}
-		
-		// start firing rules
-		fr.fireRules();
 	}
 }

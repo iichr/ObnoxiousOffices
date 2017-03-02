@@ -142,89 +142,76 @@ public class LogicEasy implements Logic, Serializable {
 
 		findCoffeeMachine(w, p);
 
-		Thread move = new Thread(() -> {
-			// go through the array list of i, j coords
-			// to the coffee machine
-			for (int i = 0; i < toCM.size(); i++) {
+		// go through the array list of i, j coords
+		// to the coffee machine
+		for (int i = 0; i < toCM.size(); i++) {
 
-				// check if you are on the last element, if true - don't do the
-				// moving, just the facing
-				if (toCM.size() - i == 1)
-					figureOutFacing(p, toCM.get(i));
-				else {
-					// get the right facing
-					figureOutFacing(p, toCM.get(i));
+			// check if you are on the last element, if true - don't do the
+			// moving, just the facing
+			if (toCM.size() - i == 1)
+				figureOutFacing(p, toCM.get(i));
+			else {
+				// get the right facing
+				figureOutFacing(p, toCM.get(i));
 
-					// make a move
-					p.moveForwards();
-				}
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				// make a move
+				p.moveForwards();
 			}
-
-			// interact with the tile
-			p.status.setAttribute(PlayerAttribute.FATIGUE, 0);
-//			Location l = p.getLocation().forward(p.getFacing());
-//			System.out.println(l.getTile().type);
-//			l.getTile().onInteraction(p);
-			
-			System.out.println(p.status.getAttribute(PlayerAttribute.FATIGUE));
-
-			while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
-//				System.out.println("doing nothing");
-				// do nothing
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			
-			// back to the dest
-			toTheDesk(w, p);
-		});
+		}
 
-		// start the thread
-		move.start();
+		// interact with the tile
+		p.status.setAttribute(PlayerAttribute.FATIGUE, 0);
+		// Location l = p.getLocation().forward(p.getFacing());
+		// System.out.println(l.getTile().type);
+		// l.getTile().onInteraction(p);
+
+		while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
+			// do nothing
+		}
+
+		// back to the dest
+		toTheDesk(w, p);
 	}
 
 	@Override
 	public void goToBedAndBack(World w, Player p) {
 
-		Thread move = new Thread(() -> {
-			// go through the array list of i, j coords
-			// to the sofa
-			for (int i = 0; i < toBed.size(); i++) {
+		// go through the array list of i, j coords
+		// to the sofa
+		for (int i = 0; i < toBed.size(); i++) {
 
-				// check if you are on the last element, if true - don't do the
-				// moving, just the facing
-				if (toCM.size() - i == 1)
-					figureOutFacing(p, toCM.get(i));
-				else {
-					// get the right facing
-					figureOutFacing(p, toCM.get(i));
+			// check if you are on the last element, if true - don't do the
+			// moving, just the facing
+			if (toCM.size() - i == 1)
+				figureOutFacing(p, toCM.get(i));
+			else {
+				// get the right facing
+				figureOutFacing(p, toCM.get(i));
 
-					// make a move
-					p.moveForwards();
+				// make a move
+				p.moveForwards();
 
-					try {
-						Thread.sleep(250);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+				try {
+					Thread.sleep(250);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
+		}
 
-			// interact with the tile
-			Location l = p.getLocation().forward(p.getFacing());
-			l.getTile().onInteraction(p);
+		// interact with the tile
+		Location l = p.getLocation().forward(p.getFacing());
+		l.getTile().onInteraction(p);
 
-			// go back to your desk
-			while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
-				// do nothing
-			}
-		});
-
-		// start the thread
-		move.start();
+		// go back to your desk
+		while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
+			// do nothing
+		}
 
 		// back to the desk
 		toTheDesk(w, p);
@@ -232,51 +219,45 @@ public class LogicEasy implements Logic, Serializable {
 
 	@Override
 	public void toTheDesk(World w, Player p) {
+		System.out.println("going to desk");
+		// check whether the player is at the coffee machine or sofa
+		if (toCM.get(toCM.size() - 1) == fromCM.get(0)) {
+			System.out.println("going from cm");
+			// if at the coffee machine, go through the array list of i, j
+			// coords
+			// to the desk from the coffee machine
+			for (int i = 2; i < fromCM.size(); i++) {
 
-		Thread move = new Thread(() -> {
-			// check whether the player is at the coffee machine or sofa
-			if (toCM.get(toCM.size() - 1) == fromCM.get(0)) {
+				// get the right facing
+				figureOutFacing(p, fromCM.get(i));
 
-				// if at the coffee machine, go through the array list of i, j
-				// coords
-				// to the desk from the coffee machine
-				for (int i = 2; i < fromCM.size(); i++) {
-
-					// get the right facing
-					figureOutFacing(p, fromCM.get(i));
-
-					// make a move
-					p.moveForwards();
-				}
-			} else {
-
-				// if at the sofa, go through the array list of i, j coords
-				// to the desk from the sofa
-				for (int i = 2; i < fromBed.size(); i++) {
-
-					// get the right facing
-					figureOutFacing(p, fromBed.get(i));
-
-					// make a move
-					p.moveForwards();
-				}
-
+				// make a move
+				p.moveForwards();
 			}
-			try {
-				Thread.sleep(250);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		} else {
+
+			// if at the sofa, go through the array list of i, j coords
+			// to the desk from the sofa
+			for (int i = 2; i < fromBed.size(); i++) {
+
+				// get the right facing
+				figureOutFacing(p, fromBed.get(i));
+
+				// make a move
+				p.moveForwards();
 			}
 
-			// interact with the tile
-			Location l = p.getLocation().forward(p.getFacing());
-			l.getTile().onInteraction(p);
+		}
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		});
-
-		// start the thread
-		move.start();
+		// interact with the tile
+		Location l = p.getLocation().forward(p.getFacing());
+		l.getTile().onInteraction(p);
 	}
 
 	@Override
