@@ -231,6 +231,13 @@ public class LogicEasy implements Logic, Serializable {
 
 				// make a move
 				p.moveForwards();
+				
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		} else {
 
@@ -243,14 +250,15 @@ public class LogicEasy implements Logic, Serializable {
 
 				// make a move
 				p.moveForwards();
+				
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
-		}
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
 		// interact with the tile
