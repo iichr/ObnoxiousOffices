@@ -158,17 +158,15 @@ public class LogicEasy implements Logic, Serializable {
 				p.moveForwards();
 			}
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 
 		// interact with the tile
-		p.status.setAttribute(PlayerAttribute.FATIGUE, 0);
-		// Location l = p.getLocation().forward(p.getFacing());
-		// System.out.println(l.getTile().type);
-		// l.getTile().onInteraction(p);
+		 Location l = p.getLocation().forward(p.getFacing());
+		 l.getTile().onInteraction(p);
 
 		while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
 			// do nothing
@@ -197,7 +195,7 @@ public class LogicEasy implements Logic, Serializable {
 				p.moveForwards();
 
 				try {
-					Thread.sleep(250);
+					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -249,7 +247,7 @@ public class LogicEasy implements Logic, Serializable {
 
 		}
 		try {
-			Thread.sleep(250);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
