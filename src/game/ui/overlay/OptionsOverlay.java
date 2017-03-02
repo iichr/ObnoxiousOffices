@@ -15,8 +15,8 @@ public class OptionsOverlay extends PopUpOverlay {
 		 background.draw(x, y, width, height);
 
 		wg.drawCenter(g, "CLOSE", x + width / 2, y + height / 2 - height/6, false, scale / 2);
-		wg.drawCenter(g, "TOGGLE_SOUND", x + width / 2, y + height / 2, false, scale / 2);
-		wg.drawCenter(g, "TOGGLE_FULLSCREEN", x + width / 2, y + height / 2 + height/6, false, scale / 2);
+		wg.drawCenter(g, "TOGGLE SOUND", x + width / 2, y + height / 2, false, scale / 2);
+		wg.drawCenter(g, "TOGGLE FULLSCREEN", x + width / 2, y + height / 2 + height/6, false, scale / 2);
 		
 	}
 }
