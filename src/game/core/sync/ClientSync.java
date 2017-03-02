@@ -88,7 +88,7 @@ public class ClientSync {
     }
     
     private static void onPlayerProgressUpdate(PlayerProgressUpdateEvent event) {
-        getPlayer(event.playerName).setProgress(event.change);
+        getPlayer(event.playerName).setProgress(event.newVal);
     }
 
     private static void onPlayerEffectEnded(PlayerEffectEndedEvent event) {
