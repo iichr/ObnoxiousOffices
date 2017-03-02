@@ -3,6 +3,7 @@ package game.ui.states;
 import java.util.HashMap;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -27,11 +28,14 @@ import game.core.player.effect.PlayerEffectCoffeeBuzz;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
+import game.core.world.tile.MetaTile;
 import game.core.world.tile.Tile;
 import game.core.world.tile.type.TileType;
+import game.core.world.tile.type.TileTypeComputer;
 import game.ui.PlayerOverview;
 import game.ui.PlayerInfo;
 import game.ui.components.Effect;
+import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 import game.ui.overlay.GameOverOverlay;
@@ -211,7 +215,15 @@ public class Play extends BasicGameState {
 
 				// find out what to render at this location
 				Direction facing = world.getTile(x, y, 0).facing;
-				TileType type = world.getTile(x, y, 0).type;
+				Tile found = world.getTile(x,y,0);
+				TileType type = found.type;
+				if(type.equals(TileType.COMPUTER) && showOverview){
+					String ownerName = TileTypeComputer.getOwningPlayer((MetaTile) found);
+					if (ownerName.equals(localPlayerName)) {
+						Image identifier = new Image(ImageLocations.PLAYER_IDENTIFIER, false, Image.FILTER_NEAREST);
+						identifier.draw(tileX, tileY + tileHeight/4, tileWidth, tileHeight/8, Color.blue);
+					}
+				}
 				int mtID = world.getTile(x, y, 0).multitileID;
 				if (mtID == -1) {
 					mtID++;
