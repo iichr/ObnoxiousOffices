@@ -69,35 +69,32 @@ public class ServerSync {
         }
     }
 
-	private static void processMovement(InputType type, Player player) {
-		Direction direction = null;
-		Location loc = player.getLocation();
-		if (type instanceof InputTypeMovement) {
-			switch (((InputTypeMovement) type).type) {
-			case MOVE_UP:
-				direction = Direction.NORTH;
-				break;
-			case MOVE_DOWN:
-				direction = Direction.SOUTH;
-				break;
-			case MOVE_LEFT:
-				direction = Direction.WEST;
-				break;
-			case MOVE_RIGHT:
-				direction = Direction.EAST;
-				break;
-			}
-		}
-		player.setFacing(direction);
-		Location forwards = loc.forward(direction);
-		Tile tile;
-		if (forwards.checkBounds() && (tile = forwards.getTile()).type.canWalkOver()) {
-			player.status.getActions().stream().filter(PlayerAction::cancelsOnMove)
-					.forEach(player.status::cancelAction);
-			player.status.getStates().stream().filter(PlayerState::cancelsOnMove).forEach(player.status::removeState);
-			player.setLocation(forwards);
-			tile.onWalkOver(player);
-		}
-	}
+    private static void processMovement(InputType type, Player player) {
+        Direction direction = null;
+        Location loc = player.getLocation();
+        if(type instanceof InputTypeMovement) {
+            switch (((InputTypeMovement) type).type) {
+                case MOVE_UP:
+                    direction = Direction.NORTH;
+                    break;
+                case MOVE_DOWN:
+                    direction = Direction.SOUTH;
+                    break;
+                case MOVE_LEFT:
+                    direction = Direction.WEST;
+                    break;
+                case MOVE_RIGHT:
+                    direction = Direction.EAST;
+                    break;
+            }
+        }
+        player.setFacing(direction);
+        Location forwards = loc.forward(direction);
+        Tile tile;
+        if(forwards.checkBounds() && (tile = forwards.getTile()).type.canWalkOver()) {
+            player.setLocation(forwards);
+            tile.onWalkOver(player);
+        }
+    }
 
 }

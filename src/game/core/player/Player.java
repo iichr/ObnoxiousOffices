@@ -6,6 +6,7 @@ import game.core.event.GameFinishedEvent;
 import game.core.event.player.PlayerMovedEvent;
 import game.core.event.player.PlayerProgressUpdateEvent;
 import game.core.event.player.PlayerRotatedEvent;
+import game.core.player.action.PlayerAction;
 import game.core.world.Direction;
 import game.core.world.Location;
 
@@ -69,8 +70,12 @@ public class Player implements Updateable, Serializable {
      * @param location
      */
     public void setLocation(Location location) {
-        this.location = location;
-        Events.trigger(new PlayerMovedEvent(location.coords, this.name), true);
+        if(!this.location.equals(location)) {
+            status.getActions().stream().filter(PlayerAction::cancelsOnMove).forEach(status::cancelAction);
+            status.getStates().stream().filter(PlayerState::cancelsOnMove).forEach(status::removeState);
+            this.location = location;
+            Events.trigger(new PlayerMovedEvent(location.coords, this.name), true);
+        }
     }
 
     public Location getLocation() {
