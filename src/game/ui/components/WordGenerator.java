@@ -19,12 +19,13 @@ public class WordGenerator {
 		//TODO extra characters and bold versions
 		for (char c = 'A'; c <= 'Z'; c++) {
 			wg.put(c, new Image("/res/alphabets/" + c + ".png"));
-			wg.put((char) (c + 32), new Image("/res/alphabets/" + c + ".png"));
+			wg.put((char) (c + 32), new Image("/res/alphabets/normal/" + c + ".png"));
 		}
 		for (char c = '0'; c <= '9'; c++) {
-			wg.put(c, new Image("/res/alphabets/" + c + ".png"));
+			wg.put(c, new Image("/res/alphabets/normal/" + c + ".png"));
 		}
-		wg.put('_', new Image("/res/alphabets/_.png"));
+		wg.put('_', new Image("/res/alphabets/normal/_.png"));
+		wg.put((char)32, new Image ("/res/alphabets/Space.png"));
 	}
 
 	/**
