@@ -1,5 +1,6 @@
 package game.ui.overlay;
 
+import java.util.List;
 import java.util.Set;
 
 import org.newdawn.slick.Graphics;
@@ -9,9 +10,9 @@ import game.core.player.Player;
 
 public class GameOverOverlay extends PopUpOverlay {
 
-	private Set<Player> players;
+	private List<Player> players;
 
-	public GameOverOverlay(Set<Player> players) throws SlickException {
+	public GameOverOverlay(List<Player> players) throws SlickException {
 		super();
 		this.players = players;
 	}

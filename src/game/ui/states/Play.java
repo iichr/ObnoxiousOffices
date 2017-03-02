@@ -1,7 +1,7 @@
 package game.ui.states;
 
 import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -67,7 +67,6 @@ public class Play extends BasicGameState {
 	private OptionsOverlay optionsOverlay;
 	private GameOverOverlay gameOverOverlay;
 
-	private Image coffee;
 	boolean showOverview = false;
 
 	// options toggles
@@ -115,7 +114,6 @@ public class Play extends BasicGameState {
 
 		// add player animations
 		animatePlayers(world.getPlayers());
-		storePreviousLocations(world.getPlayers());
 
 		// get the tileMap
 		SpriteLocations sp = new SpriteLocations();
@@ -157,16 +155,10 @@ public class Play extends BasicGameState {
 	 * 
 	 * @throws SlickException
 	 */
-	private void animatePlayers(Set<Player> players) throws SlickException {
+	private void animatePlayers(List<Player> players) throws SlickException {
 		for (Player p : players) {
 			PlayerAnimation animation = new PlayerAnimation(p.getHair(), p.getFacing());
 			playerMap.put(p, animation);
-		}
-	}
-
-	private void storePreviousLocations(Set<Player> players) throws SlickException {
-		for (Player p : players) {
-			Player pOld = new Player(p.name, p.getFacing(), p.getLocation());
 		}
 	}
 
@@ -244,7 +236,7 @@ public class Play extends BasicGameState {
 	 */
 	private void drawPlayers(int x, int y, float tileX, float tileY) {
 		// get players
-		Set<Player> players = world.getPlayers();
+		List<Player> players = world.getPlayers();
 
 		// render the players
 		for (Player player : players) {
@@ -285,8 +277,8 @@ public class Play extends BasicGameState {
 		Input input = gc.getInput();
 
 		effectOverview.updateEffects(world.getPlayer(localPlayerName));
-		
-		if(exit){
+
+		if (exit) {
 			game.enterState(Vals.MENU_STATE);
 		}
 
@@ -344,7 +336,7 @@ public class Play extends BasicGameState {
 						.addEffect(new PlayerEffectCoffeeBuzz(10, world.getPlayer(localPlayerName)));
 				break;
 			}
-		}else{
+		} else {
 			exit = true;
 		}
 	}

@@ -1,6 +1,6 @@
 package game.ui;
 
-import java.util.Set;
+import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -16,7 +16,7 @@ import game.ui.components.WordGenerator;
 import game.ui.interfaces.ImageLocations;
 
 public class PlayerInfo {
-	private Set<Player> players;
+	private List<Player> players;
 	private String localPlayerName;
 
 	private float tileWidth;
@@ -35,7 +35,7 @@ public class PlayerInfo {
 		drinkDialogue = new Image(ImageLocations.DRINK_DIALOGUE, false, Image.FILTER_NEAREST);
 		sleepDialogue = new Image(ImageLocations.SLEEP_DIALOGUE, false, Image.FILTER_NEAREST);
 		playerIdentifier = new Image(ImageLocations.PLAYER_IDENTIFIER, false, Image.FILTER_NEAREST);
-		wg=new WordGenerator();
+		wg = new WordGenerator();
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class PlayerInfo {
 
 			// draw player names
 			wg.draw(g, p.name, (playerX - offsetX), (playerY - offsetY), false, 0.1f);
-			//g.drawString(p.name, (playerX - offsetX), (playerY - offsetY));
+			// g.drawString(p.name, (playerX - offsetX), (playerY - offsetY));
 
 			if (p.name.equals(localPlayerName)) {
 				// add identifier for player

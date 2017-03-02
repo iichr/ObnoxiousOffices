@@ -1,6 +1,6 @@
 package game.ui;
 
-import java.util.Set;
+import java.util.List;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -37,7 +37,7 @@ public class PlayerContainer {
 	private float y;
 
 	private World world;
-	private Set<Player> players;
+	private List<Player> players;
 
 	/**
 	 * A constructor for the player status container
@@ -110,11 +110,11 @@ public class PlayerContainer {
 			float yPos = this.y + ySize * (i + 1);
 			float progress = (float) (playerProgress[i] / 100);
 			float fatigue = (float) (playerFatigue[i] / 1);
-			float xPad = xSize/2;
-			float yPad = ySize/6;
+			float xPad = xSize / 2;
+			float yPad = ySize / 6;
 
 			// player avatar
-			playerAvatars[i].draw(xPos, yPos + ySize/6, 2*ySize /3, 2*ySize /3);
+			playerAvatars[i].draw(xPos, yPos + ySize / 6, 2 * ySize / 3, 2 * ySize / 3);
 			g.drawString(playerNames[i], xPos + xPad + xSize, yPos);
 
 			// set values
