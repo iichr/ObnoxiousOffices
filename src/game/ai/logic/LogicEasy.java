@@ -3,6 +3,7 @@ package game.ai.logic;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import game.ai.AIPlayer;
@@ -289,7 +290,7 @@ public class LogicEasy implements Logic, Serializable {
 	@Override
 	public Player closestToWin() {
 		// get all players from the world
-		Set<Player> players = World.world.getPlayers();
+		List<Player> players = World.world.getPlayers();
 
 		// progress of the current player we are looking at
 		double currentPlayerProgress;
