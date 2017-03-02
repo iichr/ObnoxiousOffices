@@ -57,8 +57,9 @@ public class TileTypeComputer extends TileTypeAction {
     }
 
     @Override
-        return new PlayerActionWork(player);
     protected PlayerAction getAction(Player player, Tile tile) {
+        String owner = getOwningPlayer((MetaTile) tile);
+        return owner.equals(player.name) ? new PlayerActionWork(player) : new PlayerActionHack(player, World.world.getPlayer(owner));
     }
 
     @Override
