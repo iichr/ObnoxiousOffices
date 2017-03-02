@@ -74,10 +74,10 @@ public class Play extends BasicGameState {
 
 	boolean showOverview = false;
 
-	// options toggles
-	private boolean options = false;
-	private boolean gameOver = false;
-	private boolean exit = false;
+	// boolean flags
+	protected boolean options;
+	protected boolean gameOver;
+	protected boolean exit;
 
 	Music bgmusic;
 
@@ -114,6 +114,11 @@ public class Play extends BasicGameState {
 	public void playSetup() {
 		this.world = World.world;
 		this.localPlayerName = Player.localPlayerName;
+		
+		//set boolean flags
+		options = false;
+		gameOver = false;
+		exit = false;
 	}
 
 	@Override
