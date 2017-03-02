@@ -60,7 +60,7 @@ public class AIPlayer extends Player {;
 	// then start the fireRules() method for every one of them
 	@Override
 	public void update() {
-		status.update(this);
+		super.update();
 
 		// get the player who's closest to winning the game
 		Player player = easylogic.closestToWin();
