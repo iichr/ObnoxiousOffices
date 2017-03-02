@@ -40,7 +40,6 @@ public class FireRules implements Serializable{
 		// while the game isn't over TODO: find a better solution, maybe with
 		// GameOver event
 		if (ai.getProgress() < 100 && ai.status.getAttribute(PlayerAttribute.FATIGUE) < 0.8) {
-			System.out.println("ruling");
 
 			// update the working memory
 			uwm.updateInfo();

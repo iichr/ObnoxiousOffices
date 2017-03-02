@@ -35,13 +35,6 @@ public class AIPlayer extends Player {;
 	public AIPlayer(String name, Direction facing, Location location) {
 		super(name, facing, location);
 		isAI = true;
-		status.initialising = true;
-		// set bot attributes
-		// set the FATIGUE to 0.85 just for testing the demo for week 6
-		// TODO: change FATIGUE TO 0.0, once the presentation is over
-		status.setAttribute(PlayerAttribute.FATIGUE, 0.85);
-		status.setAttribute(PlayerAttribute.PRODUCTIVITY, 1.0);
-		status.initialising = false;
 
 		// initialise everything
 		initialise();
@@ -67,6 +60,7 @@ public class AIPlayer extends Player {;
 	// then start the fireRules() method for every one of them
 	@Override
 	public void update() {
+		status.update(this);
 
 		// get the player who's closest to winning the game
 		Player player = easylogic.closestToWin();
