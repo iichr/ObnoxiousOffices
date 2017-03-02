@@ -29,7 +29,7 @@ import game.core.world.Location;
 import game.core.world.World;
 import game.core.world.tile.Tile;
 import game.core.world.tile.type.TileType;
-import game.ui.PlayerContainer;
+import game.ui.PlayerOverview;
 import game.ui.PlayerInfo;
 import game.ui.components.Effect;
 import game.ui.interfaces.SpriteLocations;
@@ -53,7 +53,7 @@ public class Play extends BasicGameState {
 	private HashMap<TileType, HashMap<Direction, Image[]>> tileMap;
 
 	// status container
-	private PlayerContainer playerOverview;
+	private PlayerOverview playerOverview;
 
 	// actionSelector
 	private ActionSelector actionSelector;
@@ -125,6 +125,9 @@ public class Play extends BasicGameState {
 
 		// Effect container
 		effectOverview = new Effect(tileWidth, tileHeight);
+		
+		//player overview
+		playerOverview = new PlayerOverview(localPlayerName, 0, 0);
 
 		// popUps
 		optionsOverlay = new OptionsOverlay();
@@ -275,12 +278,13 @@ public class Play extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
+		Player localPlayer = world.getPlayer(localPlayerName);
 
-		effectOverview.updateEffects(world.getPlayer(localPlayerName));
+		effectOverview.updateEffects(localPlayer);
 		
-		playerOverview = new PlayerContainer(world, localPlayerName, 0, 0);
-		if(world.getPlayer(localPlayerName).status.hasAction(PlayerActionSleep.class)){
-			playerOverview.toggleSleep(world.getPlayer(localPlayerName), true);
+		playerOverview.updateContainer(world.getPlayers());
+		if(localPlayer.status.hasAction(PlayerActionSleep.class)){
+			playerOverview.toggleSleep(localPlayer, true);
 		}
 		
 		if (exit) {
