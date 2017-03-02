@@ -40,7 +40,6 @@ public class FireRules implements Serializable{
 		// while the game isn't over TODO: find a better solution, maybe with
 		// GameOver event
 		if (ai.getProgress() < 100 && ai.status.getAttribute(PlayerAttribute.FATIGUE) < 0.8) {
-			System.out.println("ruling");
 
 			// update the working memory
 			uwm.updateInfo();
@@ -109,8 +108,10 @@ public class FireRules implements Serializable{
 		}
 		// if the ai is being too fatigued, go refresh
 		if (ai.status.getAttribute(PlayerAttribute.FATIGUE) > 0.8) {
-			System.out.println("what...");
+
+			isMoving = true; // the ai is moving so we need to stop the update method
 			ai.easylogic.aiRefresh(ai);
+			isMoving = false; // the ai is not moving so we need to reset the update method
 			hasHacked = true; //change the flag to true
 		}
 	}
