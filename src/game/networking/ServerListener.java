@@ -134,7 +134,7 @@ public class ServerListener extends Thread {
 						System.out.println("recieved: " + eventObject);
 						Events.trigger(eventObject);
 					} catch (Exception e) {
-						e.printStackTrace();
+						//e.printStackTrace();
 					}
 				}
 			}
