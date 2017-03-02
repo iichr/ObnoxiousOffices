@@ -217,10 +217,8 @@ public class LogicEasy implements Logic, Serializable {
 
 	@Override
 	public void toTheDesk(World w, Player p) {
-		System.out.println("going to desk");
 		// check whether the player is at the coffee machine or sofa
 		if (toCM.get(toCM.size() - 1) == fromCM.get(0)) {
-			System.out.println("going from cm");
 			// if at the coffee machine, go through the array list of i, j
 			// coords
 			// to the desk from the coffee machine
@@ -287,9 +285,7 @@ public class LogicEasy implements Logic, Serializable {
 		double highestProgr = -1; // progress of the player with highest
 									// progress
 
-		System.out.println(players);
 		for (Player player : players) {
-
 			// get the progress of the current player in the set double
 			currentPlayerProgress = player.getProgress();
 			// compare the work each player has completed
