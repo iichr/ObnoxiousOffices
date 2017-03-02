@@ -58,8 +58,8 @@ public class World implements Updateable, Serializable {
         if(players.size() < maxPlayers) players.add(player);
     }
 
-    public Set<Player> getPlayers() {
-        return players.stream().collect(Collectors.toSet());
+    public List<Player> getPlayers() {
+        return players.stream().collect(Collectors.toList());
     }
 
     @Override
