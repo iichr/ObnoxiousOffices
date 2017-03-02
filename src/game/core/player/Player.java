@@ -144,7 +144,7 @@ public class Player implements Updateable, Serializable {
      * Add the standard amount of progress (using multiplier)
      */
     public void addProgress() {
-        double toAdd = 1.0 * getProgressMultiplier();
+        double toAdd = 1.0;// * getProgressMultiplier();
         setProgress(progress + toAdd);
     }
 
