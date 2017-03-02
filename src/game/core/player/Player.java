@@ -21,10 +21,9 @@ public class Player implements Updateable, Serializable {
     private double progress = 0;
     private Direction facing;
     private Location location;
-    
     private int hair = BLONDE;
-
     public boolean isAI = false;
+    private int progressUpdates = 0;
     
     public static String localPlayerName = "";
     public static int BLONDE = 0;
@@ -32,6 +31,7 @@ public class Player implements Updateable, Serializable {
     public static int DARK = 2;
     public static int PINK = 3;
     public int timesDrunkCoffee = 0;
+    public static final int PROGRESS_UPDATE_THRESHOLD = 3;
 
     public Player(String name, Direction facing, Location location) {
         this.name = name;
@@ -119,13 +119,18 @@ public class Player implements Updateable, Serializable {
      * @param progress
      */
     public void setProgress(double progress) {
-        double diff = progress - this.progress;
-        this.progress += progress;
-        if(this.progress >= 100) {
-            onProgressDone();
-            this.progress = 0;
+        if(progress != this.progress) {
+            if (progress < 0) progress = 0;
+            this.progress = progress;
+            if (this.progress >= 100) {
+                onProgressDone();
+                this.progress = 0;
+            }
+            if(++progressUpdates >= PROGRESS_UPDATE_THRESHOLD) {
+                Events.trigger(new PlayerProgressUpdateEvent(this.progress, this.name), true);
+                progressUpdates = 0;
+            }
         }
-        Events.trigger(new PlayerProgressUpdateEvent(diff, this.name), true);
     }
 
     public double getProgress() {
@@ -144,7 +149,7 @@ public class Player implements Updateable, Serializable {
      * Add the standard amount of progress (using multiplier)
      */
     public void addProgress() {
-        double toAdd = 1.0 * getProgressMultiplier();
+        double toAdd = 1.0;// * getProgressMultiplier();
         setProgress(progress + toAdd);
     }
 

@@ -58,8 +58,8 @@ public class World implements Updateable, Serializable {
         if(players.size() < maxPlayers) players.add(player);
     }
 
-    public Set<Player> getPlayers() {
-        return players.stream().collect(Collectors.toSet());
+    public List<Player> getPlayers() {
+        return players.stream().collect(Collectors.toList());
     }
 
     @Override
@@ -203,5 +203,9 @@ public class World implements Updateable, Serializable {
 
     public boolean playerAt(Location location) {
         return players.stream().map(Player::getLocation).anyMatch(l -> l.equals(location));
+    }
+    
+    public int getMaxPlayers(){
+    	return maxPlayers;
     }
 }

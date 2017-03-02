@@ -30,7 +30,7 @@ public class PlayerStatus implements Serializable {
     public final Player player;
     public boolean initialising = true;
 
-    public static double FATIGUE_INCREASE = 0.01;
+    public static double FATIGUE_INCREASE = 0.001;
 
     public PlayerStatus(Player player) {
         this.player = player;
