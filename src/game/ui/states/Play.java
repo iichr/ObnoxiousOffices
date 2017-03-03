@@ -8,6 +8,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.font.effects.ColorEffect;
@@ -196,7 +197,30 @@ public class Play extends BasicGameState {
 		}
 		
 		if (playingHangman){
-			//TODO update hangman variables
+			
+			// listen only for alphabetical characters
+			input.addKeyListener(new KeyListener() {
+				@Override
+				public void keyPressed(int key, char c) {
+					// only allow English chars (don't use isAlphabetic)
+					if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+						// pass to the minigame.
+					}
+					
+				}
+				@Override
+				public void keyReleased(int key, char c) {
+				}
+				// just because we must :( 
+				@Override
+				public void inputEnded() {}
+				@Override
+				public void inputStarted() {}
+				@Override
+				public boolean isAcceptingInput() {return true;}
+				@Override
+				public void setInput(Input input) {}
+			});
 		}
 		
 		if (exit) {
@@ -226,13 +250,13 @@ public class Play extends BasicGameState {
 
 		if (gameOver) {
 			gameOverOverlay.render(g);
-		}else if(options){
+		} else if(options){
 			optionsOverlay.render(g);
-		}else if(playingHangman){
+		} else if(playingHangman){
 			//TODO render hangman
-		}else if(playingPong){
+		} else if(playingPong){
 			//TODO render pong
-		}else if (showOverview) {
+		} else if (showOverview) {
 			playerOverview.render(g);
 		}
 	}
