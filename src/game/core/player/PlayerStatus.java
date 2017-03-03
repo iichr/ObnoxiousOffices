@@ -11,6 +11,7 @@ import game.core.event.player.effect.PlayerEffectAddedEvent;
 import game.core.event.player.effect.PlayerEffectEndedEvent;
 import game.core.player.action.PlayerAction;
 import game.core.player.effect.PlayerEffect;
+import game.core.player.effect.PlayerEffectCoffeeBuzz;
 
 import java.io.Serializable;
 import java.util.*;
@@ -167,6 +168,10 @@ public class PlayerStatus implements Serializable {
 
     public Set<PlayerState> getStates() {
         return states.stream().collect(Collectors.toSet());
+    }
+
+    public PlayerEffect getEffect(Class<? extends PlayerEffect> playerEffectClass) {
+        return getEffects().stream().filter(effect -> effect.getClass() == playerEffectClass).findFirst().get();
     }
 
     public enum PlayerAttribute {
