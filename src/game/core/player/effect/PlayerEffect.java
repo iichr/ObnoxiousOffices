@@ -21,13 +21,8 @@ public abstract class PlayerEffect implements Updateable, Serializable {
     }
 
     public void update() {
-        if(!expired) {
-            if (elapsed++ >= duration) expired = true;
-            else update(player);
-        }
+        if(!expired) if (elapsed++ >= duration) expired = true;
     }
-
-    protected abstract void update(Player player);
 
     public int getDuration() {
         return duration;
