@@ -51,12 +51,11 @@ public class PlayerInfo {
 
 			float playerX = pLocation.coords.x * tileWidth;
 			float playerY = (pLocation.coords.y + 1) * (tileHeight / 2);
-			float offsetX = (g.getFont().getWidth(p.name) - tileWidth) / 2;
-			float offsetY = (g.getFont().getHeight(p.name) + 5);
+			float offsetX = tileWidth / 2;
+			float offsetY = tileHeight / 8;
 
 			// draw player names
-			wg.draw(g, p.name, (playerX - offsetX), (playerY - offsetY), false, 0.1f);
-			// g.drawString(p.name, (playerX - offsetX), (playerY - offsetY));
+			wg.drawCenter(g, p.name, (playerX + offsetX), (playerY - offsetY), true, 0.1f);
 
 			if (p.name.equals(localPlayerName)) {
 				// add identifier for player

@@ -96,7 +96,7 @@ public class WordGenerator {
 		for(int length = 0; length < text.length(); length++) {
 			Image img = this.get(text.charAt(length), bold);
 			try {
-				g.drawImage(img.getScaledCopy(scale), f - totalX/2, h - totalY/2, Color.black);
+				g.drawImage(img.getScaledCopy(scale), f - totalX/2, h - totalY/2);
 			} catch (NullPointerException e) {
 				System.err.println("The Player name contains invalid symbol that doesn't exist in the HashMap");
 			}
