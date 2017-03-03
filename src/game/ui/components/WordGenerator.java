@@ -24,8 +24,19 @@ public class WordGenerator {
 		for (char c = '0'; c <= '9'; c++) {
 			wg.put(c, new Image("/res/alphabets/normal/" + c + ".png"));
 		}
+		for (char c = 'A'; c <= 'Z'; c++) {
+			wgB.put(c, new Image("/res/alphabets/bold/" + c + ".png"));
+			wgB.put((char) (c + 32), new Image("/res/alphabets/bold/" + c + ".png"));
+		}
+		for (char c = '0'; c <= '9'; c++) {
+			wgB.put(c, new Image("/res/alphabets/bold/" + c + ".png"));
+		}
 		wg.put('_', new Image("/res/alphabets/normal/_.png"));
+		wgB.put('_', new Image("/res/alphabets/bold/_.png"));
 		wg.put((char)32, new Image ("/res/alphabets/Space.png"));
+		wgB.put((char)32, new Image ("/res/alphabets/Space.png"));
+		wg.put((char)37, new Image ("/res/alphabets/normal/percentage.png"));
+		wgB.put((char)37, new Image ("/res/alphabets/bold/percentage.png"));
 	}
 
 	/**
