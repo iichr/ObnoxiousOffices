@@ -82,8 +82,6 @@ public class ServerSync {
         Location forwards = loc.forward(direction);
         Tile tile;
         if(forwards.checkBounds() && (tile = forwards.getTile()).type.canWalkOver()) {
-            player.status.getActions().stream().filter(PlayerAction::cancelsOnMove).forEach(player.status::cancelAction);
-            player.status.getStates().stream().filter(PlayerState::cancelsOnMove).forEach(player.status::removeState);
             player.setLocation(forwards);
             tile.onWalkOver(player);
         }
