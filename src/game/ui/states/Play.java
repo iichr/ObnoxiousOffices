@@ -3,6 +3,7 @@ package game.ui.states;
 import java.util.HashMap;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -27,11 +28,14 @@ import game.core.player.effect.PlayerEffectCoffeeBuzz;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
+import game.core.world.tile.MetaTile;
 import game.core.world.tile.Tile;
 import game.core.world.tile.type.TileType;
+import game.core.world.tile.type.TileTypeComputer;
 import game.ui.PlayerOverview;
 import game.ui.PlayerInfo;
 import game.ui.components.Effect;
+import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 import game.ui.overlay.GameOverOverlay;
@@ -70,10 +74,10 @@ public class Play extends BasicGameState {
 
 	boolean showOverview = false;
 
-	// options toggles
-	private boolean options = false;
-	private boolean gameOver = false;
-	private boolean exit = false;
+	// boolean flags
+	protected boolean options;
+	protected boolean gameOver;
+	protected boolean exit;
 
 	Music bgmusic;
 
@@ -101,6 +105,20 @@ public class Play extends BasicGameState {
 		// UNCOMMENT until everybody add the required libraries.
 		// Initialise the background music
 		// bgmusic = new Music("res/music/toocheerful.ogg");
+	}
+	
+	/**
+	 * Sets up the play state which should be called at the start of each game
+	 *
+	 */
+	public void playSetup() {
+		this.world = World.world;
+		this.localPlayerName = Player.localPlayerName;
+		
+		//set boolean flags
+		options = false;
+		gameOver = false;
+		exit = false;
 	}
 
 	@Override
@@ -133,23 +151,7 @@ public class Play extends BasicGameState {
 		optionsOverlay = new OptionsOverlay();
 		gameOverOverlay = new GameOverOverlay(world.getPlayers());
 	}
-
-	@Override
-	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		// UNCOMMENT until everybody add the required libraries.
-		// used to stop the music from playing
-		// bgmusic.stop();
-	}
-
-	/**
-	 * Sets up the play state which should be called at the start of each game
-	 *
-	 */
-	public void playSetup() {
-		this.world = World.world;
-		this.localPlayerName = Player.localPlayerName;
-	}
-
+	
 	/**
 	 * map players to player animations, testing different sprites
 	 * implementation not finalised
@@ -164,6 +166,32 @@ public class Play extends BasicGameState {
 			PlayerAnimation animation = new PlayerAnimation(p.getHair(), p.getFacing());
 			playerMap.put(p, animation);
 		}
+	}
+
+	@Override
+	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		// UNCOMMENT until everybody add the required libraries.
+		// used to stop the music from playing
+		// bgmusic.stop();
+	}	
+	
+	@Override
+	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+		Input input = gc.getInput();
+		Player localPlayer = world.getPlayer(localPlayerName);
+
+		effectOverview.updateEffects(localPlayer);
+		
+		playerOverview.updateContainer(world.getPlayers());
+		if(localPlayer.status.hasAction(PlayerActionSleep.class)){
+			playerOverview.toggleSleep(localPlayer, true);
+		}
+		
+		if (exit) {
+			game.enterState(Vals.MENU_STATE);
+		}
+
+		input.clearKeyPressedRecord();
 	}
 
 	@Override
@@ -199,6 +227,7 @@ public class Play extends BasicGameState {
 	}
 
 	private void drawWorld() throws SlickException {
+		//draw the wall sprite
 		Image wall = new Image(SpriteLocations.TILE_WALL, false, Image.FILTER_NEAREST);
 		wall.draw(0, 0, Vals.SCREEN_WIDTH, tileHeight);
 
@@ -209,20 +238,44 @@ public class Play extends BasicGameState {
 				float tileX = x * tileWidth;
 				float tileY = (y + 1) * (tileHeight / 2);
 
-				// find out what to render at this location
-				Direction facing = world.getTile(x, y, 0).facing;
-				TileType type = world.getTile(x, y, 0).type;
-				int mtID = world.getTile(x, y, 0).multitileID;
-				if (mtID == -1) {
-					mtID++;
-				}
-				HashMap<Direction, Image[]> directionMap = tileMap.get(type);
-				Image[] images = directionMap.get(facing);
-				images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
+				// find out what tile is in this location
+				Tile found = world.getTile(x,y,0);
+				
+				//check to draw computer marker
+				drawComputerMarker(tileX, tileY, found);
+				
+				//draw the tile at this location
+				drawTile(tileX, tileY, found);
 
+				//draw any players at this location
 				drawPlayers(x, y, tileX, tileY);
 			}
 		}
+	}
+	
+	private void drawComputerMarker(float tileX, float tileY, Tile found) throws SlickException{
+		TileType type = found.type;
+		if(type.equals(TileType.COMPUTER) && showOverview){
+			String ownerName = TileTypeComputer.getOwningPlayer((MetaTile) found);
+			if (ownerName.equals(localPlayerName)) {
+				Image identifier = new Image(ImageLocations.PLAYER_IDENTIFIER, false, Image.FILTER_NEAREST);
+				identifier.draw(tileX + tileWidth / 6, tileY + tileHeight/8, 2*tileWidth/3, tileHeight/8);
+			}
+		}
+	}
+	
+	private void drawTile(float tileX, float tileY, Tile tile){
+		Direction facing = tile.facing;
+		TileType type = tile.type;;
+		
+		//draw the tile
+		int mtID = tile.multitileID;
+		if (mtID == -1) {
+			mtID++;
+		}
+		HashMap<Direction, Image[]> directionMap = tileMap.get(type);
+		Image[] images = directionMap.get(facing);
+		images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
 	}
 
 	/**
@@ -254,11 +307,7 @@ public class Play extends BasicGameState {
 			}
 		}
 	}
-
-	private void gameFinished(GameFinishedEvent e) {
-		gameOver = true;
-	}
-
+	
 	/**
 	 * Animates the players turning by checking their previous location and
 	 * adjusting appropriately
@@ -275,23 +324,8 @@ public class Play extends BasicGameState {
 		}
 	}
 
-	@Override
-	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
-		Input input = gc.getInput();
-		Player localPlayer = world.getPlayer(localPlayerName);
-
-		effectOverview.updateEffects(localPlayer);
-		
-		playerOverview.updateContainer(world.getPlayers());
-		if(localPlayer.status.hasAction(PlayerActionSleep.class)){
-			playerOverview.toggleSleep(localPlayer, true);
-		}
-		
-		if (exit) {
-			game.enterState(Vals.MENU_STATE);
-		}
-
-		input.clearKeyPressedRecord();
+	private void gameFinished(GameFinishedEvent e) {
+		gameOver = true;
 	}
 
 	@Override
@@ -311,16 +345,16 @@ public class Play extends BasicGameState {
 			case Input.KEY_TAB:
 				showOverview = true;
 				break;
-			case Input.KEY_UP:
+			case Input.KEY_W:
 				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
 				break;
-			case Input.KEY_DOWN:
+			case Input.KEY_S:
 				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
 				break;
-			case Input.KEY_RIGHT:
+			case Input.KEY_D:
 				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
 				break;
-			case Input.KEY_LEFT:
+			case Input.KEY_A:
 				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
 				break;
 			case Input.KEY_E:
@@ -340,9 +374,15 @@ public class Play extends BasicGameState {
 							new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
 				}
 				break;
-			case Input.KEY_B:
-				world.getPlayer(localPlayerName).status
-						.addEffect(new PlayerEffectCoffeeBuzz(10, world.getPlayer(localPlayerName)));
+			case Input.KEY_UP:
+				if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+					actionSelector.changeSelection(1);
+				}
+				break;
+			case Input.KEY_DOWN:
+				if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+					actionSelector.changeSelection(-1);
+				}
 				break;
 			}
 		} else {

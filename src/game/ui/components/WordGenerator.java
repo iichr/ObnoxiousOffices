@@ -35,8 +35,8 @@ public class WordGenerator {
 		wgB.put('_', new Image("/res/alphabets/bold/_.png"));
 		wg.put((char)32, new Image ("/res/alphabets/Space.png"));
 		wgB.put((char)32, new Image ("/res/alphabets/Space.png"));
-		wg.put((char)37, new Image ("/res/alphabets/normal/percentage.png"));
-		wgB.put((char)37, new Image ("/res/alphabets/bold/percentage.png"));
+		wg.put('%', new Image ("/res/alphabets/normal/percentage.png"));
+		wgB.put('%', new Image ("/res/alphabets/bold/percentage.png"));
 	}
 
 	/**

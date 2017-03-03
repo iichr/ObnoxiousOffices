@@ -41,9 +41,14 @@ public class PlayTest extends Play {
 		this.world = w;
 		this.localPlayerName = Test.localPlayer;
 		World.world = w;
-		
-		//test game finished screen
-//		Events.trigger(new GameFinishedEvent());
+
+		// set boolean flags
+		options = false;
+		gameOver = false;
+		exit = false;
+
+		// test game finished screen
+		Events.trigger(new GameFinishedEvent());
 	}
 
 	/**
@@ -85,7 +90,7 @@ public class PlayTest extends Play {
 		testPlayer.setProgress(80);
 		testPlayer.status.setAttribute(PlayerAttribute.FATIGUE, 0.2);
 		testPlayer.status.addEffect(new PlayerEffectCoffeeBuzz(15, testPlayer));
-//		testPlayer.status.addAction(new PlayerActionSleep(testPlayer));
+		// testPlayer.status.addAction(new PlayerActionSleep(testPlayer));
 
 		Test.localPlayer = testPlayer.name;
 		w.addPlayer(testPlayer);
