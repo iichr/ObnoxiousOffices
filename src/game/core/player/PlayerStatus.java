@@ -11,6 +11,7 @@ import game.core.event.player.effect.PlayerEffectAddedEvent;
 import game.core.event.player.effect.PlayerEffectEndedEvent;
 import game.core.player.action.PlayerAction;
 import game.core.player.effect.PlayerEffect;
+import game.core.player.effect.PlayerEffectCoffeeBuzz;
 
 import java.io.Serializable;
 import java.util.*;
@@ -30,7 +31,7 @@ public class PlayerStatus implements Serializable {
     public final Player player;
     public boolean initialising = true;
 
-    public static double FATIGUE_INCREASE = 0.01;
+    public static double FATIGUE_INCREASE = 0.001;
 
     public PlayerStatus(Player player) {
         this.player = player;
@@ -64,8 +65,14 @@ public class PlayerStatus implements Serializable {
      * @param effect
      */
     public void addEffect(PlayerEffect effect) {
-        effects.add(effect);
-        Events.trigger(new PlayerEffectAddedEvent(effect, player.name), true);
+        if(!hasEffect(effect)) {
+            effects.add(effect);
+            Events.trigger(new PlayerEffectAddedEvent(effect, player.name), true);
+        }
+    }
+
+    public boolean hasEffect(PlayerEffect effect) {
+        return getEffects().stream().anyMatch(effect1 -> effect.getClass() == effect1.getClass());
     }
 
     public List<PlayerEffect> getEffects() {
@@ -161,6 +168,10 @@ public class PlayerStatus implements Serializable {
 
     public Set<PlayerState> getStates() {
         return states.stream().collect(Collectors.toSet());
+    }
+
+    public PlayerEffect getEffect(Class<? extends PlayerEffect> playerEffectClass) {
+        return getEffects().stream().filter(effect -> effect.getClass() == playerEffectClass).findFirst().get();
     }
 
     public enum PlayerAttribute {

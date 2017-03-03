@@ -6,6 +6,7 @@ import game.core.event.GameFinishedEvent;
 import game.core.event.player.PlayerMovedEvent;
 import game.core.event.player.PlayerProgressUpdateEvent;
 import game.core.event.player.PlayerRotatedEvent;
+import game.core.player.action.PlayerAction;
 import game.core.world.Direction;
 import game.core.world.Location;
 
@@ -21,10 +22,9 @@ public class Player implements Updateable, Serializable {
     private double progress = 0;
     private Direction facing;
     private Location location;
-    
     private int hair = BLONDE;
-
     public boolean isAI = false;
+    private int progressUpdates = 0;
     
     public static String localPlayerName = "";
     public static int BLONDE = 0;
@@ -32,6 +32,7 @@ public class Player implements Updateable, Serializable {
     public static int DARK = 2;
     public static int PINK = 3;
     public int timesDrunkCoffee = 0;
+    public static final int PROGRESS_UPDATE_THRESHOLD = 3;
 
     public Player(String name, Direction facing, Location location) {
         this.name = name;
@@ -69,8 +70,12 @@ public class Player implements Updateable, Serializable {
      * @param location
      */
     public void setLocation(Location location) {
-        this.location = location;
-        Events.trigger(new PlayerMovedEvent(location.coords, this.name), true);
+        if(!this.location.equals(location)) {
+            status.getActions().stream().filter(PlayerAction::cancelsOnMove).forEach(status::cancelAction);
+            status.getStates().stream().filter(PlayerState::cancelsOnMove).forEach(status::removeState);
+            this.location = location;
+            Events.trigger(new PlayerMovedEvent(location.coords, this.name), true);
+        }
     }
 
     public Location getLocation() {
@@ -119,13 +124,18 @@ public class Player implements Updateable, Serializable {
      * @param progress
      */
     public void setProgress(double progress) {
-        double diff = progress - this.progress;
-        this.progress += progress;
-        if(this.progress >= 100) {
-            onProgressDone();
-            this.progress = 0;
+        if(progress != this.progress) {
+            if (progress < 0) progress = 0;
+            if (progress > 100) progress = 100;
+            this.progress = progress;
+            if (this.progress == 100) {
+                onProgressDone();
+            }
+            if(++progressUpdates >= PROGRESS_UPDATE_THRESHOLD) {
+                Events.trigger(new PlayerProgressUpdateEvent(this.progress, this.name), true);
+                progressUpdates = 0;
+            }
         }
-        Events.trigger(new PlayerProgressUpdateEvent(diff, this.name), true);
     }
 
     public double getProgress() {
@@ -144,7 +154,7 @@ public class Player implements Updateable, Serializable {
      * Add the standard amount of progress (using multiplier)
      */
     public void addProgress() {
-        double toAdd = 1.0 * getProgressMultiplier();
+        double toAdd = 1.0;// * getProgressMultiplier();
         setProgress(progress + toAdd);
     }
 

@@ -9,10 +9,12 @@ import game.core.event.minigame.MiniGameEndedEvent;
 import game.core.event.minigame.MiniGameStartedEvent;
 import game.core.event.player.*;
 import game.core.event.player.effect.PlayerEffectAddedEvent;
+import game.core.event.player.effect.PlayerEffectElapsedUpdate;
 import game.core.event.player.effect.PlayerEffectEndedEvent;
 import game.core.event.tile.TileChangedEvent;
 import game.core.minigame.MiniGame;
 import game.core.player.Player;
+import game.core.player.effect.PlayerEffect;
 import game.core.world.Location;
 import game.core.world.World;
 
@@ -29,6 +31,7 @@ public class ClientSync {
         Events.on(PlayerActionEndedEvent.class, ClientSync::onPlayerActionEnded);
         Events.on(PlayerEffectAddedEvent.class, ClientSync::onPlayerEffectAdded);
         Events.on(PlayerEffectEndedEvent.class, ClientSync::onPlayerEffectEnded);
+        Events.on(PlayerEffectElapsedUpdate.class, ClientSync::onPlayerEffectElapsedUpdate);
         Events.on(PlayerAttributeChangedEvent.class, ClientSync::onPlayerAttributeChanged);
         Events.on(PlayerProgressUpdateEvent.class, ClientSync::onPlayerProgressUpdate);
         Events.on(PlayerMovedEvent.class, ClientSync::onPlayerMoved);
@@ -42,6 +45,10 @@ public class ClientSync {
         Events.on(MiniGameEndedEvent.class, ClientSync::onMiniGameEnded);
 
         Events.on(ChatMessageReceivedEvent.class, ClientSync::onChatMessageReceived);
+    }
+
+    private static <T extends Event> void onPlayerEffectElapsedUpdate(PlayerEffectElapsedUpdate event) {
+        getPlayer(event.playerName).status.getEffects().stream().filter(e -> e.getClass() == event.effectClass).findAny().ifPresent(effect -> effect.setElapsed(event.elapsed));
     }
 
     private static void onPlayerStateAdded(PlayerStateAddedEvent event) {
@@ -88,7 +95,7 @@ public class ClientSync {
     }
     
     private static void onPlayerProgressUpdate(PlayerProgressUpdateEvent event) {
-        getPlayer(event.playerName).setProgress(event.change);
+        getPlayer(event.playerName).setProgress(event.newVal);
     }
 
     private static void onPlayerEffectEnded(PlayerEffectEndedEvent event) {

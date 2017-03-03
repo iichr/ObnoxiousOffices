@@ -5,10 +5,10 @@ package game.core.event.player;
  */
 public class PlayerProgressUpdateEvent extends PlayerEvent {
 
-    public final double change;
+    public final double newVal;
 
-    public PlayerProgressUpdateEvent(double change, String playerName) {
+    public PlayerProgressUpdateEvent(double newVal, String playerName) {
         super(playerName);
-        this.change = change;
+        this.newVal = newVal;
     }
 }

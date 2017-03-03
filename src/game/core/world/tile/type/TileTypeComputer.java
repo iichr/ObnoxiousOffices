@@ -1,14 +1,15 @@
 package game.core.world.tile.type;
 
-import game.core.event.Event;
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
 import game.core.player.Player;
 import game.core.player.PlayerState;
 import game.core.player.action.PlayerAction;
+import game.core.player.action.PlayerActionHack;
 import game.core.player.action.PlayerActionWork;
 import game.core.world.Direction;
 import game.core.world.Location;
+import game.core.world.World;
 import game.core.world.tile.MetaTile;
 import game.core.world.tile.Tile;
 import game.core.world.tile.metadata.ComputerMetadata;
@@ -17,8 +18,6 @@ import game.util.Sets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Created by samtebbs on 23/01/2017.
@@ -58,8 +57,9 @@ public class TileTypeComputer extends TileTypeAction {
     }
 
     @Override
-    protected PlayerAction getAction(Player player) {
-        return new PlayerActionWork(player);
+    protected PlayerAction getAction(Player player, Tile tile) {
+        String owner = getOwningPlayer((MetaTile) tile);
+        return owner.equals(player.name) ? new PlayerActionWork(player) : new PlayerActionHack(player, World.world.getPlayer(owner));
     }
 
     @Override
