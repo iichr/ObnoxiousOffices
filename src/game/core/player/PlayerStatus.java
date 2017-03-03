@@ -64,8 +64,14 @@ public class PlayerStatus implements Serializable {
      * @param effect
      */
     public void addEffect(PlayerEffect effect) {
-        effects.add(effect);
-        Events.trigger(new PlayerEffectAddedEvent(effect, player.name), true);
+        if(!hasEffect(effect)) {
+            effects.add(effect);
+            Events.trigger(new PlayerEffectAddedEvent(effect, player.name), true);
+        }
+    }
+
+    public boolean hasEffect(PlayerEffect effect) {
+        return getEffects().stream().anyMatch(effect1 -> effect.getClass() == effect1.getClass());
     }
 
     public List<PlayerEffect> getEffects() {
