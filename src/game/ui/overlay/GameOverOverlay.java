@@ -24,6 +24,7 @@ public class GameOverOverlay extends PopUpOverlay {
 
 		wg.drawCenter(g, "GAME OVER", x + width / 2, y + height / 2 - height / 3, true, 2*scale/3);
 
+
 		// TODO sort players by progress and display progress once more
 		// characters available
 		float playerNumber = 0;
@@ -33,5 +34,6 @@ public class GameOverOverlay extends PopUpOverlay {
 		}
 
 		wg.drawCenter(g, "PRESS ANY KEY TO EXIT", x + width / 2, y + height / 2 + height / 3, true, scale / 3);
+
 	}
 }
