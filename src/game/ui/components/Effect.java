@@ -23,14 +23,7 @@ public class Effect {
 	private Image img;
 	private Image timerBarBase;
 	private Image timerBarFull;
-	private HashMap<Class<? extends PlayerEffect>,Image> imgs= new HashMap<Class<? extends PlayerEffect>, Image>() {/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-	{
-		put(PlayerEffectCoffeeBuzz.class,new Image("/res/sprites/tiles/coffee.png").getScaledCopy(50, 50));
-	}};
+	private HashMap<Class<? extends PlayerEffect>,Image> imgs;
 	private List<PlayerEffect> pe = new ArrayList<PlayerEffect>();
 
 	// effect id
@@ -41,6 +34,9 @@ public class Effect {
 
 		timerBarBase = new Image(ImageLocations.ACTION_BAR_BASE, false, Image.FILTER_NEAREST);
 		timerBarFull = new Image(ImageLocations.ACTION_BAR_FULL, false, Image.FILTER_NEAREST);
+		
+		imgs = new HashMap<Class<? extends PlayerEffect>, Image>();
+		imgs.put(PlayerEffectCoffeeBuzz.class, new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST));
 	}
 
 	public void updateEffects(Player player) {
@@ -58,8 +54,7 @@ public class Effect {
 				activeFor = e.getDuration() - e.getElapsed();
 				
 				//draw image
-				//TODO add map between effect and image for effect
-				imgs.get(e).draw(x, y, width, height);
+				imgs.get(e.getClass()).draw(x, y, width, height);
 				
 				//draw timer bars
 				timerBarBase.draw(x, y + height + padding / 10, width, height / 8);
