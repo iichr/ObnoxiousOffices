@@ -48,7 +48,7 @@ public class PlayTest extends Play {
 		exit = false;
 
 		// test game finished screen
-		Events.trigger(new GameFinishedEvent());
+//		Events.trigger(new GameFinishedEvent());
 	}
 
 	/**
