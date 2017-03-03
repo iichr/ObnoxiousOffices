@@ -128,17 +128,21 @@ public class MiniGameHangmanCMD {
 	 *            The array of letters entered so far
 	 */
 	private void displayWord(String word, ArrayList<Character> entered) {
+		char[] displayed = new char[word.length()];
 		for (int i = 0; i < word.length(); i++) {
 			char letter = word.charAt(i);
 			if (checkAlreadyEntered(letter, entered))
 				// debugging
 				// if encountered before, display
-				System.out.print(letter);
+				// System.out.print(letter);
+				displayed[i] = letter;
 			else
-				System.out.print('_');
+				//System.out.print("_ ");
+				displayed[i] = '_';
 			guessed = false;
 		}
-		System.out.println();
+		System.out.println(new String(displayed));
+		System.out.println(word);
 
 	}
 
