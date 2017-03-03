@@ -24,6 +24,7 @@ import game.core.event.player.PlayerStateRemovedEvent;
 import game.core.event.player.action.PlayerActionAddedEvent;
 import game.core.event.player.action.PlayerActionEndedEvent;
 import game.core.event.player.effect.PlayerEffectAddedEvent;
+import game.core.event.player.effect.PlayerEffectElapsedUpdate;
 import game.core.event.player.effect.PlayerEffectEndedEvent;
 import game.core.player.Player;
 import game.core.world.Direction;
@@ -74,6 +75,7 @@ public class ServerListener extends Thread {
 		Events.on(PlayerAttributeChangedEvent.class, this::forwardInfo);
 		Events.on(PlayerStateAddedEvent.class, this::forwardInfo);
 		Events.on(PlayerStateRemovedEvent.class, this::forwardInfo);
+		Events.on(PlayerEffectElapsedUpdate.class, this::forwardInfo);
 
 		Events.on(GameFinishedEvent.class, this::forwardInfo);
 
