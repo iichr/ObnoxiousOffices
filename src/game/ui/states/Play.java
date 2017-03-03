@@ -78,6 +78,8 @@ public class Play extends BasicGameState {
 	protected boolean options;
 	protected boolean gameOver;
 	protected boolean exit;
+	private boolean playingPong;
+	private boolean playingHangman;
 
 	Music bgmusic;
 
@@ -119,6 +121,8 @@ public class Play extends BasicGameState {
 		options = false;
 		gameOver = false;
 		exit = false;
+		playingPong = false;
+		playingHangman = false;
 	}
 
 	@Override
@@ -185,6 +189,14 @@ public class Play extends BasicGameState {
 		playerOverview.updateContainer(world.getPlayers());
 		if(localPlayer.status.hasAction(PlayerActionSleep.class)){
 			playerOverview.toggleSleep(localPlayer, true);
+		}
+		
+		if(playingPong){
+			//TODO update pong variables
+		}
+		
+		if (playingHangman){
+			//TODO update hangman variables
 		}
 		
 		if (exit) {
@@ -338,13 +350,46 @@ public class Play extends BasicGameState {
 	@Override
 	public void keyPressed(int key, char c) {
 		if (!gameOver) {
-			coreControls(key);
-			//TODO add minigame controls
+			if(playingHangman){
+				hangmanControls(c);
+			}else if (playingPong){
+				pongControls(key);
+			}else{
+				coreControls(key);
+			}
 		} else {
 			exit = true;
 		}
 	}
-
+	
+	/**
+	 * Use controls for hangman minigame
+	 * @param c The character entered
+	 */
+	private void hangmanControls(char c){
+		if(c >= 'a' && c <= 'z'){
+			//TODO game interaction with character
+		}
+	}
+	
+	/**
+	 * Use controls for hangman minigame
+	 * @param c The character entered
+	 */
+	private void pongControls(int key){
+		switch(key){
+		case Input.KEY_W:
+			//TODO interact with pong minigame
+			break;
+		case Input.KEY_S:
+			//TODO interact with pong mingame
+		}
+	}
+	
+	/**
+	 * Use controls for normal game
+	 * @param key The key pressed
+	 */
 	private void coreControls(int key){
 		switch (key) {
 		case Input.KEY_ESCAPE:
