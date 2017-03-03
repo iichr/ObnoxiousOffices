@@ -2,6 +2,7 @@ package game.ui.components;
 
 import java.util.HashMap;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -24,9 +25,19 @@ public class WordGenerator {
 		for (char c = '0'; c <= '9'; c++) {
 			wg.put(c, new Image("/res/alphabets/normal/" + c + ".png"));
 		}
+		for (char c = 'A'; c <= 'Z'; c++) {
+			wgB.put(c, new Image("/res/alphabets/bold/" + c + ".png"));
+			wgB.put((char) (c + 32), new Image("/res/alphabets/bold/" + c + ".png"));
+		}
+		for (char c = '0'; c <= '9'; c++) {
+			wgB.put(c, new Image("/res/alphabets/bold/" + c + ".png"));
+		}
 		wg.put('_', new Image("/res/alphabets/normal/_.png"));
+		wgB.put('_', new Image("/res/alphabets/bold/_.png"));
 		wg.put((char)32, new Image ("/res/alphabets/Space.png"));
+		wgB.put((char)32, new Image ("/res/alphabets/Space.png"));
 		wg.put('%', new Image ("/res/alphabets/normal/percentage.png"));
+		wgB.put('%', new Image ("/res/alphabets/bold/percentage.png"));
 	}
 
 	/**
@@ -85,7 +96,7 @@ public class WordGenerator {
 		for(int length = 0; length < text.length(); length++) {
 			Image img = this.get(text.charAt(length), bold);
 			try {
-				g.drawImage(img.getScaledCopy(scale), f - totalX/2, h - totalY/2);
+				g.drawImage(img.getScaledCopy(scale), f - totalX/2, h - totalY/2, Color.black);
 			} catch (NullPointerException e) {
 				System.err.println("The Player name contains invalid symbol that doesn't exist in the HashMap");
 			}
