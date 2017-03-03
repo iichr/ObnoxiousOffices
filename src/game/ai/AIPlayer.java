@@ -6,7 +6,6 @@ import game.ai.ruleBasedAI.Rules;
 import game.ai.ruleBasedAI.UpdateMemory;
 import game.ai.ruleBasedAI.WorkingMemory;
 import game.core.player.Player;
-import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.world.Direction;
 import game.core.world.Location;
 

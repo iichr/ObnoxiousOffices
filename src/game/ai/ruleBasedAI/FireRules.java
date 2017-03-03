@@ -1,3 +1,4 @@
+
 package game.ai.ruleBasedAI;
 
 import java.io.Serializable;
