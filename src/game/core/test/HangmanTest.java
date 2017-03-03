@@ -1,11 +1,14 @@
 package game.core.test;
 
-import game.core.minigame.MiniGameHangman;
-
+/**
+ * Testing class for the hangman minigame (console version).
+ * @author iichr
+ *
+ */
 public class HangmanTest {
 
 	public static void main(String[] args) {
-		MiniGameHangman game = new MiniGameHangman();
+		MiniGameHangmanCMD game = new MiniGameHangmanCMD();
 	}
 
 }
