@@ -126,10 +126,10 @@ public class Player implements Updateable, Serializable {
     public void setProgress(double progress) {
         if(progress != this.progress) {
             if (progress < 0) progress = 0;
+            if (progress > 100) progress = 100;
             this.progress = progress;
-            if (this.progress >= 100) {
+            if (this.progress == 100) {
                 onProgressDone();
-                this.progress = 0;
             }
             if(++progressUpdates >= PROGRESS_UPDATE_THRESHOLD) {
                 Events.trigger(new PlayerProgressUpdateEvent(this.progress, this.name), true);
