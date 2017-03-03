@@ -11,13 +11,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
 
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
+
+import game.ui.overlay.PopUpOverlay;
+
 /**
  * A hangman mini-game
  * 
  * @author iichr
  */
 
-public class MiniGameHangman {
+public class MiniGameHangman extends PopUpOverlay {
 
 	private String word;
 	private int attempts = 0;
@@ -29,20 +34,9 @@ public class MiniGameHangman {
 	private static Timer timer;
 	private static int interval = 30;
 
-	public MiniGameHangman() {
+	public MiniGameHangman() throws SlickException {
+		super();
 		word = pickWord(setDifficulty());
-		alreadyEntered = new ArrayList<Character>();
-		init(word, alreadyEntered);
-	}
-
-	/**
-	 * Constructor for testing purposes only!
-	 * 
-	 * @param word
-	 *            The word to be guessed.
-	 */
-	public MiniGameHangman(String word) {
-		this.word = word;
 		alreadyEntered = new ArrayList<Character>();
 		init(word, alreadyEntered);
 	}
@@ -63,7 +57,6 @@ public class MiniGameHangman {
 				System.out.println(setInterval());
 			}
 		}, 1000, 1000);
-		
 
 		while (!allGuessed(word, alreadyEntered) && !lost()) {
 			inputLetter(word, alreadyEntered);
@@ -120,26 +113,28 @@ public class MiniGameHangman {
 	}
 
 	/**
-	 * Display a word.
+	 * Display a string representation of a word with blanks in place of
+	 * characters not yet guessed.
 	 * 
 	 * @param word
 	 *            The word to display
 	 * @param entered
 	 *            The array of letters entered so far
+	 * @return The string representation to be displayed.
 	 */
-	private void displayWord(String word, ArrayList<Character> entered) {
+	private String displayWord(String word, ArrayList<Character> entered) {
+		char[] displayed = new char[word.length()];
+
 		for (int i = 0; i < word.length(); i++) {
 			char letter = word.charAt(i);
 			if (checkAlreadyEntered(letter, entered))
-				// debugging
 				// if encountered before, display
-				System.out.print(letter);
+				displayed[i] = letter;
 			else
-				System.out.print('_');
-			guessed = false;
+				// guessed = false;
+				displayed[i] = '_';
 		}
-		System.out.println();
-
+		return new String(displayed);
 	}
 
 	private void inputLetter(String word, ArrayList<Character> entered) {
@@ -148,7 +143,7 @@ public class MiniGameHangman {
 			if (checkAlreadyEntered(userIn, entered)) {
 				System.out.println("Already entered: " + entered.toString());
 			} else {
-				// user's char hasn't been encountered before
+				// user's char hasn't been encountered before, add to entered
 				entered.add(userIn);
 				displayWord(word, entered);
 				if (!isInWord(userIn, word)) {
@@ -201,5 +196,20 @@ public class MiniGameHangman {
 	// entered so far
 	private boolean allGuessed(String word, ArrayList<Character> entered) {
 		return entered.containsAll(word.chars().mapToObj(c -> (char) c).collect(Collectors.toList()));
+	}
+
+	/*****
+	 * RENDERING
+	 *****/
+
+	@Override
+	public void render(Graphics g) {
+		// temporarily use default background
+		background.draw(x, y, width, height);
+		
+		// TODO determine height, width, scaling
+		// initially draw the empty string
+		wg.drawCenter(g, displayWord(word, alreadyEntered), x + width / 2, y + height / 2 - height/6, true, scale / 3);
+		
 	}
 }
