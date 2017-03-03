@@ -16,6 +16,7 @@ import game.core.sync.ServerSync;
 import game.core.player.Player;
 import game.core.sync.Updater;
 import game.core.world.World;
+import game.util.Time;
 
 public class Server {
 
@@ -95,7 +96,7 @@ public class Server {
 	}
 	
 	private void updateWorld(GameStartedEvent e) {
-		Updater worldUpdater = new Updater(e.world, 100, true);
+		Updater worldUpdater = new Updater(e.world, Time.UPDATE_RATE, true);
 		Thread updateThread = new Thread(worldUpdater);
 		try {
 			// Give players a second to join
