@@ -6,6 +6,7 @@ import game.ai.ruleBasedAI.Rules;
 import game.ai.ruleBasedAI.UpdateMemory;
 import game.ai.ruleBasedAI.WorkingMemory;
 import game.core.player.Player;
+import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.world.Direction;
 import game.core.world.Location;
 
@@ -34,6 +35,7 @@ public class AIPlayer extends Player {;
 	public AIPlayer(String name, Direction facing, Location location) {
 		super(name, facing, location);
 		isAI = true;
+		this.status.setAttribute(PlayerAttribute.FATIGUE, 0.85);
 
 		// initialise everything
 		initialise();
