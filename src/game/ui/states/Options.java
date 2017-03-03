@@ -13,7 +13,7 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import com.sun.imageio.plugins.png.PNGImageReader;
+//import com.sun.imageio.plugins.png.PNGImageReader;
 
 import game.ui.buttons.MenuButton;
 import game.ui.components.WordGenerator;

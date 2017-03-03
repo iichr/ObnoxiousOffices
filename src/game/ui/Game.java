@@ -2,6 +2,7 @@ package game.ui;
 
 import java.io.File;
 
+import game.core.world.World;
 import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;

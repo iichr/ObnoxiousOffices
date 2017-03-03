@@ -78,6 +78,8 @@ public class Play extends BasicGameState {
 	protected boolean options;
 	protected boolean gameOver;
 	protected boolean exit;
+	private boolean playingPong;
+	private boolean playingHangman;
 
 	Music bgmusic;
 
@@ -119,6 +121,8 @@ public class Play extends BasicGameState {
 		options = false;
 		gameOver = false;
 		exit = false;
+		playingPong = false;
+		playingHangman = false;
 	}
 
 	@Override
@@ -187,6 +191,14 @@ public class Play extends BasicGameState {
 			playerOverview.toggleSleep(localPlayer, true);
 		}
 		
+		if(playingPong){
+			//TODO update pong variables
+		}
+		
+		if (playingHangman){
+			//TODO update hangman variables
+		}
+		
 		if (exit) {
 			game.enterState(Vals.MENU_STATE);
 		}
@@ -201,11 +213,6 @@ public class Play extends BasicGameState {
 		// renders world
 		drawWorld();
 
-		// add player status container if invoked
-		if (showOverview) {
-			playerOverview.render(g);
-		}
-
 		// add effects overview container
 		effectOverview.render(g);
 
@@ -217,12 +224,16 @@ public class Play extends BasicGameState {
 		// show ui info to player
 		playerinfo.render(g);
 
-		if (options) {
-			optionsOverlay.render(g);
-		}
-
 		if (gameOver) {
 			gameOverOverlay.render(g);
+		}else if(options){
+			optionsOverlay.render(g);
+		}else if(playingHangman){
+			//TODO render hangman
+		}else if(playingPong){
+			//TODO render pong
+		}else if (showOverview) {
+			playerOverview.render(g);
 		}
 	}
 
@@ -338,58 +349,96 @@ public class Play extends BasicGameState {
 	@Override
 	public void keyPressed(int key, char c) {
 		if (!gameOver) {
-			switch (key) {
-			case Input.KEY_ESCAPE:
-				options = !options;
-				break;
-			case Input.KEY_TAB:
-				showOverview = true;
-				break;
-			case Input.KEY_W:
-				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
-				break;
-			case Input.KEY_S:
-				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
-				break;
-			case Input.KEY_D:
-				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
-				break;
-			case Input.KEY_A:
-				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
-				break;
-			case Input.KEY_E:
-				if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-					switch (actionSelector.getAction()) {
-					case ActionSelector.WORK:
-						Events.trigger(
-								new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
-						break;
-					case ActionSelector.HACK:
-						Events.trigger(
-								new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
-						break;
-					}
-				} else {
-					Events.trigger(
-							new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
-				}
-				break;
-			case Input.KEY_UP:
-				if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-					actionSelector.changeSelection(1);
-				}
-				break;
-			case Input.KEY_DOWN:
-				if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-					actionSelector.changeSelection(-1);
-				}
-				break;
+			if(playingHangman){
+				hangmanControls(c);
+			}else if (playingPong){
+				pongControls(key);
+			}else{
+				coreControls(key);
 			}
 		} else {
 			exit = true;
 		}
 	}
-
+	
+	/**
+	 * Use controls for hangman minigame
+	 * @param c The character entered
+	 */
+	private void hangmanControls(char c){
+		if(c >= 'a' && c <= 'z'){
+			//TODO game interaction with character
+		}
+	}
+	
+	/**
+	 * Use controls for hangman minigame
+	 * @param c The character entered
+	 */
+	private void pongControls(int key){
+		switch(key){
+		case Input.KEY_W:
+			//TODO interact with pong minigame
+			break;
+		case Input.KEY_S:
+			//TODO interact with pong mingame
+		}
+	}
+	
+	/**
+	 * Use controls for normal game
+	 * @param key The key pressed
+	 */
+	private void coreControls(int key){
+		switch (key) {
+		case Input.KEY_ESCAPE:
+			options = !options;
+			break;
+		case Input.KEY_TAB:
+			showOverview = true;
+			break;
+		case Input.KEY_W:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
+			break;
+		case Input.KEY_S:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
+			break;
+		case Input.KEY_D:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
+			break;
+		case Input.KEY_A:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
+			break;
+		case Input.KEY_E:
+			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+				switch (actionSelector.getAction()) {
+				case ActionSelector.WORK:
+					Events.trigger(
+							new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
+					break;
+				case ActionSelector.HACK:
+					Events.trigger(
+							new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
+					break;
+				}
+			} else {
+				Events.trigger(
+						new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
+			}
+			break;
+		case Input.KEY_UP:
+			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+				actionSelector.changeSelection(1);
+			}
+			break;
+		case Input.KEY_DOWN:
+			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+				actionSelector.changeSelection(-1);
+			}
+			break;
+		}
+	}
+	
 	@Override
 	public void keyReleased(int key, char c) {
 		switch (key) {

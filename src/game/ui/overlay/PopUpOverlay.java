@@ -41,7 +41,6 @@ public class PopUpOverlay {
 		
 		wg = new WordGenerator();
 		
-		//TODO make background image
 		background = new Image(ImageLocations.OVERLAY_BACKGROUND, false, Image.FILTER_NEAREST);
 		
 	}
