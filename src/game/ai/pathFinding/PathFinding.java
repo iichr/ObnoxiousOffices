@@ -1,3 +1,4 @@
+
 package game.ai.pathFinding;
 
 import java.io.Serializable;
@@ -18,15 +19,15 @@ import game.core.world.tile.type.TileType;
 
 public class PathFinding implements Runnable, Serializable {
 
-	//make eclipse happy
+	// make eclipse happy
 	private static final long serialVersionUID = 1L;
 
 	// the object that is going to be used to store heuristic value, g cost
 	// final value, coordinates and the parent
 	class Cell implements Serializable {
-		//make eclipse happy
+		// make eclipse happy
 		private static final long serialVersionUID = 1L;
-		
+
 		int hCost = 0; // heuristic cost
 		int fCost = 0; // total cost, f = g + h
 
@@ -105,11 +106,12 @@ public class PathFinding implements Runnable, Serializable {
 	 *            the world that is going to be made into a grid
 	 */
 	void worldToCell() {
-		int heurC = 1000;
-		int heurB = 1000;
+		int heurC = 1000; // the heuristic of a tile where there is a coffee
+							// machine
+		int heurB = 1000; // the heuristic of a tile where there is a sofa
 		for (int i = 0; i < rowLength; i++) {
 			for (int j = 0; j < colLength; j++) {
-				
+
 				grid[i][j] = new Cell(i, j);
 				Tile tile = World.world.getTile(i, j, 0); // get the tile at i,j
 				// if you can walk over a tile, calculate the
@@ -121,16 +123,18 @@ public class PathFinding implements Runnable, Serializable {
 
 				// if the current tile is a coffee machine, and is closer than
 				// the previous one, save coordinates
-				if (tile.type == TileType.COFFEE_MACHINE && calcHeuristic(i, j) < heurC) {
+				if (tile.type.equals(TileType.COFFEE_MACHINE) && calcHeuristic(i, j) < heurC) {
 					heurC = calcHeuristic(i, j);
+					grid[i][j].hCost = heurC;
 					coffeeI = i;
 					coffeeJ = j;
 				}
 
 				// if the current tile is a bed, and is closer than the previous
 				// one, save coordinates
-				if (tile.type == TileType.SOFA && calcHeuristic(i, j) < heurB) { 
+				if (tile.type.equals(TileType.SOFA) && calcHeuristic(i, j) < heurB) {
 					heurB = calcHeuristic(i, j);
+					grid[i][j].hCost = heurB;
 					bedI = i;
 					bedJ = j;
 				}
@@ -164,7 +168,7 @@ public class PathFinding implements Runnable, Serializable {
 	void checkAndUpdateCost(Cell current, Cell c, int cost) {
 		// if cell c is reachable and not yet explored, calculate the cost of
 		// exploring it
-		if (closed[c.i][c.j]) //c == null || 
+		if (closed[c.i][c.j]) // c == null ||
 			return;
 		int cCost = c.hCost + cost;
 
@@ -195,6 +199,9 @@ public class PathFinding implements Runnable, Serializable {
 		// set the starting point
 		startCell(player.getLocation().coords.x, player.getLocation().coords.y);
 
+		// create a grid of cells from the world
+		worldToCell();
+		
 		// add the starting location to the open list
 		open.add(grid[startI][startJ]);
 
@@ -272,10 +279,7 @@ public class PathFinding implements Runnable, Serializable {
 
 	@Override
 	public void run() {
-		
-		// create a grid of cells from the world
-		worldToCell();
-		
+
 		if (toGo == "cm") {
 			AStar(coffeeI, coffeeJ);
 			path(coffeeI, coffeeJ);
@@ -284,4 +288,4 @@ public class PathFinding implements Runnable, Serializable {
 			path(bedI, bedJ);
 		}
 	}
-}
+}

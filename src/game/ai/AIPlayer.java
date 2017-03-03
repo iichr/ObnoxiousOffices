@@ -35,6 +35,7 @@ public class AIPlayer extends Player {;
 	public AIPlayer(String name, Direction facing, Location location) {
 		super(name, facing, location);
 		isAI = true;
+		this.status.setAttribute(PlayerAttribute.FATIGUE, 0.85);
 
 		// initialise everything
 		initialise();

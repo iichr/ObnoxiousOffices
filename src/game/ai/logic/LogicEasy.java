@@ -1,3 +1,4 @@
+
 package game.ai.logic;
 
 import java.io.Serializable;
@@ -301,4 +302,4 @@ public class LogicEasy implements Logic, Serializable {
 	public void hackPlayer(Player player) {
 		// TODO: hacking logic
 	}
-}
+}
