@@ -213,11 +213,6 @@ public class Play extends BasicGameState {
 		// renders world
 		drawWorld();
 
-		// add player status container if invoked
-		if (showOverview) {
-			playerOverview.render(g);
-		}
-
 		// add effects overview container
 		effectOverview.render(g);
 
@@ -229,12 +224,16 @@ public class Play extends BasicGameState {
 		// show ui info to player
 		playerinfo.render(g);
 
-		if (options) {
-			optionsOverlay.render(g);
-		}
-
 		if (gameOver) {
 			gameOverOverlay.render(g);
+		}else if(options){
+			optionsOverlay.render(g);
+		}else if(playingHangman){
+			//TODO render hangman
+		}else if(playingPong){
+			//TODO render pong
+		}else if (showOverview) {
+			playerOverview.render(g);
 		}
 	}
 
