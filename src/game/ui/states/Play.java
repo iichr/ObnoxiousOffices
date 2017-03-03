@@ -338,58 +338,63 @@ public class Play extends BasicGameState {
 	@Override
 	public void keyPressed(int key, char c) {
 		if (!gameOver) {
-			switch (key) {
-			case Input.KEY_ESCAPE:
-				options = !options;
-				break;
-			case Input.KEY_TAB:
-				showOverview = true;
-				break;
-			case Input.KEY_W:
-				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
-				break;
-			case Input.KEY_S:
-				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
-				break;
-			case Input.KEY_D:
-				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
-				break;
-			case Input.KEY_A:
-				Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
-				break;
-			case Input.KEY_E:
-				if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-					switch (actionSelector.getAction()) {
-					case ActionSelector.WORK:
-						Events.trigger(
-								new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
-						break;
-					case ActionSelector.HACK:
-						Events.trigger(
-								new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
-						break;
-					}
-				} else {
-					Events.trigger(
-							new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
-				}
-				break;
-			case Input.KEY_UP:
-				if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-					actionSelector.changeSelection(1);
-				}
-				break;
-			case Input.KEY_DOWN:
-				if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-					actionSelector.changeSelection(-1);
-				}
-				break;
-			}
+			coreControls(key);
+			//TODO add minigame controls
 		} else {
 			exit = true;
 		}
 	}
 
+	private void coreControls(int key){
+		switch (key) {
+		case Input.KEY_ESCAPE:
+			options = !options;
+			break;
+		case Input.KEY_TAB:
+			showOverview = true;
+			break;
+		case Input.KEY_W:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
+			break;
+		case Input.KEY_S:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
+			break;
+		case Input.KEY_D:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
+			break;
+		case Input.KEY_A:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
+			break;
+		case Input.KEY_E:
+			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+				switch (actionSelector.getAction()) {
+				case ActionSelector.WORK:
+					Events.trigger(
+							new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
+					break;
+				case ActionSelector.HACK:
+					Events.trigger(
+							new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
+					break;
+				}
+			} else {
+				Events.trigger(
+						new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
+			}
+			break;
+		case Input.KEY_UP:
+			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+				actionSelector.changeSelection(1);
+			}
+			break;
+		case Input.KEY_DOWN:
+			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+				actionSelector.changeSelection(-1);
+			}
+			break;
+		}
+	}
+	
 	@Override
 	public void keyReleased(int key, char c) {
 		switch (key) {
