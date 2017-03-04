@@ -5,14 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
@@ -30,49 +27,48 @@ public class MiniGameHangman extends PopUpOverlay {
 	private ArrayList<Character> alreadyEntered;
 	private int attempts = 0;
 	private int PERMITTED_ATTEMPTS = 5;
-	private String alreadyEnteredString = "";
 
-//	private static Timer timer;
-//	private static int interval = 30;
+	// private static Timer timer;
+	// private static int interval = 30;
 
 	public MiniGameHangman() throws SlickException {
 		word = pickWord(setDifficulty());
 		alreadyEntered = new ArrayList<Character>();
-		//init();
+		// init();
 	}
 
-//	/**
-//	 * Main game loop with timer. Manage victory and loss conditions
-//	 */
-//	public void init() {
-//		displayWord();
-//		// set up timer, 30 seconds, 1000 milliseconds delay
-//		timer = new Timer();
-//		timer.scheduleAtFixedRate(new TimerTask() {
-//			public void run() {
-//				// debugging - countdown timer
-//				System.out.println(setInterval());
-//			}
-//		}, 1000, 1000);
-//
-//		while (!allGuessed() && !lost()) {
-//			inputLetter();
-//		}
-//		if (allGuessed()) {
-//			System.out.println("WIN!");
-//			timer.cancel();
-//		}
-//	}
+	// /**
+	// * Main game loop with timer. Manage victory and loss conditions
+	// */
+	// public void init() {
+	// displayWord();
+	// // set up timer, 30 seconds, 1000 milliseconds delay
+	// timer = new Timer();
+	// timer.scheduleAtFixedRate(new TimerTask() {
+	// public void run() {
+	// // debugging - countdown timer
+	// System.out.println(setInterval());
+	// }
+	// }, 1000, 1000);
+	//
+	// while (!allGuessed() && !lost()) {
+	// inputLetter();
+	// }
+	// if (allGuessed()) {
+	// System.out.println("WIN!");
+	// timer.cancel();
+	// }
+	// }
 
-	
 	// countdown in intervals of 1 second.
-//	private static final int setInterval() {
-//		if (interval == 1) {
-//			timer.cancel();
-//		}
-//		return --interval;
-//	}
+	// private static final int setInterval() {
+	// if (interval == 1) {
+	// timer.cancel();
+	// }
+	// return --interval;
+	// }
 
+	// loads words from wordlist provided.
 	private ArrayList<String> setDifficulty() {
 		// TODO set PERMITTED_ATTEMPTS
 		ArrayList<String> dictionary = new ArrayList<String>();
@@ -111,7 +107,7 @@ public class MiniGameHangman extends PopUpOverlay {
 	/**
 	 * Display a word.
 	 * 
-	 * @return TODO
+	 * @return the word to be guessed; Blanks in place of missing chars.
 	 */
 	public String displayWord() {
 		char[] displayed = new char[word.length()];
@@ -122,34 +118,27 @@ public class MiniGameHangman extends PopUpOverlay {
 			else
 				displayed[i] = '_';
 		}
-		//System.out.println(word);
+		// System.out.println(word);
 		return new String(displayed);
 	}
 
-	public void inputLetter(char userIn) {	
+	public void inputLetter(char userIn) {
 		if (checkAlreadyEntered(userIn)) {
-				// System.out.println("Already entered: " + alreadyEntered.toString());
-				//getAlreadyEntered();
-			} else {
-				// user's char hasn't been encountered before
-				alreadyEntered.add(userIn);
-				displayWord();
-				if (!isInWord(userIn)) {
-					attempts++;
-				}
-				getAttempts();
-				//getAlreadyEntered();
+		} else {
+			// user's char not encountered before
+			alreadyEntered.add(userIn);
+			displayWord();
+			if (!isInWord(userIn)) {
+				attempts++;
 			}
-			
-			
-//		if(allGuessed() || lost()) {
-//		}
+			getAttempts();
+		}
 	}
 
 	public boolean lost() {
 		if (PERMITTED_ATTEMPTS == getAttempts()) {
 			System.out.println("Game over.");
-			//timer.cancel();
+			// timer.cancel();
 			return true;
 		} else {
 			return false;
@@ -160,9 +149,12 @@ public class MiniGameHangman extends PopUpOverlay {
 		return attempts;
 	}
 
-	public String getAlreadyEntered() {
-		alreadyEnteredString = alreadyEntered.toString();
-		return alreadyEnteredString;
+	private String getAlreadyEntered(ArrayList<Character> entered) {
+		// using , as delimiter -> null pointer
+		// using arraylist to String -> null pointer
+		// Possible owing to lack of , /COMMA/ character in the rendering ???! 
+		String str = entered.stream().map(e -> e.toString()).collect(Collectors.joining());
+		return str;
 	}
 
 	public void addToAlreadyEntered(char c) {
@@ -188,10 +180,9 @@ public class MiniGameHangman extends PopUpOverlay {
 		return word.indexOf(c) >= 0;
 	}
 
-	// check if the word has been guessed by using the list of characters
-	// entered so far
+	// check whether word has been guessed
 	public boolean allGuessed() {
-		if(alreadyEntered.containsAll(word.chars().mapToObj(c -> (char) c).collect(Collectors.toList()))) {
+		if (alreadyEntered.containsAll(word.chars().mapToObj(c -> (char) c).collect(Collectors.toList()))) {
 			System.out.println("You won!");
 			return true;
 		}
@@ -200,16 +191,12 @@ public class MiniGameHangman extends PopUpOverlay {
 
 	@Override
 	public void render(Graphics g) {
-		g.setColor(Color.black);
-		// temporarily use default background
+		// temporarily use the default background
 		background.draw(x, y, width, height);
 
-		// TODO determine height, width, scaling
-		// initially draw the empty string
 		wg.drawCenter(g, displayWord(), x + width / 2, y + height / 2 - height / 6, true, scale / 3);
-		//if(!alreadyEntered.isEmpty()) {
-			//wg.drawCenter(g, getAlreadyEntered(), x + width / 2, y + height / 2, true, scale / 5);
-		//}
-		wg.drawCenter(g, PERMITTED_ATTEMPTS - getAttempts() + " attempts left" , x + width / 2, y + height / 2 + height/6, true, scale / 4);	
+		wg.drawCenter(g, getAlreadyEntered(alreadyEntered), x + width / 2, y + height / 2, false, scale / 3);
+		wg.drawCenter(g, PERMITTED_ATTEMPTS - getAttempts() + " attempts left", x + width / 2,
+				y + height / 2 + height / 6, true, scale / 4);
 	}
 }
