@@ -28,7 +28,9 @@ public interface Logic extends Serializable {
 
 	/**
 	 * Make the ai work
-	 * @param p the ai that will start working
+	 * 
+	 * @param p
+	 *            the ai that will start working
 	 */
 	public void aiWork(AIPlayer p);
 
@@ -36,7 +38,7 @@ public interface Logic extends Serializable {
 	 * Tells the bot/bots what to do while the player is trying to hack
 	 * its/their computer/computers.
 	 */
-	public void reactToPlayerHack();
+	// public void reactToPlayerHack();
 
 	/**
 	 * Finds the shortest path to the coffee machine from the current place
@@ -78,15 +80,6 @@ public interface Logic extends Serializable {
 	 *            the world of the player
 	 */
 	public void goToBedAndBack(World w, Player p);
-
-	/**
-	 * Checks if a player is low on energy
-	 * 
-	 * @param p
-	 *            the player whose energy is being checked
-	 * @return true if the player's energy is below 0.2, otherwise false
-	 */
-	public boolean lowEngergy(Player p);
 
 	/**
 	 * Before every move, check if the player on the map is facing in the right
@@ -132,5 +125,14 @@ public interface Logic extends Serializable {
 	 */
 	public void hackPlayer(Player player);
 
-	public Player closestToWin();
+	/**
+	 * Returns a player from the list of players in the world. If the player is
+	 * the AI, then no player is closer to winning.
+	 * 
+	 * @param ai
+	 *            the AI player that checks if someone else is closer to winning
+	 *            the game than it
+	 * @return a player from the list of players
+	 */
+	public Player closestToWin(AIPlayer ai);
 }

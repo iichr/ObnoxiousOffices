@@ -1,20 +1,24 @@
 package game.core.sync;
 
 import game.core.chat.Chat;
-import game.core.event.*;
+import game.core.event.Events;
 import game.core.event.chat.ChatMessageReceivedEvent;
-import game.core.event.player.action.PlayerActionAddedEvent;
-import game.core.event.player.action.PlayerActionEndedEvent;
 import game.core.event.minigame.MiniGameEndedEvent;
 import game.core.event.minigame.MiniGameStartedEvent;
-import game.core.event.player.*;
+import game.core.event.player.PlayerAttributeChangedEvent;
+import game.core.event.player.PlayerMovedEvent;
+import game.core.event.player.PlayerProgressUpdateEvent;
+import game.core.event.player.PlayerRotatedEvent;
+import game.core.event.player.PlayerStateAddedEvent;
+import game.core.event.player.PlayerStateRemovedEvent;
+import game.core.event.player.action.PlayerActionAddedEvent;
+import game.core.event.player.action.PlayerActionEndedEvent;
 import game.core.event.player.effect.PlayerEffectAddedEvent;
 import game.core.event.player.effect.PlayerEffectElapsedUpdate;
 import game.core.event.player.effect.PlayerEffectEndedEvent;
 import game.core.event.tile.TileChangedEvent;
 import game.core.minigame.MiniGame;
 import game.core.player.Player;
-import game.core.player.effect.PlayerEffect;
 import game.core.world.Location;
 import game.core.world.World;
 
@@ -47,7 +51,7 @@ public class ClientSync {
         Events.on(ChatMessageReceivedEvent.class, ClientSync::onChatMessageReceived);
     }
 
-    private static <T extends Event> void onPlayerEffectElapsedUpdate(PlayerEffectElapsedUpdate event) {
+    private static void onPlayerEffectElapsedUpdate(PlayerEffectElapsedUpdate event) {
         getPlayer(event.playerName).status.getEffects().stream().filter(e -> e.getClass() == event.effectClass).findAny().ifPresent(effect -> effect.setElapsed(event.elapsed));
     }
 
