@@ -235,42 +235,51 @@ public class Play extends BasicGameState {
 		}
 
 		if (playingHangman) {
-			// while (!hangmanOverlay.allGuessed() && !hangmanOverlay.lost()) {
-			// System.out.println("In while loop update Hangman");
-
-			// UPDATE TIMER <- render timer
-
-			// listen only for alphabetical characters
-			input.addKeyListener(new KeyListener() {
-				@Override
-				public void keyPressed(int key, char c) {
-					// only allow English chars (don't use isAlphabetic)
-					if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-						// PASS TO MINIGAME
-						// UPDATE DISPLAY WORD ACCORDINGLY <- render word
-						System.out.println("Letter: " + c);
-						hangmanOverlay.inputLetter(c); // should update ?
-					}
-				}
-
-					// just because we must :(
-					@Override
-					public void keyReleased(int key, char c) {}
-					@Override
-					public void inputEnded() {}
-					@Override
-					public void inputStarted() {}
-					@Override
-					public boolean isAcceptingInput() {return true; }
-					@Override
-					public void setInput(Input input) {}
-				});
-			}
-			
 			if(hangmanOverlay.allGuessed()) {
-				System.out.println("WIN!");
 				playingHangman = false;
 			}
+			else if(hangmanOverlay.lost()) {
+				playingHangman = false;
+			}
+			
+//			// while (!hangmanOverlay.allGuessed() && !hangmanOverlay.lost()) {
+//			// System.out.println("In while loop update Hangman");
+//
+//			// UPDATE TIMER <- render timer
+//
+//			// listen only for alphabetical characters
+//			input.addKeyListener(new KeyListener() {
+//				@Override
+//				public void keyPressed(int key, char c) {		
+//				}
+//
+//					// just because we must :(
+//					@Override
+//					public void keyReleased(int key, char c) {
+//						// only allow English chars (don't use isAlphabetic)
+//						if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+//							// PASS TO MINIGAME
+//							// UPDATE DISPLAY WORD ACCORDINGLY <- render word
+//							System.out.println("Letter: " + c);
+//							hangmanOverlay.inputLetter(c); // should update ?
+//							input.clearKeyPressedRecord();
+//						}
+//					}
+//					@Override
+//					public void inputEnded() {}
+//					@Override
+//					public void inputStarted() {}
+//					@Override
+//					public boolean isAcceptingInput() {return true; }
+//					@Override
+//					public void setInput(Input input) {}
+//				});
+//			}
+//		
+//			
+//			if(hangmanOverlay.allGuessed() || hangmanOverlay.lost()) {
+//				playingHangman = false;
+		}
 
 		if (exit) {
 			game.enterState(Vals.MENU_STATE);
@@ -395,9 +404,9 @@ public class Play extends BasicGameState {
 			if (playingPong) {
 				pongControls(key);
 			} 
-//			else if (playingHangman) {
-//				hangmanControls(key, c);
-//			} 
+			else if (playingHangman) {
+				hangmanControls(key, c);
+			} 
 			else {
 				coreControls(key);
 			}
@@ -413,21 +422,25 @@ public class Play extends BasicGameState {
 	 * @param c
 	 *            The character entered
 	 */
-	private void hangmanControls(int key, char c) {
-		switch(key) {
-		case Input.KEY_8:
-			playingHangman = false;
-			System.out.println("EXITED HANGMAN");
-			break;
-		}
+	private void hangmanControls(int key, char c) {	
+//		switch(key) {
+//		case Input.KEY_8:
+//			playingHangman = false;
+//			System.out.println("EXITED HANGMAN");
+//			break;
+//		}	
 		
-		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+		if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+		
 			System.out.println("Entered char = " + c);
 			// PASS TO MINIGAME
 			// UPDATE DISPLAY WORD ACCORDINGLY <- render word
 			hangmanOverlay.inputLetter(c); // should update ?
 		}
+		
 	}
+		
+	
 
 	/**
 	 * Use controls for hangman minigame

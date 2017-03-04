@@ -30,6 +30,7 @@ public class MiniGameHangman extends PopUpOverlay {
 	private ArrayList<Character> alreadyEntered;
 	private int attempts = 0;
 	private int PERMITTED_ATTEMPTS = 5;
+	private String alreadyEnteredString = "";
 
 //	private static Timer timer;
 //	private static int interval = 30;
@@ -125,21 +126,28 @@ public class MiniGameHangman extends PopUpOverlay {
 		return new String(displayed);
 	}
 
-	public void inputLetter(char userIn) {
+	public void inputLetter(char userIn) {	
 		if (checkAlreadyEntered(userIn)) {
-			System.out.println("Already entered: " + alreadyEntered.toString());
-		} else {
-			// user's char hasn't been encountered before
-			alreadyEntered.add(userIn);
-			displayWord();
-			if (!isInWord(userIn)) {
-				attempts++;
+				// System.out.println("Already entered: " + alreadyEntered.toString());
+				//getAlreadyEntered();
+			} else {
+				// user's char hasn't been encountered before
+				alreadyEntered.add(userIn);
+				displayWord();
+				if (!isInWord(userIn)) {
+					attempts++;
+				}
+				getAttempts();
+				//getAlreadyEntered();
 			}
-		}
+			
+			
+//		if(allGuessed() || lost()) {
+//		}
 	}
 
 	public boolean lost() {
-		if (getAttempts() > PERMITTED_ATTEMPTS) {
+		if (PERMITTED_ATTEMPTS == getAttempts()) {
 			System.out.println("Game over.");
 			//timer.cancel();
 			return true;
@@ -152,8 +160,9 @@ public class MiniGameHangman extends PopUpOverlay {
 		return attempts;
 	}
 
-	public ArrayList<Character> getAlreadyEntered() {
-		return alreadyEntered;
+	public String getAlreadyEntered() {
+		alreadyEnteredString = alreadyEntered.toString();
+		return alreadyEnteredString;
 	}
 
 	public void addToAlreadyEntered(char c) {
@@ -182,7 +191,11 @@ public class MiniGameHangman extends PopUpOverlay {
 	// check if the word has been guessed by using the list of characters
 	// entered so far
 	public boolean allGuessed() {
-		return alreadyEntered.containsAll(word.chars().mapToObj(c -> (char) c).collect(Collectors.toList()));
+		if(alreadyEntered.containsAll(word.chars().mapToObj(c -> (char) c).collect(Collectors.toList()))) {
+			System.out.println("You won!");
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -194,11 +207,9 @@ public class MiniGameHangman extends PopUpOverlay {
 		// TODO determine height, width, scaling
 		// initially draw the empty string
 		wg.drawCenter(g, displayWord(), x + width / 2, y + height / 2 - height / 6, true, scale / 3);
-		if(!alreadyEntered.isEmpty()) {
-			wg.drawCenter(g, alreadyEntered.toString(), x + width / 2, y + height / 2, true, scale / 5);
-		}
-		wg.drawCenter(g, PERMITTED_ATTEMPTS - getAttempts() + " attempts left" , x + width / 2, y + height / 2 + height/6, true, scale / 4);
-		
-		
+		//if(!alreadyEntered.isEmpty()) {
+			//wg.drawCenter(g, getAlreadyEntered(), x + width / 2, y + height / 2, true, scale / 5);
+		//}
+		wg.drawCenter(g, PERMITTED_ATTEMPTS - getAttempts() + " attempts left" , x + width / 2, y + height / 2 + height/6, true, scale / 4);	
 	}
 }
