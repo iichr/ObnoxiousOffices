@@ -32,7 +32,7 @@ public class MiniGameHangmanCMD {
 	public MiniGameHangmanCMD() {
 		word = pickWord(setDifficulty());
 		alreadyEntered = new ArrayList<Character>();
-		init(word, alreadyEntered);
+		init(word);
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class MiniGameHangmanCMD {
 	public MiniGameHangmanCMD(String word) {
 		this.word = word;
 		alreadyEntered = new ArrayList<Character>();
-		init(word, alreadyEntered);
+		init(word);
 	}
 
 	/**
@@ -53,8 +53,8 @@ public class MiniGameHangmanCMD {
 	 * @param word
 	 * @param alreadyEntered
 	 */
-	public void init(String word, ArrayList<Character> alreadyEntered) {
-		displayWord(word, alreadyEntered);
+	public void init(String word) {
+		displayWord(word);
 		// set up timer, 30 seconds, 1000 milliseconds delay
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -65,10 +65,10 @@ public class MiniGameHangmanCMD {
 		}, 1000, 1000);
 		
 
-		while (!allGuessed(word, alreadyEntered) && !lost()) {
-			inputLetter(word, alreadyEntered);
+		while (!allGuessed(word) && !lost()) {
+			inputLetter(word);
 		}
-		if (allGuessed(word, alreadyEntered)) {
+		if (allGuessed(word)) {
 			System.out.println("WIN!");
 			timer.cancel();
 		}
@@ -115,8 +115,8 @@ public class MiniGameHangmanCMD {
 	 *            The arraylist of letters entered so far
 	 * @return
 	 */
-	private boolean checkAlreadyEntered(char c, ArrayList<Character> entered) {
-		return entered.indexOf(c) >= 0;
+	private boolean checkAlreadyEntered(char c) {
+		return alreadyEntered.indexOf(c) >= 0;
 	}
 
 	/**
@@ -127,11 +127,11 @@ public class MiniGameHangmanCMD {
 	 * @param entered
 	 *            The array of letters entered so far
 	 */
-	private void displayWord(String word, ArrayList<Character> entered) {
+	private void displayWord(String word) {
 		char[] displayed = new char[word.length()];
 		for (int i = 0; i < word.length(); i++) {
 			char letter = word.charAt(i);
-			if (checkAlreadyEntered(letter, entered))
+			if (checkAlreadyEntered(letter))
 				// debugging
 				// if encountered before, display
 				// System.out.print(letter);
@@ -146,15 +146,15 @@ public class MiniGameHangmanCMD {
 
 	}
 
-	private void inputLetter(String word, ArrayList<Character> entered) {
+	private void inputLetter(String word) {
 		char userIn = input.next().toLowerCase().charAt(0);
 		if (Character.isLetter(userIn)) {
-			if (checkAlreadyEntered(userIn, entered)) {
-				System.out.println("Already entered: " + entered.toString());
+			if (checkAlreadyEntered(userIn)) {
+				System.out.println("Already entered: " + alreadyEntered.toString());
 			} else {
 				// user's char hasn't been encountered before
-				entered.add(userIn);
-				displayWord(word, entered);
+				alreadyEntered.add(userIn);
+				displayWord(word);
 				if (!isInWord(userIn, word)) {
 					attempts++;
 				}
@@ -203,7 +203,7 @@ public class MiniGameHangmanCMD {
 
 	// check if the word has been guessed by using the list of characters
 	// entered so far
-	private boolean allGuessed(String word, ArrayList<Character> entered) {
-		return entered.containsAll(word.chars().mapToObj(c -> (char) c).collect(Collectors.toList()));
+	private boolean allGuessed(String word) {
+		return alreadyEntered.containsAll(word.chars().mapToObj(c -> (char) c).collect(Collectors.toList()));
 	}
 }
