@@ -200,17 +200,13 @@ public class Play extends BasicGameState {
 
 		// show ui info to player
 		playerinfo.render(g);
-		
-		
-		if (playingHangman) {
-			//System.out.println("rendering hangman");
-			hangmanOverlay.render(g);
-		}
 
-		else if (gameOver) {
+		if (gameOver) {
 			gameOverOverlay.render(g);
 		} else if (options) {
 			optionsOverlay.render(g);
+		} else if(playingHangman) {
+			hangmanOverlay.render(g);
 		} else if (playingPong) {
 			// TODO render pong
 		} else if (showOverview) {
@@ -241,44 +237,6 @@ public class Play extends BasicGameState {
 			else if(hangmanOverlay.lost()) {
 				playingHangman = false;
 			}
-			
-//			// while (!hangmanOverlay.allGuessed() && !hangmanOverlay.lost()) {
-//			// System.out.println("In while loop update Hangman");
-//
-//			// UPDATE TIMER <- render timer
-//
-//			// listen only for alphabetical characters
-//			input.addKeyListener(new KeyListener() {
-//				@Override
-//				public void keyPressed(int key, char c) {		
-//				}
-//
-//					// just because we must :(
-//					@Override
-//					public void keyReleased(int key, char c) {
-//						// only allow English chars (don't use isAlphabetic)
-//						if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-//							// PASS TO MINIGAME
-//							// UPDATE DISPLAY WORD ACCORDINGLY <- render word
-//							System.out.println("Letter: " + c);
-//							hangmanOverlay.inputLetter(c); // should update ?
-//							input.clearKeyPressedRecord();
-//						}
-//					}
-//					@Override
-//					public void inputEnded() {}
-//					@Override
-//					public void inputStarted() {}
-//					@Override
-//					public boolean isAcceptingInput() {return true; }
-//					@Override
-//					public void setInput(Input input) {}
-//				});
-//			}
-//		
-//			
-//			if(hangmanOverlay.allGuessed() || hangmanOverlay.lost()) {
-//				playingHangman = false;
 		}
 
 		if (exit) {
@@ -403,11 +361,9 @@ public class Play extends BasicGameState {
 		if (!gameOver) {
 			if (playingPong) {
 				pongControls(key);
-			} 
-			else if (playingHangman) {
+			} else if (playingHangman) {
 				hangmanControls(key, c);
-			} 
-			else {
+			} else {
 				coreControls(key);
 			}
 		} else {
@@ -416,34 +372,22 @@ public class Play extends BasicGameState {
 	}
 
 	/**
-	 * Use controls for hangman minigame
-	 * @param key 
+	 * Hangman - manage input and display
 	 * 
+	 * @param key
 	 * @param c
-	 *            The character entered
+	 *            The input char
 	 */
-	private void hangmanControls(int key, char c) {	
-//		switch(key) {
-//		case Input.KEY_8:
-//			playingHangman = false;
-//			System.out.println("EXITED HANGMAN");
-//			break;
-//		}	
-		
+	private void hangmanControls(int key, char c) {		
 		if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-		
-			System.out.println("Entered char = " + c);
-			// PASS TO MINIGAME
-			// UPDATE DISPLAY WORD ACCORDINGLY <- render word
-			hangmanOverlay.inputLetter(c); // should update ?
+			// System.out.println("Entered char = " + c);
+			// also serves to update the display!
+			hangmanOverlay.inputLetter(c);
 		}
-		
 	}
 		
-	
-
 	/**
-	 * Use controls for hangman minigame
+	 * Use controls for the pong minigame
 	 * 
 	 * @param c
 	 *            The character entered
@@ -468,10 +412,6 @@ public class Play extends BasicGameState {
 		switch (key) {
 		case Input.KEY_ESCAPE:
 			options = !options;
-			break;
-		case Input.KEY_9:
-			playingHangman = true;
-			System.out.println("ENTERED HANGMAN");
 			break;
 		case Input.KEY_TAB:
 			showOverview = true;
@@ -513,6 +453,11 @@ public class Play extends BasicGameState {
 			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
 				actionSelector.changeSelection(-1);
 			}
+			break;
+		// TEMPORARY FOR TESTING HANGMAN - PRESS 9
+		case Input.KEY_9:
+			playingHangman = true;
+			//System.out.println("ENTERED HANGMAN");
 			break;
 		}
 	}
