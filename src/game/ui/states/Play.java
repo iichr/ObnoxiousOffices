@@ -14,6 +14,7 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import game.core.chat.Chat;
 import game.core.event.Events;
 import game.core.event.GameFinishedEvent;
 import game.core.event.player.PlayerInputEvent;
@@ -34,6 +35,7 @@ import game.core.world.tile.type.TileType;
 import game.core.world.tile.type.TileTypeComputer;
 import game.ui.PlayerOverview;
 import game.ui.PlayerInfo;
+import game.ui.components.ChatBox;
 import game.ui.components.Effect;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
@@ -82,7 +84,10 @@ public class Play extends BasicGameState {
 	private boolean playingHangman;
 
 	Music bgmusic;
+	private ChatBox chatbox;
+	private Chat chat;
 
+	
 	public Play(int state) {
 	}
 
@@ -107,6 +112,8 @@ public class Play extends BasicGameState {
 		// UNCOMMENT until everybody add the required libraries.
 		// Initialise the background music
 		// bgmusic = new Music("res/music/toocheerful.ogg");
+		chat=new Chat();
+		chatbox=new ChatBox(gc,chat);
 	}
 	
 	/**
@@ -202,6 +209,9 @@ public class Play extends BasicGameState {
 		if (exit) {
 			game.enterState(Vals.MENU_STATE);
 		}
+		if(input.isKeyPressed(input.KEY_ENTER)){
+			chatbox.update(localPlayerName);
+		}
 
 		input.clearKeyPressedRecord();
 	}
@@ -223,7 +233,7 @@ public class Play extends BasicGameState {
 
 		// show ui info to player
 		playerinfo.render(g);
-
+		chatbox.render(gc, g);
 		if (gameOver) {
 			gameOverOverlay.render(g);
 		}else if(options){
