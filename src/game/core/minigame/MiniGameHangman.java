@@ -84,10 +84,8 @@ public class MiniGameHangman extends PopUpOverlay {
 				in.close();
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return dictionary;
@@ -137,7 +135,7 @@ public class MiniGameHangman extends PopUpOverlay {
 
 	public boolean lost() {
 		if (PERMITTED_ATTEMPTS == getAttempts()) {
-			System.out.println("Game over.");
+			System.out.println("Hangman - Game over.");
 			// timer.cancel();
 			return true;
 		} else {
@@ -150,9 +148,8 @@ public class MiniGameHangman extends PopUpOverlay {
 	}
 
 	private String getAlreadyEntered(ArrayList<Character> entered) {
-		// using , as delimiter -> null pointer
-		// using arraylist to String -> null pointer
-		// Possible owing to lack of , /COMMA/ character in the rendering ???! 
+		// Null pointer when using delimiters or brackets! 
+		// Possibly owing to lack of , /COMMA/ character in the rendering ???! 
 		String str = entered.stream().map(e -> e.toString()).collect(Collectors.joining());
 		return str;
 	}
@@ -171,7 +168,6 @@ public class MiniGameHangman extends PopUpOverlay {
 		Random randGenerator = new Random();
 		int i = randGenerator.nextInt(dict.size());
 		word = dict.get(i);
-
 		return word;
 	}
 
@@ -183,12 +179,13 @@ public class MiniGameHangman extends PopUpOverlay {
 	// check whether word has been guessed
 	public boolean allGuessed() {
 		if (alreadyEntered.containsAll(word.chars().mapToObj(c -> (char) c).collect(Collectors.toList()))) {
-			System.out.println("You won!");
+			System.out.println("Hangman - You won!");
 			return true;
 		}
 		return false;
 	}
 
+	
 	@Override
 	public void render(Graphics g) {
 		// temporarily use the default background
