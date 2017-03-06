@@ -25,6 +25,9 @@ public class LogicHard implements Logic, Serializable {
 
 	// create a PathFinding object
 	public PathFinding pf;
+	
+	//speed of AI, depends on difficulty 
+	public int aiSpeed = 250;
 
 	// paths
 	public ArrayList<Pair<Integer, Integer>> toBed, toCM, fromBed, fromCM;
@@ -153,7 +156,7 @@ public class LogicHard implements Logic, Serializable {
 				p.moveForwards();
 			}
 			try {
-				Thread.sleep(500);
+				Thread.sleep(aiSpeed);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -190,7 +193,7 @@ public class LogicHard implements Logic, Serializable {
 				p.moveForwards();
 
 				try {
-					Thread.sleep(500);
+					Thread.sleep(aiSpeed);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -245,7 +248,7 @@ public class LogicHard implements Logic, Serializable {
 				p.moveForwards();
 				
 				try {
-					Thread.sleep(500);
+					Thread.sleep(aiSpeed);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

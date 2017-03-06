@@ -132,12 +132,12 @@ public class FireRules implements Serializable {
 		}
 		// if the ai is being too fatigued, go refresh
 		if (ai.status.getAttribute(PlayerAttribute.FATIGUE) > 0.8) {
-
-			isMoving = true; // the ai is moving so we need to stop the update
-								// method
+			
+			// the ai is moving so we need to stop the update method
+			isMoving = true; 
 			ai.getLogic().aiRefresh(ai);
-			isMoving = false; // the ai is not moving so we need to reset the
-								// update method
+			// the ai is not moving so we need to reset the update method
+			isMoving = false; 
 		}
 	}
 }

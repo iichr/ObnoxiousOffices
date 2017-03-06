@@ -23,12 +23,9 @@ import game.core.world.World;
 public class LogicEasy implements Logic, Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	// thresholds for attributes
-	public final double energyThreshold = 0.2;
-
-	// hack after what %
-	public final double hackAfter = 65;
+	
+	//speed of AI, depends on difficulty 
+	public int aiSpeed = 500;
 
 	// create a PathFinding object
 	public PathFinding pf;
@@ -152,7 +149,7 @@ public class LogicEasy implements Logic, Serializable {
 				p.moveForwards();
 			}
 			try {
-				Thread.sleep(500);
+				Thread.sleep(aiSpeed);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -189,7 +186,7 @@ public class LogicEasy implements Logic, Serializable {
 				p.moveForwards();
 
 				try {
-					Thread.sleep(500);
+					Thread.sleep(aiSpeed);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -225,7 +222,7 @@ public class LogicEasy implements Logic, Serializable {
 				p.moveForwards();
 				
 				try {
-					Thread.sleep(500);
+					Thread.sleep(aiSpeed);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -244,7 +241,7 @@ public class LogicEasy implements Logic, Serializable {
 				p.moveForwards();
 				
 				try {
-					Thread.sleep(500);
+					Thread.sleep(aiSpeed);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
