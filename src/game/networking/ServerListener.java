@@ -5,8 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import game.core.event.CreateAIPlayerRequest;
 import game.core.event.Event;
@@ -40,10 +40,12 @@ public class ServerListener extends Thread {
 	private int playerNumber;
 	private Queue<Object> outputQ;
 	public World world;
+    private final Object queueWait;
 
 	public static final int NUM_AI_PLAYERS = 0;
 
 	public ServerListener(Socket socket, ArrayList<ServerListener> connection, World world) {
+		this.queueWait = new Object();
 		this.socket = socket;
 		this.connections = connection;
 		this.playerNumber = connections.size();
@@ -55,7 +57,7 @@ public class ServerListener extends Thread {
 		// make the object streams
 		createObjectStreams();
 
-		outputQ = new LinkedList<Object>();
+		outputQ = new ConcurrentLinkedQueue<Object>();
 
 		sendQueue();
 	}
@@ -162,28 +164,36 @@ public class ServerListener extends Thread {
 	 */
 	private void forwardInfo(Object recieved) {
 		outputQ.offer(recieved);
+		synchronized(this.queueWait){
+            this.queueWait.notifyAll();
+        }
 	}
 
 	private void sendQueue() {
 		Thread outputThread = new Thread(() -> {
-			while (true) {
-				try {
-					Thread.sleep(5);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
-				Object output = outputQ.poll();
-				if (output != null) {
-					try {
-						os.writeObject(output);
-						os.flush();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		});
-		outputThread.start();
+            Object output;
+            while (true) {
+                output = outputQ.poll();
+                if (output != null) {
+                    try {
+                        os.writeObject(output);
+                        os.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    try {
+                        synchronized(this.queueWait){
+                            this.queueWait.wait();
+                        }
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                System.err.println("Looping");
+            }
+        });
+        outputThread.start();
 	}
 
 	/**
