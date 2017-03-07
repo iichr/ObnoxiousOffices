@@ -15,6 +15,7 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import game.core.chat.Chat;
 import game.core.event.Events;
 import game.core.event.GameFinishedEvent;
 import game.core.event.player.PlayerInputEvent;
@@ -36,6 +37,7 @@ import game.core.world.tile.type.TileType;
 import game.core.world.tile.type.TileTypeComputer;
 import game.ui.PlayerOverview;
 import game.ui.PlayerInfo;
+import game.ui.components.ChatBox;
 import game.ui.components.Effect;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
@@ -85,6 +87,7 @@ public class Play extends BasicGameState {
 	private boolean playingHangman;
 
 	Music bgmusic;
+	private ChatBox cb;
 
 	public Play(int state) {
 	}
@@ -110,6 +113,8 @@ public class Play extends BasicGameState {
 		// KEEP COMMENTED until we've all added the required libraries.
 		// Initialise the background music
 		// bgmusic = new Music("res/music/toocheerful.ogg");
+		
+		cb=new ChatBox(gc, new Chat());
 	}
 
 	/**
@@ -189,7 +194,7 @@ public class Play extends BasicGameState {
 
 		// renders world
 		drawWorld();
-
+		cb.render(gc, g);
 		// add effects overview container
 		effectOverview.render(g);
 
@@ -218,7 +223,7 @@ public class Play extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
 		Player localPlayer = world.getPlayer(localPlayerName);
-
+		cb.update(localPlayerName);
 		effectOverview.updateEffects(localPlayer);
 
 		playerOverview.updateContainer(world.getPlayers());
