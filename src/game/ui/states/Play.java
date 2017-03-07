@@ -223,7 +223,9 @@ public class Play extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
 		Player localPlayer = world.getPlayer(localPlayerName);
-		cb.update(localPlayerName);
+		
+		cb.update(gc,localPlayerName);
+
 		effectOverview.updateEffects(localPlayer);
 
 		playerOverview.updateContainer(world.getPlayers());
