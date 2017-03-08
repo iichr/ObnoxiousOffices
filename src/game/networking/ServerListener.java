@@ -191,7 +191,6 @@ public class ServerListener extends Thread {
                         e1.printStackTrace();
                     }
                 }
-                System.err.println("Looping");
             }
         });
         outputThread.start();
