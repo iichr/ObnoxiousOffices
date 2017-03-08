@@ -4,6 +4,7 @@ import game.core.event.CreateAIPlayerRequest;
 import game.ai.AIPlayer;
 import game.core.event.CreateAIPlayerRequest;
 import game.core.event.Events;
+import game.core.event.GameStartedEvent;
 import game.core.event.chat.ChatMessageCreatedEvent;
 import game.core.event.player.PlayerInputEvent;
 import game.core.input.InputType;
@@ -40,8 +41,20 @@ public class ServerSync {
 	public static void init() {
 		Events.on(PlayerInputEvent.class, ServerSync::onPlayerInput);
 		Events.on(ChatMessageCreatedEvent.class, ServerSync::onChatMessageCreated);
+		Events.on(GameStartedEvent.class, ServerSync::onGameStarted);
 		Events.on(CreateAIPlayerRequest.class, ServerSync::addAIPLayer);
 	}
+
+    private static void onGameStarted(GameStartedEvent event) {
+        System.out.println("########### on game started");
+        event.world.getPlayers().forEach(player -> {
+            System.out.println("Adding sitting state to player " + player.name);
+            // Make player sit on chair and face correct way
+            player.setFacing(player.getLocation().getTile().facing);
+            player.status.addState(PlayerState.sitting);
+            System.out.println(player.status.hasState(PlayerState.sitting));
+        });
+    }
 
 	private static void onChatMessageCreated(ChatMessageCreatedEvent event) {
 		Events.trigger(event.toChatReceivedEvent());
