@@ -186,7 +186,7 @@ public class LogicHard implements Logic, Serializable {
 
 			// check if you are on the last element, if true - don't do the
 			// moving, just the facing
-			if (toCM.size() - i == 1)
+			if (toBed.size() - i == 1)
 				figureOutFacing(p, toBed.get(i));
 			else {
 				// get the right facing
