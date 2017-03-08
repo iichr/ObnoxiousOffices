@@ -1,11 +1,11 @@
 package game.core.test;
 
-import game.core.minigame.MiniGameHangman;
+import game.core.minigame.MiniGameHangmanOld;
 
 public class HangmanTest {
 
 	public static void main(String[] args) {
-		MiniGameHangman game = new MiniGameHangman();
+		MiniGameHangmanOld game = new MiniGameHangmanOld();
 	}
 
 }
