@@ -452,6 +452,9 @@ public class Play extends BasicGameState {
 					choosingHack = true;
 					actionSelector.setAction(0);
 					break;
+				case "NONE":
+					//do nothing
+					break;
 				default:
 					Events.trigger(
 							new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
