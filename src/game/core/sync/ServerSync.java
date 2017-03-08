@@ -70,7 +70,7 @@ public class ServerSync {
 		ServerListener sl = (ServerListener) event.serverListener;
 		int aiNumber = event.aiNumber;
 		AIPlayer ai = new AIPlayer("Volker_" + aiNumber, Direction.SOUTH,
-				World.world.getSpawnPoint(World.world.getMaxPlayers() - ServerListener.NUM_AI_PLAYERS + aiNumber), "e");
+				World.world.getSpawnPoint(World.world.getMaxPlayers() - ServerListener.NUM_AI_PLAYERS + aiNumber), "h");
 		sl.addAIToGame(ai);
 	}
 

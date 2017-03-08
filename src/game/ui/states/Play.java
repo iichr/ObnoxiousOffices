@@ -36,8 +36,8 @@ import game.core.world.tile.MetaTile;
 import game.core.world.tile.Tile;
 import game.core.world.tile.type.TileType;
 import game.core.world.tile.type.TileTypeComputer;
-import game.ui.PlayerOverview;
 import game.ui.PlayerInfo;
+import game.ui.PlayerOverview;
 import game.ui.components.ChatBox;
 import game.ui.components.Effect;
 import game.ui.interfaces.ImageLocations;
@@ -84,6 +84,7 @@ public class Play extends BasicGameState {
 	protected boolean options;
 	protected boolean gameOver;
 	protected boolean exit;
+	private boolean choosingHack;
 	private boolean playingPong;
 	private boolean playingHangman;
 
@@ -114,8 +115,8 @@ public class Play extends BasicGameState {
 		// KEEP COMMENTED until we've all added the required libraries.
 		// Initialise the background music
 		// bgmusic = new Music("res/music/toocheerful.ogg");
-		
-		cb=new ChatBox(gc, new Chat());
+
+		cb = new ChatBox(gc, new Chat());
 	}
 
 	/**
@@ -130,6 +131,7 @@ public class Play extends BasicGameState {
 		options = false;
 		gameOver = false;
 		exit = false;
+		choosingHack = false;
 		playingPong = false;
 		playingHangman = false;
 	}
@@ -188,7 +190,7 @@ public class Play extends BasicGameState {
 		// used to stop the music from playing
 		// bgmusic.stop();
 	}
-	
+
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setFont(Vals.FONT_PLAY);
@@ -201,7 +203,9 @@ public class Play extends BasicGameState {
 
 		// shows selectors
 		if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-			actionSelector.updateSelector(world, localPlayerName, tileWidth, tileHeight);
+			if (world.getPlayer(localPlayerName).status.getActions().size() == 0) {
+				actionSelector.updateSelector(world, localPlayerName, choosingHack, tileWidth, tileHeight, g);
+			}
 		}
 
 		// show ui info to player
@@ -211,8 +215,8 @@ public class Play extends BasicGameState {
 			gameOverOverlay.render(g);
 		} else if (options) {
 			optionsOverlay.render(g);
-		} else if(playingHangman) {
-//			hangmanOverlay.render(g);
+		} else if (playingHangman) {
+			// hangmanOverlay.render(g);
 		} else if (playingPong) {
 			// TODO render pong
 		} else if (showOverview) {
@@ -224,8 +228,8 @@ public class Play extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
 		Player localPlayer = world.getPlayer(localPlayerName);
-		
-		cb.update(gc,localPlayerName);
+
+		cb.update(gc, localPlayerName);
 
 		effectOverview.updateEffects(localPlayer);
 
@@ -238,15 +242,11 @@ public class Play extends BasicGameState {
 			// TODO update pong variables
 		}
 
-		/*if (playingHangman) {
-			if(hangmanOverlay.allGuessed()) {
-				playingHangman = false;
-			}
-			else if(hangmanOverlay.lost()) {
-				playingHangman = false;
-			}
-		}
-		*/
+		/*
+		 * if (playingHangman) { if(hangmanOverlay.allGuessed()) {
+		 * playingHangman = false; } else if(hangmanOverlay.lost()) {
+		 * playingHangman = false; } }
+		 */
 
 		if (exit) {
 			game.enterState(Vals.MENU_STATE);
@@ -387,14 +387,14 @@ public class Play extends BasicGameState {
 	 * @param c
 	 *            The input char
 	 */
-	private void hangmanControls(int key, char c) {		
-		if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+	private void hangmanControls(int key, char c) {
+		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
 			// System.out.println("Entered char = " + c);
 			// also serves to update the display!
-//			hangmanOverlay.inputLetter(c);
+			// hangmanOverlay.inputLetter(c);
 		}
 	}
-		
+
 	/**
 	 * Use controls for the pong minigame
 	 * 
@@ -427,27 +427,34 @@ public class Play extends BasicGameState {
 			break;
 		case Input.KEY_W:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
+			choosingHack = false;
 			break;
 		case Input.KEY_S:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
+			choosingHack = false;
 			break;
 		case Input.KEY_D:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
+			choosingHack = false;
 			break;
 		case Input.KEY_A:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
+			choosingHack = false;
 			break;
 		case Input.KEY_E:
 			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-				switch (actionSelector.getAction()) {
-				case ActionSelector.WORK:
+				switch (actionSelector.getSelected()) {
+				case "WORK":
 					Events.trigger(
 							new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
 					break;
-				case ActionSelector.HACK:
+				case "HACK":
+					choosingHack = true;
+					actionSelector.setAction(0);
+					break;
+				default:
 					Events.trigger(
 							new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
-					break;
 				}
 			} else {
 				Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
@@ -463,10 +470,15 @@ public class Play extends BasicGameState {
 				actionSelector.changeSelection(-1);
 			}
 			break;
+		case Input.KEY_LEFT:
+			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+				choosingHack = false;
+			}
+			break;
 		// TEMPORARY FOR TESTING HANGMAN - PRESS 9
 		case Input.KEY_9:
 			playingHangman = true;
-			//System.out.println("ENTERED HANGMAN");
+			// System.out.println("ENTERED HANGMAN");
 			break;
 		}
 	}

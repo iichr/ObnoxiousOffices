@@ -39,12 +39,13 @@ public class LogicHard implements Logic, Serializable {
 
 	// @Override
 	public void aiRefresh(AIPlayer ai) {
-		if (usedCoffeeMachine < 2) {
+		if (usedCoffeeMachine < 3) {
 			goToCoffeeMachineAndBack(World.world, ai);
 			usedCoffeeMachine++;
 		} else {
 			goToBedAndBack(World.world, ai);
-		}
+			usedCoffeeMachine = 0;
+		}	
 	}
 
 	@Override
@@ -232,7 +233,7 @@ public class LogicHard implements Logic, Serializable {
 				p.moveForwards();
 
 				try {
-					Thread.sleep(500);
+					Thread.sleep(aiSpeed);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -279,8 +280,6 @@ public class LogicHard implements Logic, Serializable {
 
 		// progress of the current player we are looking at
 		double currentPlayerProgress;
-		// productivity of the current player
-		double currentPlayerProductivity = 0.0;
 		// fatigue of the current player
 		double currentPlayerFatigue = 0.0;
 
@@ -288,31 +287,25 @@ public class LogicHard implements Logic, Serializable {
 		double winnerProgress = -1.0;
 		// fatigue of the player closest to win
 		double winnerFatigue = 1.0;
-		// productivity of the player closest to win
-		double winnerProductivity = -1.0;
-
-		// check if there is a player closer to winning than the AI
+		
+		//check if there is a player closer to winning than the AI
 		for (Player player : players) {
 			// get the progress, productivity, and fatigue of the current player
 			// in the set
 			currentPlayerProgress = player.getProgress();
-			currentPlayerProductivity = player.status.getAttribute(PlayerAttribute.PRODUCTIVITY);
 			currentPlayerFatigue = player.status.getAttribute(PlayerAttribute.FATIGUE);
 
 			// compare the work done, productivity and fatigue each player
-			if ((currentPlayerProgress >= winnerProgress && currentPlayerProductivity > winnerProductivity
-					&& currentPlayerFatigue < winnerFatigue)
-					|| (currentPlayerProgress + 10 >= winnerProgress && currentPlayerProductivity > winnerProductivity
-							&& currentPlayerFatigue < winnerFatigue)) {
-
+			if ((currentPlayerProgress >= winnerProgress
+			 && currentPlayerFatigue < winnerFatigue)
+			 || (currentPlayerProgress + 10 >= winnerProgress
+			  && currentPlayerFatigue < winnerFatigue)) {
 				// set the current player as the winner player
 				winner = player;
 				// set the current player's progress as the highest
 				winnerProgress = currentPlayerProgress;
-				// set the current player's productivity as the winner's
-				// productivity
-				winnerProductivity = currentPlayerProductivity;
-				// set the current player's fatigue as the winner's fatigue
+				//set the current player's productivity as the winner's productivity
+				//set the current player's fatigue as the winner's fatigue
 				winnerFatigue = currentPlayerFatigue;
 			}
 		}

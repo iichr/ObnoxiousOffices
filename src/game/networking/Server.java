@@ -26,7 +26,7 @@ public class Server {
 	private boolean gameEnded = false;
 	private boolean gameStarted = false;
 
-	private final int NUM_PLAYERS = 2;
+	private final int NUM_PLAYERS = 4;
 	
 	public Server() {
 		connections = new ArrayList<ServerListener>();
