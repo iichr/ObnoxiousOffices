@@ -3,6 +3,7 @@ package game.ui.states;
 import java.util.HashMap;
 import java.util.List;
 
+import game.core.minigame.MiniGameHangmanOld;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -75,7 +76,7 @@ public class Play extends BasicGameState {
 	// overlays
 	private OptionsOverlay optionsOverlay;
 	private GameOverOverlay gameOverOverlay;
-	private MiniGameHangman hangmanOverlay;
+	private MiniGameHangmanOld hangmanOverlay;
 
 	boolean showOverview = false;
 
@@ -162,7 +163,7 @@ public class Play extends BasicGameState {
 		// popUps
 		optionsOverlay = new OptionsOverlay();
 		gameOverOverlay = new GameOverOverlay(world.getPlayers());
-//		hangmanOverlay = new MiniGameHangman();
+		hangmanOverlay = new MiniGameHangmanOld("memes");
 	}
 
 	/**
@@ -237,14 +238,15 @@ public class Play extends BasicGameState {
 			// TODO update pong variables
 		}
 
-		if (playingHangman) {
-//			if(hangmanOverlay.allGuessed()) {
-//				playingHangman = false;
-//			}
-//			else if(hangmanOverlay.lost()) {
-//				playingHangman = false;
-//			}
+		/*if (playingHangman) {
+			if(hangmanOverlay.allGuessed()) {
+				playingHangman = false;
+			}
+			else if(hangmanOverlay.lost()) {
+				playingHangman = false;
+			}
 		}
+		*/
 
 		if (exit) {
 			game.enterState(Vals.MENU_STATE);
