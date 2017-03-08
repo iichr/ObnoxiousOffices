@@ -174,6 +174,9 @@ public class LogicEasy implements Logic, Serializable {
 
 	@Override
 	public void goToBedAndBack(World w, Player p) {
+		
+		//find the sofas on the map
+		findBed(w, p);
 
 		// go through the array list of i, j coords
 		// to the sofa
@@ -181,11 +184,11 @@ public class LogicEasy implements Logic, Serializable {
 
 			// check if you are on the last element, if true - don't do the
 			// moving, just the facing
-			if (toCM.size() - i == 1)
-				figureOutFacing(p, toCM.get(i));
+			if (toBed.size() - i == 1)
+				figureOutFacing(p, toBed.get(i));
 			else {
 				// get the right facing
-				figureOutFacing(p, toCM.get(i));
+				figureOutFacing(p, toBed.get(i));
 
 				// make a move
 				p.moveForwards();
