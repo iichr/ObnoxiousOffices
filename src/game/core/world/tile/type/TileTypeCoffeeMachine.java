@@ -11,7 +11,7 @@ import game.core.world.tile.Tile;
 public class TileTypeCoffeeMachine extends TileTypeAction {
 
     public TileTypeCoffeeMachine(int id) {
-        super(id, PlayerActionDrink.class);
+        super(id);
     }
 
     @Override

@@ -38,7 +38,7 @@ public class TileTypeComputer extends TileTypeAction {
     }
 
     public TileTypeComputer(int id) {
-        super(id, PlayerActionWork.class);
+        super(id);
     }
 
     @Override
