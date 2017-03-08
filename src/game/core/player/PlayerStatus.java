@@ -16,6 +16,8 @@ import game.core.player.effect.PlayerEffectCoffeeBuzz;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -117,8 +119,11 @@ public class PlayerStatus implements Serializable {
      * @param val
      */
     public void setAttribute(PlayerAttribute attribute, double val) {
+        double diff = val - getAttribute(attribute);
         updateAttributeCounter(attribute);
         attributes.put(attribute, Math.max(0, Math.min(val, attribute.maxVal)));
+        // Check for synchronised attributes and change them accordingly
+        Arrays.stream(PlayerAttribute.values()).filter(a -> a.sync == attribute).forEach(a -> addToAttribute(a, a.syncFunc.apply(diff, getAttribute(attribute))));
         if(!initialising && attributeUpdateCounter.get(attribute) >= ATTRIBUTE_UPDATE_THRESHOLD){
             attributeUpdateCounter.put(attribute, 0);
             Events.trigger(new PlayerAttributeChangedEvent(val, player.name, attribute), true);
@@ -185,13 +190,21 @@ public class PlayerStatus implements Serializable {
     }
 
     public enum PlayerAttribute {
-        FATIGUE(0.0, 1.0), PRODUCTIVITY(1.0, 1.0);
+        FATIGUE(0.0, 1.0), PRODUCTIVITY(1.0, 1.0, FATIGUE, (diff, val) -> -val);
 
         public final double initialVal, maxVal;
+        public final PlayerAttribute sync;
+        public final BiFunction<Double, Double, Double> syncFunc;
 
-        PlayerAttribute(double initialVal, double maxVal) {
+        PlayerAttribute(double initialVal, double maxVal, PlayerAttribute sync, BiFunction<Double, Double, Double> syncFunc) {
             this.initialVal = initialVal;
             this.maxVal = maxVal;
+            this.sync = sync;
+            this.syncFunc = syncFunc;
+        }
+
+        PlayerAttribute(double initialVal, double maxVal) {
+            this(initialVal, maxVal, null, null);
         }
     }
 
