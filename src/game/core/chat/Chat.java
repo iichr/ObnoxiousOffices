@@ -27,7 +27,8 @@ public class Chat {
     }
 
     public List<ChatMessage> getLatestMessages(int num) {
-        return messages.stream().skip(messages.size() - num).collect(Collectors.toList());
+        int skip = Math.max(0, messages.size() - num);
+        return messages.stream().skip(skip).collect(Collectors.toList());
     }
 
     public List<ChatMessage> getMessages() {
