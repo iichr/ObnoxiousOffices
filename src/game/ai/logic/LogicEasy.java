@@ -213,6 +213,10 @@ public class LogicEasy implements Logic, Serializable {
 
 	@Override
 	public void toTheDesk(World w, Player p) {
+		
+		//need to find the path to the coffee machine TODO: remove for final version
+		findCoffeeMachine(w, p);
+		
 		// check whether the player is at the coffee machine or sofa
 		if (toCM.get(toCM.size() - 1) == fromCM.get(0)) {
 			// if at the coffee machine, go through the array list of i, j
@@ -237,7 +241,7 @@ public class LogicEasy implements Logic, Serializable {
 
 			// if at the sofa, go through the array list of i, j coords
 			// to the desk from the sofa
-			for (int i = 2; i < fromBed.size(); i++) {
+			for (int i = 1; i < fromBed.size(); i++) {
 
 				// get the right facing
 				figureOutFacing(p, fromBed.get(i));
