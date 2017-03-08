@@ -49,7 +49,8 @@ public class LogicHard implements Logic, Serializable {
 
 	@Override
 	public void aiWork(AIPlayer ai) {
-		ai.status.addAction(new PlayerActionWork(ai));
+		if(!ai.status.hasAction(PlayerActionWork.class))
+			ai.status.addAction(new PlayerActionWork(ai));
 	}
 
 	@Override
@@ -332,7 +333,9 @@ public class LogicHard implements Logic, Serializable {
 
 	@Override
 	public void hackPlayer(AIPlayer ai, Player player) {
-		player.status.addAction(new PlayerActionHack(ai, player));
+		//if the ai and the target are not the same player, and the ai is not hacking anyone, hack
+		if (!ai.name.equals(player.name) && !ai.status.hasAction(PlayerActionHack.class))
+			player.status.addAction(new PlayerActionHack(ai, player));
 	}
 
 }

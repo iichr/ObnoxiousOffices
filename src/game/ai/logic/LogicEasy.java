@@ -42,7 +42,8 @@ public class LogicEasy implements Logic, Serializable {
 
 	@Override
 	public void aiWork(AIPlayer ai) {
-		ai.status.addAction(new PlayerActionWork(ai));
+		if(!ai.status.hasAction(PlayerActionWork.class))
+			ai.status.addAction(new PlayerActionWork(ai));
 	}
 
 	@Override
@@ -283,6 +284,8 @@ public class LogicEasy implements Logic, Serializable {
 	}
 
 	public void hackPlayer(AIPlayer ai, Player player) {
-		player.status.addAction(new PlayerActionHack(ai, player));
+		//if the ai is not hacking anyone, hack
+		if (!ai.status.hasAction(PlayerActionHack.class))
+			ai.status.addAction(new PlayerActionHack(ai, player));
 	}
 }
