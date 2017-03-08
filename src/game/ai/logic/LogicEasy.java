@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import game.ai.AIPlayer;
 import game.ai.pathFinding.Pair;
@@ -23,12 +24,9 @@ import game.core.world.World;
 public class LogicEasy implements Logic, Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	// thresholds for attributes
-	public final double energyThreshold = 0.2;
-
-	// hack after what %
-	public final double hackAfter = 65;
+	
+	//speed of AI, depends on difficulty 
+	public int aiSpeed = 500;
 
 	// create a PathFinding object
 	public PathFinding pf;
@@ -38,19 +36,12 @@ public class LogicEasy implements Logic, Serializable {
 
 	// @Override
 	public void aiRefresh(AIPlayer ai) {
-		ai.easylogic.goToCoffeeMachineAndBack(World.world, ai); // TODO: put
-																// some logic
-		// behind this
+		goToCoffeeMachineAndBack(World.world, ai); 
 	}
 
 	@Override
 	public void aiWork(AIPlayer ai) {
 		ai.status.addAction(new PlayerActionWork(ai));
-	}
-
-	@Override
-	public void reactToPlayerHack() {
-		// TODO
 	}
 
 	@Override
@@ -159,7 +150,7 @@ public class LogicEasy implements Logic, Serializable {
 				p.moveForwards();
 			}
 			try {
-				Thread.sleep(500);
+				Thread.sleep(aiSpeed);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -196,7 +187,7 @@ public class LogicEasy implements Logic, Serializable {
 				p.moveForwards();
 
 				try {
-					Thread.sleep(500);
+					Thread.sleep(aiSpeed);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -232,7 +223,7 @@ public class LogicEasy implements Logic, Serializable {
 				p.moveForwards();
 				
 				try {
-					Thread.sleep(500);
+					Thread.sleep(aiSpeed);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -251,7 +242,7 @@ public class LogicEasy implements Logic, Serializable {
 				p.moveForwards();
 				
 				try {
-					Thread.sleep(500);
+					Thread.sleep(aiSpeed);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -263,43 +254,32 @@ public class LogicEasy implements Logic, Serializable {
 		// interact with the tile
 		Location l = p.getLocation().forward(p.getFacing());
 		l.getTile().onInteraction(p);
+		
+		//interact with the computer and start working
+		l = p.getLocation().forward(p.getFacing());
+		l.getTile().onInteraction(p);
 	}
 
 	@Override
-	public boolean lowEngergy(Player p) {
-		if (p.status.getAttribute(PlayerAttribute.FATIGUE) < energyThreshold)
-			return true;
-		return false;
-	}
-
-	@Override
-	public Player closestToWin() {
+	public Player closestToWin(AIPlayer ai) {
 		// get all players from the world
 		List<Player> players = World.world.getPlayers();
-
-		// progress of the current player we are looking at
-		double currentPlayerProgress;
-
-		// the player who has done most towards completing his project
-		Player winner = null;
-
-		double highestProgr = -1; // progress of the player with highest
-									// progress
-
-		for (Player player : players) {
-			// get the progress of the current player in the set double
-			currentPlayerProgress = player.getProgress();
-			// compare the work each player has completed
-			if (currentPlayerProgress > highestProgr) {
-				winner = player; // set the current player as the winner player
-				highestProgr = currentPlayerProgress;
-				// set the current player's progress as the highest
-			}
+		
+		//choose a random player
+		int random = ThreadLocalRandom.current().nextInt(0, 4);
+		Player randomPlayer = players.get(random);
+		
+		//if the chosen player is an AI, check again
+		while (randomPlayer.isAI && !randomPlayer.name.equals(ai.name)) {
+			random = ThreadLocalRandom.current().nextInt(0, 4);
+			randomPlayer = players.get(random);
 		}
-		return winner;
+		
+		return randomPlayer;
+		
 	}
 
 	public void hackPlayer(Player player) {
-		// TODO: hacking logic
+		player.status.addAction(new PlayerActionWork(player));
 	}
 }

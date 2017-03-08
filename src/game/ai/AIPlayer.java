@@ -1,6 +1,8 @@
 package game.ai;
 
+import game.ai.logic.Logic;
 import game.ai.logic.LogicEasy;
+import game.ai.logic.LogicHard;
 import game.ai.ruleBasedAI.FireRules;
 import game.ai.ruleBasedAI.Rules;
 import game.ai.ruleBasedAI.UpdateMemory;
@@ -14,7 +16,7 @@ import game.core.world.Location;
  * @author Atanas K. Harbaliev Created on 18/01/2017
  */
 
-public class AIPlayer extends Player {;
+public class AIPlayer extends Player {
 
 	// the working memory for a given player
 	public WorkingMemory wm;
@@ -28,25 +30,56 @@ public class AIPlayer extends Player {;
 	// fire rules object
 	public FireRules fr;
 
+	// the easy mode logic for the AI player
+	public LogicEasy logicEasy;
+
+	// the hard mode logic for the AI player
+	public LogicHard logicHard;
+
+	// the mode of the AI
+	public String mode;
+
 	// serialVersion to shut eclipse
 	private static final long serialVersionUID = 1L;
 
 	// constructor from Player class
-	public AIPlayer(String name, Direction facing, Location location) {
+	/**
+	 * Constructor
+	 * 
+	 * @param name
+	 *            name of the AI
+	 * @param facing
+	 *            the facing of the AI
+	 * @param location
+	 *            the location of the AI
+	 * @param mode
+	 *            difficulty of the AI - easy/hard. Write 'e' for easy and 'h'
+	 *            for hard
+	 */
+	public AIPlayer(String name, Direction facing, Location location, String mode) {
+		// set the name, facing, and location
 		super(name, facing, location);
+		// set the AI flag to true
 		isAI = true;
-		this.status.setAttribute(PlayerAttribute.FATIGUE, 0.85);
+		// set the mode of the AI
+		this.mode = mode;
+		// check for the mode and initialise the correct logic
+		if (mode.equals("e"))
+			logicHard = new LogicHard();
+		else
+			logicEasy = new LogicEasy();
 
 		// initialise everything
 		initialise();
 	}
 
-	// the logic for the AI player
-	public LogicEasy easylogic = new LogicEasy();
-
 	public void initialise() {
 		// get the player who's closest to winning the game
-		Player player = easylogic.closestToWin();
+		Player player;
+		if (mode.equals("e"))
+			player = logicEasy.closestToWin(this);
+		else
+			player = logicHard.closestToWin(this);
 
 		wm = new WorkingMemory(player); // create the working memory
 		// create the object to update working memory
@@ -54,6 +87,16 @@ public class AIPlayer extends Player {;
 		rules = new Rules(); // create the rule set
 		// create the object to fire rules
 		fr = new FireRules(this, rules, wm, uwm);
+	}
+	
+	/**
+	 * @return the logic object depending on the mode of the AI
+	 */
+	public Logic getLogic() {
+		if (mode.equals("e")) 
+			return logicEasy;
+		return logicHard;
+
 	}
 
 	// create the working memory, the update working memory object,
@@ -64,7 +107,11 @@ public class AIPlayer extends Player {;
 		super.update();
 
 		// get the player who's closest to winning the game
-		Player player = easylogic.closestToWin();
+		Player player;
+		if (this.mode.equals("e"))
+			player = logicEasy.closestToWin(this);
+		else
+			player = logicHard.closestToWin(this);
 
 		wm = new WorkingMemory(player); // create the working memory
 
