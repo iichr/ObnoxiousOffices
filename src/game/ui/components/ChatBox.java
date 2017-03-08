@@ -54,7 +54,7 @@ public class ChatBox {
 			} else {
 				cms = chat.getLatestMessages(10);
 			}
-			int y=0;
+			int y=typer.getY()-typer.getHeight()*10;
 			for (ChatMessage cm : cms) {
 				g.drawString(cm.from + " : " + cm.message, 0, y);
 				y+=typer.getHeight();
