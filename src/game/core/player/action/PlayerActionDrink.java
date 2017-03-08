@@ -2,7 +2,9 @@ package game.core.player.action;
 
 import game.core.player.Player;
 import game.core.player.PlayerStatus;
+import game.core.player.effect.PlayerEffect;
 import game.core.player.effect.PlayerEffectCoffeeBuzz;
+import game.util.Time;
 
 import java.util.Random;
 
@@ -14,7 +16,9 @@ public class PlayerActionDrink extends TimedPlayerAction {
     public PlayerActionDrink(Player player) {
         super(player);
         if(player.timesDrunkCoffee++ > new Random().nextInt(10)) {
-            player.status.addEffect(new PlayerEffectCoffeeBuzz(10000, player));
+            PlayerEffect effect = new PlayerEffectCoffeeBuzz((int) Time.ticks(60000), player);
+            if(!player.status.hasEffect(effect)) player.status.addEffect(effect);
+            else player.status.getEffect(PlayerEffectCoffeeBuzz.class).setElapsed(effect.getDuration());
             player.timesDrunkCoffee = 0;
         }
     }
