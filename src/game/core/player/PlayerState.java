@@ -17,21 +17,6 @@ public abstract class PlayerState implements Serializable {
 
     private static class PlayerStateSitting extends game.core.player.PlayerState {
 
-<<<<<<< HEAD
-=======
-        static {
-            Events.on(GameStartedEvent.class, PlayerStateSitting::onGameStarted);
-        }
-
-        private static void onGameStarted(GameStartedEvent event) {
-            event.world.getPlayers().forEach(player -> {
-                // Make player sit on chair and face correct way
-                player.setFacing(player.getLocation().getTile().facing);
-                player.status.addState(PlayerState.sitting);
-            });
-        }
-
->>>>>>> UI
         @Override
         public boolean cancelsOnMove() {
             return true;
