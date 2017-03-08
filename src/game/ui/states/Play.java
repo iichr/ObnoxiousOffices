@@ -165,7 +165,7 @@ public class Play extends BasicGameState {
 		// popUps
 		optionsOverlay = new OptionsOverlay();
 		gameOverOverlay = new GameOverOverlay(world.getPlayers());
-		hangmanOverlay = new MiniGameHangmanOld("memes");
+//		hangmanOverlay = new MiniGameHangmanOld("memes");
 	}
 
 	/**

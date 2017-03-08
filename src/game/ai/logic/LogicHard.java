@@ -35,7 +35,7 @@ public class LogicHard implements Logic, Serializable {
 
 	// the variable that counts the consecutive times the coffee machine was
 	// used
-	int usedCoffeeMachine = 0;
+	int usedCoffeeMachine = 2;
 
 	// @Override
 	public void aiRefresh(AIPlayer ai) {
@@ -224,7 +224,7 @@ public class LogicHard implements Logic, Serializable {
 	public void toTheDesk(World w, Player p) {
 		
 		//need to find the path to the coffee machine TODO: remove for final version
-		findCoffeeMachine(w, p);
+//		findCoffeeMachine(w, p);
 		
 		// check whether the player is at the coffee machine or sofa
 		if (toCM.get(toCM.size() - 1) == fromCM.get(0)) {
@@ -247,7 +247,7 @@ public class LogicHard implements Logic, Serializable {
 				}
 			}
 		} else {
-
+			System.out.println(fromBed);
 			// if at the sofa, go through the array list of i, j coords
 			// to the desk from the sofa
 			for (int i = 1; i < fromBed.size(); i++) {
