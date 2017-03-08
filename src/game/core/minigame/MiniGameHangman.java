@@ -1,185 +1,44 @@
 package game.core.minigame;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.stream.Collectors;
+import game.core.event.player.PlayerInputEvent;
+import game.core.input.InputTypeCharacter;
+
+import java.util.Arrays;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
- * A hangman mini-game
- * 
- * @author iichr
+ * Created by samtebbs on 03/03/2017.
  */
+public class MiniGameHangman extends MiniGame1Player {
 
-public class MiniGameHangman {
+    String word = "";
+    public static final String NUM_CHARS = "n", PROGRESS = "p", ENTERED = "e", WRONG = "w";
+    public static final int MAX_WRONG = 10;
 
-	private String[] dict = { "replace", "with", "dictionary", "ofatleast", "words" };
-	String word;
-	private int attempts = 0;
-	private int PERMITTED_ATTEMPTS = 5;
-	private boolean guessed = false;
-	private ArrayList<Character> alreadyEntered;
+    public MiniGameHangman(String player) {
+        super(player);
+        setVar(NUM_CHARS, word.length());
+        setVar(PROGRESS, new char[word.length()]);
+        setVar(ENTERED, "");
+    }
 
-	private Scanner input = new Scanner(System.in);
-	private static Timer timer;
-	private static int interval = 30;
-
-	public MiniGameHangman() {
-		word = pickWord(dict);
-		alreadyEntered = new ArrayList<Character>();
-
-		setDifficulty();
-
-		init(word, alreadyEntered);
-	}
-
-	/**
-	 * Constructor for testing purposes only!
-	 * 
-	 * @param word
-	 *            The word to be guessed.
-	 */
-	public MiniGameHangman(String word) {
-		this.word = word;
-		alreadyEntered = new ArrayList<Character>();
-		init(word, alreadyEntered);
-	}
-
-	/**
-	 * Main game loop with timer. Manage victory and loss conditions
-	 * 
-	 * @param word
-	 * @param alreadyEntered
-	 */
-	public void init(String word, ArrayList<Character> alreadyEntered) {
-		displayWord(word, alreadyEntered);
-		// set up timer, 30 seconds, 1000 milliseconds delay
-		timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-			public void run() {
-				// debugging - countdown timer
-				System.out.println(setInterval());
-			} 
-		}, 1000, 1000);
-
-		while (!allGuessed(word, alreadyEntered) && !lost()) {
-				inputLetter(word, alreadyEntered);
-		}
-		if (allGuessed(word, alreadyEntered)) {
-			System.out.println("WIN!");
-			timer.cancel();
-		}
-	}
-
-	// countdown in intervals of 1 second.
-	private static final int setInterval() {
-		if(interval == 1) {
-			timer.cancel();
-		}
-		return --interval;
-	}
-
-	public void setDifficulty() {
-		// set dictionary
-		// set PERMITTED_ATTEMPTS
-	}
-
-	/**
-	 * Check whether a letter has already been input by the user
-	 * 
-	 * @param c
-	 *            The letter to check for
-	 * @param entered
-	 *            The arraylist of letters entered so far
-	 * @return
-	 */
-	private boolean checkAlreadyEntered(char c, ArrayList<Character> entered) {
-		return entered.indexOf(c) >= 0;
-	}
-
-	/**
-	 * Display a word.
-	 * 
-	 * @param word
-	 *            The word to display
-	 * @param entered
-	 *            The array of letters entered so far
-	 */
-	private void displayWord(String word, ArrayList<Character> entered) {
-		for (int i = 0; i < word.length(); i++) {
-			char letter = word.charAt(i);
-			if (checkAlreadyEntered(letter, entered))
-				// debugging
-				// if encountered before, display
-				System.out.print(letter);
-			else
-				System.out.print('_');
-			guessed = false;
-		}
-		System.out.println();
-
-	}
-
-	private void inputLetter(String word, ArrayList<Character> entered) {
-		char userIn = input.next().toLowerCase().charAt(0);
-		if (Character.isLetter(userIn)) {
-			if (checkAlreadyEntered(userIn, entered)) {
-				System.out.println("Already entered: " + entered.toString());
-			} else {
-				// user's char hasn't been encountered before
-				entered.add(userIn);
-				displayWord(word, entered);
-				if (!isInWord(userIn, word)) {
-					attempts++;
-				}
-			}
-		} else {
-			System.out.println("Not a valid char.");
-		}
-	}
-
-	private boolean lost() {
-		if (getAttempts() > PERMITTED_ATTEMPTS) {
-			System.out.println("Game over.");
-			timer.cancel();
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	private int getAttempts() {
-		return attempts;
-	}
-
-	private ArrayList<Character> getAlreadyEntered() {
-		return alreadyEntered;
-	}
-
-	/**
-	 * Pick a random word given an array of strings
-	 * 
-	 * @param dict
-	 * @return A random word.
-	 */
-	private String pickWord(String[] dict) {
-		Random randGenerator = new Random();
-		int i = randGenerator.nextInt(dict.length);
-		word = dict[i];
-
-		return word;
-	}
-
-	// check if a given char is in a word
-	private boolean isInWord(char c, String word) {
-		return word.indexOf(c) >= 0;
-	}
-
-	// check if the word has been guessed by using the list of characters
-	// entered so far
-	private boolean allGuessed(String word, ArrayList<Character> entered) {
-		return entered.containsAll(word.chars().mapToObj(c -> (char) c).collect(Collectors.toList()));
-	}
+    @Override
+    public void onInput(PlayerInputEvent event) {
+        if(event.inputType instanceof InputTypeCharacter) {
+            char ch = ((InputTypeCharacter) event.inputType).ch;
+            String entered = (String) getVar(ENTERED);
+            if(!Arrays.asList(entered.toCharArray()).contains(ch)) {
+                IntStream indexes = IntStream.range(0, word.length()).filter(i -> word.charAt(i) == ch);
+                if(indexes.count() > 0) {
+                    char[] progress = (char[]) getVar(PROGRESS);
+                    indexes.forEach(i -> progress[i] = ch);
+                    setVar(PROGRESS, progress);
+                    setVar(ENTERED, entered + ch);
+                } else setVar(WRONG, (int) getVar(WRONG) + 1);
+                if((int) getVar(WRONG) >= MAX_WRONG) addVar(AI_SCORE, 1);
+                else if(word.equals(new String((char[]) getVar(PROGRESS)))) addStat(getPlayers().get(0), SCORE, 1);
+            }
+        }
+    }
 }
