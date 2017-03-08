@@ -1,5 +1,7 @@
 package game.ai.pathFinding;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author Atanas K. Harbaliev. Created on 14.02.2017
@@ -9,7 +11,9 @@ package game.ai.pathFinding;
  * @param <R>
  *            right int of pair
  */
-public class Pair<L, R> {
+public class Pair<L, R> implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	// just for testing
 	@Override
