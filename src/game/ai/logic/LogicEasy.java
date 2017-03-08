@@ -274,7 +274,7 @@ public class LogicEasy implements Logic, Serializable {
 		
 		//if the chosen player is an AI, check again
 		while (randomPlayer.isAI && !randomPlayer.name.equals(ai.name)) {
-			random = ThreadLocalRandom.current().nextInt(0, 4);
+			random = ThreadLocalRandom.current().nextInt(0, players.size());
 			randomPlayer = players.get(random);
 		}
 		
