@@ -420,15 +420,19 @@ public class Play extends BasicGameState {
 			break;
 		case Input.KEY_W:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
+			choosingHack = false;
 			break;
 		case Input.KEY_S:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
+			choosingHack = false;
 			break;
 		case Input.KEY_D:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
+			choosingHack = false;
 			break;
 		case Input.KEY_A:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
+			choosingHack = false;
 			break;
 		case Input.KEY_E:
 			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
@@ -439,6 +443,7 @@ public class Play extends BasicGameState {
 					break;
 				case "HACK":
 					choosingHack = true;
+					actionSelector.setAction(0);
 					break;
 				default:
 					Events.trigger(
@@ -456,6 +461,11 @@ public class Play extends BasicGameState {
 		case Input.KEY_DOWN:
 			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
 				actionSelector.changeSelection(-1);
+			}
+			break;
+		case Input.KEY_LEFT:
+			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+				choosingHack = false;
 			}
 			break;
 		// TEMPORARY FOR TESTING HANGMAN - PRESS 9

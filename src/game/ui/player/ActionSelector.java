@@ -33,16 +33,15 @@ public class ActionSelector {
 		Direction facing = localPlayer.getFacing();
 		Location inFront = localPlayer.getLocation().forward(facing);
 		
-		toShow = new LinkedList<String>();
 		if (inFront.checkBounds()) {
 			Tile tile = inFront.getTile();
 			TileType actionTile = tile.type;
 			if (actionTile.equals(TileType.COMPUTER)) {
 				String ownerName = TileTypeComputer.getOwningPlayer((MetaTile) tile);
 				selectorBack = new Image(ImageLocations.SELECTOR, false, Image.FILTER_NEAREST);
+				toShow = new LinkedList<String>();
 				wg = new WordGenerator();
 				if (ownerName.equals(localPlayerName)) {
-					
 					if (hacking) {
 						for (Player p : world.getPlayers()) {
 							if (!p.name.equals(localPlayerName)) {
@@ -66,9 +65,12 @@ public class ActionSelector {
 	}
 
 	public void changeSelection(int i) {
+		System.out.println(toShow);
 		if (i < 0) {
 			action = (action - 1) % toShow.size();
-			action = Math.abs(action);
+			if(action < 0){
+				action = toShow.size() - Math.abs(action);
+			}
 		} else {
 			action = (action + 1) % toShow.size();
 		}
@@ -77,6 +79,10 @@ public class ActionSelector {
 
 	public String getSelected() {
 		return toShow.get(action);
+	}
+	
+	public void setAction(int action) {
+		this.action = action;
 	}
 
 	private void render(Graphics g, Location inFront, float width, float height) {

@@ -232,7 +232,7 @@ public class LogicHard implements Logic, Serializable {
 				p.moveForwards();
 
 				try {
-					Thread.sleep(500);
+					Thread.sleep(aiSpeed);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
