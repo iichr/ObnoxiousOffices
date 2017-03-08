@@ -182,4 +182,6 @@ public class MiniGameHangmanOld {
 	private boolean allGuessed(String word, ArrayList<Character> entered) {
 		return entered.containsAll(word.chars().mapToObj(c -> (char) c).collect(Collectors.toList()));
 	}
+
+
 }

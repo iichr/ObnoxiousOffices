@@ -3,6 +3,7 @@ package game.ui.states;
 import java.util.HashMap;
 import java.util.List;
 
+import game.core.minigame.MiniGameHangmanOld;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -75,7 +76,7 @@ public class Play extends BasicGameState {
 	// overlays
 	private OptionsOverlay optionsOverlay;
 	private GameOverOverlay gameOverOverlay;
-	private MiniGameHangman hangmanOverlay;
+	private MiniGameHangmanOld hangmanOverlay;
 
 	boolean showOverview = false;
 
@@ -162,7 +163,7 @@ public class Play extends BasicGameState {
 		// popUps
 		optionsOverlay = new OptionsOverlay();
 		gameOverOverlay = new GameOverOverlay(world.getPlayers());
-		hangmanOverlay = new MiniGameHangman();
+		hangmanOverlay = new MiniGameHangmanOld("memes");
 	}
 
 	/**
@@ -211,7 +212,7 @@ public class Play extends BasicGameState {
 		} else if (options) {
 			optionsOverlay.render(g);
 		} else if(playingHangman) {
-			hangmanOverlay.render(g);
+			//hangmanOverlay.render(g);
 		} else if (playingPong) {
 			// TODO render pong
 		} else if (showOverview) {
@@ -237,7 +238,7 @@ public class Play extends BasicGameState {
 			// TODO update pong variables
 		}
 
-		if (playingHangman) {
+		/*if (playingHangman) {
 			if(hangmanOverlay.allGuessed()) {
 				playingHangman = false;
 			}
@@ -245,6 +246,7 @@ public class Play extends BasicGameState {
 				playingHangman = false;
 			}
 		}
+		*/
 
 		if (exit) {
 			game.enterState(Vals.MENU_STATE);
@@ -389,7 +391,7 @@ public class Play extends BasicGameState {
 		if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
 			// System.out.println("Entered char = " + c);
 			// also serves to update the display!
-			hangmanOverlay.inputLetter(c);
+			//hangmanOverlay.inputLetter(c);
 		}
 	}
 		
