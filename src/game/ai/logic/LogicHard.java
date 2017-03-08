@@ -45,12 +45,12 @@ public class LogicHard implements Logic, Serializable {
 		} else {
 			goToBedAndBack(World.world, ai);
 			usedCoffeeMachine = 0;
-		}	
+		}
 	}
 
 	@Override
 	public void aiWork(AIPlayer ai) {
-		if(!ai.status.hasAction(PlayerActionWork.class))
+		if (!ai.status.hasAction(PlayerActionWork.class))
 			ai.status.addAction(new PlayerActionWork(ai));
 	}
 
@@ -180,8 +180,8 @@ public class LogicHard implements Logic, Serializable {
 
 	@Override
 	public void goToBedAndBack(World w, Player p) {
-		
-		//find the sofas on the map
+
+		// find the sofas on the map
 		findBed(w, p);
 
 		// go through the array list of i, j coords
@@ -222,12 +222,8 @@ public class LogicHard implements Logic, Serializable {
 
 	@Override
 	public void toTheDesk(World w, Player p) {
-		
-		//need to find the path to the coffee machine TODO: remove for final version
-//		findCoffeeMachine(w, p);
-		
 		// check whether the player is at the coffee machine or sofa
-		if (toCM.get(toCM.size() - 1) == fromCM.get(0)) {
+		if (p.getLocation().coords.x == fromCM.get(1).getL() && p.getLocation().coords.y == fromCM.get(1).getR()) {
 			// if at the coffee machine, go through the array list of i, j
 			// coords
 			// to the desk from the coffee machine
@@ -294,8 +290,8 @@ public class LogicHard implements Logic, Serializable {
 		double winnerProgress = -1.0;
 		// fatigue of the player closest to win
 		double winnerFatigue = 1.0;
-		
-		//check if there is a player closer to winning than the AI
+
+		// check if there is a player closer to winning than the AI
 		for (Player player : players) {
 			// get the progress, productivity, and fatigue of the current player
 			// in the set
@@ -303,16 +299,16 @@ public class LogicHard implements Logic, Serializable {
 			currentPlayerFatigue = player.status.getAttribute(PlayerAttribute.FATIGUE);
 
 			// compare the work done, productivity and fatigue each player
-			if ((currentPlayerProgress >= winnerProgress
-			 && currentPlayerFatigue < winnerFatigue)
-			 || (currentPlayerProgress + 10 >= winnerProgress
-			  && currentPlayerFatigue < winnerFatigue)) {
+			if ((currentPlayerProgress >= winnerProgress && currentPlayerFatigue < winnerFatigue)
+					|| (currentPlayerProgress + 10 >= winnerProgress && currentPlayerFatigue < winnerFatigue)) {
+
 				// set the current player as the winner player
 				winner = player;
 				// set the current player's progress as the highest
 				winnerProgress = currentPlayerProgress;
-				//set the current player's productivity as the winner's productivity
-				//set the current player's fatigue as the winner's fatigue
+				// set the current player's productivity as the winner's
+				// productivity
+				// set the current player's fatigue as the winner's fatigue
 				winnerFatigue = currentPlayerFatigue;
 			}
 		}
@@ -333,7 +329,8 @@ public class LogicHard implements Logic, Serializable {
 
 	@Override
 	public void hackPlayer(AIPlayer ai, Player player) {
-		//if the ai and the target are not the same player, and the ai is not hacking anyone, hack
+		// if the ai and the target are not the same player, and the ai is not
+		// hacking anyone, hack
 		if (!ai.name.equals(player.name) && !ai.status.hasAction(PlayerActionHack.class))
 			player.status.addAction(new PlayerActionHack(ai, player));
 	}
