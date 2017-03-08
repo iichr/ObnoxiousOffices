@@ -42,7 +42,8 @@ public class LogicEasy implements Logic, Serializable {
 
 	@Override
 	public void aiWork(AIPlayer ai) {
-		ai.status.addAction(new PlayerActionWork(ai));
+		if(!ai.status.hasAction(PlayerActionWork.class))
+			ai.status.addAction(new PlayerActionWork(ai));
 	}
 
 	@Override
