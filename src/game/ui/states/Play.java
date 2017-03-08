@@ -84,8 +84,7 @@ public class Play extends BasicGameState {
 	private boolean playingHangman;
 
 	Music bgmusic;
-	private ChatBox chatbox;
-	private Chat chat;
+	private ChatBox cb;
 
 	
 	public Play(int state) {
@@ -112,8 +111,7 @@ public class Play extends BasicGameState {
 		// UNCOMMENT until everybody add the required libraries.
 		// Initialise the background music
 		// bgmusic = new Music("res/music/toocheerful.ogg");
-		chat=new Chat();
-		chatbox=new ChatBox(gc,chat);
+		cb=new ChatBox(gc,new Chat());
 	}
 	
 	/**
@@ -190,7 +188,7 @@ public class Play extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
 		Player localPlayer = world.getPlayer(localPlayerName);
-
+		cb.update(gc, localPlayerName);
 		effectOverview.updateEffects(localPlayer);
 		
 		playerOverview.updateContainer(world.getPlayers());
@@ -209,10 +207,6 @@ public class Play extends BasicGameState {
 		if (exit) {
 			game.enterState(Vals.MENU_STATE);
 		}
-		if(input.isKeyPressed(input.KEY_ENTER)){
-			chatbox.update(localPlayerName);
-		}
-
 		input.clearKeyPressedRecord();
 	}
 
@@ -233,7 +227,7 @@ public class Play extends BasicGameState {
 
 		// show ui info to player
 		playerinfo.render(g);
-		chatbox.render(gc, g);
+		cb.render(gc, g);
 		if (gameOver) {
 			gameOverOverlay.render(g);
 		}else if(options){
