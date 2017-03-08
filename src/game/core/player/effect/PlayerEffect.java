@@ -1,6 +1,8 @@
 package game.core.player.effect;
 
 import game.core.Updateable;
+import game.core.event.Events;
+import game.core.event.player.effect.PlayerEffectElapsedUpdate;
 import game.core.player.Player;
 
 import java.io.Serializable;
@@ -14,6 +16,8 @@ public abstract class PlayerEffect implements Updateable, Serializable {
     protected int elapsed;
     protected boolean expired;
     public final Player player;
+    int updates = 0;
+    public static final int UPDATE_THRESHOLD = 3;
 
     protected PlayerEffect(int duration, Player player) {
         this.duration = duration;
@@ -21,13 +25,11 @@ public abstract class PlayerEffect implements Updateable, Serializable {
     }
 
     public void update() {
-        if(!expired) {
-            if (elapsed++ >= duration) expired = true;
-            else update(player);
+        if(!expired){
+            setElapsed(elapsed + 1);
+            if (elapsed >= duration) expired = true;
         }
     }
-
-    protected abstract void update(Player player);
 
     public int getDuration() {
         return duration;
@@ -39,5 +41,13 @@ public abstract class PlayerEffect implements Updateable, Serializable {
 
     public boolean ended() {
         return expired;
+    }
+
+    public void setElapsed(int elapsed) {
+        this.elapsed = elapsed;
+        if(++updates >= UPDATE_THRESHOLD) {
+            updates = 0;
+            Events.trigger(new PlayerEffectElapsedUpdate(player.name, this, elapsed), true);
+        }
     }
 }

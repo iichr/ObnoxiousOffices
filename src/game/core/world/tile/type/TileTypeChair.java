@@ -27,9 +27,9 @@ public class TileTypeChair extends TileType {
     @Override
     public void onInteraction(Player player, Tile tile) {
         if(!World.world.playerAt(tile.location)) {
-            player.status.addState(PlayerState.sitting);
-            player.setLocation(tile.location);
+        	player.setLocation(tile.location);
             player.setFacing(tile.facing);
+            player.status.addState(PlayerState.sitting);
         }
     }
 
