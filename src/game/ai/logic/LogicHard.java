@@ -223,10 +223,6 @@ public class LogicHard implements Logic, Serializable {
 	@Override
 	public void toTheDesk(World w, Player p) {
 
-		// need to find the path to the coffee machine TODO: remove for final
-		// version
-		findCoffeeMachine(w, p);
-
 		// check whether the player is at the coffee machine or sofa
 		if (p.getLocation().coords.x == fromCM.get(1).getL() && p.getLocation().coords.y == fromCM.get(1).getR()) {
 			// if at the coffee machine, go through the array list of i, j
