@@ -24,6 +24,13 @@ public abstract class MiniGame extends DataHolder implements Updateable {
     private Map<String, Map<String, Object>> stats = new HashMap<>();
     private List<String> players = new ArrayList<>();
 
+    public MiniGame(String... players) {
+        Arrays.stream(players).forEach(p -> {
+            setStat(p, SCORE, 0);
+            addPlayer(p);
+        });
+    }
+
     protected void addStat(String player, String stat, int val) {
         setStat(player, stat, getIntStat(player, stat) + val);
     }
