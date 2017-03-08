@@ -218,7 +218,7 @@ public class LogicEasy implements Logic, Serializable {
 		findCoffeeMachine(w, p);
 		
 		// check whether the player is at the coffee machine or sofa
-		if (toCM.get(toCM.size() - 1) == fromCM.get(0)) {
+		if (p.getLocation().coords.x == fromCM.get(1).getL() && p.getLocation().coords.y == fromCM.get(1).getR()) {
 			// if at the coffee machine, go through the array list of i, j
 			// coords
 			// to the desk from the coffee machine
