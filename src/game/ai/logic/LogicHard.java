@@ -179,6 +179,9 @@ public class LogicHard implements Logic, Serializable {
 
 	@Override
 	public void goToBedAndBack(World w, Player p) {
+		
+		//find the sofas on the map
+		findBed(w, p);
 
 		// go through the array list of i, j coords
 		// to the sofa
