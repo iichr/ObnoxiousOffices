@@ -10,6 +10,7 @@ import game.core.event.player.PlayerAttributeChangedEvent;
 import game.core.event.player.effect.PlayerEffectAddedEvent;
 import game.core.event.player.effect.PlayerEffectEndedEvent;
 import game.core.player.action.PlayerAction;
+import game.core.player.action.PlayerActionSleep;
 import game.core.player.effect.PlayerEffect;
 import game.core.player.effect.PlayerEffectCoffeeBuzz;
 
@@ -102,6 +103,11 @@ public class PlayerStatus implements Serializable {
         Updateable.updateAll(effects).forEach(this::removeEffect);
 
         addToAttribute(PlayerAttribute.FATIGUE, FATIGUE_INCREASE);
+        if(getAttribute(PlayerAttribute.FATIGUE) >= PlayerAttribute.FATIGUE.maxVal) {
+            PlayerActionSleep sleep = new PlayerActionSleep(player);
+            sleep.forced = true;
+            player.status.addAction(sleep);
+        }
     }
 
     // TODO: Change productivity based on fatigue
