@@ -56,9 +56,6 @@ public class ServerSync {
 	private static void onChatMessageCreated(ChatMessageCreatedEvent event) {
 		Events.trigger(event.toChatReceivedEvent());
 	}
-    private static void onChatMessageCreated(ChatMessageCreatedEvent event) {
-        Events.trigger(event.toChatReceivedEvent());
-    }
 
     private static void onPlayerInput(PlayerInputEvent event) {
         InputType type = event.inputType;
