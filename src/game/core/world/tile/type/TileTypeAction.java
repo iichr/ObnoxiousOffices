@@ -5,6 +5,7 @@ import game.core.player.PlayerState;
 import game.core.player.action.PlayerAction;
 import game.core.world.tile.Tile;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -13,11 +14,9 @@ import java.util.HashSet;
  */
 public abstract class TileTypeAction extends TileType {
 
-    public final Class<? extends PlayerAction> actionClass;
 
-    protected TileTypeAction(int id, Class<? extends PlayerAction> actionClass) {
+    protected TileTypeAction(int id) {
         super(id);
-        this.actionClass = actionClass;
     }
 
     public Collection<PlayerState> getRequiredStates() {
@@ -26,7 +25,8 @@ public abstract class TileTypeAction extends TileType {
 
     @Override
     public void onInteraction(Player player, Tile tile) {
-        if(!player.status.hasAction(actionClass) && getRequiredStates().stream().allMatch(player.status::hasState)) player.status.addAction(getAction(player, tile));
+        PlayerAction action = getAction(player, tile);
+        if(!player.status.hasAction(action.getClass()) && getRequiredStates().stream().allMatch(player.status::hasState)) player.status.addAction(action);
     }
 
     protected abstract PlayerAction getAction(Player player, Tile tile);
