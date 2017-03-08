@@ -10,6 +10,7 @@ import java.util.Queue;
 import game.core.event.ConnectionAttemptEvent;
 import game.core.event.ConnectionFailedEvent;
 import game.core.event.Events;
+import game.core.event.chat.ChatMessageCreatedEvent;
 import game.core.event.player.PlayerCreatedEvent;
 import game.core.event.player.PlayerInputEvent;
 import game.core.player.Player;
@@ -23,6 +24,7 @@ public class Client {
 		Events.on(ConnectionAttemptEvent.class, this::connectToServer);
 		Events.on(PlayerCreatedEvent.class, this::setLocalPlayer);
 		Events.on(PlayerInputEvent.class, this::sendDataToServer);
+		Events.on(ChatMessageCreatedEvent.class, this::sendDataToServer);
 	}
 
 	/**
