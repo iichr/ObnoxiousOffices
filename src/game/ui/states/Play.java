@@ -85,6 +85,7 @@ public class Play extends BasicGameState {
 	Music bgmusic;
 	private ChatBox cb;
 
+	
 	public Play(int state) {
 	}
 
@@ -109,8 +110,7 @@ public class Play extends BasicGameState {
 		// KEEP COMMENTED until we've all added the required libraries.
 		// Initialise the background music
 		// bgmusic = new Music("res/music/toocheerful.ogg");
-
-		cb = new ChatBox(gc, new Chat());
+		cb=new ChatBox(gc,new Chat());
 	}
 
 	/**
@@ -203,7 +203,7 @@ public class Play extends BasicGameState {
 
 		// show ui info to player
 		playerinfo.render(g);
-
+		cb.render(gc, g);
 		if (gameOver) {
 			gameOverOverlay.render(g);
 		} else if (options) {

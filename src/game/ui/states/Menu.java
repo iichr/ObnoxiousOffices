@@ -21,6 +21,17 @@ public class Menu extends BasicGameState implements MusicListener {
 	private String mouseCoords = "No input yet!";
 	private Music music;
 	private Image bg;
+	//An array of buttons that follows the order of menu
+    private MenuButton buttons[];
+    private int values[]= new int[]{
+    		Vals.CHARACTER_SELECT_STATE,
+    		Vals.OPTIONS_STATE,
+    		Vals.RULES_STATE,
+    		Vals.EXIT
+    };
+    private int CURRENT = 0;
+    private long lastInput = System.currentTimeMillis();
+    
 
 	public Menu(int state) {
 
@@ -61,6 +72,10 @@ public class Menu extends BasicGameState implements MusicListener {
 		// music = new Music (MusicLocations.MENU_MUSIC);
 		// music.addListener(this);
 		// music.setVolume(0.5f);
+		buttons= new MenuButton[]{ playButton,
+	    		optionsButton,
+	    		rulesButton,
+	    		exitButton};
 
 	}
 
@@ -104,13 +119,34 @@ public class Menu extends BasicGameState implements MusicListener {
 
 		// set button properties
 		playButton.update(gc, game, mouseX, mouseY, Vals.CHARACTER_SELECT_STATE);
-		playButton.update(gc,game);
 		optionsButton.update(gc, game, mouseX, mouseY, Vals.OPTIONS_STATE);
-		optionsButton.update(gc,game);
 		rulesButton.update(gc, game, mouseX, mouseY, Vals.RULES_STATE);
-		rulesButton.update(gc,game);
 		exitButton.update(gc, game, mouseX, mouseY, Vals.EXIT);
-		exitButton.update(gc,game);
+	
+		if (System.currentTimeMillis() > lastInput + Vals.INPUT_INTERVAL) {
+            if (input.isKeyPressed(Vals.DOWN)) {
+                if (CURRENT == (buttons.length-1)) {
+                    CURRENT = 0;
+                } else {
+                    CURRENT += 1;
+                }
+
+            }
+            if (input.isKeyPressed(Vals.UP)) {
+                if (CURRENT == 0) {
+                    CURRENT = (buttons.length-1);
+                } else {
+                    CURRENT -= 1;
+                }
+
+            }
+        	
+            lastInput = System.currentTimeMillis();
+        }
+		for(int i=0 ; i< buttons.length ;i++){
+            buttons[i].update(gc, game, i==CURRENT, values[CURRENT]);
+        }
+
 
 		// Add a boolean function to button.update
 	}

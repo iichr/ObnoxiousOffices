@@ -75,5 +75,9 @@ public class ChatBox {
 		}
 
 	}
+	
+	public void AIchat(String AIName,String text){
+		chat.sendMessage(new ChatMessage(text, AIName));
+	}
 
 }
