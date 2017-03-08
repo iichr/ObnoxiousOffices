@@ -70,6 +70,7 @@ public class ServerSync {
     }
 
     private static void processMovement(InputType type, Player player) {
+	    if(!player.status.canMove()) return;
         Direction direction = null;
         Location loc = player.getLocation();
         if(type instanceof InputTypeMovement) {
