@@ -162,7 +162,7 @@ public class Play extends BasicGameState {
 		// popUps
 		optionsOverlay = new OptionsOverlay();
 		gameOverOverlay = new GameOverOverlay(world.getPlayers());
-		hangmanOverlay = new MiniGameHangman();
+//		hangmanOverlay = new MiniGameHangman();
 	}
 
 	/**
@@ -211,7 +211,7 @@ public class Play extends BasicGameState {
 		} else if (options) {
 			optionsOverlay.render(g);
 		} else if(playingHangman) {
-			hangmanOverlay.render(g);
+//			hangmanOverlay.render(g);
 		} else if (playingPong) {
 			// TODO render pong
 		} else if (showOverview) {
@@ -238,12 +238,12 @@ public class Play extends BasicGameState {
 		}
 
 		if (playingHangman) {
-			if(hangmanOverlay.allGuessed()) {
-				playingHangman = false;
-			}
-			else if(hangmanOverlay.lost()) {
-				playingHangman = false;
-			}
+//			if(hangmanOverlay.allGuessed()) {
+//				playingHangman = false;
+//			}
+//			else if(hangmanOverlay.lost()) {
+//				playingHangman = false;
+//			}
 		}
 
 		if (exit) {
@@ -389,7 +389,7 @@ public class Play extends BasicGameState {
 		if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
 			// System.out.println("Entered char = " + c);
 			// also serves to update the display!
-			hangmanOverlay.inputLetter(c);
+//			hangmanOverlay.inputLetter(c);
 		}
 	}
 		

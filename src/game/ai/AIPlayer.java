@@ -8,7 +8,6 @@ import game.ai.ruleBasedAI.Rules;
 import game.ai.ruleBasedAI.UpdateMemory;
 import game.ai.ruleBasedAI.WorkingMemory;
 import game.core.player.Player;
-import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.world.Direction;
 import game.core.world.Location;
 
@@ -65,9 +64,9 @@ public class AIPlayer extends Player {
 		this.mode = mode;
 		// check for the mode and initialise the correct logic
 		if (mode.equals("e"))
-			logicHard = new LogicHard();
-		else
 			logicEasy = new LogicEasy();
+		else
+			logicHard = new LogicHard();
 
 		// initialise everything
 		initialise();
@@ -88,12 +87,12 @@ public class AIPlayer extends Player {
 		// create the object to fire rules
 		fr = new FireRules(this, rules, wm, uwm);
 	}
-	
+
 	/**
 	 * @return the logic object depending on the mode of the AI
 	 */
 	public Logic getLogic() {
-		if (mode.equals("e")) 
+		if (mode.equals("e"))
 			return logicEasy;
 		return logicHard;
 

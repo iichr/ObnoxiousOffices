@@ -10,6 +10,7 @@ import game.ai.pathFinding.Pair;
 import game.ai.pathFinding.PathFinding;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
+import game.core.player.action.PlayerActionHack;
 import game.core.player.action.PlayerActionWork;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -25,16 +26,17 @@ public class LogicHard implements Logic, Serializable {
 
 	// create a PathFinding object
 	public PathFinding pf;
-	
-	//speed of AI, depends on difficulty 
+
+	// speed of AI, depends on difficulty
 	public int aiSpeed = 250;
 
 	// paths
 	public ArrayList<Pair<Integer, Integer>> toBed, toCM, fromBed, fromCM;
 
-	// the variable that counts the consecutive times the coffee machine was used
+	// the variable that counts the consecutive times the coffee machine was
+	// used
 	int usedCoffeeMachine = 0;
-	
+
 	// @Override
 	public void aiRefresh(AIPlayer ai) {
 		if (usedCoffeeMachine < 2) {
@@ -42,7 +44,7 @@ public class LogicHard implements Logic, Serializable {
 			usedCoffeeMachine++;
 		} else {
 			goToBedAndBack(World.world, ai);
-		}	
+		}
 	}
 
 	@Override
@@ -163,8 +165,8 @@ public class LogicHard implements Logic, Serializable {
 		}
 
 		// interact with the tile
-		 Location l = p.getLocation().forward(p.getFacing());
-		 l.getTile().onInteraction(p);
+		Location l = p.getLocation().forward(p.getFacing());
+		l.getTile().onInteraction(p);
 
 		while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
 			// do nothing
@@ -227,7 +229,7 @@ public class LogicHard implements Logic, Serializable {
 
 				// make a move
 				p.moveForwards();
-				
+
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
@@ -246,7 +248,7 @@ public class LogicHard implements Logic, Serializable {
 
 				// make a move
 				p.moveForwards();
-				
+
 				try {
 					Thread.sleep(aiSpeed);
 				} catch (InterruptedException e) {
@@ -260,8 +262,8 @@ public class LogicHard implements Logic, Serializable {
 		// interact with the tile
 		Location l = p.getLocation().forward(p.getFacing());
 		l.getTile().onInteraction(p);
-		
-		//interact with the computer and start working
+
+		// interact with the computer and start working
 		l = p.getLocation().forward(p.getFacing());
 		l.getTile().onInteraction(p);
 	}
@@ -287,50 +289,50 @@ public class LogicHard implements Logic, Serializable {
 		double winnerFatigue = 1.0;
 		// productivity of the player closest to win
 		double winnerProductivity = -1.0;
-		
-		//check if there is a player closer to winning than the AI
+
+		// check if there is a player closer to winning than the AI
 		for (Player player : players) {
-			// get the progress, productivity, and fatigue of the current player in the set 
+			// get the progress, productivity, and fatigue of the current player
+			// in the set
 			currentPlayerProgress = player.getProgress();
 			currentPlayerProductivity = player.status.getAttribute(PlayerAttribute.PRODUCTIVITY);
 			currentPlayerFatigue = player.status.getAttribute(PlayerAttribute.FATIGUE);
-			
+
 			// compare the work done, productivity and fatigue each player
-			if ((currentPlayerProgress >= winnerProgress
-			 && currentPlayerProductivity > winnerProductivity
-			 && currentPlayerFatigue < winnerFatigue)
-			 || (currentPlayerProgress + 10 >= winnerProgress
-			  && currentPlayerProductivity > winnerProductivity
-			  && currentPlayerFatigue < winnerFatigue)) {
-				
+			if ((currentPlayerProgress >= winnerProgress && currentPlayerProductivity > winnerProductivity
+					&& currentPlayerFatigue < winnerFatigue)
+					|| (currentPlayerProgress + 10 >= winnerProgress && currentPlayerProductivity > winnerProductivity
+							&& currentPlayerFatigue < winnerFatigue)) {
+
 				// set the current player as the winner player
-				winner = player; 
+				winner = player;
 				// set the current player's progress as the highest
 				winnerProgress = currentPlayerProgress;
-				//set the current player's productivity as the winner's productivity
+				// set the current player's productivity as the winner's
+				// productivity
 				winnerProductivity = currentPlayerProductivity;
-				//set the current player's fatigue as the winner's fatigue
+				// set the current player's fatigue as the winner's fatigue
 				winnerFatigue = currentPlayerFatigue;
-			} 
+			}
 		}
-		
-		//if there is no player closer to winning than AI, return the AI
+
+		// if there is no player closer to winning than AI, return the AI
 		if (winner == null) {
-			//loop through the player list
+			// loop through the player list
 			for (Player player : players) {
-				//check if the player is the AI
+				// check if the player is the AI
 				if (player.isAI && player.name.equals(ai.name))
-					//assign the winner to be the AI
+					// assign the winner to be the AI
 					winner = player;
 			}
 		}
-		
+
 		return winner;
 	}
 
 	@Override
-	public void hackPlayer(Player player) {
-		player.status.addAction(new PlayerActionWork(player));
+	public void hackPlayer(AIPlayer ai, Player player) {
+		player.status.addAction(new PlayerActionHack(ai, player));
 	}
 
 }
