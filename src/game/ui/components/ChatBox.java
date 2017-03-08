@@ -57,7 +57,6 @@ public class ChatBox {
 			int y=0;
 			for (ChatMessage cm : cms) {
 				g.drawString(cm.from + " : " + cm.message, 0, y);
-				System.out.println(cm.from + " : " + cm.message);
 				y+=typer.getHeight();
 			}
 
@@ -70,7 +69,6 @@ public class ChatBox {
 		Input input = gc.getInput();
 		if (input.isKeyPressed(input.KEY_ENTER)) {
 			if (!typer.getText().isEmpty()) {
-				System.out.println(typer.getText());
 				chat.sendMessage(new ChatMessage(typer.getText(), localPlayerName));
 				typer.setText(message);
 			}
