@@ -41,8 +41,7 @@ public class FireRules implements Serializable {
 		// the arraylist of matched rules
 		ArrayList<WorkingMemory> matchedRules = new ArrayList<WorkingMemory>();
 
-		// while the game isn't over TODO: find a better solution, maybe with
-		// GameOver event
+		// while the game isn't over 
 		if (ai.getProgress() < 100 && ai.status.getAttribute(PlayerAttribute.FATIGUE) < 0.8) {
 
 			// update the working memory
