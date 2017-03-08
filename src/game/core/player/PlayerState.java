@@ -25,7 +25,7 @@ public abstract class PlayerState implements Serializable {
             event.world.getPlayers().forEach(player -> {
                 // Make player sit on chair and face correct way
                 player.setFacing(player.getLocation().getTile().facing);
-                player.status.addState(PlayerState.sitting)
+                player.status.addState(PlayerState.sitting);
             });
         }
 
