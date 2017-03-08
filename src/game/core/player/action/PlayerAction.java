@@ -11,9 +11,14 @@ import java.io.Serializable;
 public abstract class PlayerAction implements Updateable, Serializable {
 
     public final Player player;
+    public boolean forced = false;
 
     public PlayerAction(Player player) {
         this.player = player;
+    }
+
+    public boolean allowsMove() {
+        return !forced;
     }
 
     public abstract void update();
