@@ -3,13 +3,10 @@ package game.ui.states;
 import java.util.HashMap;
 import java.util.List;
 
-import game.core.minigame.MiniGameHangmanOld;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.font.effects.ColorEffect;
@@ -24,11 +21,9 @@ import game.core.input.InputTypeInteraction;
 import game.core.input.InputTypeMovement;
 import game.core.input.InteractionType;
 import game.core.input.MovementType;
-import game.core.minigame.MiniGameHangman;
 import game.core.player.Player;
 import game.core.player.PlayerState;
 import game.core.player.action.PlayerActionSleep;
-import game.core.player.effect.PlayerEffectCoffeeBuzz;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
@@ -76,7 +71,6 @@ public class Play extends BasicGameState {
 	// overlays
 	private OptionsOverlay optionsOverlay;
 	private GameOverOverlay gameOverOverlay;
-	private MiniGameHangmanOld hangmanOverlay;
 
 	boolean showOverview = false;
 
@@ -163,7 +157,6 @@ public class Play extends BasicGameState {
 		// popUps
 		optionsOverlay = new OptionsOverlay();
 		gameOverOverlay = new GameOverOverlay(world.getPlayers());
-		hangmanOverlay = new MiniGameHangmanOld("memes");
 	}
 
 	/**
