@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-
-=======
-
->>>>>>> ai
 package game.ai.pathFinding;
 
 import java.io.Serializable;
