@@ -143,7 +143,6 @@ public class Menu extends BasicGameState implements MusicListener {
         	
             lastInput = System.currentTimeMillis();
         }
-		System.out.println("CURRENT = "+ CURRENT);
 		for(int i=0 ; i< buttons.length ;i++){
             buttons[i].update(gc, game, i==CURRENT, values[CURRENT]);
         }
