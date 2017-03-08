@@ -1,6 +1,8 @@
 package game.ui.player;
 
-import org.newdawn.slick.Animation;
+import java.util.LinkedList;
+
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
@@ -12,42 +14,49 @@ import game.core.world.tile.MetaTile;
 import game.core.world.tile.Tile;
 import game.core.world.tile.type.TileType;
 import game.core.world.tile.type.TileTypeComputer;
+import game.ui.components.WordGenerator;
 import game.ui.interfaces.ImageLocations;
 
 public class ActionSelector {
-	private Animation selector, workSel, hackSel;
-	private Animation[] animLoop;
-
+	private Image selectorBack;
+	private LinkedList<String> toShow;
+	private WordGenerator wg;
 	private int action;
-
-	public static final int WORK = 0;
-	public static final int HACK = 1;
-	private final int duration = 100;
 
 	public ActionSelector() {
 		action = 0;
 	}
 
-	public void updateSelector(World world, String localPlayerName, float tileWidth, float tileHeight)
-			throws SlickException {
+	public void updateSelector(World world, String localPlayerName, boolean hacking, float tileWidth, float tileHeight,
+			Graphics g) throws SlickException {
 		Player localPlayer = world.getPlayer(localPlayerName);
 		Direction facing = localPlayer.getFacing();
 		Location inFront = localPlayer.getLocation().forward(facing);
+		
+		toShow = new LinkedList<String>();
 		if (inFront.checkBounds()) {
 			Tile tile = inFront.getTile();
 			TileType actionTile = tile.type;
 			if (actionTile.equals(TileType.COMPUTER)) {
 				String ownerName = TileTypeComputer.getOwningPlayer((MetaTile) tile);
+				selectorBack = new Image(ImageLocations.SELECTOR, false, Image.FILTER_NEAREST);
+				wg = new WordGenerator();
 				if (ownerName.equals(localPlayerName)) {
-					workSel = addAnimation(new Image(ImageLocations.WORK_SELECTOR, false, Image.FILTER_NEAREST));
-					hackSel = addAnimation(new Image(ImageLocations.HACK_SELECTOR, false, Image.FILTER_NEAREST));
-					animLoop = new Animation[] { workSel, hackSel };
+					
+					if (hacking) {
+						for (Player p : world.getPlayers()) {
+							if (!p.name.equals(localPlayerName)) {
+								toShow.add(p.name);
+							}
+						}
+					} else {
+						toShow.add("WORK");
+						toShow.add("HACK");
+					}
 				} else {
-					hackSel = addAnimation(new Image(ImageLocations.HACK_SELECTOR, false, Image.FILTER_NEAREST));
-					animLoop = new Animation[] { hackSel };
+					toShow.add("NONE");
 				}
-				selector = animLoop[action];
-				render(inFront, tileWidth, tileHeight / 2);
+				render(g, inFront, tileWidth, tileHeight / 2);
 			} else {
 				action = 0;
 			}
@@ -58,26 +67,25 @@ public class ActionSelector {
 
 	public void changeSelection(int i) {
 		if (i < 0) {
-			action = (action - 1) % animLoop.length;
+			action = (action - 1) % toShow.size();
 			action = Math.abs(action);
 		} else {
-			action = (action + 1) % animLoop.length;
+			action = (action + 1) % toShow.size();
 		}
 		System.out.println(action);
 	}
 
-	public int getAction() {
-		return action;
+	public String getSelected() {
+		return toShow.get(action);
 	}
 
-	private void render(Location inFront, float width, float height) {
+	private void render(Graphics g, Location inFront, float width, float height) {
 		float x = inFront.coords.x * width;
 		float y = inFront.coords.y * height;
-		selector.draw(x, y, width, height);
-	}
 
-	private Animation addAnimation(Image i) {
-		Image[] animImages = new Image[] { i, i };
-		return new Animation(animImages, duration, false);
+		float characterMod = ((float) toShow.get(action).length()) / 4;
+		selectorBack.draw(x + width / 2 - (width * characterMod) / 2, y, width * characterMod, height);
+		wg.drawCenter(g, toShow.get(action), x + width / 2, y + height / 2, true, 5 / width);
+
 	}
 }

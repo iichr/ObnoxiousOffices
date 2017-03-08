@@ -53,8 +53,7 @@ public interface ImageLocations {
 	public static final String DRINK_DIALOGUE = "/res/ui/drinkDiag.png";
 	public static final String SLEEP_DIALOGUE = "/res/ui/sleepDiag.png";
 	
-	public static final String WORK_SELECTOR = "/res/ui/workSelector.png";
-	public static final String HACK_SELECTOR = "/res/ui/hackSelector.png";
+	public static final String SELECTOR = "/res/ui/selector.png";
 	
 	public static final String OVERLAY_BACKGROUND = "/res/ui/overlayBackground.png";
 	
