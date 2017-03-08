@@ -38,11 +38,12 @@ public class LogicHard implements Logic, Serializable {
 	
 	// @Override
 	public void aiRefresh(AIPlayer ai) {
-		if (usedCoffeeMachine < 2) {
+		if (usedCoffeeMachine < 3) {
 			goToCoffeeMachineAndBack(World.world, ai);
 			usedCoffeeMachine++;
 		} else {
 			goToBedAndBack(World.world, ai);
+			usedCoffeeMachine = 0;
 		}	
 	}
 
@@ -231,7 +232,7 @@ public class LogicHard implements Logic, Serializable {
 				p.moveForwards();
 				
 				try {
-					Thread.sleep(500);
+					Thread.sleep(aiSpeed);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
