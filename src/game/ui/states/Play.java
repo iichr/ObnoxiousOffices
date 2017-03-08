@@ -8,12 +8,14 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import game.core.chat.Chat;
 import game.core.event.Events;
 import game.core.event.GameFinishedEvent;
 import game.core.event.player.PlayerInputEvent;
@@ -21,6 +23,7 @@ import game.core.input.InputTypeInteraction;
 import game.core.input.InputTypeMovement;
 import game.core.input.InteractionType;
 import game.core.input.MovementType;
+import game.core.minigame.MiniGameHangman;
 import game.core.player.Player;
 import game.core.player.PlayerState;
 import game.core.player.action.PlayerActionSleep;
@@ -34,6 +37,7 @@ import game.core.world.tile.type.TileType;
 import game.core.world.tile.type.TileTypeComputer;
 import game.ui.PlayerOverview;
 import game.ui.PlayerInfo;
+import game.ui.components.ChatBox;
 import game.ui.components.Effect;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
@@ -71,6 +75,7 @@ public class Play extends BasicGameState {
 	// overlays
 	private OptionsOverlay optionsOverlay;
 	private GameOverOverlay gameOverOverlay;
+	private MiniGameHangman hangmanOverlay;
 
 	boolean showOverview = false;
 
@@ -82,6 +87,7 @@ public class Play extends BasicGameState {
 	private boolean playingHangman;
 
 	Music bgmusic;
+	private ChatBox cb;
 
 	public Play(int state) {
 	}
@@ -104,11 +110,13 @@ public class Play extends BasicGameState {
 
 		Events.on(GameFinishedEvent.class, this::gameFinished);
 
-		// UNCOMMENT until everybody add the required libraries.
+		// KEEP COMMENTED until we've all added the required libraries.
 		// Initialise the background music
 		// bgmusic = new Music("res/music/toocheerful.ogg");
+		
+		cb=new ChatBox(gc, new Chat());
 	}
-	
+
 	/**
 	 * Sets up the play state which should be called at the start of each game
 	 *
@@ -116,8 +124,8 @@ public class Play extends BasicGameState {
 	public void playSetup() {
 		this.world = World.world;
 		this.localPlayerName = Player.localPlayerName;
-		
-		//set boolean flags
+
+		// set boolean flags
 		options = false;
 		gameOver = false;
 		exit = false;
@@ -147,15 +155,16 @@ public class Play extends BasicGameState {
 
 		// Effect container
 		effectOverview = new Effect(tileWidth, tileHeight);
-		
-		//player overview
+
+		// player overview
 		playerOverview = new PlayerOverview(localPlayerName, 0, 0);
 
 		// popUps
 		optionsOverlay = new OptionsOverlay();
 		gameOverOverlay = new GameOverOverlay(world.getPlayers());
+		hangmanOverlay = new MiniGameHangman();
 	}
-	
+
 	/**
 	 * map players to player animations, testing different sprites
 	 * implementation not finalised
@@ -174,45 +183,18 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		// UNCOMMENT until everybody add the required libraries.
+		// KEEP COMMENTED until everybody has added the required libraries.
 		// used to stop the music from playing
 		// bgmusic.stop();
-	}	
-	
-	@Override
-	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
-		Input input = gc.getInput();
-		Player localPlayer = world.getPlayer(localPlayerName);
-
-		effectOverview.updateEffects(localPlayer);
-		
-		playerOverview.updateContainer(world.getPlayers());
-		if(localPlayer.status.hasAction(PlayerActionSleep.class)){
-			playerOverview.toggleSleep(localPlayer, true);
-		}
-		
-		if(playingPong){
-			//TODO update pong variables
-		}
-		
-		if (playingHangman){
-			//TODO update hangman variables
-		}
-		
-		if (exit) {
-			game.enterState(Vals.MENU_STATE);
-		}
-
-		input.clearKeyPressedRecord();
 	}
-
+	
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setFont(Vals.FONT_PLAY);
 
 		// renders world
 		drawWorld();
-
+		cb.render(gc, g);
 		// add effects overview container
 		effectOverview.render(g);
 
@@ -226,19 +208,53 @@ public class Play extends BasicGameState {
 
 		if (gameOver) {
 			gameOverOverlay.render(g);
-		}else if(options){
+		} else if (options) {
 			optionsOverlay.render(g);
-		}else if(playingHangman){
-			//TODO render hangman
-		}else if(playingPong){
-			//TODO render pong
-		}else if (showOverview) {
+		} else if(playingHangman) {
+			hangmanOverlay.render(g);
+		} else if (playingPong) {
+			// TODO render pong
+		} else if (showOverview) {
 			playerOverview.render(g);
 		}
 	}
 
+	@Override
+	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+		Input input = gc.getInput();
+		Player localPlayer = world.getPlayer(localPlayerName);
+		
+		cb.update(gc,localPlayerName);
+
+		effectOverview.updateEffects(localPlayer);
+
+		playerOverview.updateContainer(world.getPlayers());
+		if (localPlayer.status.hasAction(PlayerActionSleep.class)) {
+			playerOverview.toggleSleep(localPlayer, true);
+		}
+
+		if (playingPong) {
+			// TODO update pong variables
+		}
+
+		if (playingHangman) {
+			if(hangmanOverlay.allGuessed()) {
+				playingHangman = false;
+			}
+			else if(hangmanOverlay.lost()) {
+				playingHangman = false;
+			}
+		}
+
+		if (exit) {
+			game.enterState(Vals.MENU_STATE);
+		}
+
+		input.clearKeyPressedRecord();
+	}
+
 	private void drawWorld() throws SlickException {
-		//draw the wall sprite
+		// draw the wall sprite
 		Image wall = new Image(SpriteLocations.TILE_WALL, false, Image.FILTER_NEAREST);
 		wall.draw(0, 0, Vals.SCREEN_WIDTH, tileHeight);
 
@@ -250,36 +266,37 @@ public class Play extends BasicGameState {
 				float tileY = (y + 1) * (tileHeight / 2);
 
 				// find out what tile is in this location
-				Tile found = world.getTile(x,y,0);
-				
-				//check to draw computer marker
+				Tile found = world.getTile(x, y, 0);
+
+				// check to draw computer marker
 				drawComputerMarker(tileX, tileY, found);
-				
-				//draw the tile at this location
+
+				// draw the tile at this location
 				drawTile(tileX, tileY, found);
 
-				//draw any players at this location
+				// draw any players at this location
 				drawPlayers(x, y, tileX, tileY);
 			}
 		}
 	}
-	
-	private void drawComputerMarker(float tileX, float tileY, Tile found) throws SlickException{
+
+	private void drawComputerMarker(float tileX, float tileY, Tile found) throws SlickException {
 		TileType type = found.type;
-		if(type.equals(TileType.COMPUTER) && showOverview){
+		if (type.equals(TileType.COMPUTER) && showOverview) {
 			String ownerName = TileTypeComputer.getOwningPlayer((MetaTile) found);
 			if (ownerName.equals(localPlayerName)) {
 				Image identifier = new Image(ImageLocations.PLAYER_IDENTIFIER, false, Image.FILTER_NEAREST);
-				identifier.draw(tileX + tileWidth / 6, tileY + tileHeight/8, 2*tileWidth/3, tileHeight/8);
+				identifier.draw(tileX + tileWidth / 6, tileY + tileHeight / 8, 2 * tileWidth / 3, tileHeight / 8);
 			}
 		}
 	}
-	
-	private void drawTile(float tileX, float tileY, Tile tile){
+
+	private void drawTile(float tileX, float tileY, Tile tile) {
 		Direction facing = tile.facing;
-		TileType type = tile.type;;
-		
-		//draw the tile
+		TileType type = tile.type;
+		;
+
+		// draw the tile
 		int mtID = tile.multitileID;
 		if (mtID == -1) {
 			mtID++;
@@ -318,7 +335,7 @@ public class Play extends BasicGameState {
 			}
 		}
 	}
-	
+
 	/**
 	 * Animates the players turning by checking their previous location and
 	 * adjusting appropriately
@@ -349,47 +366,56 @@ public class Play extends BasicGameState {
 	@Override
 	public void keyPressed(int key, char c) {
 		if (!gameOver) {
-			if(playingHangman){
-				hangmanControls(c);
-			}else if (playingPong){
+			if (playingPong) {
 				pongControls(key);
-			}else{
+			} else if (playingHangman) {
+				hangmanControls(key, c);
+			} else {
 				coreControls(key);
 			}
 		} else {
 			exit = true;
 		}
 	}
-	
+
 	/**
-	 * Use controls for hangman minigame
-	 * @param c The character entered
+	 * Hangman - manage input and display
+	 * 
+	 * @param key
+	 * @param c
+	 *            The input char
 	 */
-	private void hangmanControls(char c){
-		if(c >= 'a' && c <= 'z'){
-			//TODO game interaction with character
+	private void hangmanControls(int key, char c) {		
+		if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+			// System.out.println("Entered char = " + c);
+			// also serves to update the display!
+			hangmanOverlay.inputLetter(c);
 		}
 	}
-	
+		
 	/**
-	 * Use controls for hangman minigame
-	 * @param c The character entered
+	 * Use controls for the pong minigame
+	 * 
+	 * @param c
+	 *            The character entered
 	 */
-	private void pongControls(int key){
-		switch(key){
+	private void pongControls(int key) {
+		switch (key) {
 		case Input.KEY_W:
-			//TODO interact with pong minigame
+			// TODO interact with pong minigame
 			break;
 		case Input.KEY_S:
-			//TODO interact with pong mingame
+			// TODO interact with pong mingame
 		}
 	}
-	
+
 	/**
 	 * Use controls for normal game
-	 * @param key The key pressed
+	 * 
+	 * @param key
+	 *            The key pressed
 	 */
-	private void coreControls(int key){
+	private void coreControls(int key) {
 		switch (key) {
 		case Input.KEY_ESCAPE:
 			options = !options;
@@ -422,8 +448,7 @@ public class Play extends BasicGameState {
 					break;
 				}
 			} else {
-				Events.trigger(
-						new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
+				Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
 			}
 			break;
 		case Input.KEY_UP:
@@ -436,9 +461,14 @@ public class Play extends BasicGameState {
 				actionSelector.changeSelection(-1);
 			}
 			break;
+		// TEMPORARY FOR TESTING HANGMAN - PRESS 9
+		case Input.KEY_9:
+			playingHangman = true;
+			//System.out.println("ENTERED HANGMAN");
+			break;
 		}
 	}
-	
+
 	@Override
 	public void keyReleased(int key, char c) {
 		switch (key) {

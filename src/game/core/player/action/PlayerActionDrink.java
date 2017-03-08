@@ -16,9 +16,9 @@ public class PlayerActionDrink extends TimedPlayerAction {
     public PlayerActionDrink(Player player) {
         super(player);
         if(player.timesDrunkCoffee++ > new Random().nextInt(10)) {
-            PlayerEffect effect = new PlayerEffectCoffeeBuzz(10000, player);
+            PlayerEffect effect = new PlayerEffectCoffeeBuzz((int) Time.ticks(60000), player);
             if(!player.status.hasEffect(effect)) player.status.addEffect(effect);
-            else player.status.getEffect(PlayerEffectCoffeeBuzz.class).setElapsed((int) Time.ticks(60000));
+            else player.status.getEffect(PlayerEffectCoffeeBuzz.class).setElapsed(effect.getDuration());
             player.timesDrunkCoffee = 0;
         }
     }
