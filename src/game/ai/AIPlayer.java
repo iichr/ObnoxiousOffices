@@ -115,6 +115,7 @@ public class AIPlayer extends Player {
 		wm = new WorkingMemory(player); // create the working memory
 
 		if (!fr.isMoving) {
+			this.getLogic().aiWork(this);
 			Thread fire = new Thread(() -> {
 				fr.fireRules();
 			});
