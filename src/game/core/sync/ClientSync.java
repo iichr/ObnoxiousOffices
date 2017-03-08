@@ -47,7 +47,7 @@ public class ClientSync {
         Events.on(ChatMessageReceivedEvent.class, ClientSync::onChatMessageReceived);
     }
 
-    private static <T extends Event> void onPlayerEffectElapsedUpdate(PlayerEffectElapsedUpdate event) {
+    private static void onPlayerEffectElapsedUpdate(PlayerEffectElapsedUpdate event) {
         getPlayer(event.playerName).status.getEffects().stream().filter(e -> e.getClass() == event.effectClass).findAny().ifPresent(effect -> effect.setElapsed(event.elapsed));
     }
 
