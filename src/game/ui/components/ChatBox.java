@@ -47,6 +47,7 @@ public class ChatBox {
 	}
 
 	public void render(GameContainer gc, Graphics g) {
+		cms=chat.getMessages();
 		if (!cms.isEmpty()) {
 			if (chat.getMessages().size() < msgSize) {
 				cms = chat.getLatestMessages(chat.getMessages().size());
@@ -57,7 +58,7 @@ public class ChatBox {
 			for (ChatMessage cm : cms) {
 				g.drawString(cm.from + " : " + cm.message, 0, y);
 				System.out.println(cm.from + " : " + cm.message);
-				y+=Vals.FONT_MAIN.getLineHeight();
+				y+=typer.getHeight();
 			}
 
 		}
