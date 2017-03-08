@@ -10,6 +10,7 @@ import game.ai.pathFinding.Pair;
 import game.ai.pathFinding.PathFinding;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
+import game.core.player.action.PlayerActionHack;
 import game.core.player.action.PlayerActionWork;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -329,8 +330,8 @@ public class LogicHard implements Logic, Serializable {
 	}
 
 	@Override
-	public void hackPlayer(Player player) {
-		player.status.addAction(new PlayerActionWork(player));
+	public void hackPlayer(AIPlayer ai, Player player) {
+		player.status.addAction(new PlayerActionHack(ai, player));
 	}
 
 }

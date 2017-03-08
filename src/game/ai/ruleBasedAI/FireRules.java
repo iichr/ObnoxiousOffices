@@ -60,7 +60,7 @@ public class FireRules implements Serializable {
 					// more
 					// than ai - hack him
 					if (w.getIsWorking() == activityValues.Yes && w.getHasProgressedMore() == activityValues.Yes) {
-						ai.getLogic().hackPlayer(wm.getWMplayer());
+						ai.getLogic().hackPlayer(ai, wm.getWMplayer());
 						hasHacked = true; // change the flag to true
 						// if the monitored player is working and hasn't
 						// progressed
@@ -81,7 +81,7 @@ public class FireRules implements Serializable {
 						}
 						// if the ai has enough energy - hack, else go to the CM
 						if (ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80) {
-							ai.getLogic().hackPlayer(wm.getWMplayer());
+							ai.getLogic().hackPlayer(ai, wm.getWMplayer());
 							hasHacked = true; // change the flag to true
 						} else {
 							isMoving = true; // the ai is moving so we need to
@@ -109,7 +109,7 @@ public class FireRules implements Serializable {
 						}
 						// if the ai has enough energy - hack, else go to the CM
 						if (ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80) {
-							ai.getLogic().hackPlayer(wm.getWMplayer());
+							ai.getLogic().hackPlayer(ai, wm.getWMplayer());
 							hasHacked = true; // change the flag to true
 						} else {
 							isMoving = true; // the ai is moving so we need to

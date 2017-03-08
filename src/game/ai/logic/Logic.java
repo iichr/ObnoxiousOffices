@@ -123,7 +123,7 @@ public interface Logic extends Serializable {
 	 *            the player to be hacked
 	 * @return the player closest to winning the game
 	 */
-	public void hackPlayer(Player player);
+	public void hackPlayer(AIPlayer ai, Player player);
 
 	/**
 	 * Returns a player from the list of players in the world. If the player is

@@ -11,6 +11,7 @@ import game.ai.pathFinding.Pair;
 import game.ai.pathFinding.PathFinding;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
+import game.core.player.action.PlayerActionHack;
 import game.core.player.action.PlayerActionWork;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -265,12 +266,12 @@ public class LogicEasy implements Logic, Serializable {
 		List<Player> players = World.world.getPlayers();
 		
 		//choose a random player
-		int random = ThreadLocalRandom.current().nextInt(0, 4);
+		int random = ThreadLocalRandom.current().nextInt(0, players.size());
 		Player randomPlayer = players.get(random);
 		
 		//if the chosen player is an AI, check again
 		while (randomPlayer.isAI && !randomPlayer.name.equals(ai.name)) {
-			random = ThreadLocalRandom.current().nextInt(0, 4);
+			random = ThreadLocalRandom.current().nextInt(0, players.size());
 			randomPlayer = players.get(random);
 		}
 		
@@ -278,7 +279,7 @@ public class LogicEasy implements Logic, Serializable {
 		
 	}
 
-	public void hackPlayer(Player player) {
-		player.status.addAction(new PlayerActionWork(player));
+	public void hackPlayer(AIPlayer ai, Player player) {
+		player.status.addAction(new PlayerActionHack(ai, player));
 	}
 }
