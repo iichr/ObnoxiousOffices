@@ -174,6 +174,10 @@ public class PlayerStatus implements Serializable {
         return getEffects().stream().filter(effect -> effect.getClass() == playerEffectClass).findFirst().get();
     }
 
+    public boolean canMove() {
+        return actions.stream().allMatch(PlayerAction::allowsMove);
+    }
+
     public enum PlayerAttribute {
         FATIGUE(0.0, 1.0), PRODUCTIVITY(1.0, 1.0);
 
