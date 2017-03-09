@@ -103,7 +103,7 @@ public class PlayerStatus implements Serializable {
     }
 
     public void update(Player player) {
-        Updateable.updateAll(actions).forEach(this::removeAction);
+        Updateable.updateAll(actions).forEach(a -> removeAction(a.getClass()));
         Updateable.updateAll(effects).forEach(e -> removeEffect(e.getClass()));
 
         addToAttribute(PlayerAttribute.FATIGUE, FATIGUE_INCREASE);
@@ -165,12 +165,15 @@ public class PlayerStatus implements Serializable {
 
     public void cancelAction(PlayerAction action) {
         action.cancel();
-        removeAction(action);
+        removeAction(action.getClass());
     }
 
-    public void removeAction(PlayerAction action) {
-        actions.remove(action);
-        Events.trigger(new PlayerActionEndedEvent(action, player.name), true);
+    public void removeAction(Class<? extends PlayerAction> actionClass) {
+        Set<PlayerAction> matching = actions.stream().filter(a -> a.getClass() == actionClass).collect(Collectors.toSet());
+        matching.forEach(action -> {
+            Events.trigger(new PlayerActionEndedEvent(action, player.name), true);
+            actions.remove(action);
+        });
     }
 
     public void removeEffect(Class<? extends PlayerEffect> effectClass) {

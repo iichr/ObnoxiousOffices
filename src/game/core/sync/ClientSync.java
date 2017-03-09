@@ -107,7 +107,7 @@ public class ClientSync {
     }
 
     private static void onPlayerActionEnded(PlayerActionEndedEvent event) {
-        getPlayer(event.playerName).status.removeAction(event.action);
+        getPlayer(event.playerName).status.removeAction(event.action.getClass());
     }
 
     private static void onPlayerActionAdded(PlayerActionAddedEvent event) {
