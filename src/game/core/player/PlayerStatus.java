@@ -20,6 +20,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+
+
 /**
  * Created by samtebbs on 15/01/2017.
  */
@@ -68,14 +70,14 @@ public class PlayerStatus implements Serializable {
      * @param effect
      */
     public void addEffect(PlayerEffect effect) {
-        if(!hasEffect(effect)) {
+        if(!hasEffect(effect.getClass())) {
             effects.add(effect);
             Events.trigger(new PlayerEffectAddedEvent(effect, player.name), true);
         }
     }
 
-    public boolean hasEffect(PlayerEffect effect) {
-        return getEffects().stream().anyMatch(effect1 -> effect.getClass() == effect1.getClass());
+    public boolean hasEffect(Class<? extends PlayerEffect> effectClass) {
+        return getEffects().stream().anyMatch(effect1 -> effectClass == effect1.getClass());
     }
 
     public List<PlayerEffect> getEffects() {
