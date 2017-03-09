@@ -19,14 +19,12 @@ import game.core.event.Events;
 import game.core.event.player.PlayerCreatedEvent;
 import game.ui.buttons.ConnectButton;
 import game.ui.buttons.MenuButton;
-import game.ui.buttons.SelectionButton;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
 public class CharacterSelect extends BasicGameState {
 	private MenuButton backButton;
 	private ConnectButton connectButton;
-	private SelectionButton blondeButton, darkButton, brownButton, pinkButton;
 	private Image waiting;
 
 	private TextField serverAddress, playerName;
@@ -48,7 +46,7 @@ public class CharacterSelect extends BasicGameState {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-		Image back = new Image(ImageLocations.BACK);
+		Image back = new Image(ImageLocations.BACK, false);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 
@@ -58,14 +56,6 @@ public class CharacterSelect extends BasicGameState {
 				Vals.BUTTON_WIDTH, Vals.BUTTON_HEIGHT, conn, connR);
 
 		waiting = new Image(ImageLocations.WAITING, false, Image.FILTER_NEAREST);
-
-		// Image circleUnselected = new Image(ImageLocations.CIRCLE_UNSELECTED,
-		// false, Image.FILTER_NEAREST);
-		// Image circleSelected = new Image(ImageLocations.CIRCLE_SELECTED,
-		// false, Image.FILTER_NEAREST);
-		// circleButton = new SelectionButton(Vals.BUTTON_ALIGN_CENTRE_W - 200,
-		// Vals.BUTTON_ALIGN_CENTRE_H - 200, 50, 50,
-		// circleUnselected, circleSelected);
 
 		// adds the text fields
 		addTextFields(gc);
@@ -78,8 +68,8 @@ public class CharacterSelect extends BasicGameState {
 		Vals.FONT_MAIN.getEffects().add(new ColorEffect());
 		Vals.FONT_MAIN.loadGlyphs();
 
-		serverAddress = new TextField(gc, Vals.FONT_MAIN, Vals.TFIELD_ALIGN_CENTRE_W, 200, Vals.TFIELD_WIDTH,
-				Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
+		serverAddress = new TextField(gc, Vals.FONT_MAIN, Vals.TFIELD_ALIGN_CENTRE_W, Vals.SCREEN_HEIGHT / 3,
+				Vals.TFIELD_WIDTH, Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
 					public void componentActivated(AbstractComponent src) {
 						serverAddress.setFocus(true);
 					}
@@ -89,14 +79,16 @@ public class CharacterSelect extends BasicGameState {
 		serverAddress.setTextColor(Color.black);
 
 		// Player name text field.
-		playerName = new TextField(gc, Vals.FONT_MAIN, Vals.TFIELD_ALIGN_CENTRE_W, 300, Vals.TFIELD_WIDTH,
-				Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
+		playerName = new TextField(gc, Vals.FONT_MAIN, Vals.TFIELD_ALIGN_CENTRE_W, Vals.SCREEN_HEIGHT / 4,
+				Vals.TFIELD_WIDTH, Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
 					public void componentActivated(AbstractComponent src) {
 						playerName.setFocus(true);
 					}
 				});
 		playerName.setBackgroundColor(Color.white);
 		playerName.setTextColor(Color.black);
+
+		playerName.setFocus(true);
 	}
 
 	@Override
@@ -104,20 +96,18 @@ public class CharacterSelect extends BasicGameState {
 		// debugging
 		g.setFont(Vals.FONT_MAIN);
 		g.setColor(Color.white);
-		// g.drawString(ipAddress.getText(), 700, 100);
 
 		// add necessary buttons
 		backButton.render();
 
-		// testing
-
+		// show connection status
 		connectStatus(g);
 
 		// Text fields
 		serverAddress.render(gc, g);
-		g.drawString(serverStr, serverAddress.getX() - Vals.FONT_MAIN.getWidth(serverStr) - 10, 200);
+		g.drawString(serverStr, serverAddress.getX() - Vals.FONT_MAIN.getWidth(serverStr) - 10, Vals.SCREEN_HEIGHT / 3);
 		playerName.render(gc, g);
-		g.drawString(playerStr, serverAddress.getX() - Vals.FONT_MAIN.getWidth(playerStr) - 10, 300);
+		g.drawString(playerStr, serverAddress.getX() - Vals.FONT_MAIN.getWidth(playerStr) - 10, Vals.SCREEN_HEIGHT / 4);
 	}
 
 	private void connectStatus(Graphics g) {
@@ -134,14 +124,14 @@ public class CharacterSelect extends BasicGameState {
 
 			// display text
 			g.drawString(waitingString, connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(waitingString) / 2,
-					connectButton.getY() + waitingDiam / 2 + 50);
+					connectButton.getY() + waitingDiam / 2 + Vals.BUTTON_HEIGHT / 2);
 		} else {
 			connectButton.setActive(true);
 			connectButton.render();
 			if (connectFailed) {
 				g.drawString(connectFailString,
 						connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(connectFailString) / 2,
-						connectButton.getY() + 100);
+						connectButton.getY() + 3 * Vals.BUTTON_HEIGHT / 2);
 			}
 		}
 	}

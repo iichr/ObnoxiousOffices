@@ -112,7 +112,6 @@ public class Menu extends BasicGameState implements MusicListener {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
-		Input input = gc.getInput();
 		float mouseX = Mouse.getX();
 		float mouseY = gc.getHeight() - Mouse.getY();
 		mouseCoords = mouseX + " ," + mouseY;
@@ -123,32 +122,31 @@ public class Menu extends BasicGameState implements MusicListener {
 		rulesButton.update(gc, game, mouseX, mouseY, Vals.RULES_STATE);
 		exitButton.update(gc, game, mouseX, mouseY, Vals.EXIT);
 	
-		if (System.currentTimeMillis() > lastInput + Vals.INPUT_INTERVAL) {
-            if (input.isKeyPressed(Vals.DOWN)) {
-                if (CURRENT == (buttons.length-1)) {
-                    CURRENT = 0;
-                } else {
-                    CURRENT += 1;
-                }
-
-            }
-            if (input.isKeyPressed(Vals.UP)) {
-                if (CURRENT == 0) {
-                    CURRENT = (buttons.length-1);
-                } else {
-                    CURRENT -= 1;
-                }
-
-            }
-        	
-            lastInput = System.currentTimeMillis();
-        }
 		for(int i=0 ; i< buttons.length ;i++){
             buttons[i].update(gc, game, i==CURRENT, values[CURRENT]);
         }
 
-
 		// Add a boolean function to button.update
+	}
+	
+	@Override
+	public void keyPressed(int key, char c) {
+		switch (key){
+		case Input.KEY_DOWN:
+			if (CURRENT == (buttons.length-1)) {
+                CURRENT = 0;
+            } else {
+                CURRENT += 1;
+            }
+			break;
+		case Input.KEY_UP:
+			if (CURRENT == 0) {
+                CURRENT = (buttons.length-1);
+            } else {
+                CURRENT -= 1;
+            }
+			break;
+		}
 	}
 
 	@Override

@@ -36,7 +36,9 @@ public class Effect {
 		timerBarFull = new Image(ImageLocations.ACTION_BAR_FULL, false, Image.FILTER_NEAREST);
 		
 		imgs = new HashMap<Class<? extends PlayerEffect>, Image>();
-		imgs.put(PlayerEffectCoffeeBuzz.class, new Image("res/sprites/tiles/coffee.png", false, Image.FILTER_NEAREST));
+		imgs.put(PlayerEffectCoffeeBuzz.class, new Image(ImageLocations.COFFEE_EFFECT, false, Image.FILTER_NEAREST));
+		//TODO add sleep effect
+//		imgs.put(PlayerEffectSleep.class, new Image(ImageLocations.SLEEP_EFFECT, false, Image.FILTER_NEAREST));
 	}
 
 	public void updateEffects(Player player) {

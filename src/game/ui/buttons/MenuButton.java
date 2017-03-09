@@ -17,12 +17,9 @@ public class MenuButton extends Button {
 	public MenuButton(float x, float y, float width, float height, Image normal, Image alternate) {
 		super(x, y, width, height, normal, alternate);
 	}
-	private MenuButton playButton, optionsButton, rulesButton, exitButton;
-    private int CURRENT = 0;
-    private long lastInput = System.currentTimeMillis();
-    
 
-    private static final long serialVersionUID = -6073162297979548251L;
+	private static final long serialVersionUID = -6073162297979548251L;
+
 	/**
 	 * Update method for the button - enter a new state on button click.
 	 * 
@@ -54,10 +51,11 @@ public class MenuButton extends Button {
 		}
 	}
 
-	/** Only use this update method for keyboard controlled menu buttons
-     *
-     * */
-	public void update(GameContainer gc, StateBasedGame game,boolean selected, int stateID) {
+	/**
+	 * Only use this update method for keyboard controlled menu buttons
+	 *
+	 */
+	public void update(GameContainer gc, StateBasedGame game, boolean selected, int stateID) {
 		Input input = gc.getInput();
 
 		if (selected) {
@@ -73,7 +71,5 @@ public class MenuButton extends Button {
 			button = unselect;
 		}
 	}
-
-
 
 }
