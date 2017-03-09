@@ -42,7 +42,7 @@ public class Intro extends BasicGameState {
 	
 	public void handleInput(GameContainer gc,StateBasedGame game) {
 		Input input=gc.getInput();
-		if(input.isKeyPressed(Vals.ENTER)) {
+		if(input.isKeyPressed(Input.KEY_ENTER)) {
 			game.enterState(Vals.MENU_STATE);
 		}
 	}

@@ -204,28 +204,28 @@ public class SpriteLocations {
 	public static final String PLAYER_DARK_STANDING_EAST = "/res/sprites/players/dark/PlayerDarkStandingEast.png";
 	public static final String PLAYER_DARK_STANDING_WEST = "/res/sprites/players/dark/PlayerDarkStandingWest.png";
 
-	public static final String PLAYER_DARK_NORTH_SEAT = "/res/sprites/players/dark/PlayerDarkSeatedNorth.png";
+	public static final String PLAYER_DARK_NORTH_SEAT = "res/sprites/players/dark/PlayerDarkSeatedNorth.png";
 
-	public static final String PLAYER_DARK_NORTH_SLEEP = "/res/sprites/players/dark/PlayerDarkSleepNorth.png";
-	public static final String PLAYER_DARK_SOUTH_SLEEP = "/res/sprites/players/dark/PlayerDarkSleepSouth.png";
+	public static final String PLAYER_DARK_NORTH_SLEEP = "res/sprites/players/dark/PlayerDarkSleepNorth.png";
+	public static final String PLAYER_DARK_SOUTH_SLEEP = "res/sprites/players/dark/PlayerDarkSleepSouth.png";
 
-	public static final String PLAYER_BROWN_STANDING_NORTH = "/res/sprites/players/brown/PlayerBrownStandingNorth.png";
-	public static final String PLAYER_BROWN_STANDING_SOUTH = "/res/sprites/players/brown/PlayerBrownStandingSouth.png";
-	public static final String PLAYER_BROWN_STANDING_EAST = "/res/sprites/players/brown/PlayerBrownStandingEast.png";
-	public static final String PLAYER_BROWN_STANDING_WEST = "/res/sprites/players/brown/PlayerBrownStandingWest.png";
+	public static final String PLAYER_BROWN_STANDING_NORTH = "res/sprites/players/brown/PlayerBrownStandingNorth.png";
+	public static final String PLAYER_BROWN_STANDING_SOUTH = "res/sprites/players/brown/PlayerBrownStandingSouth.png";
+	public static final String PLAYER_BROWN_STANDING_EAST = "res/sprites/players/brown/PlayerBrownStandingEast.png";
+	public static final String PLAYER_BROWN_STANDING_WEST = "res/sprites/players/brown/PlayerBrownStandingWest.png";
 
-	public static final String PLAYER_BROWN_NORTH_SEAT = "/res/sprites/players/brown/PlayerBrownSeatedNorth.png";
+	public static final String PLAYER_BROWN_NORTH_SEAT = "res/sprites/players/brown/PlayerBrownSeatedNorth.png";
 
-	public static final String PLAYER_BROWN_NORTH_SLEEP = "/res/sprites/players/brown/PlayerBrownSleepNorth.png";
-	public static final String PLAYER_BROWN_SOUTH_SLEEP = "/res/sprites/players/brown/PlayerBrownSleepSouth.png";
+	public static final String PLAYER_BROWN_NORTH_SLEEP = "res/sprites/players/brown/PlayerBrownSleepNorth.png";
+	public static final String PLAYER_BROWN_SOUTH_SLEEP = "res/sprites/players/brown/PlayerBrownSleepSouth.png";
 
-	public static final String PLAYER_PINK_STANDING_NORTH = "/res/sprites/players/pink/PlayerPinkStandingNorth.png";
-	public static final String PLAYER_PINK_STANDING_SOUTH = "/res/sprites/players/pink/PlayerPinkStandingSouth.png";
-	public static final String PLAYER_PINK_STANDING_EAST = "/res/sprites/players/pink/PlayerPinkStandingEast.png";
-	public static final String PLAYER_PINK_STANDING_WEST = "/res/sprites/players/pink/PlayerPinkStandingWest.png";
+	public static final String PLAYER_PINK_STANDING_NORTH = "res/sprites/players/pink/PlayerPinkStandingNorth.png";
+	public static final String PLAYER_PINK_STANDING_SOUTH = "res/sprites/players/pink/PlayerPinkStandingSouth.png";
+	public static final String PLAYER_PINK_STANDING_EAST = "res/sprites/players/pink/PlayerPinkStandingEast.png";
+	public static final String PLAYER_PINK_STANDING_WEST = "res/sprites/players/pink/PlayerPinkStandingWest.png";
 
-	public static final String PLAYER_PINK_NORTH_SEAT = "/res/sprites/players/pink/PlayerPinkSeatedNorth.png";
+	public static final String PLAYER_PINK_NORTH_SEAT = "res/sprites/players/pink/PlayerPinkSeatedNorth.png";
 
-	public static final String PLAYER_PINK_NORTH_SLEEP = "/res/sprites/players/pink/PlayerPinkSleepNorth.png";
-	public static final String PLAYER_PINK_SOUTH_SLEEP = "/res/sprites/players/pink/PlayerPinkSleepSouth.png";
+	public static final String PLAYER_PINK_NORTH_SLEEP = "res/sprites/players/pink/PlayerPinkSleepNorth.png";
+	public static final String PLAYER_PINK_SOUTH_SLEEP = "res/sprites/players/pink/PlayerPinkSleepSouth.png";
 }

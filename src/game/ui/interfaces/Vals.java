@@ -34,11 +34,12 @@ public interface Vals {
 	public static final int PLAY_TEST_STATE = 6;
 
 	// BUTTON SIZES
-	public static final int BUTTON_WIDTH = 200;
-	public static final int BUTTON_HEIGHT = 50;
+	public static final float BUTTON_WIDTH = SCREEN_WIDTH/8;
+	public static final float BUTTON_HEIGHT = SCREEN_HEIGHT/14;
 
 	// TEXT FIELD SIZES
-	public static final int TFIELD_WIDTH = 300;
+	public static final int TFIELD_WIDTH = SCREEN_WIDTH/8;
+	public static final int TFIELD_HEIGHT = SCREEN_HEIGHT/15;
 	public static final int TFIELD_ALIGN_CENTRE_W = (SCREEN_WIDTH - TFIELD_WIDTH) / 2;
 
 	// FONTS
@@ -56,15 +57,9 @@ public interface Vals {
 	public static final int RULES_SECT_RIGHT_W = SCREEN_WIDTH - RULES_SECT_LEFT_W;
 
 	// The coords of the screen centre for a Menu Button
-	public static final int BUTTON_ALIGN_CENTRE_W = SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2;
-	public static final int BUTTON_ALIGN_CENTRE_H = SCREEN_HEIGHT / 2 - BUTTON_HEIGHT / 2;
+	public static final float BUTTON_ALIGN_CENTRE_W = SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2;
+	public static final float BUTTON_ALIGN_CENTRE_H = SCREEN_HEIGHT / 2 - BUTTON_HEIGHT / 2;
 
 	// Input checking
 	public static final long INPUT_INTERVAL = 100;
-	// Get input
-	public static final int UP = Input.KEY_UP;
-	public static final int DOWN = Input.KEY_DOWN;
-	public static final int LEFT = Input.KEY_LEFT;
-	public static final int RIGHT = Input.KEY_RIGHT;
-	public static final int ENTER = Input.KEY_ENTER;
 }
