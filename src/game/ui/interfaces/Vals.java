@@ -15,7 +15,7 @@ import java.awt.Toolkit;
  */
 
 public interface Vals {
-	public static final String GAME_NAME = "Obnoxious Offices";
+	public static final String GAME_NAME = "Dev Wars";
 
 	// SCREEN SIZES
 	Dimension screenRes = Toolkit.getDefaultToolkit().getScreenSize();
