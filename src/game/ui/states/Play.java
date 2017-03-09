@@ -3,13 +3,10 @@ package game.ui.states;
 import java.util.HashMap;
 import java.util.List;
 
-import game.core.minigame.MiniGameHangmanOld;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.font.effects.ColorEffect;
@@ -24,11 +21,11 @@ import game.core.input.InputTypeInteraction;
 import game.core.input.InputTypeMovement;
 import game.core.input.InteractionType;
 import game.core.input.MovementType;
-import game.core.minigame.MiniGameHangman;
+import game.core.minigame.MiniGameHangmanOld;
 import game.core.player.Player;
 import game.core.player.PlayerState;
 import game.core.player.action.PlayerActionSleep;
-import game.core.player.effect.PlayerEffectCoffeeBuzz;
+import game.core.util.Coordinates;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
@@ -91,7 +88,6 @@ public class Play extends BasicGameState {
 	Music bgmusic;
 	private ChatBox cb;
 
-	
 	public Play(int state) {
 	}
 
@@ -116,7 +112,7 @@ public class Play extends BasicGameState {
 		// KEEP COMMENTED until we've all added the required libraries.
 		// Initialise the background music
 		// bgmusic = new Music("res/music/toocheerful.ogg");
-		cb=new ChatBox(gc,new Chat());
+		cb = new ChatBox(gc, new Chat());
 	}
 
 	/**
@@ -165,7 +161,7 @@ public class Play extends BasicGameState {
 		// popUps
 		optionsOverlay = new OptionsOverlay();
 		gameOverOverlay = new GameOverOverlay(world.getPlayers());
-//		hangmanOverlay = new MiniGameHangmanOld("memes");
+		// hangmanOverlay = new MiniGameHangmanOld("memes");
 	}
 
 	/**
@@ -326,10 +322,22 @@ public class Play extends BasicGameState {
 			Location playerLocation = player.getLocation();
 			if (playerLocation.coords.x == x && playerLocation.coords.y == y) {
 				changeAnimation(player);
-				playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
-				Tile tile = playerLocation.getTile();
-				if (tile.type.equals(TileType.CHAIR) && tile.facing.equals(Direction.NORTH)) {
-					tileMap.get(tile.type).get(tile.facing)[0].draw(tileX, tileY, tileWidth, tileHeight);
+				if (player.status.hasState(PlayerState.sleeping)) {
+					// draw sleeping players sideways
+					// check if next tile is in bounds
+					Location right = new Location(new Coordinates(x + 1, y, 0), world);
+					if (right.checkBounds()) {
+						playerMap.get(player).drawPlayer((x - 1) * tileWidth, (y + 2) * (tileHeight / 2), tileWidth * 2, tileHeight / 2);
+					} else {
+						// otherwise draw to the left
+						playerMap.get(player).drawPlayer((x - 2) * tileWidth, (y + 2) * (tileHeight / 2), tileWidth * 2, tileHeight / 2);
+					}
+				} else {
+					playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
+					Tile tile = playerLocation.getTile();
+					if (tile.type.equals(TileType.CHAIR) && tile.facing.equals(Direction.NORTH)) {
+						tileMap.get(tile.type).get(tile.facing)[0].draw(tileX, tileY, tileWidth, tileHeight);
+					}
 				}
 			}
 		}
@@ -344,7 +352,9 @@ public class Play extends BasicGameState {
 	 */
 	private void changeAnimation(Player player) {
 		Direction playerFacing = player.getFacing();
-		if (player.status.hasState(PlayerState.sitting)) {
+		if (player.status.hasAction(PlayerActionSleep.class)) {
+			playerMap.get(player).sleeping(playerFacing);
+		} else if (player.status.hasState(PlayerState.sitting)) {
 			playerMap.get(player).seated(playerFacing);
 		} else {
 			playerMap.get(player).turn(player.getFacing());
@@ -464,23 +474,21 @@ public class Play extends BasicGameState {
 			break;
 		}
 	}
-	
-	private void manageSelector(){
+
+	private void manageSelector() {
 		switch (actionSelector.getSelected()) {
 		case "WORK":
-			Events.trigger(
-					new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
+			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
 			break;
 		case "HACK":
 			choosingHack = true;
 			actionSelector.setAction(0);
 			break;
 		case "NONE":
-			//do nothing
+			// do nothing
 			break;
 		default:
-			Events.trigger(
-					new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
+			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
 		}
 	}
 

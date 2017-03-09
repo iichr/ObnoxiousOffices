@@ -8,7 +8,8 @@ import game.core.world.Direction;
 import game.ui.interfaces.SpriteLocations;
 
 public class PlayerAnimation {
-	private Animation moveNorth, moveSouth, moveEast, moveWest, seatedNorth, seatedSouth, move;
+	private Animation moveNorth, moveSouth, moveEast, moveWest, seatedNorth, seatedSouth, sleepNorth, sleepSouth, move;
+
 	public PlayerAnimation(int colour, Direction initialDirection) throws SlickException {
 		Image[] n = new Image[8];
 		Image[] e = new Image[1];
@@ -16,6 +17,8 @@ public class PlayerAnimation {
 		Image[] w = new Image[1];
 		Image[] cN = new Image[1];
 		Image[] cS = new Image[1];
+		Image[] sN = new Image[1];
+		Image[] sS = new Image[1];
 
 		switch (colour) {
 		case 0:
@@ -27,12 +30,16 @@ public class PlayerAnimation {
 			n[5] = new Image(SpriteLocations.PLAYER_BLONDE_NORTH_WALK6, false, Image.FILTER_NEAREST);
 			n[6] = new Image(SpriteLocations.PLAYER_BLONDE_NORTH_WALK7, false, Image.FILTER_NEAREST);
 			n[7] = new Image(SpriteLocations.PLAYER_BLONDE_NORTH_WALK8, false, Image.FILTER_NEAREST);
-			
+
 			e[0] = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_EAST, false, Image.FILTER_NEAREST);
 			s[0] = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_SOUTH, false, Image.FILTER_NEAREST);
 			w[0] = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_WEST, false, Image.FILTER_NEAREST);
+			
 			cN[0] = new Image(SpriteLocations.PLAYER_BLONDE_NORTH_SEAT, false, Image.FILTER_NEAREST);
 			cS[0] = new Image(SpriteLocations.PLAYER_BLONDE_STANDING_SOUTH, false, Image.FILTER_NEAREST);
+			
+			sN[0] = new Image(SpriteLocations.PLAYER_BLONDE_NORTH_SLEEP, false, Image.FILTER_NEAREST);
+			sS[0] = new Image(SpriteLocations.PLAYER_BLONDE_SOUTH_SLEEP, false, Image.FILTER_NEAREST);
 			break;
 		case 1:
 			n[0] = new Image(SpriteLocations.PLAYER_DARK_STANDING_NORTH, false, Image.FILTER_NEAREST);
@@ -47,8 +54,12 @@ public class PlayerAnimation {
 			e[0] = new Image(SpriteLocations.PLAYER_DARK_STANDING_EAST, false, Image.FILTER_NEAREST);
 			s[0] = new Image(SpriteLocations.PLAYER_DARK_STANDING_SOUTH, false, Image.FILTER_NEAREST);
 			w[0] = new Image(SpriteLocations.PLAYER_DARK_STANDING_WEST, false, Image.FILTER_NEAREST);
+			
 			cN[0] = new Image(SpriteLocations.PLAYER_DARK_NORTH_SEAT, false, Image.FILTER_NEAREST);
 			cS[0] = new Image(SpriteLocations.PLAYER_DARK_STANDING_SOUTH, false, Image.FILTER_NEAREST);
+			
+			sN[0] = new Image(SpriteLocations.PLAYER_DARK_NORTH_SLEEP, false, Image.FILTER_NEAREST);
+			sS[0] = new Image(SpriteLocations.PLAYER_DARK_SOUTH_SLEEP, false, Image.FILTER_NEAREST);
 			break;
 		case 2:
 			n[0] = new Image(SpriteLocations.PLAYER_BROWN_STANDING_NORTH, false, Image.FILTER_NEAREST);
@@ -63,8 +74,12 @@ public class PlayerAnimation {
 			e[0] = new Image(SpriteLocations.PLAYER_BROWN_STANDING_EAST, false, Image.FILTER_NEAREST);
 			s[0] = new Image(SpriteLocations.PLAYER_BROWN_STANDING_SOUTH, false, Image.FILTER_NEAREST);
 			w[0] = new Image(SpriteLocations.PLAYER_BROWN_STANDING_WEST, false, Image.FILTER_NEAREST);
+			
 			cN[0] = new Image(SpriteLocations.PLAYER_BROWN_NORTH_SEAT, false, Image.FILTER_NEAREST);
 			cS[0] = new Image(SpriteLocations.PLAYER_BROWN_STANDING_SOUTH, false, Image.FILTER_NEAREST);
+			
+			sN[0] = new Image(SpriteLocations.PLAYER_BROWN_NORTH_SLEEP, false, Image.FILTER_NEAREST);
+			sS[0] = new Image(SpriteLocations.PLAYER_BROWN_SOUTH_SLEEP, false, Image.FILTER_NEAREST);
 			break;
 		case 3:
 			n[0] = new Image(SpriteLocations.PLAYER_PINK_STANDING_NORTH, false, Image.FILTER_NEAREST);
@@ -79,16 +94,20 @@ public class PlayerAnimation {
 			e[0] = new Image(SpriteLocations.PLAYER_PINK_STANDING_EAST, false, Image.FILTER_NEAREST);
 			s[0] = new Image(SpriteLocations.PLAYER_PINK_STANDING_SOUTH, false, Image.FILTER_NEAREST);
 			w[0] = new Image(SpriteLocations.PLAYER_PINK_STANDING_WEST, false, Image.FILTER_NEAREST);
+			
 			cN[0] = new Image(SpriteLocations.PLAYER_PINK_NORTH_SEAT, false, Image.FILTER_NEAREST);
 			cS[0] = new Image(SpriteLocations.PLAYER_PINK_STANDING_SOUTH, false, Image.FILTER_NEAREST);
+			
+			sN[0] = new Image(SpriteLocations.PLAYER_PINK_NORTH_SLEEP, false, Image.FILTER_NEAREST);
+			sS[0] = new Image(SpriteLocations.PLAYER_PINK_SOUTH_SLEEP, false, Image.FILTER_NEAREST);
 			break;
 		}
 
-		createAnimation(n, e, s, w, cN, cS, initialDirection);
+		createAnimation(n, e, s, w, cN, cS, sN, sS, initialDirection);
 	}
 
 	private void createAnimation(Image[] northAnimations, Image[] eastAnimations, Image[] southAnimations,
-			Image[] westAnimations, Image [] seatedNorthAnimations, Image [] seatedSouthAnimations, Direction initialDirection) {
+			Image[] westAnimations, Image [] seatedNorthAnimations, Image [] seatedSouthAnimations, Image [] sleepNorthAnimations, Image [] sleepSouthAnimations, Direction initialDirection) {
 		int duration = 100;
 
 		moveNorth = new Animation(northAnimations, duration, false);
@@ -97,6 +116,8 @@ public class PlayerAnimation {
 		moveWest = new Animation(westAnimations, duration, false);
 		seatedNorth = new Animation(seatedNorthAnimations, duration, false);
 		seatedSouth = new Animation(seatedSouthAnimations, duration, false);
+		sleepNorth = new Animation(sleepNorthAnimations, duration, false);
+		sleepSouth = new Animation(sleepSouthAnimations, duration, false);
 		
 		turn(initialDirection);
 	}
@@ -125,14 +146,31 @@ public class PlayerAnimation {
 			break;
 		}
 	}
-	
-	public void seated(Direction facing){
+
+	public void seated(Direction facing) {
 		switch (facing) {
 		case NORTH:
 			move = seatedNorth;
 			break;
 		case SOUTH:
 			move = seatedSouth;
+			break;
+		}
+	}
+	
+	public void sleeping(Direction facing) {
+		switch (facing) {
+		case NORTH:
+			move = sleepNorth;
+			break;
+		case EAST:
+			move = sleepNorth;
+			break;
+		case WEST:
+			move = sleepSouth;
+			break;
+		case SOUTH:
+			move = sleepSouth;
 			break;
 		}
 	}
