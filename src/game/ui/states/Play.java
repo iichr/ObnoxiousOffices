@@ -322,7 +322,7 @@ public class Play extends BasicGameState {
 			Location playerLocation = player.getLocation();
 			if (playerLocation.coords.x == x && playerLocation.coords.y == y) {
 				changeAnimation(player);
-				if (player.status.hasState(PlayerState.sleeping)) {
+				if (player.status.hasAction(PlayerActionSleep.class)) {
 					// draw sleeping players sideways
 					// check if next tile is in bounds
 					Location right = new Location(new Coordinates(x - 1, y, 0), world);
