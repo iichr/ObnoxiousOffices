@@ -99,7 +99,7 @@ public class ClientSync {
     }
 
     private static void onPlayerEffectEnded(PlayerEffectEndedEvent event) {
-        getPlayer(event.playerName).status.removeEffect(event.effect);
+        getPlayer(event.playerName).status.removeEffect(event.effect.getClass());
     }
 
     private static void onPlayerEffectAdded(PlayerEffectAddedEvent event) {
@@ -107,7 +107,7 @@ public class ClientSync {
     }
 
     private static void onPlayerActionEnded(PlayerActionEndedEvent event) {
-        getPlayer(event.playerName).status.removeAction(event.action);
+        getPlayer(event.playerName).status.removeAction(event.action.getClass());
     }
 
     private static void onPlayerActionAdded(PlayerActionAddedEvent event) {
