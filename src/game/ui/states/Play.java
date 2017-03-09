@@ -234,9 +234,6 @@ public class Play extends BasicGameState {
 		effectOverview.updateEffects(localPlayer);
 
 		playerOverview.updateContainer(world.getPlayers());
-		if (localPlayer.status.hasAction(PlayerActionSleep.class)) {
-			playerOverview.toggleSleep(localPlayer, true);
-		}
 
 		if (playingPong) {
 			// TODO update pong variables
@@ -359,13 +356,6 @@ public class Play extends BasicGameState {
 	}
 
 	@Override
-	public void mouseWheelMoved(int newValue) {
-		if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-			actionSelector.changeSelection(newValue);
-		}
-	}
-
-	@Override
 	public void keyPressed(int key, char c) {
 		if (!gameOver) {
 			if (playingPong) {
@@ -428,37 +418,26 @@ public class Play extends BasicGameState {
 		case Input.KEY_W:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
 			choosingHack = false;
+			actionSelector.setAction(0);
 			break;
 		case Input.KEY_S:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
 			choosingHack = false;
+			actionSelector.setAction(0);
 			break;
 		case Input.KEY_D:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
 			choosingHack = false;
+			actionSelector.setAction(0);
 			break;
 		case Input.KEY_A:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
 			choosingHack = false;
+			actionSelector.setAction(0);
 			break;
 		case Input.KEY_E:
 			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-				switch (actionSelector.getSelected()) {
-				case "WORK":
-					Events.trigger(
-							new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
-					break;
-				case "HACK":
-					choosingHack = true;
-					actionSelector.setAction(0);
-					break;
-				case "NONE":
-					//do nothing
-					break;
-				default:
-					Events.trigger(
-							new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
-				}
+				manageSelector();
 			} else {
 				Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
 			}
@@ -483,6 +462,25 @@ public class Play extends BasicGameState {
 			playingHangman = true;
 			// System.out.println("ENTERED HANGMAN");
 			break;
+		}
+	}
+	
+	private void manageSelector(){
+		switch (actionSelector.getSelected()) {
+		case "WORK":
+			Events.trigger(
+					new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
+			break;
+		case "HACK":
+			choosingHack = true;
+			actionSelector.setAction(0);
+			break;
+		case "NONE":
+			//do nothing
+			break;
+		default:
+			Events.trigger(
+					new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
 		}
 	}
 

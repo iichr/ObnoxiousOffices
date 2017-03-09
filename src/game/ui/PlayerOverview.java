@@ -10,6 +10,7 @@ import org.newdawn.slick.SlickException;
 
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
+import game.core.player.action.PlayerActionSleep;
 import game.core.world.World;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
@@ -83,6 +84,9 @@ public class PlayerOverview {
 				// add progress and fatigue
 				playerProgress[i] = p.getProgress();
 				playerFatigue[i] = p.status.getAttribute(PlayerAttribute.FATIGUE);
+				
+				checkSleep(p, i);
+				
 				i++;
 			} else {
 				// add name
@@ -95,6 +99,8 @@ public class PlayerOverview {
 				// add progress and fatigue
 				playerProgress[0] = p.getProgress();
 				playerFatigue[0] = p.status.getAttribute(PlayerAttribute.FATIGUE);
+				
+				checkSleep(p, 0);
 			}
 		}
 	}
@@ -151,12 +157,11 @@ public class PlayerOverview {
 		}
 	}
 
-	public void toggleSleep(Player p, boolean b) {
-		Animation a = playerAvatars[p.getHair()];
-		if(b){
-			a.setCurrentFrame(1);
+	private void checkSleep(Player p, int i) {
+		if(p.status.hasAction(PlayerActionSleep.class)){
+			playerAvatars[i].setCurrentFrame(1);
 		}else{
-			a.setCurrentFrame(0);
+			playerAvatars[i].setCurrentFrame(0);
 		}
 	}
 
