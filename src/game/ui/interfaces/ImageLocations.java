@@ -57,6 +57,9 @@ public interface ImageLocations {
 	
 	public static final String OVERLAY_BACKGROUND = "/res/ui/overlayBackground.png";
 	
+	public static final String SLEEP_EFFECT = "/res/ui/sleepEffect.png";
+	public static final String COFFEE_EFFECT = "/res/ui/coffeeEffect.png";
+	
 	//WAITING FOR PLAYERS IMAGE
 	public static final String WAITING = "/res/ui/waiting.png";
 
