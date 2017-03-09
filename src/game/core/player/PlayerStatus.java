@@ -174,7 +174,8 @@ public class PlayerStatus implements Serializable {
     }
 
     public void removeEffect(Class<? extends PlayerEffect> effectClass) {
-        effects.stream().filter(e -> e.getClass() == effectClass).peek(effect -> {
+        Set<PlayerEffect> matching = effects.stream().filter(e -> e.getClass() == effectClass).collect(Collectors.toSet());
+        matching.forEach(effect -> {
             Events.trigger(new PlayerEffectEndedEvent(effect, player.name), true);
             effects.remove(effect);
         });
