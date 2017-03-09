@@ -325,12 +325,12 @@ public class Play extends BasicGameState {
 				if (player.status.hasState(PlayerState.sleeping)) {
 					// draw sleeping players sideways
 					// check if next tile is in bounds
-					Location right = new Location(new Coordinates(x + 1, y, 0), world);
+					Location right = new Location(new Coordinates(x - 1, y, 0), world);
 					if (right.checkBounds()) {
 						playerMap.get(player).drawPlayer((x - 1) * tileWidth, (y + 2) * (tileHeight / 2), tileWidth * 2, tileHeight / 2);
 					} else {
 						// otherwise draw to the left
-						playerMap.get(player).drawPlayer((x - 2) * tileWidth, (y + 2) * (tileHeight / 2), tileWidth * 2, tileHeight / 2);
+						playerMap.get(player).drawPlayer(tileX, (y + 2) * (tileHeight / 2), tileWidth * 2, tileHeight / 2);
 					}
 				} else {
 					playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
