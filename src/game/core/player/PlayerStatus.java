@@ -112,7 +112,6 @@ public class PlayerStatus implements Serializable {
         }
     }
 
-    // TODO: Change productivity based on fatigue
     /**
      * Set an attribute value
      * @param attribute
