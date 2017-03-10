@@ -3,6 +3,9 @@ package game.ui.states;
 import java.util.HashMap;
 import java.util.List;
 
+import game.core.input.*;
+import game.core.minigame.MiniGame;
+import game.core.minigame.MiniGameHangman;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -18,10 +21,6 @@ import game.core.chat.Chat;
 import game.core.event.Events;
 import game.core.event.GameFinishedEvent;
 import game.core.event.player.PlayerInputEvent;
-import game.core.input.InputTypeInteraction;
-import game.core.input.InputTypeMovement;
-import game.core.input.InteractionType;
-import game.core.input.MovementType;
 import game.core.minigame.MiniGameHangmanChris;
 import game.core.player.Player;
 import game.core.player.PlayerState;
@@ -487,6 +486,7 @@ public class Play extends BasicGameState {
 			// System.out.println("Entered char = " + c);
 			// also serves to update the display!
 			 hangmanOverlay.inputLetter(c);
+			 MiniGame.localMiniGame.onInput(new PlayerInputEvent(new InputTypeCharacter(c), "chris"));
 		}
 	}
 
@@ -564,6 +564,7 @@ public class Play extends BasicGameState {
 			break;
 		// TEMPORARY FOR TESTING HANGMAN - PRESS 9
 		case Input.KEY_9:
+			MiniGame.localMiniGame = new MiniGameHangman("chris");
 			playingHangman = true;
 			// System.out.println("ENTERED HANGMAN");
 			break;
