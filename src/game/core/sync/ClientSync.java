@@ -3,14 +3,8 @@ package game.core.sync;
 import game.core.chat.Chat;
 import game.core.event.Events;
 import game.core.event.chat.ChatMessageReceivedEvent;
-import game.core.event.minigame.MiniGameEndedEvent;
-import game.core.event.minigame.MiniGameStartedEvent;
-import game.core.event.player.PlayerAttributeChangedEvent;
-import game.core.event.player.PlayerMovedEvent;
-import game.core.event.player.PlayerProgressUpdateEvent;
-import game.core.event.player.PlayerRotatedEvent;
-import game.core.event.player.PlayerStateAddedEvent;
-import game.core.event.player.PlayerStateRemovedEvent;
+import game.core.event.minigame.MiniGameStatChangedEvent;
+import game.core.event.minigame.MiniGameVarChangedEvent;
 import game.core.event.player.action.PlayerActionAddedEvent;
 import game.core.event.player.action.PlayerActionEndedEvent;
 import game.core.event.player.effect.PlayerEffectAddedEvent;
@@ -47,8 +41,18 @@ public class ClientSync {
 
         Events.on(MiniGameStartedEvent.class, ClientSync::onMiniGameStarted);
         Events.on(MiniGameEndedEvent.class, ClientSync::onMiniGameEnded);
+        Events.on(MiniGameStatChangedEvent.class, ClientSync::onMiniGameStatChanged);
+        Events.on(MiniGameVarChangedEvent.class, ClientSync::onMiniGameVarChanged);
 
         Events.on(ChatMessageReceivedEvent.class, ClientSync::onChatMessageReceived);
+    }
+
+    private static void onMiniGameVarChanged(MiniGameVarChangedEvent event) {
+        MiniGame.localMiniGame.setVar(event.var, event.val);
+    }
+
+    private static void onMiniGameStatChanged(MiniGameStatChangedEvent event) {
+        MiniGame.localMiniGame.setStat(event.player, event.stat, event.val);
     }
 
     private static void onPlayerEffectElapsedUpdate(PlayerEffectElapsedUpdate event) {
