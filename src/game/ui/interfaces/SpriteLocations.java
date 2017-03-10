@@ -29,6 +29,8 @@ public class SpriteLocations {
 		addSofaImages();
 		addDecorativeImages();
 		addFishTankImages();
+		addWallImages();
+		addCornerImages();
 	}
 
 	private void addFloorImages() throws SlickException {
@@ -148,6 +150,50 @@ public class SpriteLocations {
 
 		tileMap.put(TileType.FISH, fishTankMap);
 	}
+	
+	private void addWallImages() throws SlickException {
+		HashMap<Direction, Image[]> wallMap = new HashMap<>();
+
+		Image wN = new Image(TILE_WALL_NORTH, false, Image.FILTER_NEAREST);
+		Image[] wNorth = { wN };
+		wallMap.put(Direction.NORTH, wNorth);
+
+		Image wE = new Image(TILE_WALL_EAST, false, Image.FILTER_NEAREST);
+		Image[] wEast = { wE };
+		wallMap.put(Direction.EAST, wEast);
+		
+		Image wS = new Image(TILE_WALL_SOUTH, false, Image.FILTER_NEAREST);
+		Image[] wSouth = { wS };
+		wallMap.put(Direction.SOUTH, wSouth);
+		
+		Image wW = new Image(TILE_WALL_WEST, false, Image.FILTER_NEAREST);
+		Image[] wWest = { wW };
+		wallMap.put(Direction.WEST, wWest);
+
+		tileMap.put(TileType.WALL, wallMap);
+	}
+	
+	private void addCornerImages() throws SlickException {
+		HashMap<Direction, Image[]> wallMap = new HashMap<>();
+
+		Image wcN = new Image(TILE_CORNER_NORTH, false, Image.FILTER_NEAREST);
+		Image[] wcNorth = { wcN };
+		wallMap.put(Direction.NORTH, wcNorth);
+
+		Image wcE = new Image(TILE_CORNER_EAST, false, Image.FILTER_NEAREST);
+		Image[] wcEast = { wcE };
+		wallMap.put(Direction.EAST, wcEast);
+		
+		Image wcS = new Image(TILE_CORNER_SOUTH, false, Image.FILTER_NEAREST);
+		Image[] wcSouth = { wcS };
+		wallMap.put(Direction.SOUTH, wcSouth);
+		
+		Image wcW = new Image(TILE_CORNER_WEST, false, Image.FILTER_NEAREST);
+		Image[] wcWest = { wcW };
+		wallMap.put(Direction.WEST, wcWest);
+
+		tileMap.put(TileType.WALL_CORNER, wallMap);
+	}
 
 	// TILE LOCATIONS
 	public static final String TILE_FLOOR = "/res/sprites/tiles/floor.png";
@@ -179,6 +225,16 @@ public class SpriteLocations {
 	public static final String TILE_FISH_TANK_RIGHT = "/res/sprites/tiles/fishTankRight.png";
 
 	public static final String TILE_WALL = "/res/sprites/tiles/wall.png";
+	
+	public static final String TILE_WALL_NORTH = "/res/sprites/tiles/wallNorth.png";
+	public static final String TILE_WALL_SOUTH = "/res/sprites/tiles/wallSouth.png";
+	public static final String TILE_WALL_EAST = "/res/sprites/tiles/wallEast.png";
+	public static final String TILE_WALL_WEST = "/res/sprites/tiles/wallWest.png";
+	
+	public static final String TILE_CORNER_NORTH = "/res/sprites/tiles/wallCornerNorthWest.png";
+	public static final String TILE_CORNER_SOUTH = "/res/sprites/tiles/wallCornerSouthEast.png";
+	public static final String TILE_CORNER_EAST = "/res/sprites/tiles/wallCornerNorthEast.png";
+	public static final String TILE_CORNER_WEST = "/res/sprites/tiles/wallCornerSouthWest.png";
 
 	// PLAYER SPRITE LOCATIONS
 	public static final String PLAYER_BLONDE_NORTH_WALK1 = "/res/sprites/players/blonde/PlayerBlondeNorthWalk1.png";

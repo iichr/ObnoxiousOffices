@@ -289,16 +289,21 @@ public class Play extends BasicGameState {
 	private void drawTile(float tileX, float tileY, Tile tile) {
 		Direction facing = tile.facing;
 		TileType type = tile.type;
-		;
 
 		// draw the tile
 		int mtID = tile.multitileID;
 		if (mtID == -1) {
 			mtID++;
 		}
+
 		HashMap<Direction, Image[]> directionMap = tileMap.get(type);
 		Image[] images = directionMap.get(facing);
-		images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
+
+		if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER)) {
+			images[mtID].draw(tileX, tileY - tileHeight/2, tileWidth, 3*tileHeight/2);
+		} else {
+			images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
+		}
 	}
 
 	/**
@@ -327,10 +332,12 @@ public class Play extends BasicGameState {
 					// check if next tile is in bounds
 					Location right = new Location(new Coordinates(x - 1, y, 0), world);
 					if (right.checkBounds()) {
-						playerMap.get(player).drawPlayer((x - 1) * tileWidth, (y + 2) * (tileHeight / 2), tileWidth * 2, tileHeight / 2);
+						playerMap.get(player).drawPlayer((x - 1) * tileWidth, (y + 2) * (tileHeight / 2), tileWidth * 2,
+								tileHeight / 2);
 					} else {
 						// otherwise draw to the left
-						playerMap.get(player).drawPlayer(tileX, (y + 2) * (tileHeight / 2), tileWidth * 2, tileHeight / 2);
+						playerMap.get(player).drawPlayer(tileX, (y + 2) * (tileHeight / 2), tileWidth * 2,
+								tileHeight / 2);
 					}
 				} else {
 					playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
@@ -379,8 +386,6 @@ public class Play extends BasicGameState {
 			exit = true;
 		}
 	}
-	
-	
 
 	/**
 	 * Hangman - manage input and display
