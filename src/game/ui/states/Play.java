@@ -3,9 +3,6 @@ package game.ui.states;
 import java.util.HashMap;
 import java.util.List;
 
-import game.core.input.*;
-import game.core.minigame.MiniGame;
-import game.core.minigame.MiniGameHangman;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -20,8 +17,19 @@ import org.newdawn.slick.state.StateBasedGame;
 import game.core.chat.Chat;
 import game.core.event.Events;
 import game.core.event.GameFinishedEvent;
+import game.core.event.minigame.MiniGameEndedEvent;
+import game.core.event.minigame.MiniGameStartedEvent;
 import game.core.event.player.PlayerInputEvent;
+
 import game.core.minigame.MiniGameHangmanOverlay;
+import game.core.input.InputTypeCharacter;
+import game.core.input.InputTypeInteraction;
+import game.core.input.InputTypeMovement;
+import game.core.input.InteractionType;
+import game.core.input.MovementType;
+import game.core.minigame.MiniGame;
+import game.core.minigame.MiniGameHangman;
+import game.core.minigame.MiniGamePong;
 import game.core.player.Player;
 import game.core.player.PlayerState;
 import game.core.player.action.PlayerActionSleep;
@@ -108,6 +116,8 @@ public class Play extends BasicGameState {
 		actionSelector = new ActionSelector();
 
 		Events.on(GameFinishedEvent.class, this::gameFinished);
+		Events.on(MiniGameStartedEvent.class, this::startMinigame);
+		Events.on(MiniGameEndedEvent.class, this::closeMinigame);
 
 		// KEEP COMMENTED until we've all added the required libraries.
 		// Initialise the background music
@@ -211,7 +221,7 @@ public class Play extends BasicGameState {
 		} else if (options) {
 			optionsOverlay.render(g);
 		} else if (playingHangman) {
-			 hangmanOverlay.render(g);
+			hangmanOverlay.render(g);
 		} else if (playingPong) {
 			// TODO render pong
 		} else if (showOverview) {
@@ -235,7 +245,6 @@ public class Play extends BasicGameState {
 		}
 
 		if (playingHangman) {
-			// handled in MiniGameHangman
 		}
 
 		if (exit) {
@@ -454,6 +463,19 @@ public class Play extends BasicGameState {
 		gameOver = true;
 	}
 
+	private void startMinigame(MiniGameStartedEvent e) {
+		if(e.game.equals(MiniGameHangman.class)){
+			playingHangman = true;
+		}else if(e.game.equals(MiniGamePong.class)){
+			playingPong = true;
+		}
+	}
+
+	private void closeMinigame(MiniGameEndedEvent e) {
+			playingHangman = false;
+			playingPong = false;
+	}
+
 	@Override
 	public void keyPressed(int key, char c) {
 		if (!gameOver) {
@@ -480,7 +502,7 @@ public class Play extends BasicGameState {
 		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
 			// System.out.println("Entered char = " + c);
 			// also serves to update the display!
-			 MiniGame.localMiniGame.onInput(new PlayerInputEvent(new InputTypeCharacter(c), "chris"));
+			MiniGame.localMiniGame.onInput(new PlayerInputEvent(new InputTypeCharacter(c), "chris"));
 		}
 	}
 
