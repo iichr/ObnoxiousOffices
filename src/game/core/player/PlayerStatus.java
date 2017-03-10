@@ -196,6 +196,10 @@ public class PlayerStatus implements Serializable {
         return actions.stream().allMatch(PlayerAction::allowsMove);
     }
 
+    public boolean canInteract() {
+        return actions.stream().allMatch(PlayerAction::allowsInteraction) && effects.stream().allMatch(PlayerEffect::allowsInteraction) && states.stream().allMatch(PlayerState::allowsInteraction);
+    }
+
     public enum PlayerAttribute {
         FATIGUE(0.0, 1.0), PRODUCTIVITY(1.0, 1.0, FATIGUE, (diff, val) -> -val);
 

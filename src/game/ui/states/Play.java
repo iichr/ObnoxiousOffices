@@ -502,7 +502,7 @@ public class Play extends BasicGameState {
 		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
 			// System.out.println("Entered char = " + c);
 			// also serves to update the display!
-			MiniGame.localMiniGame.onInput(new PlayerInputEvent(new InputTypeCharacter(c), "chris"));
+			Events.trigger(new PlayerInputEvent(new InputTypeCharacter(c), localPlayerName));
 		}
 	}
 
@@ -515,10 +515,10 @@ public class Play extends BasicGameState {
 	private void pongControls(int key) {
 		switch (key) {
 		case Input.KEY_W:
-			// TODO interact with pong minigame
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
 			break;
 		case Input.KEY_S:
-			// TODO interact with pong mingame
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
 		}
 	}
 
