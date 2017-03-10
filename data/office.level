@@ -1,0 +1,28 @@
+fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
+m1,fl,fl,fl,c3,fl,fl,c3,fl,fl,c3,fl,fl,fl,m2
+c2,fl,fl,de,p1,de,de,p1,de,de,p1,de,fl,fl,c4
+fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl,fl
+###
+fl = floor
+de = desk
+c1 = chair,north
+c2 = chair,east
+c3 = chair,south
+c4 = chair,west
+p1 = computer,north
+p2 = computer,south
+m1 = coffee,east
+m2 = coffee,west
+w1 = wall,north
+w2 = wall,east
+w3 = wall,south
+w4 = wall,west
+wc1 = corner,north
+wc2 = corner,east
+wc3 = corner,south
+wc4 = corner,west
+###
+0,0,0
+1,0,0
+2,0,0
+3,0,0

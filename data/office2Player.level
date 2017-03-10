@@ -26,6 +26,14 @@ s2 = sofa,south
 m1 = coffee,east
 m2 = coffee,west
 ft = fish
+w1 = wall,north
+w2 = wall,east
+w3 = wall,south
+w4 = wall,west
+wc1 = corner,north
+wc2 = corner,east
+wc3 = corner,south
+wc4 = corner,west
 ###
 5,5,0
 14,5,0
