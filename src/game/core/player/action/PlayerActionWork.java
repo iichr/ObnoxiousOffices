@@ -13,7 +13,6 @@ public class PlayerActionWork extends TimedPlayerAction {
 
     @Override
     protected void timedUpdate() {
-    	System.out.println("adding progress");
         player.addProgress();
     }
 
