@@ -256,7 +256,7 @@ public class Play extends BasicGameState {
 		wall.draw(0, 0, Vals.SCREEN_WIDTH, tileHeight);
 
 		boolean[][] visible = findVisibles();
-
+		
 		// check every position in the world to render what is needed at that
 		// location
 		for (int y = 0; y < world.ySize; y++) {
