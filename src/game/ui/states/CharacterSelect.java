@@ -87,8 +87,6 @@ public class CharacterSelect extends BasicGameState {
 				});
 		playerName.setBackgroundColor(Color.white);
 		playerName.setTextColor(Color.black);
-
-		playerName.setFocus(true);
 	}
 
 	@Override
