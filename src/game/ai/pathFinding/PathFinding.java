@@ -65,6 +65,9 @@ public class PathFinding implements Runnable, Serializable {
 	int startI, startJ; // coordinates for our start point
 
 	int coffeeI, coffeeJ, bedI, bedJ;
+	ArrayList<Pair<Integer, Integer>> coffes;
+	ArrayList<Pair<Integer, Integer>> beds;
+	
 
 	String toGo; // input "cm" for Coffee Machine or "b" for sofa
 
@@ -106,9 +109,9 @@ public class PathFinding implements Runnable, Serializable {
 	 *            the world that is going to be made into a grid
 	 */
 	void worldToCell() {
-		int heurC = 1000; // the heuristic of a tile where there is a coffee
+		//int heurC = 1000; // the heuristic of a tile where there is a coffee
 							// machine
-		int heurB = 1000; // the heuristic of a tile where there is a sofa
+		//int heurB = 1000; // the heuristic of a tile where there is a sofa
 		for (int i = 0; i < rowLength; i++) {
 			for (int j = 0; j < colLength; j++) {
 
@@ -123,23 +126,48 @@ public class PathFinding implements Runnable, Serializable {
 
 				// if the current tile is a coffee machine, and is closer than
 				// the previous one, save coordinates
-				if (tile.type.equals(TileType.COFFEE_MACHINE) && calcHeuristic(i, j) < heurC) {
-					heurC = calcHeuristic(i, j);
-					grid[i][j].hCost = heurC;
-					coffeeI = i;
-					coffeeJ = j;
+				if (tile.type.equals(TileType.COFFEE_MACHINE) ) { //&& calcHeuristic(i, j) < heurC
+					//heurC = calcHeuristic(i, j);
+					grid[i][j].hCost = calcHeuristic(i, j); //grid[i][j].hCost =heurC
+					coffes.add(new Pair<Integer, Integer>(i, j));
+					//coffeeI = i;
+					//coffeeJ = j;
 				}
 
 				// if the current tile is a bed, and is closer than the previous
 				// one, save coordinates
-				if (tile.type.equals(TileType.SOFA) && calcHeuristic(i, j) < heurB) {
-					heurB = calcHeuristic(i, j);
-					grid[i][j].hCost = heurB;
-					bedI = i;
-					bedJ = j;
+				if (tile.type.equals(TileType.SOFA) ) { //&& calcHeuristic(i, j) < heurB
+					//heurB = calcHeuristic(i, j); 
+					grid[i][j].hCost = calcHeuristic(i, j); //grid[i][j].hCost = heurB;
+					beds.add(new Pair<Integer, Integer>(i, j));
+					//bedI = i;
+					//bedJ = j;
 				}
 			}
 		}
+	}
+	
+	public Pair<Integer, Integer> findClosest(ArrayList<Pair<Integer, Integer>> coords) {
+		int pathSize = 100;
+		
+		Pair<Integer, Integer> closestCoords = null; 
+		ArrayList<Pair<Integer, Integer>> path = new ArrayList<Pair<Integer, Integer>>();
+		
+		int x, y;
+		
+		for (int k = 0; k < coords.size(); k++) {
+			x = coords.get(k).getL();
+			y = coords.get(k).getL();
+			AStar(x, y);
+			path = path(coords.get(k).getL(), coords.get(k).getR());
+			if (pathSize > path.size()) {
+				pathSize = path.size();
+				closestCoords = coords.get(k);
+			}
+				
+		}
+		
+		return closestCoords;
 	}
 
 	/**
@@ -281,9 +309,13 @@ public class PathFinding implements Runnable, Serializable {
 	public void run() {
 
 		if (toGo == "cm") {
+			coffeeI = findClosest(coffes).getL();
+			coffeeJ = findClosest(coffes).getR();
 			AStar(coffeeI, coffeeJ);
 			path(coffeeI, coffeeJ);
 		} else {
+			coffeeI = findClosest(beds).getL();
+			coffeeJ = findClosest(beds).getR();
 			AStar(bedI, bedJ);
 			path(bedI, bedJ);
 		}
