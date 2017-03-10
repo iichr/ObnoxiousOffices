@@ -3,6 +3,7 @@ package game.core.player.action;
 import game.core.player.Player;
 import game.core.player.PlayerState;
 import game.core.player.PlayerStatus;
+import game.core.player.effect.PlayerEffectSleeping;
 import game.util.Time;
 
 /**
@@ -13,6 +14,13 @@ public class PlayerActionSleep extends TimedPlayerAction {
     public PlayerActionSleep(Player player) {
         super(player);
         player.status.addState(PlayerState.sleeping);
+        player.status.addEffect(new PlayerEffectSleeping(getDuration(), player));
+    }
+
+    @Override
+    public void cancel() {
+        super.cancel();
+        player.status.removeEffect(PlayerEffectSleeping.class);
     }
 
     @Override
