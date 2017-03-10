@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * Created by samtebbs on 28/02/2017.
  */
-public abstract class PlayerState implements Serializable {
+public abstract class PlayerState extends PlayerCondition implements Serializable {
 
     public static final PlayerState sitting = new PlayerStateSitting(), sleeping = new PlayerStateSleeping();
 
