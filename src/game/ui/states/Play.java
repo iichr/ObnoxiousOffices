@@ -267,7 +267,7 @@ public class Play extends BasicGameState {
 				float tileY = (y + 1) * (tileHeight / 2);
 
 				// find out what tile is in this location
-				Tile found = world.getTile(x, y, 1);
+				Tile found = world.getTile(x, y, 0);
 
 				// check to draw computer marker
 				drawComputerMarker(tileX, tileY, found);
