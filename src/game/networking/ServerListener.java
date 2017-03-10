@@ -14,6 +14,8 @@ import game.core.event.Events;
 import game.core.event.GameFinishedEvent;
 import game.core.event.GameStartedEvent;
 import game.core.event.chat.ChatMessageReceivedEvent;
+import game.core.event.minigame.MiniGameEndedEvent;
+import game.core.event.minigame.MiniGameStartedEvent;
 import game.core.event.player.PlayerAttributeChangedEvent;
 import game.core.event.player.PlayerCreatedEvent;
 import game.core.event.player.PlayerMovedEvent;
@@ -78,6 +80,8 @@ public class ServerListener extends Thread {
 		Events.on(PlayerStateAddedEvent.class, this::forwardInfo);
 		Events.on(PlayerStateRemovedEvent.class, this::forwardInfo);
 		Events.on(PlayerEffectElapsedUpdate.class, this::forwardInfo);
+		Events.on(MiniGameStartedEvent.class, this::forwardInfo);
+		Events.on(MiniGameEndedEvent.class, this::forwardInfo);
 
 		Events.on(GameFinishedEvent.class, this::forwardInfo);
 

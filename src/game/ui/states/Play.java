@@ -50,6 +50,7 @@ import game.ui.interfaces.Vals;
 import game.ui.overlay.GameOverOverlay;
 import game.ui.overlay.HangmanOverlay;
 import game.ui.overlay.OptionsOverlay;
+import game.ui.overlay.PongOverlay;
 import game.ui.player.ActionSelector;
 import game.ui.player.PlayerAnimation;
 
@@ -82,6 +83,7 @@ public class Play extends BasicGameState {
 	private OptionsOverlay optionsOverlay;
 	private GameOverOverlay gameOverOverlay;
 	private HangmanOverlay hangmanOverlay;
+	private PongOverlay pongOverlay;
 
 	boolean showOverview = false;
 
@@ -172,6 +174,7 @@ public class Play extends BasicGameState {
 		optionsOverlay = new OptionsOverlay();
 		gameOverOverlay = new GameOverOverlay(world.getPlayers());
 		hangmanOverlay = new HangmanOverlay();
+		pongOverlay = new PongOverlay();
 	}
 
 	/**
@@ -223,7 +226,7 @@ public class Play extends BasicGameState {
 		} else if (playingHangman) {
 			hangmanOverlay.render(g);
 		} else if (playingPong) {
-			// TODO render pong
+			pongOverlay.render(g);
 		} else if (showOverview) {
 			playerOverview.render(g);
 		}
@@ -240,13 +243,6 @@ public class Play extends BasicGameState {
 
 		playerOverview.updateContainer(world.getPlayers());
 
-		if (playingPong) {
-			// TODO update pong variables
-		}
-
-		if (playingHangman) {
-		}
-
 		if (exit) {
 			game.enterState(Vals.MENU_STATE);
 		}
@@ -259,7 +255,6 @@ public class Play extends BasicGameState {
 		Image wall = new Image(SpriteLocations.TILE_WALL, false, Image.FILTER_NEAREST);
 		wall.draw(0, 0, Vals.SCREEN_WIDTH, tileHeight);
 
-		// TODO use visible
 		boolean[][] visible = findVisibles();
 
 		// check every position in the world to render what is needed at that

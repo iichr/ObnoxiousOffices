@@ -72,7 +72,6 @@ public class Intro extends BasicGameState {
 	public void keyPressed(int key, char c) {
 		System.out.println("pressed" + key);
 		if (key == Input.KEY_ENTER) {
-			System.out.println("enter");
 			skip = true;
 		}
 	}
