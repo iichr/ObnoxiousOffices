@@ -34,10 +34,10 @@ w1 = wall,north
 w2 = wall,east
 w3 = wall,south
 w4 = wall,west
-wc1 = corner,north
-wc2 = corner,east
-wc3 = corner,south
-wc4 = corner,west
+x1 = corner,north
+x2 = corner,east
+x3 = corner,south
+x4 = corner,west
 ###
 0,0,0
 1,0,0
