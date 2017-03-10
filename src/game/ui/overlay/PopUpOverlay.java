@@ -1,11 +1,18 @@
 package game.ui.overlay;
 
+import java.awt.AWTException;
+import java.awt.Dimension;
 import java.awt.RenderingHints;
+import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+
+import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL45;
@@ -51,6 +58,18 @@ public class PopUpOverlay {
 	public void render(Graphics g) {
 		
 	}	
+	
+	public void createPNG(String name){
+		java.awt.Rectangle screenRect = new java.awt.Rectangle(new Dimension(Vals.screenRes));
+		
+		try {
+			BufferedImage capture = new Robot().createScreenCapture(screenRect);
+			ImageIO.write(capture, "png", new File(name+".png"));
+		} catch (IOException | AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	
 }
