@@ -1,18 +1,18 @@
-f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,s2,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1
+f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1:s2,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1
 f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1
 f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1
 f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1
-f1,f1,f1,f1,f1,f1,d2,p2,d4,f1,f1,f1,f1,f1,f1,d2,p2,d4,f1,f1,f1,f1,f1,f1
-f1,f1,f1,f1,f1,f1,f1,c1,f1,f1,f1,f1,f1,f1,f1,f1,c1,f1,f1,f1,f1,f1,f1,f1
-d1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,d1
-m2,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,ft,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,m1
-d3,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,d3
+f1,f1,f1,f1,f1,f1,f1:d2,f1:p2,f1:d4,f1,f1,f1,f1,f1,f1,f1:d2,f1:p2,f1:d4,f1,f1,f1,f1,f1,f1
+f1,f1,f1,f1,f1,f1,f1,f1:c1,f1,f1,f1,f1,f1,f1,f1,f1,f1:c1,f1,f1,f1,f1,f1,f1,f1
+f1:d1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1:d1
+f1:m2,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1:ft,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1:m1
+f1:d3,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1:d3
 f1,f1,f1,f1,f1,f1,f1,c3,f1,f1,f1,f1,f1,f1,f1,f1,c3,f1,f1,f1,f1,f1,f1,f1
-f1,f1,f1,f1,f1,f1,d2,p1,d4,f1,f1,f1,f1,f1,f1,d2,p1,d4,f1,f1,f1,f1,f1,f1
+f1,f1,f1,f1,f1,f1,f1:d2,f1:p1,f1:d4,f1,f1,f1,f1,f1,f1,f1:d2,f1:p1,f1:d4,f1,f1,f1,f1,f1,f1
 f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1
 f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1
 f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1
-f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,s1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1
+f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1:s1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1,f1
 ###
 f1 = floor,north
 f2 = floor,east
@@ -42,7 +42,7 @@ x2 = corner,east
 x3 = corner,south
 x4 = corner,west
 ###
-7,5,0
-7,9,0
-16,5,0
-16,9,0
+7,5,1
+7,9,1
+16,5,1
+16,9,1
