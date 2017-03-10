@@ -11,6 +11,7 @@ import game.core.input.InputType;
 import game.core.input.InputTypeInteraction;
 import game.core.input.InputTypeMovement;
 import game.core.input.InteractionType;
+import game.core.minigame.MiniGame;
 import game.core.player.Player;
 import game.core.player.PlayerState;
 import game.core.player.action.PlayerAction;
@@ -61,10 +62,14 @@ public class ServerSync {
 	}
 
     private static void onPlayerInput(PlayerInputEvent event) {
-        InputType type = event.inputType;
-        Player player = World.world.getPlayer(event.playerName);
-        if(type.isMovement()) processMovement(type, player);
-        else processInteraction((InputTypeInteraction) type, player);
+        MiniGame playerMiniGame = World.world.getMiniGame(event.playerName);
+        if(playerMiniGame != null) playerMiniGame.onInput(event);
+        else {
+            InputType type = event.inputType;
+            Player player = World.world.getPlayer(event.playerName);
+            if (type.isMovement()) processMovement(type, player);
+            else processInteraction((InputTypeInteraction) type, player);
+        }
     }
 	private static void addAIPLayer(CreateAIPlayerRequest event) {
 		ServerListener sl = (ServerListener) event.serverListener;

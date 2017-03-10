@@ -83,4 +83,8 @@ public abstract class MiniGame extends DataHolder implements Updateable {
     protected MiniGameVarChangedEvent getUpdateEvent(String var, Object val) {
         return new MiniGameVarChangedEvent(var, val);
     }
+
+    public boolean hasPlayer(String playerName) {
+        return players.contains(playerName);
+    }
 }
