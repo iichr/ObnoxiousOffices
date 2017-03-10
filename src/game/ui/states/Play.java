@@ -207,7 +207,6 @@ public class Play extends BasicGameState {
 
 		// show ui info to player
 		playerinfo.render(g);
-		cb.render(gc, g);
 		if (gameOver) {
 			gameOverOverlay.render(g);
 		} else if (options) {
