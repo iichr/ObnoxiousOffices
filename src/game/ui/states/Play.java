@@ -307,17 +307,12 @@ public class Play extends BasicGameState {
 		HashMap<Direction, Image[]> directionMap = tileMap.get(type);
 		Image[] images = directionMap.get(facing);
 
-<<<<<<< HEAD
-		if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER)) {
-			images[mtID].draw(tileX, tileY - tileHeight / 2, tileWidth, 3 * tileHeight / 2);
-=======
 		if (visible) {
 			if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER)) {
 				images[mtID].draw(tileX, tileY - tileHeight / 2, tileWidth, 3 * tileHeight / 2);
 			} else {
 				images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
 			}
->>>>>>> UI
 		} else {
 			if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER)) {
 				images[mtID].draw(tileX, tileY - tileHeight / 2, tileWidth, 3 * tileHeight / 2, Color.darkGray);
