@@ -37,37 +37,6 @@ public class MiniGameHangmanChris extends PopUpOverlay {
 		// init();
 	}
 
-	// /**
-	// * Main game loop with timer. Manage victory and loss conditions
-	// */
-	// public void init() {
-	// displayWord();
-	// // set up timer, 30 seconds, 1000 milliseconds delay
-	// timer = new Timer();
-	// timer.scheduleAtFixedRate(new TimerTask() {
-	// public void run() {
-	// // debugging - countdown timer
-	// System.out.println(setInterval());
-	// }
-	// }, 1000, 1000);
-	//
-	// while (!allGuessed() && !lost()) {
-	// inputLetter();
-	// }
-	// if (allGuessed()) {
-	// System.out.println("WIN!");
-	// timer.cancel();
-	// }
-	// }
-
-	// countdown in intervals of 1 second.
-	// private static final int setInterval() {
-	// if (interval == 1) {
-	// timer.cancel();
-	// }
-	// return --interval;
-	// }
-
 	// loads words from wordlist provided.
 	private ArrayList<String> setDifficulty() {
 		// TODO set PERMITTED_ATTEMPTS
