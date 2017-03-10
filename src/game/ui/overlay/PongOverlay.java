@@ -42,15 +42,15 @@ public class PongOverlay extends PopUpOverlay {
 		
 		g.setColor(Color.white);
 		for(String player: pong.getPlayers()){
-			float paddleX = playX + playWidth/(float)pong.getPlayerPos(player).getKey();
-			float paddleY = playY + playHeight/(float)pong.getPlayerPos(player).getValue();
+			float paddleX = playX + playWidth/(float)pong.getPlayerPos(player).getL();
+			float paddleY = playY + playHeight/(float)pong.getPlayerPos(player).getR();
 			Rectangle paddle = new Rectangle(paddleX, paddleY, paddleWidth, paddleHeight);
 			g.draw(paddle);
 		}
 		
 		float ballDiameter = playWidth / ((float) pong.BOUND_X);
-		float ballX = playX + (playWidth/(float)pong.getBallPos().getKey()) - ballDiameter/2;
-		float ballY = playY + (playHeight/(float)pong.getBallPos().getValue()) - ballDiameter/2;
+		float ballX = playX + (playWidth/(float)pong.getBallPos().getL()) - ballDiameter/2;
+		float ballY = playY + (playHeight/(float)pong.getBallPos().getR()) - ballDiameter/2;
 		Circle ball = new Circle(ballX, ballY, ballDiameter);
 		g.draw(ball);
 	}
