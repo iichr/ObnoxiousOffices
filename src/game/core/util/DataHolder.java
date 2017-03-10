@@ -23,7 +23,7 @@ public abstract class DataHolder {
         setVar(var, getIntVar(var) + val);
     }
 
-    protected void setVar(String var, Object val) {
+    public void setVar(String var, Object val) {
         vars.put(var, val);
         Events.trigger(getUpdateEvent(var, val), true);
     }
