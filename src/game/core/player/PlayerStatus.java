@@ -20,6 +20,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+
+
 /**
  * Created by samtebbs on 15/01/2017.
  */
@@ -68,14 +70,14 @@ public class PlayerStatus implements Serializable {
      * @param effect
      */
     public void addEffect(PlayerEffect effect) {
-        if(!hasEffect(effect)) {
+        if(!hasEffect(effect.getClass())) {
             effects.add(effect);
             Events.trigger(new PlayerEffectAddedEvent(effect, player.name), true);
         }
     }
 
-    public boolean hasEffect(PlayerEffect effect) {
-        return getEffects().stream().anyMatch(effect1 -> effect.getClass() == effect1.getClass());
+    public boolean hasEffect(Class<? extends PlayerEffect> effectClass) {
+        return getEffects().stream().anyMatch(effect1 -> effectClass == effect1.getClass());
     }
 
     public List<PlayerEffect> getEffects() {
@@ -101,8 +103,8 @@ public class PlayerStatus implements Serializable {
     }
 
     public void update(Player player) {
-        Updateable.updateAll(actions).forEach(this::removeAction);
-        Updateable.updateAll(effects).forEach(this::removeEffect);
+        Updateable.updateAll(actions).forEach(a -> removeAction(a.getClass()));
+        Updateable.updateAll(effects).forEach(e -> removeEffect(e.getClass()));
 
         addToAttribute(PlayerAttribute.FATIGUE, FATIGUE_INCREASE);
         if(getAttribute(PlayerAttribute.FATIGUE) >= PlayerAttribute.FATIGUE.maxVal) {
@@ -163,17 +165,23 @@ public class PlayerStatus implements Serializable {
 
     public void cancelAction(PlayerAction action) {
         action.cancel();
-        removeAction(action);
+        removeAction(action.getClass());
     }
 
-    public void removeAction(PlayerAction action) {
-        actions.remove(action);
-        Events.trigger(new PlayerActionEndedEvent(action, player.name), true);
+    public void removeAction(Class<? extends PlayerAction> actionClass) {
+        Set<PlayerAction> matching = actions.stream().filter(a -> a.getClass() == actionClass).collect(Collectors.toSet());
+        matching.forEach(action -> {
+            Events.trigger(new PlayerActionEndedEvent(action, player.name), true);
+            actions.remove(action);
+        });
     }
 
-    public void removeEffect(PlayerEffect effect) {
-        effects.remove(effect);
-        Events.trigger(new PlayerEffectEndedEvent(effect, player.name), true);
+    public void removeEffect(Class<? extends PlayerEffect> effectClass) {
+        Set<PlayerEffect> matching = effects.stream().filter(e -> e.getClass() == effectClass).collect(Collectors.toSet());
+        matching.forEach(effect -> {
+            Events.trigger(new PlayerEffectEndedEvent(effect, player.name), true);
+            effects.remove(effect);
+        });
     }
 
     public Set<PlayerState> getStates() {

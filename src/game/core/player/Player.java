@@ -15,6 +15,7 @@ import java.io.Serializable;
 /**
  * Created by samtebbs on 15/01/2017.
  */
+
 public class Player implements Updateable, Serializable {
 
     public final String name;
