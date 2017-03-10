@@ -37,7 +37,7 @@ public abstract class MiniGame extends DataHolder implements Updateable {
 
     public abstract void onInput(PlayerInputEvent event);
 
-    protected void setStat(String player, String stat, int val) {
+    public void setStat(String player, String stat, int val) {
         if(!stats.containsKey(player)) {
             addPlayer(player);
         }
