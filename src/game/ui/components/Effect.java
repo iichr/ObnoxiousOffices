@@ -11,6 +11,7 @@ import org.newdawn.slick.SlickException;
 import game.core.player.Player;
 import game.core.player.effect.PlayerEffect;
 import game.core.player.effect.PlayerEffectCoffeeBuzz;
+import game.core.player.effect.PlayerEffectSleeping;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
@@ -37,8 +38,7 @@ public class Effect {
 		
 		imgs = new HashMap<Class<? extends PlayerEffect>, Image>();
 		imgs.put(PlayerEffectCoffeeBuzz.class, new Image(ImageLocations.COFFEE_EFFECT, false, Image.FILTER_NEAREST));
-		//TODO add sleep effect
-//		imgs.put(PlayerEffectSleep.class, new Image(ImageLocations.SLEEP_EFFECT, false, Image.FILTER_NEAREST));
+		imgs.put(PlayerEffectSleeping.class, new Image(ImageLocations.SLEEP_EFFECT, false, Image.FILTER_NEAREST));
 	}
 
 	public void updateEffects(Player player) {
