@@ -75,6 +75,7 @@ public class ServerSync {
 	}
 
     private static void processInteraction(InputTypeInteraction type, Player player) {
+	    if (!player.status.canInteract()) return;
         Tile targetTile = player.getLocation().forward(player.getFacing()).getTile();
         if(targetTile != null) {
             boolean valid = interactionMap.get(type.type).stream().anyMatch(t -> t.equals(targetTile.type));
