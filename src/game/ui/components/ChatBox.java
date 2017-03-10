@@ -29,15 +29,14 @@ public class ChatBox {
 	public ChatBox(GameContainer gc, Chat chat) {
 		this.chat = chat;
 
-		typer = new TextField(gc, Vals.FONT_MAIN, 0, Vals.SCREEN_HEIGHT - Vals.FONT_MAIN.getLineHeight() * 2,
-				Vals.TFIELD_WIDTH, Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
+		typer = new TextField(gc, Vals.FONT_MAIN, 0, Vals.SCREEN_HEIGHT - Vals.FONT_MAIN.getLineHeight(),
+				Vals.TFIELD_WIDTH*10, Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
 					public void componentActivated(AbstractComponent src) {
 						typer.setFocus(true);
 					}
 				});
-		typer.setBorderColor(Color.black);
+		typer.setBorderColor(Color.white);
 		typer.setBackgroundColor(Color.transparent);
-		typer.setTextColor(Color.red);
 		typer.setMaxLength(50);
 		
 	}
@@ -47,6 +46,7 @@ public class ChatBox {
 	}
 
 	public void render(GameContainer gc, Graphics g) {
+		g.setColor(Color.white);
 		cms=chat.getMessages();
 		if (!cms.isEmpty()) {
 			if (chat.getMessages().size() < msgSize) {
