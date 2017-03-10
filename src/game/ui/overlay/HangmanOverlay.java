@@ -1,19 +1,15 @@
-package game.core.minigame;
+package game.ui.overlay;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import game.ui.overlay.PopUpOverlay;
+import game.core.minigame.MiniGame;
+import game.core.minigame.MiniGameHangman;
 
-/**
- * A hangman mini-game popup. Game Logic abstracted away.
- * 
- * @author iichr
- */
+public class HangmanOverlay extends PopUpOverlay {
 
-public class MiniGameHangmanOverlay extends PopUpOverlay {
-
-	public MiniGameHangmanOverlay() throws SlickException {
+	public HangmanOverlay() throws SlickException {
+		super();
 	}
 
 	@Override
@@ -27,5 +23,4 @@ public class MiniGameHangmanOverlay extends PopUpOverlay {
 		wg.drawCenter(g, hangman.getAttemptsLeft() + " attempts left", x + width / 2, y + height / 2 + height / 6, true,
 				scale / 4);
 	}
-
 }

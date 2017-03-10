@@ -21,7 +21,6 @@ import game.core.event.minigame.MiniGameEndedEvent;
 import game.core.event.minigame.MiniGameStartedEvent;
 import game.core.event.player.PlayerInputEvent;
 
-import game.core.minigame.MiniGameHangmanOverlay;
 import game.core.input.InputTypeCharacter;
 import game.core.input.InputTypeInteraction;
 import game.core.input.InputTypeMovement;
@@ -49,6 +48,7 @@ import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 import game.ui.overlay.GameOverOverlay;
+import game.ui.overlay.HangmanOverlay;
 import game.ui.overlay.OptionsOverlay;
 import game.ui.player.ActionSelector;
 import game.ui.player.PlayerAnimation;
@@ -81,7 +81,7 @@ public class Play extends BasicGameState {
 	// overlays
 	private OptionsOverlay optionsOverlay;
 	private GameOverOverlay gameOverOverlay;
-	private MiniGameHangmanOverlay hangmanOverlay;
+	private HangmanOverlay hangmanOverlay;
 
 	boolean showOverview = false;
 
@@ -171,7 +171,7 @@ public class Play extends BasicGameState {
 		// popUps
 		optionsOverlay = new OptionsOverlay();
 		gameOverOverlay = new GameOverOverlay(world.getPlayers());
-		hangmanOverlay = new MiniGameHangmanOverlay();
+		hangmanOverlay = new HangmanOverlay();
 	}
 
 	/**
