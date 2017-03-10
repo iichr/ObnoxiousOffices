@@ -24,7 +24,7 @@ public class Intro extends BasicGameState {
 	private final int LENGTH = 700;
 	private final int FADE_OUT = 200;
 
-	private final float logoWidth = Vals.SCREEN_WIDTH / 2;
+	private final float logoWidth = 3*Vals.SCREEN_WIDTH / 5;
 	private final float logoHeight = Vals.SCREEN_HEIGHT / 4;
 
 	public Intro(int introState) {
