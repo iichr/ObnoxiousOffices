@@ -208,4 +208,8 @@ public class World implements Updateable, Serializable {
     public int getMaxPlayers(){
     	return maxPlayers;
     }
+
+    public MiniGame getMiniGame(String playerName) {
+        return miniGames.stream().filter(m -> m.hasPlayer(playerName)).findFirst().orElse(null);
+    }
 }
