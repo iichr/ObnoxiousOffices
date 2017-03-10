@@ -17,12 +17,18 @@ import org.newdawn.slick.state.StateBasedGame;
 import game.core.chat.Chat;
 import game.core.event.Events;
 import game.core.event.GameFinishedEvent;
+import game.core.event.minigame.MiniGameEndedEvent;
+import game.core.event.minigame.MiniGameStartedEvent;
 import game.core.event.player.PlayerInputEvent;
+
+import game.core.input.InputTypeCharacter;
 import game.core.input.InputTypeInteraction;
 import game.core.input.InputTypeMovement;
 import game.core.input.InteractionType;
 import game.core.input.MovementType;
-import game.core.minigame.MiniGameHangmanChris;
+import game.core.minigame.MiniGame;
+import game.core.minigame.MiniGameHangman;
+import game.core.minigame.MiniGamePong;
 import game.core.player.Player;
 import game.core.player.PlayerState;
 import game.core.player.action.PlayerActionSleep;
@@ -42,7 +48,9 @@ import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 import game.ui.overlay.GameOverOverlay;
+import game.ui.overlay.HangmanOverlay;
 import game.ui.overlay.OptionsOverlay;
+import game.ui.overlay.PongOverlay;
 import game.ui.player.ActionSelector;
 import game.ui.player.PlayerAnimation;
 
@@ -74,7 +82,8 @@ public class Play extends BasicGameState {
 	// overlays
 	private OptionsOverlay optionsOverlay;
 	private GameOverOverlay gameOverOverlay;
-	private MiniGameHangmanChris hangmanOverlay;
+	private HangmanOverlay hangmanOverlay;
+	private PongOverlay pongOverlay;
 
 	boolean showOverview = false;
 
@@ -109,6 +118,8 @@ public class Play extends BasicGameState {
 		actionSelector = new ActionSelector();
 
 		Events.on(GameFinishedEvent.class, this::gameFinished);
+		Events.on(MiniGameStartedEvent.class, this::startMinigame);
+		Events.on(MiniGameEndedEvent.class, this::closeMinigame);
 
 		// KEEP COMMENTED until we've all added the required libraries.
 		// Initialise the background music
@@ -162,7 +173,8 @@ public class Play extends BasicGameState {
 		// popUps
 		optionsOverlay = new OptionsOverlay();
 		gameOverOverlay = new GameOverOverlay(world.getPlayers());
-		hangmanOverlay = new MiniGameHangmanChris();
+		hangmanOverlay = new HangmanOverlay();
+		pongOverlay = new PongOverlay();
 	}
 
 	/**
@@ -212,9 +224,9 @@ public class Play extends BasicGameState {
 		} else if (options) {
 			optionsOverlay.render(g);
 		} else if (playingHangman) {
-			 hangmanOverlay.render(g);
+			hangmanOverlay.render(g);
 		} else if (playingPong) {
-			// TODO render pong
+			pongOverlay.render(g);
 		} else if (showOverview) {
 			playerOverview.render(g);
 		}
@@ -231,19 +243,6 @@ public class Play extends BasicGameState {
 
 		playerOverview.updateContainer(world.getPlayers());
 
-		if (playingPong) {
-			// TODO update pong variables
-		}
-
-		if (playingHangman) {
-			if(hangmanOverlay.allGuessed()) {
-				playingHangman = false;
-			}
-			else if(hangmanOverlay.lost()) {
-				playingHangman = false;
-			}
-		}
-
 		if (exit) {
 			game.enterState(Vals.MENU_STATE);
 		}
@@ -256,15 +255,17 @@ public class Play extends BasicGameState {
 		Image wall = new Image(SpriteLocations.TILE_WALL, false, Image.FILTER_NEAREST);
 		wall.draw(0, 0, Vals.SCREEN_WIDTH, tileHeight);
 
-		// TODO use visible
 		boolean[][] visible = findVisibles();
+		
+		// check every position in the world to render what is needed at that
+		// location
 		for (int y = 0; y < world.ySize; y++) {
 			for (int x = 0; x < world.xSize; x++) {
 				float tileX = x * tileWidth;
 				float tileY = (y + 1) * (tileHeight / 2);
 
 				// find out what tile is in this location
-				Tile found = world.getTile(x, y, 1);
+				Tile found = world.getTile(x, y, 0);
 
 				// check to draw computer marker
 				drawComputerMarker(tileX, tileY, found);
@@ -457,6 +458,19 @@ public class Play extends BasicGameState {
 		gameOver = true;
 	}
 
+	private void startMinigame(MiniGameStartedEvent e) {
+		if(e.game.equals(MiniGameHangman.class)){
+			playingHangman = true;
+		}else if(e.game.equals(MiniGamePong.class)){
+			playingPong = true;
+		}
+	}
+
+	private void closeMinigame(MiniGameEndedEvent e) {
+			playingHangman = false;
+			playingPong = false;
+	}
+
 	@Override
 	public void keyPressed(int key, char c) {
 		if (!gameOver) {
@@ -483,7 +497,7 @@ public class Play extends BasicGameState {
 		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
 			// System.out.println("Entered char = " + c);
 			// also serves to update the display!
-			 hangmanOverlay.inputLetter(c);
+			Events.trigger(new PlayerInputEvent(new InputTypeCharacter(c), localPlayerName));
 		}
 	}
 
@@ -496,10 +510,10 @@ public class Play extends BasicGameState {
 	private void pongControls(int key) {
 		switch (key) {
 		case Input.KEY_W:
-			// TODO interact with pong minigame
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
 			break;
 		case Input.KEY_S:
-			// TODO interact with pong mingame
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
 		}
 	}
 
@@ -561,9 +575,12 @@ public class Play extends BasicGameState {
 			break;
 		// TEMPORARY FOR TESTING HANGMAN - PRESS 9
 		case Input.KEY_9:
+			MiniGame.localMiniGame = new MiniGameHangman("chris");
 			playingHangman = true;
 			// System.out.println("ENTERED HANGMAN");
 			break;
+		case Input.KEY_LALT:
+			cb.toggleFocus();
 		}
 	}
 

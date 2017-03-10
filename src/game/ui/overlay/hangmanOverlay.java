@@ -1,25 +1,26 @@
 package game.ui.overlay;
 
-import java.util.List;
-import java.util.Set;
-
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import game.core.player.Player;
+import game.core.minigame.MiniGame;
+import game.core.minigame.MiniGameHangman;
 
-public class hangmanOverlay extends PopUpOverlay {
+public class HangmanOverlay extends PopUpOverlay {
 
-	private List<Player> players;
-
-	public hangmanOverlay(List<Player> players) throws SlickException {
+	public HangmanOverlay() throws SlickException {
 		super();
-		this.players = players;
 	}
 
 	@Override
 	public void render(Graphics g) {
-		// draw the background
+		MiniGameHangman hangman = (MiniGameHangman) MiniGame.localMiniGame;
+		// temporarily use the default background
 		background.draw(x, y, width, height);
+
+		wg.drawCenter(g, hangman.getDisplayWord(), x + width / 2, y + height / 2 - height / 6, true, scale / 3);
+		wg.drawCenter(g, "GUESSED    " + hangman.getEntered(), x + width / 2, y + height / 2, true, scale / 3);
+		wg.drawCenter(g, hangman.getAttemptsLeft() + " attempts left", x + width / 2, y + height / 2 + height / 6, true,
+				scale / 4);
 	}
 }

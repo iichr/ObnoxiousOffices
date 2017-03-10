@@ -34,11 +34,11 @@ public interface Vals {
 	public static final int PLAY_TEST_STATE = 6;
 
 	// BUTTON SIZES
-	public static final float BUTTON_WIDTH = SCREEN_WIDTH/8;
+	public static final float BUTTON_WIDTH = SCREEN_WIDTH / 7;
 	public static final float BUTTON_HEIGHT = SCREEN_HEIGHT/14;
 
 	// TEXT FIELD SIZES
-	public static final int TFIELD_WIDTH = SCREEN_WIDTH/8;
+	public static final int TFIELD_WIDTH = SCREEN_WIDTH/5;
 	public static final int TFIELD_HEIGHT = SCREEN_HEIGHT/15;
 	public static final int TFIELD_ALIGN_CENTRE_W = (SCREEN_WIDTH - TFIELD_WIDTH) / 2;
 

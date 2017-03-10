@@ -19,10 +19,7 @@ import game.ui.interfaces.Vals;
 public class ChatBox {
 	protected Chat chat;
 	private String message = "";
-	private TextField typer, main;
-	private ArrayList<Character> allowedKeys = new ArrayList<Character>();
-	private long inputInterval = 100;
-	private long lastInput = System.currentTimeMillis();
+	private TextField typer;
 	private List<ChatMessage> cms = new ArrayList<>();
 	private int msgSize = 10;
 
@@ -30,7 +27,7 @@ public class ChatBox {
 		this.chat = chat;
 
 		typer = new TextField(gc, Vals.FONT_MAIN, 0, Vals.SCREEN_HEIGHT - Vals.FONT_MAIN.getLineHeight(),
-				Vals.TFIELD_WIDTH*10, Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
+				Vals.TFIELD_WIDTH * 10, Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
 					public void componentActivated(AbstractComponent src) {
 						typer.setFocus(true);
 					}
@@ -38,7 +35,7 @@ public class ChatBox {
 		typer.setBorderColor(Color.white);
 		typer.setBackgroundColor(Color.transparent);
 		typer.setMaxLength(50);
-		
+
 	}
 
 	public char getChatKey() {
@@ -47,21 +44,21 @@ public class ChatBox {
 
 	public void render(GameContainer gc, Graphics g) {
 		g.setColor(Color.white);
-		cms=chat.getMessages();
+		cms = chat.getMessages();
 		if (!cms.isEmpty()) {
 			if (chat.getMessages().size() < msgSize) {
 				cms = chat.getLatestMessages(chat.getMessages().size());
 			} else {
 				cms = chat.getLatestMessages(10);
 			}
-			int y=typer.getY()-typer.getHeight()*10;
+			int y = typer.getY() - typer.getHeight() * 10;
 			for (ChatMessage cm : cms) {
 				g.drawString(cm.from + " : " + cm.message, 0, y);
-				y+=typer.getHeight();
+				y += typer.getHeight();
 			}
 
 		}
-		
+
 		typer.render(gc, g);
 	}
 
@@ -75,9 +72,17 @@ public class ChatBox {
 		}
 
 	}
-	
-	public void AIchat(String AIName,String text){
+
+	public void AIchat(String AIName, String text) {
 		chat.sendMessage(new ChatMessage(text, AIName));
+	}
+	
+	public void toggleFocus(){
+		if(typer.hasFocus()){
+			typer.setFocus(false);
+		}else{
+			typer.setFocus(true);
+		}
 	}
 
 }
