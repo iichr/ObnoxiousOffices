@@ -19,7 +19,7 @@ public abstract class PlayerEffect implements Updateable, Serializable {
     int updates = 0;
     public static final int UPDATE_THRESHOLD = 3;
 
-    protected PlayerEffect(int duration, Player player) {
+    public PlayerEffect(int duration, Player player) {
         this.duration = duration;
         this.player = player;
     }
