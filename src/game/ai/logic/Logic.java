@@ -1,6 +1,7 @@
 package game.ai.logic;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import game.ai.AIPlayer;
 import game.ai.pathFinding.Pair;
@@ -48,7 +49,7 @@ public interface Logic extends Serializable {
 	 * @param p
 	 *            the player that needs to go to the coffee machine
 	 */
-	public void findCoffeeMachine(World w, Player p);
+	public void findCoffeeMachine(World w, AIPlayer p);
 
 	/**
 	 * Finds the shortest path to the bed from the current place
@@ -58,7 +59,7 @@ public interface Logic extends Serializable {
 	 * @param p
 	 *            the player that needs to go to the coffee machine
 	 */
-	public void findBed(World w, Player p);
+	public void findBed(World w, AIPlayer p);
 
 	/**
 	 * When player is low on energy, he goes to the coffee machine. It is a fast
@@ -68,7 +69,7 @@ public interface Logic extends Serializable {
 	 * @param p
 	 *            player who needs to go to the coffee machine
 	 */
-	public void goToCoffeeMachineAndBack(World w, Player p);
+	public void goToCoffeeMachineAndBack(World w, AIPlayer p);
 
 	/**
 	 * When player is low on energy, he goes to sleep on the sofa. It is a slow
@@ -79,7 +80,7 @@ public interface Logic extends Serializable {
 	 * @param w
 	 *            the world of the player
 	 */
-	public void goToBedAndBack(World w, Player p);
+	public void goToBedAndBack(World w, AIPlayer p);
 
 	/**
 	 * Before every move, check if the player on the map is facing in the right
@@ -91,7 +92,7 @@ public interface Logic extends Serializable {
 	 * @param pair
 	 *            the pair of coordinates of the tile the player wants to go to
 	 */
-	public void figureOutFacing(Player p, Pair<Integer, Integer> pair);
+	public void figureOutFacing(AIPlayer p, Pair<Integer, Integer> pair);
 
 	/**
 	 * Go back to the player's desk
@@ -101,7 +102,7 @@ public interface Logic extends Serializable {
 	 * @param w
 	 *            the world of the player
 	 */
-	public void toTheDesk(World w, Player p);
+	public void toTheDesk(World w, AIPlayer p);
 
 	/**
 	 * Checks all players and the work load they have completed. Then compare
@@ -135,4 +136,21 @@ public interface Logic extends Serializable {
 	 * @return a player from the list of players
 	 */
 	public Player closestToWin(AIPlayer ai);
+
+	/**
+	 * Make the AI move one tile at a time, which is one element from the path
+	 * ArrayList
+	 * 
+	 * @param ai
+	 *            the ai player that is moving
+	 * 
+	 * @param path
+	 *            ArrayList of pairs containing the x,y coordinates of the path
+	 *            to a given object
+	 * @param i
+	 *            the index of the element containing the move in the path
+	 */
+	public void move(AIPlayer ai, ArrayList<Pair<Integer, Integer>> path, int i);
+	
+	public void findPath(World w, AIPlayer p, String go, ArrayList<Pair<Integer, Integer>> from, ArrayList<Pair<Integer, Integer>> to);
 }
