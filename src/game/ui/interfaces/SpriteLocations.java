@@ -160,15 +160,15 @@ public class SpriteLocations {
 
 		Image wE = new Image(TILE_WALL_EAST, false, Image.FILTER_NEAREST);
 		Image[] wEast = { wE };
-		wallMap.put(Direction.NORTH, wEast);
+		wallMap.put(Direction.EAST, wEast);
 		
 		Image wS = new Image(TILE_WALL_SOUTH, false, Image.FILTER_NEAREST);
 		Image[] wSouth = { wS };
-		wallMap.put(Direction.NORTH, wSouth);
+		wallMap.put(Direction.SOUTH, wSouth);
 		
 		Image wW = new Image(TILE_WALL_WEST, false, Image.FILTER_NEAREST);
 		Image[] wWest = { wW };
-		wallMap.put(Direction.NORTH, wWest);
+		wallMap.put(Direction.WEST, wWest);
 
 		tileMap.put(TileType.WALL, wallMap);
 	}
@@ -182,15 +182,15 @@ public class SpriteLocations {
 
 		Image wcE = new Image(TILE_CORNER_EAST, false, Image.FILTER_NEAREST);
 		Image[] wcEast = { wcE };
-		wallMap.put(Direction.NORTH, wcEast);
+		wallMap.put(Direction.EAST, wcEast);
 		
 		Image wcS = new Image(TILE_CORNER_SOUTH, false, Image.FILTER_NEAREST);
 		Image[] wcSouth = { wcS };
-		wallMap.put(Direction.NORTH, wcSouth);
+		wallMap.put(Direction.SOUTH, wcSouth);
 		
 		Image wcW = new Image(TILE_CORNER_WEST, false, Image.FILTER_NEAREST);
 		Image[] wcWest = { wcW };
-		wallMap.put(Direction.NORTH, wcWest);
+		wallMap.put(Direction.WEST, wcWest);
 
 		tileMap.put(TileType.WALL_CORNER, wallMap);
 	}

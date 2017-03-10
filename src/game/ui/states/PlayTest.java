@@ -34,7 +34,7 @@ public class PlayTest extends Play {
 	 */
 	public void testSetup() {
 		// testing methods
-		int noPlayers = 6;
+		int noPlayers = 4;
 		World w = createWorld(noPlayers);
 		w = addPlayers(w);
 
