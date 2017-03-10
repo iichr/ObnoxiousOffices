@@ -70,7 +70,6 @@ public class Intro extends BasicGameState {
 
 	@Override
 	public void keyPressed(int key, char c) {
-		System.out.println("pressed" + key);
 		if (key == Input.KEY_ENTER) {
 			skip = true;
 		}
