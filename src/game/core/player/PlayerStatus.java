@@ -10,12 +10,17 @@ import game.core.event.player.PlayerAttributeChangedEvent;
 import game.core.event.player.effect.PlayerEffectAddedEvent;
 import game.core.event.player.effect.PlayerEffectEndedEvent;
 import game.core.player.action.PlayerAction;
+import game.core.player.action.PlayerActionSleep;
 import game.core.player.effect.PlayerEffect;
 import game.core.player.effect.PlayerEffectCoffeeBuzz;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+
 
 /**
  * Created by samtebbs on 15/01/2017.
@@ -65,14 +70,14 @@ public class PlayerStatus implements Serializable {
      * @param effect
      */
     public void addEffect(PlayerEffect effect) {
-        if(!hasEffect(effect)) {
+        if(!hasEffect(effect.getClass())) {
             effects.add(effect);
             Events.trigger(new PlayerEffectAddedEvent(effect, player.name), true);
         }
     }
 
-    public boolean hasEffect(PlayerEffect effect) {
-        return getEffects().stream().anyMatch(effect1 -> effect.getClass() == effect1.getClass());
+    public boolean hasEffect(Class<? extends PlayerEffect> effectClass) {
+        return getEffects().stream().anyMatch(effect1 -> effectClass == effect1.getClass());
     }
 
     public List<PlayerEffect> getEffects() {
@@ -98,21 +103,28 @@ public class PlayerStatus implements Serializable {
     }
 
     public void update(Player player) {
-        Updateable.updateAll(actions).forEach(this::removeAction);
-        Updateable.updateAll(effects).forEach(this::removeEffect);
+        Updateable.updateAll(actions).forEach(a -> removeAction(a.getClass()));
+        Updateable.updateAll(effects).forEach(e -> removeEffect(e.getClass()));
 
         addToAttribute(PlayerAttribute.FATIGUE, FATIGUE_INCREASE);
+        if(getAttribute(PlayerAttribute.FATIGUE) >= PlayerAttribute.FATIGUE.maxVal) {
+            PlayerActionSleep sleep = new PlayerActionSleep(player);
+            sleep.forced = true;
+            player.status.addAction(sleep);
+        }
     }
 
-    // TODO: Change productivity based on fatigue
     /**
      * Set an attribute value
      * @param attribute
      * @param val
      */
     public void setAttribute(PlayerAttribute attribute, double val) {
+        double diff = val - getAttribute(attribute);
         updateAttributeCounter(attribute);
         attributes.put(attribute, Math.max(0, Math.min(val, attribute.maxVal)));
+        // Check for synchronised attributes and change them accordingly
+        Arrays.stream(PlayerAttribute.values()).filter(a -> a.sync == attribute).forEach(a -> addToAttribute(a, a.syncFunc.apply(diff, getAttribute(attribute))));
         if(!initialising && attributeUpdateCounter.get(attribute) >= ATTRIBUTE_UPDATE_THRESHOLD){
             attributeUpdateCounter.put(attribute, 0);
             Events.trigger(new PlayerAttributeChangedEvent(val, player.name, attribute), true);
@@ -153,17 +165,23 @@ public class PlayerStatus implements Serializable {
 
     public void cancelAction(PlayerAction action) {
         action.cancel();
-        removeAction(action);
+        removeAction(action.getClass());
     }
 
-    public void removeAction(PlayerAction action) {
-        actions.remove(action);
-        Events.trigger(new PlayerActionEndedEvent(action, player.name), true);
+    public void removeAction(Class<? extends PlayerAction> actionClass) {
+        Set<PlayerAction> matching = actions.stream().filter(a -> a.getClass() == actionClass).collect(Collectors.toSet());
+        matching.forEach(action -> {
+            Events.trigger(new PlayerActionEndedEvent(action, player.name), true);
+            actions.remove(action);
+        });
     }
 
-    public void removeEffect(PlayerEffect effect) {
-        effects.remove(effect);
-        Events.trigger(new PlayerEffectEndedEvent(effect, player.name), true);
+    public void removeEffect(Class<? extends PlayerEffect> effectClass) {
+        Set<PlayerEffect> matching = effects.stream().filter(e -> e.getClass() == effectClass).collect(Collectors.toSet());
+        matching.forEach(effect -> {
+            Events.trigger(new PlayerEffectEndedEvent(effect, player.name), true);
+            effects.remove(effect);
+        });
     }
 
     public Set<PlayerState> getStates() {
@@ -174,14 +192,26 @@ public class PlayerStatus implements Serializable {
         return getEffects().stream().filter(effect -> effect.getClass() == playerEffectClass).findFirst().get();
     }
 
+    public boolean canMove() {
+        return actions.stream().allMatch(PlayerAction::allowsMove);
+    }
+
     public enum PlayerAttribute {
-        FATIGUE(0.0, 1.0), PRODUCTIVITY(1.0, 1.0);
+        FATIGUE(0.0, 1.0), PRODUCTIVITY(1.0, 1.0, FATIGUE, (diff, val) -> -val);
 
         public final double initialVal, maxVal;
+        public final PlayerAttribute sync;
+        public final BiFunction<Double, Double, Double> syncFunc;
 
-        PlayerAttribute(double initialVal, double maxVal) {
+        PlayerAttribute(double initialVal, double maxVal, PlayerAttribute sync, BiFunction<Double, Double, Double> syncFunc) {
             this.initialVal = initialVal;
             this.maxVal = maxVal;
+            this.sync = sync;
+            this.syncFunc = syncFunc;
+        }
+
+        PlayerAttribute(double initialVal, double maxVal) {
+            this(initialVal, maxVal, null, null);
         }
     }
 

@@ -3,13 +3,14 @@ package game.core.minigame;
 import game.core.event.player.PlayerInputEvent;
 import game.core.input.InputType;
 import game.core.input.InputTypeMovement;
+import javafx.util.Pair;
 
 /**
  * Created by samtebbs on 18/02/2017.
  */
 public class MiniGamePong extends MiniGame2Player {
 
-    public static final String Y_POS = "y", X_POS = "x", BALL_X_POS = "bx", BALL_Y_POS = "by", BALL_X_VEL = "bvx", BALL_Y_VEL = "bvy";
+    public static final String Y_POS = "y", X_POS = "x", BALL_X_VEL = "bvx", BALL_Y_VEL = "bvy";
     public static final int BOUND_Y = 10, BOUND_X = 10, PADDLE_LEN = 5;
 
     public MiniGamePong(String player1, String player2) {
@@ -17,13 +18,21 @@ public class MiniGamePong extends MiniGame2Player {
         newRound();
     }
 
+    public Pair<Integer, Integer> getBallPos() {
+        return new Pair<>(getIntVar(X_POS), getIntVar(Y_POS));
+    }
+
+    public Pair<Integer, Integer> getPlayerPos(String player) {
+        return new Pair<>(getIntStat(player, X_POS), getIntStat(player, Y_POS));
+    }
+
     @Override
     public void update() {
         super.update();
         if(!ended) {
-            addVar(BALL_X_POS, getIntVar(BALL_X_VEL));
-            addVar(BALL_Y_POS, getIntVar(BALL_Y_VEL));
-            int ballX = getIntVar(BALL_X_POS), ballY = getIntVar(BALL_Y_POS);
+            addVar(X_POS, getIntVar(BALL_X_VEL));
+            addVar(Y_POS, getIntVar(BALL_Y_VEL));
+            int ballX = getIntVar(X_POS), ballY = getIntVar(Y_POS);
             if(ballX <= 0) {
                 addStat(player1, SCORE, 1);
                 newRound();
@@ -55,8 +64,8 @@ public class MiniGamePong extends MiniGame2Player {
         setStat(player1, Y_POS, 0);
         setStat(player2, Y_POS, 0);
 
-        setVar(BALL_X_POS, 0);
-        setVar(BALL_Y_POS, 0);
+        setVar(X_POS, 0);
+        setVar(Y_POS, 0);
         setVar(BALL_X_VEL, 1);
         setVar(BALL_Y_VEL, 0);
     }

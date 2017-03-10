@@ -1,14 +1,14 @@
 package game.core.world.tile.type;
 
-import game.core.player.Player;
-import game.core.world.Direction;
-import game.core.world.Location;
-import game.core.world.tile.Tile;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+
+import game.core.player.Player;
+import game.core.world.Direction;
+import game.core.world.Location;
+import game.core.world.tile.Tile;
 
 /**
  * Created by samtebbs on 20/01/2017.
@@ -22,7 +22,12 @@ public abstract class TileType implements Serializable {
             DESK = new TileTypeDesk(1),
             FLOOR = new TileTypeFloor(2),
             CHAIR = new TileTypeChair(3),
-            COFFEE_MACHINE = new TileTypeCoffeeMachine(4), PLANT = new TileTypeDecoration(5), SOFA = new TileTypeSofa(6), FISH = new TileTypeFish(7);
+            COFFEE_MACHINE = new TileTypeCoffeeMachine(4),
+            PLANT = new TileTypeDecoration(5),
+            SOFA = new TileTypeSofa(6),
+            FISH = new TileTypeFish(7),
+            WALL = new TileTypeWall(8),
+            WALL_CORNER = new TileTypeWallCorner(9);
 
     static {
         addTileType("computer", COMPUTER);
@@ -33,6 +38,8 @@ public abstract class TileType implements Serializable {
         addTileType("plant", PLANT);
         addTileType("sofa", SOFA);
         addTileType("fish", FISH);
+        addTileType("wall", WALL);
+        addTileType("corner", WALL_CORNER);
     }
 
     protected TileType(int id) {
