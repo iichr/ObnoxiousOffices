@@ -20,6 +20,8 @@ import game.core.event.GameFinishedEvent;
 import game.core.event.minigame.MiniGameEndedEvent;
 import game.core.event.minigame.MiniGameStartedEvent;
 import game.core.event.player.PlayerInputEvent;
+
+import game.core.minigame.MiniGameHangmanOverlay;
 import game.core.input.InputTypeCharacter;
 import game.core.input.InputTypeInteraction;
 import game.core.input.InputTypeMovement;
@@ -27,7 +29,6 @@ import game.core.input.InteractionType;
 import game.core.input.MovementType;
 import game.core.minigame.MiniGame;
 import game.core.minigame.MiniGameHangman;
-import game.core.minigame.MiniGameHangmanChris;
 import game.core.minigame.MiniGamePong;
 import game.core.player.Player;
 import game.core.player.PlayerState;
@@ -80,7 +81,7 @@ public class Play extends BasicGameState {
 	// overlays
 	private OptionsOverlay optionsOverlay;
 	private GameOverOverlay gameOverOverlay;
-	private MiniGameHangmanChris hangmanOverlay;
+	private MiniGameHangmanOverlay hangmanOverlay;
 
 	boolean showOverview = false;
 
@@ -170,7 +171,7 @@ public class Play extends BasicGameState {
 		// popUps
 		optionsOverlay = new OptionsOverlay();
 		gameOverOverlay = new GameOverOverlay(world.getPlayers());
-		hangmanOverlay = new MiniGameHangmanChris();
+		hangmanOverlay = new MiniGameHangmanOverlay();
 	}
 
 	/**
@@ -244,11 +245,6 @@ public class Play extends BasicGameState {
 		}
 
 		if (playingHangman) {
-			if (hangmanOverlay.allGuessed()) {
-				playingHangman = false;
-			} else if (hangmanOverlay.lost()) {
-				playingHangman = false;
-			}
 		}
 
 		if (exit) {
@@ -506,7 +502,6 @@ public class Play extends BasicGameState {
 		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
 			// System.out.println("Entered char = " + c);
 			// also serves to update the display!
-			hangmanOverlay.inputLetter(c);
 			MiniGame.localMiniGame.onInput(new PlayerInputEvent(new InputTypeCharacter(c), "chris"));
 		}
 	}
