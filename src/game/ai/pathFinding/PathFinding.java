@@ -148,6 +148,11 @@ public class PathFinding implements Runnable, Serializable {
 	}
 	
 	public Pair<Integer, Integer> findClosest(ArrayList<Pair<Integer, Integer>> coords) {
+		// set the starting point
+		startCell(player.getLocation().coords.x, player.getLocation().coords.y);
+
+		// create a grid of cells from the world
+		worldToCell();
 		int pathSize = 100;
 		
 		Pair<Integer, Integer> closestCoords = null; 
@@ -225,10 +230,10 @@ public class PathFinding implements Runnable, Serializable {
 		closed = new boolean[rowLength][colLength];
 
 		// set the starting point
-		startCell(player.getLocation().coords.x, player.getLocation().coords.y);
+		//startCell(player.getLocation().coords.x, player.getLocation().coords.y);
 
 		// create a grid of cells from the world
-		worldToCell();
+		//worldToCell();
 		
 		// add the starting location to the open list
 		open.add(grid[startI][startJ]);
