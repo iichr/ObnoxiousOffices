@@ -1,3 +1,4 @@
+
 package game.ai.pathFinding;
 
 import java.io.Serializable;
@@ -56,18 +57,14 @@ public class PathFinding implements Runnable, Serializable {
 			return c1.fCost < c2.fCost ? -1 : c1.fCost > c2.fCost ? 1 : 0;
 		}
 	});
-	
 	boolean closed[][]; // array of tiles that are already explored
 
 	World world;
 	Player player;
 
 	int startI, startJ; // coordinates for our start point
-	
-	//ArrayList of coffee machine and beds coordinates
-	ArrayList<Pair<Integer, Integer>> coffeeM, bed;
 
-	//int coffeeI, coffeeJ, bedI, bedJ;
+	int coffeeI, coffeeJ, bedI, bedJ;
 
 	String toGo; // input "cm" for Coffee Machine or "b" for sofa
 
@@ -109,10 +106,9 @@ public class PathFinding implements Runnable, Serializable {
 	 *            the world that is going to be made into a grid
 	 */
 	void worldToCell() {
-		//int heurC = 1000; // the heuristic of a tile where there is a coffee
+		int heurC = 1000; // the heuristic of a tile where there is a coffee
 							// machine
-		//int heurB = 1000; // the heuristic of a tile where there is a sofa
-		
+		int heurB = 1000; // the heuristic of a tile where there is a sofa
 		for (int i = 0; i < rowLength; i++) {
 			for (int j = 0; j < colLength; j++) {
 
@@ -125,23 +121,22 @@ public class PathFinding implements Runnable, Serializable {
 				else
 					grid[i][j].hCost = 1000;
 
-				// if the current tile is a coffee machine add its coordinates 
-				if (tile.type.equals(TileType.COFFEE_MACHINE)) { //&& calcHeuristic(i, j) < heurC
-					//heurC = calcHeuristic(i, j);
-					grid[i][j].hCost = calcHeuristic(i, j); //heurC
-					coffeeM.add(new Pair<Integer, Integer>(i, j));
-					//coffeeI = i;
-					//coffeeJ = j;
+				// if the current tile is a coffee machine, and is closer than
+				// the previous one, save coordinates
+				if (tile.type.equals(TileType.COFFEE_MACHINE) && calcHeuristic(i, j) < heurC) {
+					heurC = calcHeuristic(i, j);
+					grid[i][j].hCost = heurC;
+					coffeeI = i;
+					coffeeJ = j;
 				}
 
 				// if the current tile is a bed, and is closer than the previous
 				// one, save coordinates
-				if (tile.type.equals(TileType.SOFA)) { //&& calcHeuristic(i, j) < heurB
-					//heurB = calcHeuristic(i, j);
-					grid[i][j].hCost = calcHeuristic(i, j); //heurB
-					bed.add(new Pair<Integer, Integer>(i, j));
-					//bedI = i;
-					//bedJ = j;
+				if (tile.type.equals(TileType.SOFA) && calcHeuristic(i, j) < heurB) {
+					heurB = calcHeuristic(i, j);
+					grid[i][j].hCost = heurB;
+					bedI = i;
+					bedJ = j;
 				}
 			}
 		}
@@ -282,38 +277,15 @@ public class PathFinding implements Runnable, Serializable {
 		return path;
 	}
 
-	public ArrayList<Pair<Integer, Integer>> closest(ArrayList<Pair<Integer, Integer>> coords) {
-		
-		//create an ArrayList that will contain the path to the closet coffee machine
-		ArrayList<Pair<Integer, Integer>> shortest = null;
-		//get the number of steps to the closest coffee machine
-		int shortestLength = 1000;
-		
-		//go through all coffee machines on the map and compare the length of the path to them
-		for (int i = 0; i < coords.size(); i++) {
-			//run AStar algorithm
-			AStar(coords.get(i).getL(), coords.get(i).getR());
-			//get the path to a coffee machine on the map
-			ArrayList<Pair<Integer, Integer>> compareWithShortest = path(coords.get(i).getL(), coords.get(i).getR());
-			
-			//compare the shortest path yet, to the new path 
-			if (shortestLength > compareWithShortest.size()) {
-				//if the new path is shorter than the old one, assign the new path as the shortest one
-				shortest = compareWithShortest;
-				shortestLength = compareWithShortest.size();
-			}
-		}
-		//return the shortest path
-		return shortest;
-	}
-	
 	@Override
 	public void run() {
 
 		if (toGo == "cm") {
-			closest(coffeeM);
+			AStar(coffeeI, coffeeJ);
+			path(coffeeI, coffeeJ);
 		} else {
-			closest(bed);
+			AStar(bedI, bedJ);
+			path(bedI, bedJ);
 		}
 	}
-}
+}
