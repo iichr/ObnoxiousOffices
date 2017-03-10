@@ -21,7 +21,7 @@ import game.core.input.InputTypeInteraction;
 import game.core.input.InputTypeMovement;
 import game.core.input.InteractionType;
 import game.core.input.MovementType;
-import game.core.minigame.MiniGameHangmanOld;
+import game.core.minigame.MiniGameHangmanChris;
 import game.core.player.Player;
 import game.core.player.PlayerState;
 import game.core.player.action.PlayerActionSleep;
@@ -73,7 +73,7 @@ public class Play extends BasicGameState {
 	// overlays
 	private OptionsOverlay optionsOverlay;
 	private GameOverOverlay gameOverOverlay;
-	private MiniGameHangmanOld hangmanOverlay;
+	private MiniGameHangmanChris hangmanOverlay;
 
 	boolean showOverview = false;
 
@@ -161,7 +161,7 @@ public class Play extends BasicGameState {
 		// popUps
 		optionsOverlay = new OptionsOverlay();
 		gameOverOverlay = new GameOverOverlay(world.getPlayers());
-		// hangmanOverlay = new MiniGameHangmanOld("memes");
+		hangmanOverlay = new MiniGameHangmanChris();
 	}
 
 	/**
@@ -212,7 +212,7 @@ public class Play extends BasicGameState {
 		} else if (options) {
 			optionsOverlay.render(g);
 		} else if (playingHangman) {
-			// hangmanOverlay.render(g);
+			 hangmanOverlay.render(g);
 		} else if (playingPong) {
 			// TODO render pong
 		} else if (showOverview) {
@@ -235,11 +235,14 @@ public class Play extends BasicGameState {
 			// TODO update pong variables
 		}
 
-		/*
-		 * if (playingHangman) { if(hangmanOverlay.allGuessed()) {
-		 * playingHangman = false; } else if(hangmanOverlay.lost()) {
-		 * playingHangman = false; } }
-		 */
+		if (playingHangman) {
+			if(hangmanOverlay.allGuessed()) {
+				playingHangman = false;
+			}
+			else if(hangmanOverlay.lost()) {
+				playingHangman = false;
+			}
+		}
 
 		if (exit) {
 			game.enterState(Vals.MENU_STATE);
@@ -300,7 +303,7 @@ public class Play extends BasicGameState {
 		Image[] images = directionMap.get(facing);
 
 		if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER)) {
-			images[mtID].draw(tileX, tileY - tileHeight/2, tileWidth, 3*tileHeight/2);
+			images[mtID].draw(tileX, tileY - tileHeight / 2, tileWidth, 3 * tileHeight / 2);
 		} else {
 			images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
 		}
@@ -398,7 +401,7 @@ public class Play extends BasicGameState {
 		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
 			// System.out.println("Entered char = " + c);
 			// also serves to update the display!
-			// hangmanOverlay.inputLetter(c);
+			 hangmanOverlay.inputLetter(c);
 		}
 	}
 
