@@ -3,7 +3,7 @@ package game.core.minigame;
 import game.core.event.player.PlayerInputEvent;
 import game.core.input.InputType;
 import game.core.input.InputTypeMovement;
-import javafx.util.Pair;
+import game.util.Pair;
 
 /**
  * Created by samtebbs on 18/02/2017.
