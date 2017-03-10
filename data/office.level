@@ -13,6 +13,14 @@ p1 = computer,north
 p2 = computer,south
 m1 = coffee,east
 m2 = coffee,west
+w1 = wall,north
+w2 = wall,east
+w3 = wall,south
+w4 = wall,west
+wc1 = corner,north
+wc2 = corner,east
+wc3 = corner,south
+wc4 = corner,west
 ###
 0,0,0
 1,0,0
