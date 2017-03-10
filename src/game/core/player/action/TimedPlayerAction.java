@@ -36,7 +36,8 @@ public abstract class TimedPlayerAction extends PlayerAction implements Serializ
         stop();
     }
 
-    private void stop() {
+    @Override
+    public void stop() {
         stopCounter();
     }
 

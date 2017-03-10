@@ -32,6 +32,7 @@ public abstract class PlayerAction implements Updateable, Serializable {
      * Cancel the action
      */
     public abstract void cancel();
+    public abstract void stop();
 
     /**
      * Returns true if the action has ended
