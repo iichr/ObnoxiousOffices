@@ -59,8 +59,8 @@ public class MiniGamePong extends MiniGame2Player {
     }
 
     private void newRound() {
-        setStat(player1, X_POS, 0);
-        setStat(player2, X_POS, 0);
+        setStat(player1, X_POS, 1);
+        setStat(player2, X_POS, BOUND_X - 1);
         setStat(player1, Y_POS, 0);
         setStat(player2, Y_POS, 0);
 
