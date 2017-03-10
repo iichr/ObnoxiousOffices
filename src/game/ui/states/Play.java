@@ -258,20 +258,6 @@ public class Play extends BasicGameState {
 
 		// TODO use visible
 		boolean[][] visible = findVisibles();
-
-		// check every position in the world to render what is needed at that
-		// location
-		for (int y = 0; y < world.ySize; y++) {
-			for (int x = 0; x < world.xSize; x++) {
-				float tileX = x * tileWidth;
-				float tileY = (y + 1) * (tileHeight / 2);
-
-				// find out what tile is in this location
-				Tile found = world.getTile(x, y, 0);
-				
-				drawTile(tileX, tileY, found, visible[x][y]);
-			}
-		}
 		for (int y = 0; y < world.ySize; y++) {
 			for (int x = 0; x < world.xSize; x++) {
 				float tileX = x * tileWidth;
