@@ -65,9 +65,8 @@ public class PathFinding implements Runnable, Serializable {
 	int startI, startJ; // coordinates for our start point
 
 	int coffeeI, coffeeJ, bedI, bedJ;
-	ArrayList<Pair<Integer, Integer>> coffes;
-	ArrayList<Pair<Integer, Integer>> beds;
-	
+	ArrayList<Pair<Integer, Integer>> coffees = new ArrayList<Pair<Integer, Integer>>();
+	ArrayList<Pair<Integer, Integer>> beds = new ArrayList<Pair<Integer, Integer>>();
 
 	String toGo; // input "cm" for Coffee Machine or "b" for sofa
 
@@ -86,7 +85,7 @@ public class PathFinding implements Runnable, Serializable {
 	Cell[][] grid = new Cell[rowLength][colLength];
 
 	// create the arraylist of cells
-	ArrayList<Pair<Integer, Integer>> path = new ArrayList<Pair<Integer, Integer>>();
+	private ArrayList<Pair<Integer, Integer>> path = new ArrayList<Pair<Integer, Integer>>();
 
 	/**
 	 * Calculate the heuristic /Manhattan distance/ using the coordinates of the
@@ -109,9 +108,6 @@ public class PathFinding implements Runnable, Serializable {
 	 *            the world that is going to be made into a grid
 	 */
 	void worldToCell() {
-		//int heurC = 1000; // the heuristic of a tile where there is a coffee
-							// machine
-		//int heurB = 1000; // the heuristic of a tile where there is a sofa
 		for (int i = 0; i < rowLength; i++) {
 			for (int j = 0; j < colLength; j++) {
 
@@ -126,53 +122,21 @@ public class PathFinding implements Runnable, Serializable {
 
 				// if the current tile is a coffee machine, and is closer than
 				// the previous one, save coordinates
-				if (tile.type.equals(TileType.COFFEE_MACHINE) ) { //&& calcHeuristic(i, j) < heurC
-					//heurC = calcHeuristic(i, j);
-					grid[i][j].hCost = calcHeuristic(i, j); //grid[i][j].hCost =heurC
-					coffes.add(new Pair<Integer, Integer>(i, j));
-					//coffeeI = i;
-					//coffeeJ = j;
+				if (tile.type.equals(TileType.COFFEE_MACHINE)) {
+					grid[i][j].hCost = calcHeuristic(i, j);
+					coffees.add(new Pair<Integer, Integer>(i, j));
 				}
 
 				// if the current tile is a bed, and is closer than the previous
 				// one, save coordinates
-				if (tile.type.equals(TileType.SOFA) ) { //&& calcHeuristic(i, j) < heurB
-					//heurB = calcHeuristic(i, j); 
-					grid[i][j].hCost = calcHeuristic(i, j); //grid[i][j].hCost = heurB;
+				if (tile.type.equals(TileType.SOFA)) {
+					grid[i][j].hCost = calcHeuristic(i, j);
 					beds.add(new Pair<Integer, Integer>(i, j));
-					//bedI = i;
-					//bedJ = j;
+					// bedI = i;
+					// bedJ = j;
 				}
 			}
 		}
-	}
-	
-	public Pair<Integer, Integer> findClosest(ArrayList<Pair<Integer, Integer>> coords) {
-		// set the starting point
-		startCell(player.getLocation().coords.x, player.getLocation().coords.y);
-
-		// create a grid of cells from the world
-		worldToCell();
-		int pathSize = 100;
-		
-		Pair<Integer, Integer> closestCoords = null; 
-		ArrayList<Pair<Integer, Integer>> path = new ArrayList<Pair<Integer, Integer>>();
-		
-		int x, y;
-		
-		for (int k = 0; k < coords.size(); k++) {
-			x = coords.get(k).getL();
-			y = coords.get(k).getL();
-			AStar(x, y);
-			path = path(coords.get(k).getL(), coords.get(k).getR());
-			if (pathSize > path.size()) {
-				pathSize = path.size();
-				closestCoords = coords.get(k);
-			}
-				
-		}
-		
-		return closestCoords;
 	}
 
 	/**
@@ -230,11 +194,12 @@ public class PathFinding implements Runnable, Serializable {
 		closed = new boolean[rowLength][colLength];
 
 		// set the starting point
-		//startCell(player.getLocation().coords.x, player.getLocation().coords.y);
+		// startCell(player.getLocation().coords.x,
+		// player.getLocation().coords.y);
 
 		// create a grid of cells from the world
-		//worldToCell();
-		
+		// worldToCell();
+
 		// add the starting location to the open list
 		open.add(grid[startI][startJ]);
 
@@ -287,7 +252,7 @@ public class PathFinding implements Runnable, Serializable {
 	 *         the i, coordinates of the first cell, then the second, then...
 	 */
 	public ArrayList<Pair<Integer, Integer>> path(int goalI, int goalJ) {
-
+		ArrayList<Pair<Integer, Integer>> pathToObj = new ArrayList<Pair<Integer, Integer>>();
 		// make an arraylist from the path
 		// the first two digits are i, j coords of the final state
 		// the array is goal -> start state
@@ -295,10 +260,10 @@ public class PathFinding implements Runnable, Serializable {
 
 		// loop through the parents of the cell
 		while (current.parent != null) {
-			path.add(new Pair<Integer, Integer>(current.i, current.j));
+			pathToObj.add(new Pair<Integer, Integer>(current.i, current.j));
 			current = current.parent;
 		}
-		return path;
+		return pathToObj;
 	}
 
 	/**
@@ -312,17 +277,55 @@ public class PathFinding implements Runnable, Serializable {
 
 	@Override
 	public void run() {
+		// create an ArrayList to store the current best path
+		ArrayList<Pair<Integer, Integer>> currentPath = new ArrayList<Pair<Integer, Integer>>();
+		// store the best size
+		int size = 1000;
+
+		// set the starting point
+		startCell(player.getLocation().coords.x, player.getLocation().coords.y);
+
+		// create a grid of cells from the world
+		worldToCell();
 
 		if (toGo == "cm") {
-			coffeeI = findClosest(coffes).getL();
-			coffeeJ = findClosest(coffes).getR();
-			AStar(coffeeI, coffeeJ);
-			path(coffeeI, coffeeJ);
+			// go through the list of coffee machines
+			for (int i = 0; i < coffees.size(); i++) {
+				// get the i, j coordinates of the coffee machine
+				coffeeI = coffees.get(i).getL();
+				coffeeJ = coffees.get(i).getR();
+				// run AStar on them
+				AStar(coffeeI, coffeeJ);
+				// get the path after AStar
+				currentPath = path(coffeeI, coffeeJ);
+				// if the path is smaller than the previous one
+				if (size > currentPath.size()) {
+					path = currentPath; // get the new best path
+					size = currentPath.size(); // assign the size of the new
+												// best path
+				}
+			}
 		} else {
-			coffeeI = findClosest(beds).getL();
-			coffeeJ = findClosest(beds).getR();
-			AStar(bedI, bedJ);
-			path(bedI, bedJ);
+			// create an ArrayList to store the current best path
+			ArrayList<Pair<Integer, Integer>> currentPathB = new ArrayList<Pair<Integer, Integer>>();
+			// store the best size
+			int sizeB = 1000;
+			// go through the list of beds
+			for (int i = 0; i < beds.size(); i++) {
+				// get the i, j coordinates of the bed
+				bedI = beds.get(i).getL();
+				bedJ = beds.get(i).getR();
+				// run AStar on them
+				AStar(bedI, bedJ);
+				// get the path after AStar
+				currentPathB = path(bedI, bedJ);
+				// if the path is smaller than the previous one
+				if (sizeB > currentPathB.size()) {
+					path = currentPathB; // get the new best path
+					sizeB = currentPathB.size(); // assign the size of the new
+													// best path
+				}
+			}
 		}
 	}
 }
