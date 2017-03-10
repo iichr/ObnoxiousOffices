@@ -60,7 +60,7 @@ public class PlayTest extends Play {
 	 */
 	private World createWorld(int noPlayers) {
 		World w = null;
-		Path p = Paths.get("data/office4Player.level");
+		Path p = Paths.get("data/office2Player.level");
 		if (noPlayers == 6) {
 			p = Paths.get("data/office6Player.level");
 		}

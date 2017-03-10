@@ -3,6 +3,7 @@ package game.ui.states;
 import java.util.HashMap;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -206,7 +207,6 @@ public class Play extends BasicGameState {
 
 		// show ui info to player
 		playerinfo.render(g);
-		cb.render(gc, g);
 		if (gameOver) {
 			gameOverOverlay.render(g);
 		} else if (options) {
@@ -256,6 +256,9 @@ public class Play extends BasicGameState {
 		Image wall = new Image(SpriteLocations.TILE_WALL, false, Image.FILTER_NEAREST);
 		wall.draw(0, 0, Vals.SCREEN_WIDTH, tileHeight);
 
+		// TODO use visible
+		boolean[][] visible = findVisibles();
+
 		// check every position in the world to render what is needed at that
 		// location
 		for (int y = 0; y < world.ySize; y++) {
@@ -270,10 +273,12 @@ public class Play extends BasicGameState {
 				drawComputerMarker(tileX, tileY, found);
 
 				// draw the tile at this location
-				drawTile(tileX, tileY, found);
+				drawTile(tileX, tileY, found, visible[x][y]);
 
 				// draw any players at this location
-				drawPlayers(x, y, tileX, tileY);
+				if (visible[x][y]) {
+					drawPlayers(x, y, tileX, tileY);
+				}
 			}
 		}
 	}
@@ -289,7 +294,7 @@ public class Play extends BasicGameState {
 		}
 	}
 
-	private void drawTile(float tileX, float tileY, Tile tile) {
+	private void drawTile(float tileX, float tileY, Tile tile, boolean visible) {
 		Direction facing = tile.facing;
 		TileType type = tile.type;
 
@@ -302,10 +307,23 @@ public class Play extends BasicGameState {
 		HashMap<Direction, Image[]> directionMap = tileMap.get(type);
 		Image[] images = directionMap.get(facing);
 
+<<<<<<< HEAD
 		if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER)) {
 			images[mtID].draw(tileX, tileY - tileHeight / 2, tileWidth, 3 * tileHeight / 2);
+=======
+		if (visible) {
+			if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER)) {
+				images[mtID].draw(tileX, tileY - tileHeight / 2, tileWidth, 3 * tileHeight / 2);
+			} else {
+				images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
+			}
+>>>>>>> UI
 		} else {
-			images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
+			if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER)) {
+				images[mtID].draw(tileX, tileY - tileHeight / 2, tileWidth, 3 * tileHeight / 2, Color.darkGray);
+			} else {
+				images[mtID].draw(tileX, tileY, tileWidth, tileHeight, Color.darkGray);
+			}
 		}
 	}
 
@@ -369,6 +387,78 @@ public class Play extends BasicGameState {
 		} else {
 			playerMap.get(player).turn(player.getFacing());
 		}
+	}
+
+	private boolean[][] findVisibles() {
+		boolean[][] visible = new boolean[world.xSize][world.ySize];
+
+		// set values to false initially
+		for (int x = 0; x < world.xSize; x++) {
+			for (int y = 0; y < world.ySize; y++) {
+				visible[x][y] = false;
+			}
+		}
+
+		// find any which should be true
+		getVisibleArray(visible, world.getPlayer(localPlayerName).getLocation());
+
+		return visible;
+	}
+
+	/**
+	 * Checks if the tile is visible in the current room
+	 * 
+	 * @param visible
+	 *            The visible array
+	 * @param current
+	 *            The current location being looked at
+	 * @return The visible array
+	 */
+	private boolean[][] getVisibleArray(boolean[][] visible, Location current) {
+		int x = current.coords.x;
+		int y = current.coords.y;
+		visible[x][y] = true;
+
+		// find surrounding locations
+		Location north = current.add(-1, 0, 0);
+		Location east = current.add(0, 1, 0);
+		Location south = current.add(1, 0, 0);
+		Location west = current.add(0, -1, 0);
+
+		// check if we should continue checking them
+		checkContinue(visible, north);
+		checkContinue(visible, east);
+		checkContinue(visible, south);
+		checkContinue(visible, west);
+
+		return visible;
+	}
+
+	/**
+	 * @param visible
+	 *            The visible array
+	 * @param toCheck
+	 *            The location being checked
+	 * @return The visible array
+	 */
+	private boolean[][] checkContinue(boolean[][] visible, Location toCheck) {
+		int x = toCheck.coords.x;
+		int y = toCheck.coords.y;
+		if (x >= 0 && x < visible.length && y >= 0 && y < visible[0].length) {
+			if (visible[x][y] != true) {
+				if (toCheck.checkBounds()) {
+					TileType found = toCheck.getTile().type;
+					// TODO add door checks once doors created
+					if (!found.equals(TileType.WALL) && !found.equals(TileType.WALL_CORNER)) {
+						visible = getVisibleArray(visible, toCheck);
+					} else {
+						// we can see the wall, but not past it
+						visible[x][y] = true;
+					}
+				}
+			}
+		}
+		return visible;
 	}
 
 	private void gameFinished(GameFinishedEvent e) {
