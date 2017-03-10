@@ -152,16 +152,13 @@ public class World implements Updateable, Serializable {
         World world = new World(maxPlayers, sizeX, tileStrings.length, sizeZ);
         IntStream.range(0, tileStrings.length).forEach(y -> {
             IntStream.range(0, sizeX).forEach(x -> {
-                String[] zs = tileStrings[y][x].split(":");
-                for (int z = 0; z < zs.length; z++) {
-                    TilePrototype p = aliases.get(zs[z]);
-                    Collection<Tile> tiles = p.type.getTiles(new Location(x, y, z, world), p.facing);
-                    tiles.forEach(t -> {
-                        Tile currTile = t.location.getTile();
-                        // Ensure that non-multitiles don't overwrite multitiles
-                        if (t.isMultiTile() || currTile == null || !currTile.isMultiTile()) world.addTile(t);
-                    });
-                }
+                TilePrototype p = aliases.get(tileStrings[y][x]);
+                Collection<Tile> tiles = p.type.getTiles(new Location(x, y, 0, world), p.facing);
+                tiles.forEach(t -> {
+                    Tile currTile = t.location.getTile();
+                    // Ensure that non-multitiles don't overwrite multitiles
+                    if(t.isMultiTile() || currTile == null || !currTile.isMultiTile()) world.addTile(t);
+                });
             });
         });
 
