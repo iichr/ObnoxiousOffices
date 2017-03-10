@@ -4,13 +4,14 @@ import game.core.Updateable;
 import game.core.event.Events;
 import game.core.event.player.effect.PlayerEffectElapsedUpdate;
 import game.core.player.Player;
+import game.core.player.PlayerCondition;
 
 import java.io.Serializable;
 
 /**
  * Created by samtebbs on 15/01/2017.
  */
-public abstract class PlayerEffect implements Updateable, Serializable {
+public abstract class PlayerEffect extends PlayerCondition implements Updateable, Serializable {
 
     protected final int duration;
     protected int elapsed;
