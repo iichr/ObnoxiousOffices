@@ -120,7 +120,7 @@ public class ActionSelector {
 
 		float characterMod = ((float) toShow.get(action).length()) / 4;
 		selectorBack.draw(x + width / 2 - (width * characterMod) / 2, y, width * characterMod, height);
-		wg.drawCenter(g, toShow.get(action), x + width / 2, y + height / 2, true, 5 / width);
+		wg.drawCenter(g, toShow.get(action), x + width / 2, y + height / 2, true, width/700);
 
 	}
 	
