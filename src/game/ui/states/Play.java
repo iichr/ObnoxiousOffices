@@ -204,9 +204,9 @@ public class Play extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setFont(Vals.FONT_PLAY);
-
+		boolean[][] visible = findVisibles();
 		// renders world
-		drawWorld();
+		drawWorld(visible);
 		cb.render(gc, g);
 		// add effects overview container
 		effectOverview.render(g);
@@ -219,7 +219,7 @@ public class Play extends BasicGameState {
 		}
 
 		// show ui info to player
-		playerinfo.render(g);
+		playerinfo.render(g, visible);
 		if (gameOver) {
 			gameOverOverlay.render(g);
 		} else if (options) {
@@ -251,12 +251,10 @@ public class Play extends BasicGameState {
 		input.clearKeyPressedRecord();
 	}
 
-	private void drawWorld() throws SlickException {
+	private void drawWorld(boolean [][] visible) throws SlickException {
 		// draw the wall sprite
 		Image wall = new Image(SpriteLocations.TILE_WALL, false, Image.FILTER_NEAREST);
 		wall.draw(0, 0, Vals.SCREEN_WIDTH, tileHeight);
-
-		boolean[][] visible = findVisibles();
 		
 		// check every position in the world to render what is needed at that
 		// location
@@ -450,7 +448,6 @@ public class Play extends BasicGameState {
 			if (visible[x][y] != true) {
 				if (toCheck.checkBounds()) {
 					TileType found = toCheck.getTile().type;
-					// TODO add door checks once doors created
 					if (!found.equals(TileType.WALL) && !found.equals(TileType.WALL_CORNER) && !found.equals(TileType.DOOR)) {
 						visible = getVisibleArray(visible, toCheck);
 					} else {

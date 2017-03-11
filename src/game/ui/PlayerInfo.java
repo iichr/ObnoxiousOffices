@@ -44,7 +44,7 @@ public class PlayerInfo {
 	 * @param g
 	 *            Graphics object g
 	 */
-	public void render(Graphics g) {
+	public void render(Graphics g, boolean[][] visible) {
 		for (Player p : players) {
 			g.setColor(Color.black);
 			Location pLocation = p.getLocation();
@@ -55,7 +55,9 @@ public class PlayerInfo {
 			float offsetY = tileHeight / 8;
 
 			// draw player names
-			wg.drawCenter(g, p.name, (playerX + offsetX), (playerY - offsetY), true, 0.1f);
+			if (visible[pLocation.coords.x][pLocation.coords.y]) {
+				wg.drawCenter(g, p.name, (playerX + offsetX), (playerY - offsetY), true, 0.1f);
+			}
 
 			if (p.name.equals(localPlayerName)) {
 				// add identifier for player
