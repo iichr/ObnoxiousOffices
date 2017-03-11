@@ -27,7 +27,8 @@ public abstract class TileType implements Serializable {
             SOFA = new TileTypeSofa(6),
             FISH = new TileTypeFish(7),
             WALL = new TileTypeWall(8),
-            WALL_CORNER = new TileTypeWallCorner(9);
+            WALL_CORNER = new TileTypeWallCorner(9),
+            DOOR = new TileTypeDoor(10);
 
     static {
         addTileType("computer", COMPUTER);
@@ -40,6 +41,7 @@ public abstract class TileType implements Serializable {
         addTileType("fish", FISH);
         addTileType("wall", WALL);
         addTileType("corner", WALL_CORNER);
+        addTileType("door", DOOR);
     }
 
     protected TileType(int id) {
