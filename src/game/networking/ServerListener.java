@@ -14,10 +14,6 @@ import game.core.event.Events;
 import game.core.event.GameFinishedEvent;
 import game.core.event.GameStartedEvent;
 import game.core.event.chat.ChatMessageReceivedEvent;
-import game.core.event.minigame.MiniGameEndedEvent;
-import game.core.event.minigame.MiniGameStartedEvent;
-import game.core.event.minigame.MiniGameStatChangedEvent;
-import game.core.event.minigame.MiniGameVarChangedEvent;
 import game.core.event.player.PlayerAttributeChangedEvent;
 import game.core.event.player.PlayerCreatedEvent;
 import game.core.event.player.PlayerMovedEvent;
@@ -45,8 +41,8 @@ public class ServerListener extends Thread {
 	private int playerNumber;
 	private Queue<Object> outputQ;
 	public World world;
-	private final Object queueWait;
-
+    private final Object queueWait;
+    boolean running = true;
 	public static final int NUM_AI_PLAYERS = 1;
 
 	public ServerListener(Socket socket, ArrayList<ServerListener> connection, World world) {
@@ -55,15 +51,12 @@ public class ServerListener extends Thread {
 		this.connections = connection;
 		this.playerNumber = connections.size();
 		this.world = world;
-
+	
 		// set up the event listeners
 		listenForEvents();
-
 		// make the object streams
 		createObjectStreams();
-
 		outputQ = new ConcurrentLinkedQueue<Object>();
-
 		sendQueue();
 	}
 
@@ -82,16 +75,8 @@ public class ServerListener extends Thread {
 		Events.on(PlayerStateAddedEvent.class, this::forwardInfo);
 		Events.on(PlayerStateRemovedEvent.class, this::forwardInfo);
 		Events.on(PlayerEffectElapsedUpdate.class, this::forwardInfo);
-
-	    //Events.on(GameFinishedEvent.class, this::forwardInfo);
 		Events.on(GameFinishedEvent.class, this::closeConnection);
-
 		Events.on(ChatMessageReceivedEvent.class, this::forwardInfo);
-
-		Events.on(MiniGameStartedEvent.class, this::forwardInfo);
-		Events.on(MiniGameEndedEvent.class, this::forwardInfo);
-		Events.on(MiniGameVarChangedEvent.class, this::forwardInfo);
-		Events.on(MiniGameStatChangedEvent.class, this::forwardInfo);
 	}
 
 	/**
@@ -116,7 +101,6 @@ public class ServerListener extends Thread {
 
 	@Override
 	public void run() {
-		boolean running = true;
 		while (running) {
 			if (!makingAI) {
 				if (world.getPlayers().size() < connections.size()) {
@@ -147,15 +131,11 @@ public class ServerListener extends Thread {
 						System.out.println("recieved: " + eventObject);
 						Events.trigger(eventObject);
 					} catch (Exception e) {
-						// e.printStackTrace();
+						//e.printStackTrace();
 					}
 				}
 			}
-			// else{
-
-			// }
 		}
-
 	}
 
 	/**
@@ -179,35 +159,51 @@ public class ServerListener extends Thread {
 	 */
 	private void forwardInfo(Object recieved) {
 		outputQ.offer(recieved);
-		synchronized (this.queueWait) {
-			this.queueWait.notifyAll();
-		}
+		synchronized(this.queueWait){
+            this.queueWait.notifyAll();
+        }
+		
 	}
 
 	private void sendQueue() {
 		Thread outputThread = new Thread(() -> {
-			Object output;
-			while (true) {
-				output = outputQ.poll();
-				if (output != null) {
-					try {
-						os.writeObject(output);
-						os.flush();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				} else {
-					try {
-						synchronized (this.queueWait) {
-							this.queueWait.wait();
-						}
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
-		});
-		outputThread.start();
+            Object output;
+            while (true) {
+                output = outputQ.poll();
+                if (output != null) {
+                	if(!socket.isClosed()){
+                    try {
+                        os.writeObject(output);
+                        os.flush();
+                    } catch (IOException e) {
+                    	try {
+                			output = null;
+                			running = false;
+                			socket.close();
+                			world.removePlayer(playerNumber);
+                			//makingAI = true;
+							//Events.trigger(new CreateAIPlayerRequest(this, (NUM_AI_PLAYERS + 1)));
+                			System.out.println("Player Removed");
+                		} catch (IOException e1) {
+                			e1.printStackTrace();
+                		}
+                    }
+                    }
+                	else{
+                    	System.out.println("Player left");
+                	}
+                }else{
+                    try {
+                        synchronized(this.queueWait){
+                            this.queueWait.wait();
+                        }
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
+        outputThread.start();
 	}
 
 	/**
@@ -260,20 +256,20 @@ public class ServerListener extends Thread {
 	 * @return Whether or not the name is being used
 	 */
 	private boolean playerNameUsed(String name) {
-		for (Player p : world.getPlayers()) {
+		for (Player p: world.getPlayers()) {
 			if (p.name.equals(name)) {
 				return true;
 			}
 		}
 		return false;
 	}
-
-	private void closeConnection(Object recieved) {
+	
+	private void closeConnection(Object recieved){
 		forwardInfo(recieved);
 		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
 		}
 		try {
 			this.is.close();
@@ -283,5 +279,6 @@ public class ServerListener extends Thread {
 		}
 		this.socket = null;
 	}
+
 
 }

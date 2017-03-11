@@ -208,4 +208,9 @@ public class World implements Updateable, Serializable {
     public int getMaxPlayers(){
     	return maxPlayers;
     }
+
+	public void removePlayer(int playerNumber) {
+		players.remove(playerNumber);
+		
+	}
 }
