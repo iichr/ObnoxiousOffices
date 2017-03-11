@@ -40,6 +40,7 @@ import game.core.world.tile.MetaTile;
 import game.core.world.tile.Tile;
 import game.core.world.tile.type.TileType;
 import game.core.world.tile.type.TileTypeComputer;
+import game.core.world.tile.type.TileTypeDoor;
 import game.ui.PlayerInfo;
 import game.ui.PlayerOverview;
 import game.ui.components.ChatBox;
@@ -306,13 +307,13 @@ public class Play extends BasicGameState {
 		Image[] images = directionMap.get(facing);
 
 		if (visible) {
-			if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER)) {
+			if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER) || type.equals(TileType.DOOR) ) {
 				images[mtID].draw(tileX, tileY - tileHeight / 2, tileWidth, 3 * tileHeight / 2);
 			} else {
 				images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
 			}
 		} else {
-			if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER)) {
+			if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER) || type.equals(TileType.DOOR)) {
 				images[mtID].draw(tileX, tileY - tileHeight / 2, tileWidth, 3 * tileHeight / 2, Color.darkGray);
 			} else {
 				images[mtID].draw(tileX, tileY, tileWidth, tileHeight, Color.darkGray);
@@ -417,12 +418,20 @@ public class Play extends BasicGameState {
 		Location east = current.add(0, 1, 0);
 		Location south = current.add(1, 0, 0);
 		Location west = current.add(0, -1, 0);
+		Location ne = current.add(-1, 1, 0);
+		Location nw = current.add(-1, -1, 0);
+		Location se = current.add(1, 1, 0);
+		Location sw = current.add(1, -1, 0);
 
 		// check if we should continue checking them
 		checkContinue(visible, north);
 		checkContinue(visible, east);
 		checkContinue(visible, south);
 		checkContinue(visible, west);
+		checkContinue(visible, ne);
+		checkContinue(visible, nw);
+		checkContinue(visible, se);
+		checkContinue(visible, sw);
 
 		return visible;
 	}
@@ -442,7 +451,7 @@ public class Play extends BasicGameState {
 				if (toCheck.checkBounds()) {
 					TileType found = toCheck.getTile().type;
 					// TODO add door checks once doors created
-					if (!found.equals(TileType.WALL) && !found.equals(TileType.WALL_CORNER)) {
+					if (!found.equals(TileType.WALL) && !found.equals(TileType.WALL_CORNER) && !found.equals(TileType.DOOR)) {
 						visible = getVisibleArray(visible, toCheck);
 					} else {
 						// we can see the wall, but not past it
