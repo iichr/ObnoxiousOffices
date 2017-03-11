@@ -48,7 +48,7 @@ public class Player implements Updateable, Serializable {
     public void move(Direction direction) {
         setLocation(location.forward(direction));
     }
-    
+
     /**
      * Gets the current facing of the player
      * @return Direction the current facing of the player
@@ -155,7 +155,7 @@ public class Player implements Updateable, Serializable {
      * Add the standard amount of progress (using multiplier)
      */
     public void addProgress() {
-        double toAdd = 1.0;// * getProgressMultiplier();
+        double toAdd = 0.02;// * getProgressMultiplier();
         setProgress(progress + toAdd);
     }
 
@@ -183,11 +183,11 @@ public class Player implements Updateable, Serializable {
         return name.hashCode();
     }
 
-	public int getHair() {
-		return hair;
-	}
+    public int getHair() {
+        return hair;
+    }
 
-	public void setHair(int hair) {
-		this.hair = hair;
-	}
+    public void setHair(int hair) {
+        this.hair = hair;
+    }
 }

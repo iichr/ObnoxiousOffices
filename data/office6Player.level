@@ -41,6 +41,8 @@ x1 = corner,north
 x2 = corner,east
 x3 = corner,south
 x4 = corner,west
+o1 = door,north
+o2 = door,south
 ###
 0,0,0
 1,0,0

@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  */
 public class PlayerStatus implements Serializable {
 
-    private static final int ATTRIBUTE_UPDATE_THRESHOLD = 3;
+    private static final int ATTRIBUTE_UPDATE_THRESHOLD = 5;
     private Map<PlayerAttribute, Double> attributes = new HashMap<>();
     private Map<PlayerAttribute, Integer> attributeUpdateCounter = new HashMap<>();
     private Set<PlayerState> states = new HashSet<>();
@@ -36,7 +36,7 @@ public class PlayerStatus implements Serializable {
     public final Player player;
     public boolean initialising = true;
 
-    public static double FATIGUE_INCREASE = 0.001;
+    public static double FATIGUE_INCREASE = 0.003;
 
     public PlayerStatus(Player player) {
         this.player = player;
