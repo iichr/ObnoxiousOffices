@@ -13,7 +13,10 @@ public class ClientListner extends Thread {
 	private Socket server;
 	private ObjectInputStream is;
 	private Queue<Object> inputQ;
-
+	/**
+	 * Starts the client listener
+	 * @param server- The socket it is connected two
+	 */
 	public ClientListner(Socket server) {
 		this.server = server;
 
@@ -21,6 +24,10 @@ public class ClientListner extends Thread {
 		manageEvents();
 	}
 
+	/**
+	 * Listens for objects being sent from Server listener and puts them into
+	 * input queue
+	 */
 	@Override
 	public void run() {
 		try {
@@ -36,7 +43,9 @@ public class ClientListner extends Thread {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * Takes an event of the queue and triggers it
+	 */
 	private void manageEvents() {
 		Thread manageInputs = new Thread(() -> {
 			while (true) {

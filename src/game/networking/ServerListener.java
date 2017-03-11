@@ -32,26 +32,33 @@ import game.core.world.World;
 
 public class ServerListener extends Thread {
 	private ArrayList<ServerListener> connections;
-
 	private boolean makingAI = false;
-
 	private Socket socket = null;
 	private ObjectInputStream is;
 	private ObjectOutputStream os;
 	private int playerNumber;
 	private Queue<Object> outputQ;
 	public World world;
-    private final Object queueWait;
-    boolean running = true;
+	private final Object queueWait;
+	boolean running = true;
 	public static final int NUM_AI_PLAYERS = 1;
 
+	/**
+	 * 
+	 * @param socket-
+	 *            The socket its connected to
+	 * @param connection-
+	 *            The server listeners
+	 * @param world-
+	 *            The game world
+	 */
 	public ServerListener(Socket socket, ArrayList<ServerListener> connection, World world) {
 		this.queueWait = new Object();
 		this.socket = socket;
 		this.connections = connection;
 		this.playerNumber = connections.size();
 		this.world = world;
-	
+
 		// set up the event listeners
 		listenForEvents();
 		// make the object streams
@@ -99,6 +106,9 @@ public class ServerListener extends Thread {
 		}
 	}
 
+	/**
+	 * Add conections and any hard coded AI players, trigger game start event
+	 */
 	@Override
 	public void run() {
 		while (running) {
@@ -131,7 +141,7 @@ public class ServerListener extends Thread {
 						System.out.println("recieved: " + eventObject);
 						Events.trigger(eventObject);
 					} catch (Exception e) {
-						//e.printStackTrace();
+						// e.printStackTrace();
 					}
 				}
 			}
@@ -141,8 +151,8 @@ public class ServerListener extends Thread {
 	/**
 	 * Sends info to all clients
 	 * 
-	 * @param obj
-	 *            The info to send
+	 * @param obj-The
+	 *            info to send
 	 */
 	public void sendToAllClients(Object obj) {
 		for (int i = 0; i < this.connections.size(); i++) {
@@ -154,62 +164,67 @@ public class ServerListener extends Thread {
 	/**
 	 * Forwards the info to one client
 	 * 
-	 * @param recieved
+	 * @param recieved-
 	 *            The info to send
 	 */
 	private void forwardInfo(Object recieved) {
 		outputQ.offer(recieved);
-		synchronized(this.queueWait){
-            this.queueWait.notifyAll();
-        }
-		
+		synchronized (this.queueWait) {
+			this.queueWait.notifyAll();
+		}
+
 	}
 
+	/**
+	 * Takes a message of the queue and tried to send it, if it can't it closes
+	 * the connection and adds and ai player instead
+	 */
 	private void sendQueue() {
 		Thread outputThread = new Thread(() -> {
-            Object output;
-            while (true) {
-                output = outputQ.poll();
-                if (output != null) {
-                	if(!socket.isClosed()){
-                    try {
-                        os.writeObject(output);
-                        os.flush();
-                    } catch (IOException e) {
-                    	try {
-                			output = null;
-                			running = false;
-                			socket.close();
-                			world.removePlayer(playerNumber);
-                			//makingAI = true;
-							//Events.trigger(new CreateAIPlayerRequest(this, (NUM_AI_PLAYERS + 1)));
-                			System.out.println("Player Removed");
-                		} catch (IOException e1) {
-                			e1.printStackTrace();
-                		}
-                    }
-                    }
-                	else{
-                    	System.out.println("Player left");
-                	}
-                }else{
-                    try {
-                        synchronized(this.queueWait){
-                            this.queueWait.wait();
-                        }
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        });
-        outputThread.start();
+			Object output;
+			while (true) {
+				output = outputQ.poll();
+				if (output != null) {
+					if (!socket.isClosed()) {
+						try {
+							os.writeObject(output);
+							os.flush();
+						} catch (IOException e) {
+							try {
+								output = null;
+								running = false;
+								socket.close();
+								world.removePlayer(playerNumber);
+								// makingAI = true;
+								// Events.trigger(new
+								// CreateAIPlayerRequest(this, (NUM_AI_PLAYERS +
+								// 1)));
+								System.out.println("Player Removed");
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						}
+					} else {
+						System.out.println("Player left");
+					}
+				} else {
+					try {
+						synchronized (this.queueWait) {
+							this.queueWait.wait();
+						}
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		outputThread.start();
 	}
 
 	/**
 	 * Adds a player to the game.
 	 * 
-	 * @param name
+	 * @param name-
 	 *            The name of the player to add.
 	 */
 	private void addPlayerToGame(String name) {
@@ -227,6 +242,11 @@ public class ServerListener extends Thread {
 		}
 	}
 
+	/**
+	 * Adds ai to the game
+	 * 
+	 * @param playerToAdd
+	 */
 	public void addAIToGame(Player playerToAdd) {
 		playerToAdd.setHair(world.getPlayers().size());
 		world.addPlayer(playerToAdd);
@@ -237,7 +257,7 @@ public class ServerListener extends Thread {
 	/**
 	 * Remove a player from the game.
 	 * 
-	 * @param name
+	 * @param name-
 	 *            The name of the player to be removed.
 	 */
 	private void removePlayerFromGame(String name) {
@@ -251,20 +271,24 @@ public class ServerListener extends Thread {
 	/**
 	 * Check to see if the player name has been used
 	 * 
-	 * @param name
+	 * @param name-
 	 *            The name to check
 	 * @return Whether or not the name is being used
 	 */
 	private boolean playerNameUsed(String name) {
-		for (Player p: world.getPlayers()) {
+		for (Player p : world.getPlayers()) {
 			if (p.name.equals(name)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	private void closeConnection(Object recieved){
+
+	/**
+	 * Close the connection when the game ends
+	 * @param recieved- Object reiceved from the game closed event
+	 */
+	private void closeConnection(Object recieved) {
 		forwardInfo(recieved);
 		try {
 			Thread.sleep(1000);
@@ -279,6 +303,5 @@ public class ServerListener extends Thread {
 		}
 		this.socket = null;
 	}
-
 
 }
