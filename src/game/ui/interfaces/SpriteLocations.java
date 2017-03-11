@@ -228,8 +228,8 @@ public class SpriteLocations {
 	
 	public static final String TILE_WALL_NORTH = "/res/sprites/tiles/wallNorth.png";
 	public static final String TILE_WALL_SOUTH = "/res/sprites/tiles/wallSouth.png";
-	public static final String TILE_WALL_EAST = "/res/sprites/tiles/wallEast.png";
-	public static final String TILE_WALL_WEST = "/res/sprites/tiles/wallWest.png";
+	public static final String TILE_WALL_EAST = "/res/sprites/tiles/wallSide.png";
+	public static final String TILE_WALL_WEST = "/res/sprites/tiles/wallSide.png";
 	
 	public static final String TILE_CORNER_NORTH = "/res/sprites/tiles/wallCornerNorthWest.png";
 	public static final String TILE_CORNER_SOUTH = "/res/sprites/tiles/wallCornerSouthEast.png";
