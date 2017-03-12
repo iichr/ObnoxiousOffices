@@ -162,9 +162,13 @@ public class World implements Updateable, Serializable {
             });
         });
 
-        Arrays.stream(spawnLines).forEach(l -> {
-            int[] coords = Arrays.stream(l.split(",")).mapToInt(Integer::parseInt).toArray();
-            world.addSpawnPoint(new Location(coords[0], coords[1], coords[2], world));
+        Arrays.stream(spawnLines).forEach(l -> {        	
+            try {
+				int[] coords = Arrays.stream(l.split(",")).mapToInt(Integer::parseInt).toArray();
+				world.addSpawnPoint(new Location(coords[0], coords[1], coords[2], world));
+			} catch (NumberFormatException e) {
+				System.err.println("The level file contains empty lines, please remove them");
+			}
         });
         return world;
     }

@@ -196,7 +196,7 @@ public class ServerListener extends Thread {
 						os.writeObject(output);
 						os.flush();
 					} catch (IOException e) {
-						e.printStackTrace();
+						//e.printStackTrace();
 					}
 				} else {
 					try {
