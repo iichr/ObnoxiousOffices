@@ -73,6 +73,11 @@ public class World implements Updateable, Serializable {
         return false;
     }
 
+    @Override
+    public void end() {
+
+    }
+
     /**
      * Get's a tile at the given x, y and z. May return null.
      * @param x
