@@ -38,7 +38,12 @@ public class CharacterSelect extends BasicGameState {
 	private boolean connectFailed = false;
 	private PlayTest playTest;
 
-	public CharacterSelect(int state, PlayTest test) {
+	/**
+	 * Constructor: Creates the character select state and starts event
+	 * listeners
+	 * @param test 
+	 */
+	public CharacterSelect(PlayTest test) {
 		this.playTest = test;
 		Events.on(PlayerCreatedEvent.class, this::connected);
 		Events.on(ConnectionFailedEvent.class, this::connectFail);
@@ -61,6 +66,13 @@ public class CharacterSelect extends BasicGameState {
 		addTextFields(gc);
 	}
 
+	/**
+	 * Creates the text fields to be shown on the screen
+	 * 
+	 * @param gc
+	 *            The game container
+	 * @throws SlickException
+	 */
 	private void addTextFields(GameContainer gc) throws SlickException {
 		// Server address text field.
 		Vals.FONT_MAIN.addAsciiGlyphs();
@@ -108,6 +120,13 @@ public class CharacterSelect extends BasicGameState {
 		g.drawString(playerStr, serverAddress.getX() - Vals.FONT_MAIN.getWidth(playerStr) - 10, Vals.SCREEN_HEIGHT / 4);
 	}
 
+	/**
+	 * Renders the elements on the screen depending on the connection status of
+	 * the client
+	 * 
+	 * @param g
+	 *            The graphics object g
+	 */
 	private void connectStatus(Graphics g) {
 		if (connected) {
 			// make button inactive
@@ -151,11 +170,20 @@ public class CharacterSelect extends BasicGameState {
 		}
 	}
 
+	/**
+	 * Sets connected to be true and ensures connectFailed is false;
+	 * 
+	 * @param e
+	 *            A PlayerCreatedEvent
+	 */
 	private void connected(PlayerCreatedEvent e) {
 		connected = true;
 		connectFailed = false;
 	}
 
+	/**
+	 * Sets connectFailed to be true and ensures connected is false;
+	 */
 	private void connectFail(ConnectionFailedEvent e) {
 		connectFailed = true;
 		connected = false;

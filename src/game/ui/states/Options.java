@@ -29,15 +29,10 @@ import game.util.Pair;
 public class Options extends BasicGameState {
 	private Music music;
 	private Sound sound;
-	private String mouseCoords;
 	private WordGenerator wg;
 	private float currentSVolume, currentMVolume;
 
 	private MenuButton backButton;
-
-	public Options(int state) {
-
-	}
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
@@ -120,6 +115,12 @@ public class Options extends BasicGameState {
 
 	}
 
+	/**
+	 * Changes the sound volume down
+	 * 
+	 * @param gc
+	 *            The game container
+	 */
 	public void changeVolumeL(GameContainer gc) {
 
 		if ((int) (currentSVolume * 100) == 0) {
@@ -129,6 +130,12 @@ public class Options extends BasicGameState {
 		}
 	}
 
+	/**
+	 * Changes the sound volume up
+	 * 
+	 * @param gc
+	 *            The game container
+	 */
 	public void changeVolumeR(GameContainer gc) {
 		if ((int) (currentSVolume * 100) == 100) {
 			gc.setSoundVolume(0.0f);
@@ -142,7 +149,6 @@ public class Options extends BasicGameState {
 		Input input = gc.getInput();
 		int mouseX = Mouse.getX();
 		int mouseY = gc.getHeight() - Mouse.getY();
-		mouseCoords = mouseX + " ," + mouseY;
 		Pair<Float, Float> wh2 = wg.getWH("<", 0.5f);
 		if (mouseX >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH
 				&& mouseX <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH + wh2.getL()

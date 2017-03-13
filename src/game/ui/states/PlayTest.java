@@ -5,12 +5,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
 
-import game.core.event.Events;
-import game.core.event.GameFinishedEvent;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
-import game.core.player.action.PlayerActionSleep;
-import game.core.player.effect.PlayerEffect;
 import game.core.player.effect.PlayerEffectCoffeeBuzz;
 import game.core.test.Test;
 import game.core.world.Direction;
@@ -20,8 +16,8 @@ import game.ui.interfaces.Vals;
 
 public class PlayTest extends Play {
 
-	public PlayTest(int state) {
-		super(state);
+	public PlayTest() {
+		super();
 	}
 
 	@Override
@@ -48,15 +44,14 @@ public class PlayTest extends Play {
 		exit = false;
 
 		// test game finished screen
-//		Events.trigger(new GameFinishedEvent());
+		// Events.trigger(new GameFinishedEvent());
 	}
 
 	/**
 	 * Testing method used to create a fake world
 	 * 
 	 * @param noPlayers
-	 *            the number of player in the game
-	 * @return The world
+	 *            The number of player in the game
 	 */
 	private World createWorld(int noPlayers) {
 		World w = null;
@@ -73,7 +68,7 @@ public class PlayTest extends Play {
 	}
 
 	/**
-	 * Testing method used to create a fake set of players
+	 * Testing method used to create a fake set of players and add them to the world
 	 * 
 	 * @param w
 	 *            The world
