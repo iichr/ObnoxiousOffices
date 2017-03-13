@@ -39,8 +39,6 @@ import game.core.world.tile.MetaTile;
 import game.core.world.tile.Tile;
 import game.core.world.tile.type.TileType;
 import game.core.world.tile.type.TileTypeComputer;
-import game.ui.PlayerInfo;
-import game.ui.PlayerOverview;
 import game.ui.components.ChatBox;
 import game.ui.components.Effect;
 import game.ui.interfaces.ImageLocations;
@@ -52,6 +50,8 @@ import game.ui.overlay.OptionsOverlay;
 import game.ui.overlay.PongOverlay;
 import game.ui.player.ActionSelector;
 import game.ui.player.PlayerAnimation;
+import game.ui.player.PlayerInfo;
+import game.ui.player.PlayerOverview;
 
 public class Play extends BasicGameState {
 	// private String mouseCoords = "No input yet!";
