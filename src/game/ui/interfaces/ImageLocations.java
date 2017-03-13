@@ -31,17 +31,9 @@ public interface ImageLocations {
 	public static final String BG = "res/bg.png";
 
 	// PLAYER IMAGES
-	public static final String BLONDE_HEAD = "res/player/PlayerBlondeHead.png";
-	public static final String BROWN_HEAD = "res/player/PlayerBrownHead.png";
-	public static final String DARK_HEAD = "res/player/PlayerDarkHead.png";
-	public static final String PINK_HEAD = "res/player/PlayerPinkHead.png";
+	public static final String PLAYER_HEADS = "res/sprites/players/heads.png";
 	
-	public static final String BLONDE_HEAD_SLEEP = "res/player/PlayerBlondeHeadClosed.png";
-	public static final String BROWN_HEAD_SLEEP = "res/player/PlayerBrownHeadClosed.png";
-	public static final String DARK_HEAD_SLEEP = "res/player/PlayerDarkHeadClosed.png";
-	public static final String PINK_HEAD_SLEEP = "res/player/PlayerPinkHeadClosed.png";
-	
-	public static final String PLAYER_IDENTIFIER = "res/player/playerIdentifier.png";
+	public static final String PLAYER_IDENTIFIER = "res/sprites/players/playerIdentifier.png";
 
 	// IN GAME UI ELEMENTS
 	public static final String PROGRESS_BAR_BASE = "/res/ui/progressBarBase.png";

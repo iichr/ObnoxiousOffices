@@ -7,6 +7,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
@@ -35,6 +36,8 @@ public class PlayerOverview {
 	// images
 	private Image progressBarBase;
 	private Image progressBarFull;
+	
+	private SpriteSheet heads;
 
 	// position
 	private float x;
@@ -58,6 +61,8 @@ public class PlayerOverview {
 
 		progressBarBase = new Image(ImageLocations.PROGRESS_BAR_BASE, false, Image.FILTER_NEAREST);
 		progressBarFull = new Image(ImageLocations.PROGRESS_BAR_FULL, false, Image.FILTER_NEAREST);
+		Image headSheet = new Image(ImageLocations.PLAYER_HEADS, false, Image.FILTER_NEAREST);
+		heads = new SpriteSheet(headSheet, 22, 23);
 
 	}
 
@@ -192,20 +197,20 @@ public class PlayerOverview {
 		Image[] temp = new Image[2];
 		switch (p.getHair()) {
 		case 0:
-			temp[0] = new Image(ImageLocations.BLONDE_HEAD, false, Image.FILTER_NEAREST);
-			temp[1] = new Image(ImageLocations.BLONDE_HEAD_SLEEP, false, Image.FILTER_NEAREST);
+			temp[0] = heads.getSprite(0,0);
+			temp[1] = heads.getSprite(1,0);
 			break;
 		case 1:
-			temp[0] = new Image(ImageLocations.DARK_HEAD, false, Image.FILTER_NEAREST);
-			temp[1] = new Image(ImageLocations.DARK_HEAD_SLEEP, false, Image.FILTER_NEAREST);
+			temp[0] = heads.getSprite(0,2);
+			temp[1] = heads.getSprite(1,2);
 			break;
 		case 2:
-			temp[0] = new Image(ImageLocations.BROWN_HEAD, false, Image.FILTER_NEAREST);
-			temp[1] = new Image(ImageLocations.BROWN_HEAD_SLEEP, false, Image.FILTER_NEAREST);
+			temp[0] = heads.getSprite(0,1);
+			temp[1] = heads.getSprite(1,1);
 			break;
 		case 3:
-			temp[0] = new Image(ImageLocations.PINK_HEAD, false, Image.FILTER_NEAREST);
-			temp[1] = new Image(ImageLocations.PINK_HEAD_SLEEP, false, Image.FILTER_NEAREST);
+			temp[0] = heads.getSprite(0,3);
+			temp[1] = heads.getSprite(1,3);
 			break;
 		}
 		;
