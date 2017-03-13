@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 
 import game.core.world.Direction;
 import game.core.world.tile.type.TileType;
@@ -30,8 +31,6 @@ public class SpriteLocations {
 		addDecorativeImages();
 		addFishTankImages();
 		addWallImages();
-		addCornerImages();
-		addDoorImages();
 	}
 
 	private void addFloorImages() throws SlickException {
@@ -153,60 +152,47 @@ public class SpriteLocations {
 	}
 	
 	private void addWallImages() throws SlickException {
+		//load sprite sheet
+		Image wallSheet = new Image(TILE_WALLS, false, Image.FILTER_NEAREST);
+		SpriteSheet walls = new SpriteSheet(wallSheet, 64, 196);
+		
 		HashMap<Direction, Image[]> wallMap = new HashMap<>();
-
-		Image wN = new Image(TILE_WALL_NORTH, false, Image.FILTER_NEAREST);
-		Image[] wNorth = { wN };
-		wallMap.put(Direction.NORTH, wNorth);
-
-		Image wE = new Image(TILE_WALL_EAST, false, Image.FILTER_NEAREST);
-		Image[] wEast = { wE };
-		wallMap.put(Direction.EAST, wEast);
-		
-		Image wS = new Image(TILE_WALL_SOUTH, false, Image.FILTER_NEAREST);
-		Image[] wSouth = { wS };
-		wallMap.put(Direction.SOUTH, wSouth);
-		
-		Image wW = new Image(TILE_WALL_WEST, false, Image.FILTER_NEAREST);
-		Image[] wWest = { wW };
-		wallMap.put(Direction.WEST, wWest);
-
-		tileMap.put(TileType.WALL, wallMap);
-	}
-	
-	private void addCornerImages() throws SlickException {
-		HashMap<Direction, Image[]> wallMap = new HashMap<>();
-
-		Image wcN = new Image(TILE_CORNER_NORTH, false, Image.FILTER_NEAREST);
-		Image[] wcNorth = { wcN };
-		wallMap.put(Direction.NORTH, wcNorth);
-
-		Image wcE = new Image(TILE_CORNER_EAST, false, Image.FILTER_NEAREST);
-		Image[] wcEast = { wcE };
-		wallMap.put(Direction.EAST, wcEast);
-		
-		Image wcS = new Image(TILE_CORNER_SOUTH, false, Image.FILTER_NEAREST);
-		Image[] wcSouth = { wcS };
-		wallMap.put(Direction.SOUTH, wcSouth);
-		
-		Image wcW = new Image(TILE_CORNER_WEST, false, Image.FILTER_NEAREST);
-		Image[] wcWest = { wcW };
-		wallMap.put(Direction.WEST, wcWest);
-
-		tileMap.put(TileType.WALL_CORNER, wallMap);
-	}
-	
-	private void addDoorImages() throws SlickException {
+		HashMap<Direction, Image[]> cornerMap = new HashMap<>();
 		HashMap<Direction, Image[]> doorMap = new HashMap<>();
 
-		Image dN = new Image(TILE_DOOR_NORTH, false, Image.FILTER_NEAREST);
-		Image[] dNorth = { dN };
+		//wall sprites
+		Image[] wNorth = { walls.getSprite(0, 0) };
+		wallMap.put(Direction.NORTH, wNorth);
+		
+		Image[] wSouth = { walls.getSprite(1, 0) };
+		wallMap.put(Direction.SOUTH, wSouth);
+
+		Image[] wSide = { walls.getSprite(2, 0) };
+		wallMap.put(Direction.EAST, wSide);
+		wallMap.put(Direction.WEST, wSide);		
+		
+		//corner sprites
+		Image[] wcEast = { walls.getSprite(3, 0) };
+		cornerMap.put(Direction.EAST, wcEast);
+		
+		Image[] wcNorth = { walls.getSprite(4, 0) };
+		cornerMap.put(Direction.NORTH, wcNorth);
+		
+		Image[] wcSouth = { walls.getSprite(5, 0) };
+		cornerMap.put(Direction.SOUTH, wcSouth);
+		
+		Image[] wcWest = { walls.getSprite(6, 0) };
+		cornerMap.put(Direction.WEST, wcWest);
+		
+		//door sprites
+		Image[] dNorth = { walls.getSprite(7, 0) };
 		doorMap.put(Direction.NORTH, dNorth);
 
-		Image dS = new Image(TILE_DOOR_SOUTH, false, Image.FILTER_NEAREST);
-		Image[] dSouth = { dS };
+		Image[] dSouth = { walls.getSprite(8, 0) };
 		doorMap.put(Direction.SOUTH, dSouth);
 
+		tileMap.put(TileType.WALL, wallMap);
+		tileMap.put(TileType.WALL_CORNER, cornerMap);
 		tileMap.put(TileType.DOOR, doorMap);
 	}
 
@@ -241,18 +227,7 @@ public class SpriteLocations {
 
 	public static final String TILE_WALL = "/res/sprites/tiles/wall.png";
 	
-	public static final String TILE_WALL_NORTH = "/res/sprites/tiles/wallNorth.png";
-	public static final String TILE_WALL_SOUTH = "/res/sprites/tiles/wallSouth.png";
-	public static final String TILE_WALL_EAST = "/res/sprites/tiles/wallSide.png";
-	public static final String TILE_WALL_WEST = "/res/sprites/tiles/wallSide.png";
-	
-	public static final String TILE_CORNER_NORTH = "/res/sprites/tiles/wallCornerNorthWest.png";
-	public static final String TILE_CORNER_SOUTH = "/res/sprites/tiles/wallCornerSouthEast.png";
-	public static final String TILE_CORNER_EAST = "/res/sprites/tiles/wallCornerNorthEast.png";
-	public static final String TILE_CORNER_WEST = "/res/sprites/tiles/wallCornerSouthWest.png";
-	
-	public static final String TILE_DOOR_NORTH = "/res/sprites/tiles/doorNorth.png";
-	public static final String TILE_DOOR_SOUTH = "/res/sprites/tiles/doorSouth.png";
+	public static final String TILE_WALLS = "res/sprites/tiles/walls.png";
 
 	// PLAYER SPRITE LOCATIONS
 	public static final String PLAYER_BLONDE_NORTH_WALK1 = "/res/sprites/players/blonde/PlayerBlondeNorthWalk1.png";

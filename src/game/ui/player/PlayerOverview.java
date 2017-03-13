@@ -1,4 +1,4 @@
-package game.ui;
+package game.ui.player;
 
 import java.util.List;
 
