@@ -21,170 +21,202 @@ public class SpriteLocations {
 		return tileMap;
 	}
 
+	/**
+	 * Creates a map between a tile and the sprites for that tile
+	 * 
+	 * @throws SlickException
+	 */
 	private void createTileMap() throws SlickException {
-		addFloorImages();
-		addComputerImages();
-		addDeskImages();
-		addChairImages();
-		addCoffeeImages();
-		addSofaImages();
-		addDecorativeImages();
-		addFishTankImages();
+
+		Image tileSheet = new Image(TILES, false, Image.FILTER_NEAREST);
+		SpriteSheet sprites = new SpriteSheet(tileSheet, 64, 128);
+		addFloorImages(sprites);
+		addComputerImages(sprites);
+		addDeskImages(sprites);
+		addChairImages(sprites);
+		addCoffeeImages(sprites);
+		addSofaImages(sprites);
+		addFishTankImages(sprites);
 		addWallImages();
 	}
 
-	private void addFloorImages() throws SlickException {
+	/**
+	 * Adds the floor images to the map
+	 * 
+	 * @param sprites
+	 *            The sprite sheet
+	 * @throws SlickException
+	 */
+	private void addFloorImages(SpriteSheet sprites) throws SlickException {
 		HashMap<Direction, Image[]> floorMap = new HashMap<>();
 
-		Image fl1 = new Image(TILE_FLOOR, false, Image.FILTER_NEAREST);
-		Image[] floors = { fl1 };
+		Image[] floors = { sprites.getSprite(0, 0) };
 		floorMap.put(Direction.NORTH, floors);
 		tileMap.put(TileType.FLOOR, floorMap);
 	}
 
-	private void addComputerImages() throws SlickException {
+	/**
+	 * Adds the computer images to the map
+	 * 
+	 * @param sprites
+	 *            The sprite sheet
+	 * @throws SlickException
+	 */
+	private void addComputerImages(SpriteSheet sprites) throws SlickException {
 		HashMap<Direction, Image[]> pcMap = new HashMap<>();
 
-		Image pcN = new Image(TILE_PC_NORTH, false, Image.FILTER_NEAREST);
-		Image[] pcNorth = { pcN };
+		Image[] pcNorth = { sprites.getSprite(1, 3) };
 		pcMap.put(Direction.NORTH, pcNorth);
 
-		Image pcS = new Image(TILE_PC_SOUTH, false, Image.FILTER_NEAREST);
-		Image[] pcSouth = { pcS };
+		Image[] pcSouth = { sprites.getSprite(0, 3) };
 		pcMap.put(Direction.SOUTH, pcSouth);
 
 		tileMap.put(TileType.COMPUTER, pcMap);
 	}
 
-	private void addDeskImages() throws SlickException {
+	/**
+	 * Adds the desk images to the map
+	 * 
+	 * @param sprites
+	 *            The sprite sheet
+	 * @throws SlickException
+	 */
+	private void addDeskImages(SpriteSheet sprites) throws SlickException {
 		HashMap<Direction, Image[]> deskMap = new HashMap<>();
 
-		Image dN = new Image(TILE_DESK_END_NORTH, false, Image.FILTER_NEAREST);
-		Image[] deskNorth = { dN };
+		Image[] deskNorth = { sprites.getSprite(4, 6) };
 		deskMap.put(Direction.NORTH, deskNorth);
 
-		Image dS = new Image(TILE_DESK_END_SOUTH, false, Image.FILTER_NEAREST);
-		Image[] deskSouth = { dS };
+		Image[] deskSouth = { sprites.getSprite(3, 6) };
 		deskMap.put(Direction.SOUTH, deskSouth);
 
-		Image dE = new Image(TILE_DESK_END_EAST, false, Image.FILTER_NEAREST);
-		Image[] deskEast = { dE };
+		Image[] deskEast = { sprites.getSprite(0, 6) };
 		deskMap.put(Direction.EAST, deskEast);
 
-		Image dW = new Image(TILE_DESK_END_WEST, false, Image.FILTER_NEAREST);
-		Image[] deskWest = { dW };
+		Image[] deskWest = { sprites.getSprite(2, 6) };
 		deskMap.put(Direction.WEST, deskWest);
 
 		tileMap.put(TileType.DESK, deskMap);
 	}
 
-	private void addChairImages() throws SlickException {
+	/**
+	 * Adds the chair images to the map
+	 * 
+	 * @param sprites
+	 *            The sprite sheet
+	 * @throws SlickException
+	 */
+	private void addChairImages(SpriteSheet sprites) throws SlickException {
 		HashMap<Direction, Image[]> chairMap = new HashMap<>();
 
-		Image chN = new Image(TILE_CHAIR_NORTH, false, Image.FILTER_NEAREST);
-		Image[] chNorth = { chN };
+		Image[] chNorth = { sprites.getSprite(1, 2) };
 		chairMap.put(Direction.NORTH, chNorth);
 
-		Image chS = new Image(TILE_CHAIR_SOUTH, false, Image.FILTER_NEAREST);
-		Image[] chSouth = { chS };
+		Image[] chSouth = { sprites.getSprite(0, 2) };
 		chairMap.put(Direction.SOUTH, chSouth);
 
-		Image chE = new Image(TILE_CHAIR_EAST, false, Image.FILTER_NEAREST);
-		Image[] chEast = { chE };
+		Image[] chEast = { sprites.getSprite(1, 2) };
 		chairMap.put(Direction.EAST, chEast);
 
-		Image chW = new Image(TILE_CHAIR_WEST, false, Image.FILTER_NEAREST);
-		Image[] chWest = { chW };
+		Image[] chWest = { sprites.getSprite(1, 2) };
 		chairMap.put(Direction.WEST, chWest);
 
 		tileMap.put(TileType.CHAIR, chairMap);
 	}
 
-	private void addCoffeeImages() throws SlickException {
+	/**
+	 * Adds the coffee images to the map
+	 * 
+	 * @param sprites
+	 *            The sprite sheet
+	 * @throws SlickException
+	 */
+	private void addCoffeeImages(SpriteSheet sprites) throws SlickException {
 		HashMap<Direction, Image[]> coffeeMap = new HashMap<>();
 
-		Image cmE = new Image(TILE_COFFEE_MACHINE_EAST, false, Image.FILTER_NEAREST);
-		Image[] cmEast = { cmE };
+		Image[] cmEast = { sprites.getSprite(0, 1) };
 		coffeeMap.put(Direction.EAST, cmEast);
 
-		Image cmW = new Image(TILE_COFFEE_MACHINE_WEST, false, Image.FILTER_NEAREST);
-		Image[] cmWest = { cmW };
+		Image[] cmWest = { sprites.getSprite(1, 1) };
 		coffeeMap.put(Direction.WEST, cmWest);
 
 		tileMap.put(TileType.COFFEE_MACHINE, coffeeMap);
 	}
 
-	private void addSofaImages() throws SlickException {
+	/**
+	 * Adds the sofa images to the map
+	 * 
+	 * @param sprites
+	 *            The sprite sheet
+	 * @throws SlickException
+	 */
+	private void addSofaImages(SpriteSheet sprites) throws SlickException {
 		HashMap<Direction, Image[]> sofaMap = new HashMap<>();
 
-		Image sNR = new Image(TILE_SOFA_NORTH_RIGHT, false, Image.FILTER_NEAREST);
-		Image sNL = new Image(TILE_SOFA_NORTH_LEFT, false, Image.FILTER_NEAREST);
-		Image[] sNorth = { sNL, sNR };
+		Image[] sNorth = { sprites.getSprite(0, 5), sprites.getSprite(1, 5) };
 		sofaMap.put(Direction.NORTH, sNorth);
 
-		Image sSR = new Image(TILE_SOFA_SOUTH_RIGHT, false, Image.FILTER_NEAREST);
-		Image sSL = new Image(TILE_SOFA_SOUTH_LEFT, false, Image.FILTER_NEAREST);
-		Image[] sSouth = { sSR, sSL };
+		Image[] sSouth = { sprites.getSprite(2, 5), sprites.getSprite(3, 5) };
 		sofaMap.put(Direction.SOUTH, sSouth);
 
 		tileMap.put(TileType.SOFA, sofaMap);
 	}
 
-	private void addDecorativeImages() throws SlickException {
-		HashMap<Direction, Image[]> decorationMap = new HashMap<>();
-
-		Image decN = new Image(TILE_PLANT, false, Image.FILTER_NEAREST);
-		Image[] decNorth = { decN };
-		decorationMap.put(Direction.EAST, decNorth);
-
-		tileMap.put(TileType.PLANT, decorationMap);
-	}
-
-	private void addFishTankImages() throws SlickException {
+	/**
+	 * Adds the fish tank images to the map
+	 * 
+	 * @param sprites
+	 *            The sprite sheet
+	 * @throws SlickException
+	 */
+	private void addFishTankImages(SpriteSheet sprites) throws SlickException {
 		HashMap<Direction, Image[]> fishTankMap = new HashMap<>();
 
-		Image fTL = new Image(TILE_FISH_TANK_LEFT, false, Image.FILTER_NEAREST);
-		Image fTR = new Image(TILE_FISH_TANK_RIGHT, false, Image.FILTER_NEAREST);
-		Image[] fTSouth = { fTL, fTR };
+		Image[] fTSouth = { sprites.getSprite(0, 4), sprites.getSprite(1, 4) };
 		fishTankMap.put(Direction.NORTH, fTSouth);
 
 		tileMap.put(TileType.FISH, fishTankMap);
 	}
-	
+
+	/**
+	 * Adds the wall images to the map
+	 * 
+	 * @throws SlickException
+	 */
 	private void addWallImages() throws SlickException {
-		//load sprite sheet
+		// load sprite sheet
 		Image wallSheet = new Image(TILE_WALLS, false, Image.FILTER_NEAREST);
 		SpriteSheet walls = new SpriteSheet(wallSheet, 64, 192);
-		
+
 		HashMap<Direction, Image[]> wallMap = new HashMap<>();
 		HashMap<Direction, Image[]> cornerMap = new HashMap<>();
 		HashMap<Direction, Image[]> doorMap = new HashMap<>();
 
-		//wall sprites
+		// wall sprites
 		Image[] wNorth = { walls.getSprite(0, 0) };
 		wallMap.put(Direction.NORTH, wNorth);
-		
+
 		Image[] wSouth = { walls.getSprite(1, 0) };
 		wallMap.put(Direction.SOUTH, wSouth);
 
 		Image[] wSide = { walls.getSprite(2, 0) };
 		wallMap.put(Direction.EAST, wSide);
-		wallMap.put(Direction.WEST, wSide);		
-		
-		//corner sprites
+		wallMap.put(Direction.WEST, wSide);
+
+		// corner sprites
 		Image[] wcEast = { walls.getSprite(3, 0) };
 		cornerMap.put(Direction.EAST, wcEast);
-		
+
 		Image[] wcNorth = { walls.getSprite(4, 0) };
 		cornerMap.put(Direction.NORTH, wcNorth);
-		
+
 		Image[] wcSouth = { walls.getSprite(5, 0) };
 		cornerMap.put(Direction.SOUTH, wcSouth);
-		
+
 		Image[] wcWest = { walls.getSprite(6, 0) };
 		cornerMap.put(Direction.WEST, wcWest);
-		
-		//door sprites
+
+		// door sprites
 		Image[] dNorth = { walls.getSprite(7, 0) };
 		doorMap.put(Direction.NORTH, dNorth);
 
@@ -197,36 +229,10 @@ public class SpriteLocations {
 	}
 
 	// TILE LOCATIONS
-	public static final String TILE_FLOOR = "/res/sprites/tiles/floor.png";
-
-	public static final String TILE_PC_NORTH = "/res/sprites/tiles/computerNorth.png";
-	public static final String TILE_PC_SOUTH = "/res/sprites/tiles/computerSouth.png";
-
-	public static final String TILE_DESK_END_NORTH = "/res/sprites/tiles/deskEndNorth.png";
-	public static final String TILE_DESK_END_SOUTH = "/res/sprites/tiles/deskEndSouth.png";
-	public static final String TILE_DESK_END_EAST = "/res/sprites/tiles/deskEndEast.png";
-	public static final String TILE_DESK_END_WEST = "/res/sprites/tiles/deskEndWest.png";
-
-	public static final String TILE_CHAIR_NORTH = "/res/sprites/tiles/chairNorth.png";
-	public static final String TILE_CHAIR_SOUTH = "/res/sprites/tiles/chairSouth.png";
-	public static final String TILE_CHAIR_EAST = "/res/sprites/tiles/chairNorth.png";
-	public static final String TILE_CHAIR_WEST = "/res/sprites/tiles/chairNorth.png";
-
-	public static final String TILE_COFFEE_MACHINE_EAST = "/res/sprites/tiles/coffeeEast.png";
-	public static final String TILE_COFFEE_MACHINE_WEST = "/res/sprites/tiles/coffeeWest.png";
-
-	public static final String TILE_SOFA_NORTH_LEFT = "/res/sprites/tiles/sofaNorthLeft.png";
-	public static final String TILE_SOFA_NORTH_RIGHT = "/res/sprites/tiles/sofaNorthRight.png";
-	public static final String TILE_SOFA_SOUTH_LEFT = "/res/sprites/tiles/sofaSouthLeft.png";
-	public static final String TILE_SOFA_SOUTH_RIGHT = "/res/sprites/tiles/sofaSouthRight.png";
-
-	public static final String TILE_PLANT = "/res/sprites/tiles/plant.png";
-
-	public static final String TILE_FISH_TANK_LEFT = "/res/sprites/tiles/fishTankLeft.png";
-	public static final String TILE_FISH_TANK_RIGHT = "/res/sprites/tiles/fishTankRight.png";
+	public static final String TILES = "/res/sprites/tiles/wall.png";
 
 	public static final String TILE_WALL = "/res/sprites/tiles/wall.png";
-	
+
 	public static final String TILE_WALLS = "res/sprites/tiles/walls.png";
 
 	// PLAYER SPRITE LOCATIONS
