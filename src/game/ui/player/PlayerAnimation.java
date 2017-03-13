@@ -22,7 +22,7 @@ public class PlayerAnimation {
 		switch (colour) {
 		case 0:
 			Image playerSheet = new Image(SpriteLocations.PLAYER_BLONDE_STANDING, false, Image.FILTER_NEAREST);
-			player = new SpriteSheet(playerSheet, 30, 50, 16, 9);
+			player = new SpriteSheet(playerSheet, 30, 50, 34, 10);
 
 			cN[0] = new Image(SpriteLocations.PLAYER_BLONDE_NORTH_SEAT, false, Image.FILTER_NEAREST);
 			cS[0] = player.getSprite(2, 0);
@@ -32,30 +32,30 @@ public class PlayerAnimation {
 			break;
 		case 1:
 			playerSheet = new Image(SpriteLocations.PLAYER_DARK_STANDING, false, Image.FILTER_NEAREST);
-			player = new SpriteSheet(playerSheet, 30, 50, 16, 9);
+			player = new SpriteSheet(playerSheet, 30, 50, 14, 10);
 
 			cN[0] = new Image(SpriteLocations.PLAYER_DARK_NORTH_SEAT, false, Image.FILTER_NEAREST);
-			cS[0] = new Image(SpriteLocations.PLAYER_DARK_STANDING_SOUTH, false, Image.FILTER_NEAREST);
+			cS[0] = player.getSprite(2, 0);;
 
 			sN[0] = new Image(SpriteLocations.PLAYER_DARK_NORTH_SLEEP, false, Image.FILTER_NEAREST);
 			sS[0] = new Image(SpriteLocations.PLAYER_DARK_SOUTH_SLEEP, false, Image.FILTER_NEAREST);
 			break;
 		case 2:
 			playerSheet = new Image(SpriteLocations.PLAYER_BROWN_STANDING, false, Image.FILTER_NEAREST);
-			player = new SpriteSheet(playerSheet, 30, 50, 16, 9);
+			player = new SpriteSheet(playerSheet, 30, 50, 14, 10);
 
 			cN[0] = new Image(SpriteLocations.PLAYER_BROWN_NORTH_SEAT, false, Image.FILTER_NEAREST);
-			cS[0] = new Image(SpriteLocations.PLAYER_BROWN_STANDING_SOUTH, false, Image.FILTER_NEAREST);
+			cS[0] = player.getSprite(2, 0);;
 
 			sN[0] = new Image(SpriteLocations.PLAYER_BROWN_NORTH_SLEEP, false, Image.FILTER_NEAREST);
 			sS[0] = new Image(SpriteLocations.PLAYER_BROWN_SOUTH_SLEEP, false, Image.FILTER_NEAREST);
 			break;
 		case 3:
 			playerSheet = new Image(SpriteLocations.PLAYER_PINK_STANDING, false, Image.FILTER_NEAREST);
-			player = new SpriteSheet(playerSheet, 30, 50, 16, 9);
+			player = new SpriteSheet(playerSheet, 30, 50, 14, 10);
 
 			cN[0] = new Image(SpriteLocations.PLAYER_PINK_NORTH_SEAT, false, Image.FILTER_NEAREST);
-			cS[0] = new Image(SpriteLocations.PLAYER_PINK_STANDING_SOUTH, false, Image.FILTER_NEAREST);
+			cS[0] = player.getSprite(2, 0);;
 
 			sN[0] = new Image(SpriteLocations.PLAYER_PINK_NORTH_SLEEP, false, Image.FILTER_NEAREST);
 			sS[0] = new Image(SpriteLocations.PLAYER_PINK_SOUTH_SLEEP, false, Image.FILTER_NEAREST);
@@ -72,11 +72,10 @@ public class PlayerAnimation {
 		Image[] w = new Image[walkLength];
 
 		for (int i = 0; i < walkLength; i++) {
-			n[i] = player.getSprite(0, i + 1);
-			w[i] = player.getSprite(1, i + 1);
-			e[i] = player.getSprite(2, i + 1);
-			s[i] = player.getSprite(3, i + 1);
-
+			n[i] = player.getSprite(i + 1, 0);
+			w[i] = player.getSprite(i, 1);
+			s[i] = player.getSprite(i + 1, 2);
+			e[i] = player.getSprite(i, 3);
 		}
 
 		createAnimation(n, e, s, w, cN, cS, sN, sS, initialDirection);
@@ -87,10 +86,10 @@ public class PlayerAnimation {
 			Image[] sleepNorthAnimations, Image[] sleepSouthAnimations, Direction initialDirection) {
 		int duration = 100;
 
-		moveNorth = new Animation(northAnimations, duration, false);
-		moveEast = new Animation(eastAnimations, duration, false);
-		moveSouth = new Animation(southAnimations, duration, false);
-		moveWest = new Animation(westAnimations, duration, false);
+		moveNorth = new Animation(northAnimations, duration, true);
+		moveEast = new Animation(eastAnimations, duration, true);
+		moveSouth = new Animation(southAnimations, duration, true);
+		moveWest = new Animation(westAnimations, duration, true);
 		seatedNorth = new Animation(seatedNorthAnimations, duration, false);
 		seatedSouth = new Animation(seatedSouthAnimations, duration, false);
 		sleepNorth = new Animation(sleepNorthAnimations, duration, false);
