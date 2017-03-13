@@ -156,7 +156,7 @@ public class SpriteLocations {
 		Image[] sNorth = { sprites.getSprite(0, 5), sprites.getSprite(1, 5) };
 		sofaMap.put(Direction.NORTH, sNorth);
 
-		Image[] sSouth = { sprites.getSprite(2, 5), sprites.getSprite(3, 5) };
+		Image[] sSouth = { sprites.getSprite(3, 5), sprites.getSprite(2, 5) };
 		sofaMap.put(Direction.SOUTH, sSouth);
 
 		tileMap.put(TileType.SOFA, sofaMap);
@@ -229,7 +229,7 @@ public class SpriteLocations {
 	}
 
 	// TILE LOCATIONS
-	public static final String TILES = "/res/sprites/tiles/wall.png";
+	public static final String TILES = "/res/sprites/tiles/tiles.png";
 
 	public static final String TILE_WALL = "/res/sprites/tiles/wall.png";
 

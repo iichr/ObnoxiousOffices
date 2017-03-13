@@ -32,9 +32,6 @@ public class Rules extends BasicGameState {
 	private String rules;
 	private int tileSize = 100;
 
-	// testing with some arbitrary sprites
-	// TODO fetch from the SpriteLocations interface once finalised.
-	private Image desk1, desk2, coffee, hack, sofa1, sofa2;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
@@ -53,14 +50,6 @@ public class Rules extends BasicGameState {
 			font.getEffects().add(new ColorEffect());
 			font.loadGlyphs();
 		}
-
-		// Object images
-		desk1 = new Image(SpriteLocations.TILE_DESK_END_EAST).getScaledCopy(tileSize, tileSize);
-		desk2 = new Image(SpriteLocations.TILE_DESK_END_WEST).getScaledCopy(tileSize, tileSize);
-		coffee = new Image(SpriteLocations.TILE_COFFEE_MACHINE_WEST).getScaledCopy(tileSize, tileSize);
-		hack = new Image(SpriteLocations.TILE_PC_NORTH).getScaledCopy(tileSize, tileSize);
-		sofa1 = new Image(SpriteLocations.TILE_SOFA_NORTH_LEFT).getScaledCopy(tileSize, tileSize);
-		sofa2 = new Image(SpriteLocations.TILE_SOFA_NORTH_RIGHT).getScaledCopy(tileSize, tileSize);
 
 		// character encoding: \u0027 for apostrophe
 		gameTitle = "DevWars";
@@ -95,20 +84,6 @@ public class Rules extends BasicGameState {
 		g.drawString(gameTitle, (Vals.SCREEN_WIDTH - Vals.FONT_MAIN.getWidth(gameTitle)) / 2, 30);
 
 		g.setFont(Vals.FONT_RULES);
-		
-		// work
-		g.drawImage(desk1, Vals.RULES_SECT_LEFT_W / 2 - desk1.getWidth(), 200);
-		g.drawImage(desk2, Vals.RULES_SECT_LEFT_W / 2 - desk1.getWidth() + desk2.getWidth(), 200);
-		
-		// coffee
-		g.drawImage(coffee, Vals.RULES_SECT_LEFT_W / 2 - coffee.getWidth() / 2, 470);
-		
-		// hack
-		g.drawImage(hack, Vals.RULES_SECT_LEFT_W / 2 - hack.getWidth() / 2, 320);
-		
-		// nap
-		g.drawImage(sofa1, Vals.RULES_SECT_LEFT_W / 2 - sofa1.getWidth(), 572);
-		g.drawImage(sofa2, Vals.RULES_SECT_LEFT_W / 2 - sofa1.getWidth() + sofa2.getWidth(), 572);
 
 		// add back button
 		backButton.render();
