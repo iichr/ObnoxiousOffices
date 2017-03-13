@@ -25,7 +25,7 @@ public class PlayerAnimation {
 			player = new SpriteSheet(playerSheet, 30, 50, 34, 10);
 
 			cN[0] = new Image(SpriteLocations.PLAYER_BLONDE_NORTH_SEAT, false, Image.FILTER_NEAREST);
-			cS[0] = player.getSprite(2, 0);
+			cS[0] = player.getSprite(2, 2);
 
 			sN[0] = new Image(SpriteLocations.PLAYER_BLONDE_NORTH_SLEEP, false, Image.FILTER_NEAREST);
 			sS[0] = new Image(SpriteLocations.PLAYER_BLONDE_SOUTH_SLEEP, false, Image.FILTER_NEAREST);
@@ -35,7 +35,7 @@ public class PlayerAnimation {
 			player = new SpriteSheet(playerSheet, 30, 50, 34, 10);
 
 			cN[0] = new Image(SpriteLocations.PLAYER_DARK_NORTH_SEAT, false, Image.FILTER_NEAREST);
-			cS[0] = player.getSprite(2, 0);;
+			cS[0] = player.getSprite(2, 2);;
 
 			sN[0] = new Image(SpriteLocations.PLAYER_DARK_NORTH_SLEEP, false, Image.FILTER_NEAREST);
 			sS[0] = new Image(SpriteLocations.PLAYER_DARK_SOUTH_SLEEP, false, Image.FILTER_NEAREST);
@@ -45,7 +45,7 @@ public class PlayerAnimation {
 			player = new SpriteSheet(playerSheet, 30, 50, 34, 10);
 
 			cN[0] = new Image(SpriteLocations.PLAYER_BROWN_NORTH_SEAT, false, Image.FILTER_NEAREST);
-			cS[0] = player.getSprite(2, 0);;
+			cS[0] = player.getSprite(2, 2);;
 
 			sN[0] = new Image(SpriteLocations.PLAYER_BROWN_NORTH_SLEEP, false, Image.FILTER_NEAREST);
 			sS[0] = new Image(SpriteLocations.PLAYER_BROWN_SOUTH_SLEEP, false, Image.FILTER_NEAREST);
@@ -55,7 +55,7 @@ public class PlayerAnimation {
 			player = new SpriteSheet(playerSheet, 30, 50, 34, 10);
 
 			cN[0] = new Image(SpriteLocations.PLAYER_PINK_NORTH_SEAT, false, Image.FILTER_NEAREST);
-			cS[0] = player.getSprite(2, 0);;
+			cS[0] = player.getSprite(2, 2);;
 
 			sN[0] = new Image(SpriteLocations.PLAYER_PINK_NORTH_SLEEP, false, Image.FILTER_NEAREST);
 			sS[0] = new Image(SpriteLocations.PLAYER_PINK_SOUTH_SLEEP, false, Image.FILTER_NEAREST);
