@@ -37,7 +37,7 @@ public abstract class MiniGame extends DataHolder implements Updateable {
 
     public abstract void onInput(PlayerInputEvent event);
 
-    protected void setStat(String player, String stat, int val) {
+    public void setStat(String player, String stat, int val) {
         if(!stats.containsKey(player)) {
             addPlayer(player);
         }
@@ -74,13 +74,22 @@ public abstract class MiniGame extends DataHolder implements Updateable {
         return ended;
     }
 
-    protected void end(String player) {
+    @Override
+    public void end() {
+        end("none");
+    }
+
+    protected void end(String winner) {
         ended = true;
-        Events.trigger(new MiniGameEndedEvent(getPlayers(), player));
+        Events.trigger(new MiniGameEndedEvent(getPlayers(), winner));
     }
 
     @Override
     protected MiniGameVarChangedEvent getUpdateEvent(String var, Object val) {
         return new MiniGameVarChangedEvent(var, val);
+    }
+
+    public boolean hasPlayer(String playerName) {
+        return players.contains(playerName);
     }
 }

@@ -1,8 +1,11 @@
 package game.core.world;
 
 import game.core.Updateable;
+import game.core.event.Event;
 import game.core.event.Events;
 import game.core.event.minigame.MiniGameStartedEvent;
+import game.core.event.player.PlayerEvent;
+import game.core.event.player.PlayerQuitEvent;
 import game.core.minigame.MiniGame;
 import game.core.player.Player;
 import game.core.util.Coordinates;
@@ -39,9 +42,20 @@ public class World implements Updateable, Serializable {
         zSize = sizeZ;
         ySize = sizeY;
         xSize = sizeX;
+        Events.on(PlayerQuitEvent.class, this::onPlayerQuit);
     }
 
-	public void startMiniGame(MiniGame game) {
+    private void onPlayerQuit(PlayerQuitEvent event) {
+        removePlayer(event.playerName);
+    }
+
+    public void removePlayer(String name) {
+        MiniGame minigame = getMiniGame(name);
+        if(minigame != null) minigame.end();
+        players.remove(getPlayer(name));
+    }
+
+    public void startMiniGame(MiniGame game) {
         miniGames.add(game);
         Events.trigger(new MiniGameStartedEvent(game));
     }
@@ -71,6 +85,11 @@ public class World implements Updateable, Serializable {
     @Override
     public boolean ended() {
         return false;
+    }
+
+    @Override
+    public void end() {
+
     }
 
     /**
@@ -213,4 +232,8 @@ public class World implements Updateable, Serializable {
 		players.remove(playerNumber);
 		
 	}
+
+    public MiniGame getMiniGame(String playerName) {
+        return miniGames.stream().filter(m -> m.hasPlayer(playerName)).findFirst().orElse(null);
+    }
 }
