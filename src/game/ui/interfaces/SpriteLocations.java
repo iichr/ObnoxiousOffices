@@ -154,7 +154,7 @@ public class SpriteLocations {
 	private void addWallImages() throws SlickException {
 		//load sprite sheet
 		Image wallSheet = new Image(TILE_WALLS, false, Image.FILTER_NEAREST);
-		SpriteSheet walls = new SpriteSheet(wallSheet, 64, 196);
+		SpriteSheet walls = new SpriteSheet(wallSheet, 64, 192);
 		
 		HashMap<Direction, Image[]> wallMap = new HashMap<>();
 		HashMap<Direction, Image[]> cornerMap = new HashMap<>();
