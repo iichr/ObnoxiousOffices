@@ -30,7 +30,7 @@ public class Game extends StateBasedGame {
 	private PlayTest playtestState;
 
 	/**
-	 * Constructor sets up states and event listeners
+	 * Constructor: sets up states and event listeners
 	 * 
 	 * @param gamename
 	 *            The name of the game

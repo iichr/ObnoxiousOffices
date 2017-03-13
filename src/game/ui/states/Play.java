@@ -205,11 +205,13 @@ public class Play extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setFont(Vals.FONT_PLAY);
 		boolean[][] visible = findVisibles();
+		
 		// renders world
 		drawWorld(visible);
 		cb.render(gc, g);
+		
 		// add effects overview container
-		effectOverview.render(g);
+		effectOverview.render();
 
 		// shows selectors
 		if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {

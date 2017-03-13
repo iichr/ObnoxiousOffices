@@ -2,7 +2,6 @@ package game.ui.components;
 
 import java.util.HashMap;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -17,9 +16,14 @@ public class WordGenerator {
 	HashMap<Character, Image> wgB = new HashMap<>();
 	int a = (int) 'a';
 
+	/**
+	 * Constructor: loads all of the images needed by the word generator
+	 * 
+	 * @throws SlickException
+	 */
 	public WordGenerator() throws SlickException {
-		
-		//TODO extra characters and bold versions
+
+		// TODO extra characters and bold versions
 		for (char c = 'A'; c <= 'Z'; c++) {
 			wg.put(c, new Image("res/alphabets/normal/" + c + ".png"));
 			wg.put((char) (c + 32), new Image("res/alphabets/normal/" + c + ".png"));
@@ -33,14 +37,14 @@ public class WordGenerator {
 		}
 		wg.put('_', new Image("res/alphabets/normal/_.png"));
 		wgB.put('_', new Image("res/alphabets/bold/_.png"));
-		wg.put((char)32, new Image ("res/alphabets/Space.png"));
-		wgB.put((char)32, new Image ("res/alphabets/Space.png"));
-		wg.put('%', new Image ("res/alphabets/normal/percentage.png"));
-		wgB.put('%', new Image ("res/alphabets/bold/percentage.png"));
-		wg.put('<',new Image("res/alphabets/normal/arrowL.png"));
-		wg.put('>',new Image("res/alphabets/normal/arrowR.png"));
-		wgB.put('<',new Image("res/alphabets/bold/arrowL.png"));
-		wgB.put('>',new Image("res/alphabets/bold/arrowR.png"));
+		wg.put((char) 32, new Image("res/alphabets/Space.png"));
+		wgB.put((char) 32, new Image("res/alphabets/Space.png"));
+		wg.put('%', new Image("res/alphabets/normal/percentage.png"));
+		wgB.put('%', new Image("res/alphabets/bold/percentage.png"));
+		wg.put('<', new Image("res/alphabets/normal/arrowL.png"));
+		wg.put('>', new Image("res/alphabets/normal/arrowR.png"));
+		wgB.put('<', new Image("res/alphabets/bold/arrowL.png"));
+		wgB.put('>', new Image("res/alphabets/bold/arrowR.png"));
 		height = wg.get('%').getHeight();
 		width = wg.get('%').getWidth();
 
@@ -72,16 +76,20 @@ public class WordGenerator {
 			f += img.getWidth() * scale;
 		}
 	}
+
 	/**
-	 * Get the Width and Height of a generated Word  as a Pair
-	 * @return Pair(Width, Height) 
+	 * Gets the width and height of a generated word
 	 * 
+	 * @param text
+	 *            The text to get the width and height of
+	 * @param scale
+	 *            The scale to be used for the image
+	 * @return A pair <Width, Height>
 	 */
-	
-	public Pair<Float,Float> getWH(String text,float scale){
-		float totalWidth=text.length()*(width*scale);
-		return new Pair<>(totalWidth,height);
-		
+	public Pair<Float, Float> getWH(String text, float scale) {
+		float totalWidth = text.length() * (width * scale);
+		return new Pair<>(totalWidth, height);
+
 	}
 
 	/**
@@ -105,15 +113,15 @@ public class WordGenerator {
 		for (int length = 0; length < text.length(); length++) {
 			Image img = this.get(text.charAt(length), bold);
 			totalX += img.getScaledCopy(scale).getWidth();
-			if(img.getScaledCopy(scale).getHeight() > totalY){
+			if (img.getScaledCopy(scale).getHeight() > totalY) {
 				totalY = img.getScaledCopy(scale).getHeight();
 			}
 		}
-		
-		for(int length = 0; length < text.length(); length++) {
+
+		for (int length = 0; length < text.length(); length++) {
 			Image img = this.get(text.charAt(length), bold);
 			try {
-				g.drawImage(img.getScaledCopy(scale), f - totalX/2, h - totalY/2);
+				g.drawImage(img.getScaledCopy(scale), f - totalX / 2, h - totalY / 2);
 			} catch (NullPointerException e) {
 				System.err.println("The Player name contains invalid symbol that doesn't exist in the HashMap");
 			}
@@ -121,9 +129,18 @@ public class WordGenerator {
 		}
 	}
 
+	/**
+	 * Get the image for a particular character
+	 * 
+	 * @param c
+	 *            The character to get the image of
+	 * @param bold
+	 *            Whether the character is bold or not
+	 * @return The image for the given character
+	 */
 	public Image get(char c, boolean bold) {
-		if(bold){
-		return wgB.get(c);
+		if (bold) {
+			return wgB.get(c);
 		}
 		return wg.get(c);
 	}

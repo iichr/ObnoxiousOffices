@@ -1,7 +1,6 @@
 package game.ui.buttons;
 
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -11,7 +10,8 @@ public class Button extends Rectangle {
 	protected Animation select, unselect, button;
 
 	/**
-	 * Constructor: sets up variables needed for the button and creates the animation for the button
+	 * Constructor: sets up variables needed for the button and creates the
+	 * animation for the button
 	 * 
 	 * @param x
 	 *            The x position of the top left of the button
