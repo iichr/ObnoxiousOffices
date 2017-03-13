@@ -86,10 +86,10 @@ public class PlayerAnimation {
 			Image[] sleepNorthAnimations, Image[] sleepSouthAnimations, Direction initialDirection) {
 		int duration = 100;
 
-		moveNorth = new Animation(northAnimations, duration, true);
-		moveEast = new Animation(eastAnimations, duration, true);
-		moveSouth = new Animation(southAnimations, duration, true);
-		moveWest = new Animation(westAnimations, duration, true);
+		moveNorth = new Animation(northAnimations, duration, false);
+		moveEast = new Animation(eastAnimations, duration, false);
+		moveSouth = new Animation(southAnimations, duration, false);
+		moveWest = new Animation(westAnimations, duration, false);
 		seatedNorth = new Animation(seatedNorthAnimations, duration, false);
 		seatedSouth = new Animation(seatedSouthAnimations, duration, false);
 		sleepNorth = new Animation(sleepNorthAnimations, duration, false);

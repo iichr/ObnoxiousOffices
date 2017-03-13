@@ -43,6 +43,8 @@ public class PlayTest extends Play {
 		gameOver = false;
 		exit = false;
 
+		key = -1;
+
 		// test game finished screen
 		// Events.trigger(new GameFinishedEvent());
 	}
@@ -68,7 +70,8 @@ public class PlayTest extends Play {
 	}
 
 	/**
-	 * Testing method used to create a fake set of players and add them to the world
+	 * Testing method used to create a fake set of players and add them to the
+	 * world
 	 * 
 	 * @param w
 	 *            The world

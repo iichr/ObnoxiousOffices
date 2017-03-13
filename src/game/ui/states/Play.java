@@ -60,7 +60,8 @@ public class Play extends BasicGameState {
 	protected World world;
 	private HashMap<Player, PlayerAnimation> playerMap;
 	protected String localPlayerName;
-	private int ticks;
+	private final int rateMilliseconds = 250;
+	private long lastMove = 0;
 
 	// tile information
 	private float tileWidth;
@@ -78,8 +79,8 @@ public class Play extends BasicGameState {
 
 	// player info
 	private PlayerInfo playerinfo;
-	
-	private int key;
+
+	protected int key;
 
 	// overlays
 	private OptionsOverlay optionsOverlay;
@@ -143,7 +144,7 @@ public class Play extends BasicGameState {
 		playingPong = false;
 		playingHangman = false;
 		showOverview = false;
-		
+
 		key = -1;
 	}
 
@@ -201,6 +202,37 @@ public class Play extends BasicGameState {
 		// used to stop the music from playing
 		// bgmusic.stop();
 	}
+	
+	@Override
+	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+		Input input = gc.getInput();
+		Player localPlayer = world.getPlayer(localPlayerName);
+
+		cb.update(gc, localPlayerName);
+
+		effectOverview.updateEffects(localPlayer);
+
+		playerOverview.updateContainer(world.getPlayers());
+
+		if (exit) {
+			game.enterState(Vals.MENU_STATE);
+		}
+
+		long time = System.currentTimeMillis();
+        if (time - lastMove >= rateMilliseconds) {
+            canMove = true;
+        }
+
+		if (canMove) {
+			if (key >= 0) {
+				manageMovement(key);
+				canMove = false;
+				lastMove = time;
+			}
+		}
+
+		input.clearKeyPressedRecord();
+	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
@@ -234,37 +266,6 @@ public class Play extends BasicGameState {
 		} else if (showOverview) {
 			playerOverview.render(g);
 		}
-	}
-
-	@Override
-	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
-		Input input = gc.getInput();
-		Player localPlayer = world.getPlayer(localPlayerName);
-
-		cb.update(gc, localPlayerName);
-
-		effectOverview.updateEffects(localPlayer);
-
-		playerOverview.updateContainer(world.getPlayers());
-
-		if (exit) {
-			game.enterState(Vals.MENU_STATE);
-		}
-
-		input.clearKeyPressedRecord();
-		
-		if(ticks == 35){
-			canMove = true;
-			ticks = 0;
-		}
-		
-		if(canMove){
-			if(key >= 0){
-			manageMovement(key);
-			canMove = false;
-			}
-		}
-		ticks++;
 	}
 
 	private void manageMovement(int key) {
@@ -406,15 +407,12 @@ public class Play extends BasicGameState {
 	private void drawPlayers(int x, int y, float tileX, float tileY) {
 		// get players
 		List<Player> players = world.getPlayers();
-
 		// render the players
 		for (Player player : players) {
 			Location playerLocation = player.getLocation();
 			if (playerLocation.coords.x == x && playerLocation.coords.y == y) {
 				changeAnimation(player);
 				if (player.status.hasAction(PlayerActionSleep.class)) {
-					// draw sleeping players sideways
-					// check if next tile is in bounds
 					Location right = new Location(new Coordinates(x - 1, y, 0), world);
 					if (right.checkBounds()) {
 						playerMap.get(player).drawPlayer((x - 1) * tileWidth, (y + 2) * (tileHeight / 2), tileWidth * 2,
@@ -433,6 +431,7 @@ public class Play extends BasicGameState {
 				}
 			}
 		}
+
 	}
 
 	/**
