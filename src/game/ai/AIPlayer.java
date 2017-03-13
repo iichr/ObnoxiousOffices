@@ -7,9 +7,12 @@ import game.ai.ruleBasedAI.FireRules;
 import game.ai.ruleBasedAI.Rules;
 import game.ai.ruleBasedAI.UpdateMemory;
 import game.ai.ruleBasedAI.WorkingMemory;
+import game.core.event.Events;
+import game.core.event.player.PlayerQuitEvent;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
+import game.core.world.World;
 
 /**
  * @author Atanas K. Harbaliev Created on 18/01/2017
@@ -41,6 +44,10 @@ public class AIPlayer extends Player {
 	// serialVersion to shut eclipse
 	private static final long serialVersionUID = 1L;
 
+	static {
+		Events.on(PlayerQuitEvent.class, e -> World.world.addPlayer(new AIPlayer(World.world.getPlayer(e.playerName))));
+	}
+
 	// constructor from Player class
 	/**
 	 * Constructor
@@ -70,6 +77,14 @@ public class AIPlayer extends Player {
 
 		// initialise everything
 		initialise();
+	}
+
+	public AIPlayer(Player player) {
+		this(player.name, player.getFacing(), player.getLocation(), "e");
+		this.status = player.status;
+		this.setHair(player.getHair());
+		this.setProgress(player.getProgress());
+		this.timesDrunkCoffee = player.timesDrunkCoffee;
 	}
 
 	public void initialise() {
