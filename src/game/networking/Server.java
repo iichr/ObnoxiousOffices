@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import org.junit.runner.RunWith;
+
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
 import game.core.sync.ServerSync;
