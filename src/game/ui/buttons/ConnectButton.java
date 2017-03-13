@@ -16,6 +16,15 @@ import game.core.event.Events;
 public class ConnectButton extends Button {
 	private boolean active = true;
 
+	/**
+	 * Constructor: sets up variables needed for the button
+	 * @param x The x position of the top left of the button
+	 * @param y The y position of the top left of the button
+	 * @param width The width of the button
+	 * @param height The height of the button
+	 * @param normal The normal image for the button
+	 * @param alternate The rollover image for the button
+	 */
 	public ConnectButton(float x, float y, float width, float height, Image normal, Image alternate) {
 		super(x, y, width, height, normal, alternate);
 	}
