@@ -11,7 +11,7 @@ import game.util.Pair;
 public class MiniGamePong extends MiniGame2Player {
 
     public static final String Y_POS = "y", X_POS = "x", BALL_X_VEL = "bvx", BALL_Y_VEL = "bvy";
-    public static final int BOUND_Y = 10, BOUND_X = 10, PADDLE_LEN = 5, BALL_SIZE = 1;
+    public static final int BOUND_Y = 15, BOUND_X = 20, PADDLE_LEN = 5, BALL_SIZE = 1;
 
     public MiniGamePong(String player1, String player2) {
         super(player1, player2);
