@@ -60,6 +60,7 @@ public class Play extends BasicGameState {
 	protected World world;
 	private HashMap<Player, PlayerAnimation> playerMap;
 	protected String localPlayerName;
+	private int ticks;
 
 	// tile information
 	private float tileWidth;
@@ -77,6 +78,8 @@ public class Play extends BasicGameState {
 
 	// player info
 	private PlayerInfo playerinfo;
+	
+	private int key;
 
 	// overlays
 	private OptionsOverlay optionsOverlay;
@@ -84,15 +87,15 @@ public class Play extends BasicGameState {
 	private HangmanOverlay hangmanOverlay;
 	private PongOverlay pongOverlay;
 
-	boolean showOverview = false;
-
 	// boolean flags
+	private boolean canMove;
 	protected boolean options;
 	protected boolean gameOver;
 	protected boolean exit;
 	private boolean choosingHack;
 	private boolean playingPong;
 	private boolean playingHangman;
+	private boolean showOverview;
 
 	Music bgmusic;
 	private ChatBox cb;
@@ -132,12 +135,16 @@ public class Play extends BasicGameState {
 		this.localPlayerName = Player.localPlayerName;
 
 		// set boolean flags
+		canMove = true;
 		options = false;
 		gameOver = false;
 		exit = false;
 		choosingHack = false;
 		playingPong = false;
 		playingHangman = false;
+		showOverview = false;
+		
+		key = -1;
 	}
 
 	@Override
@@ -245,6 +252,44 @@ public class Play extends BasicGameState {
 		}
 
 		input.clearKeyPressedRecord();
+		
+		if(ticks == 35){
+			canMove = true;
+			ticks = 0;
+		}
+		
+		if(canMove){
+			if(key >= 0){
+			manageMovement(key);
+			canMove = false;
+			}
+		}
+		ticks++;
+	}
+
+	private void manageMovement(int key) {
+		switch (key) {
+		case Input.KEY_W:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
+			choosingHack = false;
+			actionSelector.setAction(0);
+			break;
+		case Input.KEY_S:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
+			choosingHack = false;
+			actionSelector.setAction(0);
+			break;
+		case Input.KEY_D:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
+			choosingHack = false;
+			actionSelector.setAction(0);
+			break;
+		case Input.KEY_A:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
+			choosingHack = false;
+			actionSelector.setAction(0);
+			break;
+		}
 	}
 
 	/**
@@ -588,24 +633,16 @@ public class Play extends BasicGameState {
 			showOverview = true;
 			break;
 		case Input.KEY_W:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
-			choosingHack = false;
-			actionSelector.setAction(0);
+			this.key = key;
 			break;
 		case Input.KEY_S:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
-			choosingHack = false;
-			actionSelector.setAction(0);
+			this.key = key;
 			break;
 		case Input.KEY_D:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
-			choosingHack = false;
-			actionSelector.setAction(0);
+			this.key = key;
 			break;
 		case Input.KEY_A:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
-			choosingHack = false;
-			actionSelector.setAction(0);
+			this.key = key;
 			break;
 		case Input.KEY_E:
 			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
@@ -670,6 +707,18 @@ public class Play extends BasicGameState {
 		switch (key) {
 		case Input.KEY_TAB:
 			showOverview = false;
+			break;
+		case Input.KEY_W:
+			this.key = -1;
+			break;
+		case Input.KEY_S:
+			this.key = -1;
+			break;
+		case Input.KEY_D:
+			this.key = -1;
+			break;
+		case Input.KEY_A:
+			this.key = -1;
 		}
 	}
 }
