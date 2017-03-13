@@ -236,49 +236,22 @@ public class SpriteLocations {
 	public static final String TILE_WALLS = "res/sprites/tiles/walls.png";
 
 	// PLAYER SPRITE LOCATIONS
-	public static final String PLAYER_BLONDE_NORTH_WALK1 = "/res/sprites/players/blonde/PlayerBlondeNorthWalk1.png";
-	public static final String PLAYER_BLONDE_NORTH_WALK2 = "/res/sprites/players/blonde/PlayerBlondeNorthWalk2.png";
-	public static final String PLAYER_BLONDE_NORTH_WALK3 = "/res/sprites/players/blonde/PlayerBlondeNorthWalk3.png";
-	public static final String PLAYER_BLONDE_NORTH_WALK4 = "/res/sprites/players/blonde/PlayerBlondeNorthWalk4.png";
-	public static final String PLAYER_BLONDE_NORTH_WALK5 = "/res/sprites/players/blonde/PlayerBlondeNorthWalk5.png";
-	public static final String PLAYER_BLONDE_NORTH_WALK6 = "/res/sprites/players/blonde/PlayerBlondeNorthWalk6.png";
-	public static final String PLAYER_BLONDE_NORTH_WALK7 = "/res/sprites/players/blonde/PlayerBlondeNorthWalk7.png";
-	public static final String PLAYER_BLONDE_NORTH_WALK8 = "/res/sprites/players/blonde/PlayerBlondeNorthWalk8.png";
-
-	public static final String PLAYER_BLONDE_STANDING_SOUTH = "/res/sprites/players/blonde/PlayerBlondeStandingSouth.png";
-	public static final String PLAYER_BLONDE_STANDING_EAST = "/res/sprites/players/blonde/PlayerBlondeStandingEast.png";
-	public static final String PLAYER_BLONDE_STANDING_WEST = "/res/sprites/players/blonde/PlayerBlondeStandingWest.png";
-
+	public static final String PLAYER_BLONDE_STANDING = "/res/sprites/players/blonde/blondeStanding.png";
 	public static final String PLAYER_BLONDE_NORTH_SEAT = "/res/sprites/players/blonde/PlayerBlondeSeatedNorth.png";
-
 	public static final String PLAYER_BLONDE_NORTH_SLEEP = "/res/sprites/players/blonde/PlayerBlondeSleepNorth.png";
 	public static final String PLAYER_BLONDE_SOUTH_SLEEP = "/res/sprites/players/blonde/PlayerBlondeSleepSouth.png";
 
-	public static final String PLAYER_DARK_STANDING_NORTH = "/res/sprites/players/dark/PlayerDarkStandingNorth.png";
-	public static final String PLAYER_DARK_STANDING_SOUTH = "/res/sprites/players/dark/PlayerDarkStandingSouth.png";
-	public static final String PLAYER_DARK_STANDING_EAST = "/res/sprites/players/dark/PlayerDarkStandingEast.png";
-	public static final String PLAYER_DARK_STANDING_WEST = "/res/sprites/players/dark/PlayerDarkStandingWest.png";
-
+	public static final String PLAYER_DARK_STANDING = "/res/sprites/players/dark/darkStanding.png";
 	public static final String PLAYER_DARK_NORTH_SEAT = "res/sprites/players/dark/PlayerDarkSeatedNorth.png";
-
 	public static final String PLAYER_DARK_NORTH_SLEEP = "res/sprites/players/dark/PlayerDarkSleepNorth.png";
 	public static final String PLAYER_DARK_SOUTH_SLEEP = "res/sprites/players/dark/PlayerDarkSleepSouth.png";
 
-	public static final String PLAYER_BROWN_STANDING_NORTH = "res/sprites/players/brown/PlayerBrownStandingNorth.png";
-	public static final String PLAYER_BROWN_STANDING_SOUTH = "res/sprites/players/brown/PlayerBrownStandingSouth.png";
-	public static final String PLAYER_BROWN_STANDING_EAST = "res/sprites/players/brown/PlayerBrownStandingEast.png";
-	public static final String PLAYER_BROWN_STANDING_WEST = "res/sprites/players/brown/PlayerBrownStandingWest.png";
-
+	public static final String PLAYER_BROWN_STANDING = "/res/sprites/players/brown/brownStanding.png";
 	public static final String PLAYER_BROWN_NORTH_SEAT = "res/sprites/players/brown/PlayerBrownSeatedNorth.png";
-
 	public static final String PLAYER_BROWN_NORTH_SLEEP = "res/sprites/players/brown/PlayerBrownSleepNorth.png";
 	public static final String PLAYER_BROWN_SOUTH_SLEEP = "res/sprites/players/brown/PlayerBrownSleepSouth.png";
 
-	public static final String PLAYER_PINK_STANDING_NORTH = "res/sprites/players/pink/PlayerPinkStandingNorth.png";
-	public static final String PLAYER_PINK_STANDING_SOUTH = "res/sprites/players/pink/PlayerPinkStandingSouth.png";
-	public static final String PLAYER_PINK_STANDING_EAST = "res/sprites/players/pink/PlayerPinkStandingEast.png";
-	public static final String PLAYER_PINK_STANDING_WEST = "res/sprites/players/pink/PlayerPinkStandingWest.png";
-
+	public static final String PLAYER_PINK_STANDING = "/res/sprites/players/pink/pinkStanding.png";
 	public static final String PLAYER_PINK_NORTH_SEAT = "res/sprites/players/pink/PlayerPinkSeatedNorth.png";
 
 	public static final String PLAYER_PINK_NORTH_SLEEP = "res/sprites/players/pink/PlayerPinkSleepNorth.png";
