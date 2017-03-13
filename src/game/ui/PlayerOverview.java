@@ -11,7 +11,6 @@ import org.newdawn.slick.SlickException;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.player.action.PlayerActionSleep;
-import game.core.world.World;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
@@ -26,29 +25,30 @@ public class PlayerOverview {
 
 	private static final long serialVersionUID = 7035477320220180349L;
 
-	// player names
+	// player variables
 	private String localPlayerName;
 	private String[] playerNames;
 	private Animation[] playerAvatars;
 	private double[] playerProgress;
 	private double[] playerFatigue;
 
+	// images
 	private Image progressBarBase;
 	private Image progressBarFull;
+
+	// position
 	private float x;
 	private float y;
 
-	private List<Player> players;
-
 	/**
-	 * A constructor for the player status container
+	 * Constructor: sets up variables and reads in the images needed
 	 * 
-	 * @param world
 	 * @param localPlayerName
+	 *            The name of the local player
 	 * @param x
-	 *            X coord
+	 *            The x coordinate of the top left of the overview
 	 * @param y
-	 *            Y coord
+	 *            The y coordinate of the top left of the overview
 	 * @throws SlickException
 	 */
 	public PlayerOverview(String localPlayerName, float x, float y) throws SlickException {
@@ -58,12 +58,17 @@ public class PlayerOverview {
 
 		progressBarBase = new Image(ImageLocations.PROGRESS_BAR_BASE, false, Image.FILTER_NEAREST);
 		progressBarFull = new Image(ImageLocations.PROGRESS_BAR_FULL, false, Image.FILTER_NEAREST);
-		
+
 	}
-	
-	public void updateContainer(List<Player> players) throws SlickException{
-		this.players = players;
-		
+
+	/**
+	 * Updates the variables used in the overview
+	 * 
+	 * @param players
+	 *            The list of players
+	 * @throws SlickException
+	 */
+	public void updateContainer(List<Player> players) throws SlickException {
 		int size = players.size();
 		playerNames = new String[size];
 		playerAvatars = new Animation[size];
@@ -84,9 +89,9 @@ public class PlayerOverview {
 				// add progress and fatigue
 				playerProgress[i] = p.getProgress();
 				playerFatigue[i] = p.status.getAttribute(PlayerAttribute.FATIGUE);
-				
+
 				checkSleep(p, i);
-				
+
 				i++;
 			} else {
 				// add name
@@ -99,14 +104,14 @@ public class PlayerOverview {
 				// add progress and fatigue
 				playerProgress[0] = p.getProgress();
 				playerFatigue[0] = p.status.getAttribute(PlayerAttribute.FATIGUE);
-				
+
 				checkSleep(p, 0);
 			}
 		}
 	}
 
 	/**
-	 * Render the status container.
+	 * Render the player overview
 	 * 
 	 * @param g
 	 *            The graphics context
@@ -157,14 +162,32 @@ public class PlayerOverview {
 		}
 	}
 
+	/**
+	 * Sets the correct animation for the player icon depending on whether they
+	 * are asleep or not
+	 * 
+	 * @param p
+	 *            The player to check
+	 * @param i
+	 *            The location of the animations for that player in the
+	 *            playerAvatars array
+	 */
 	private void checkSleep(Player p, int i) {
-		if(p.status.hasAction(PlayerActionSleep.class)){
+		if (p.status.hasAction(PlayerActionSleep.class)) {
 			playerAvatars[i].setCurrentFrame(1);
-		}else{
+		} else {
 			playerAvatars[i].setCurrentFrame(0);
 		}
 	}
 
+	/**
+	 * Sets the player icon needed for a player
+	 * 
+	 * @param p
+	 *            The player to set
+	 * @return The image array for that player
+	 * @throws SlickException
+	 */
 	private Image[] setImages(Player p) throws SlickException {
 		Image[] temp = new Image[2];
 		switch (p.getHair()) {

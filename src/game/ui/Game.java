@@ -29,6 +29,12 @@ public class Game extends StateBasedGame {
 	private CharacterSelect chSelectState;
 	private PlayTest playtestState;
 
+	/**
+	 * Constructor sets up states and event listeners
+	 * 
+	 * @param gamename
+	 *            The name of the game
+	 */
 	public Game(String gamename) {
 		super(gamename);
 
@@ -50,16 +56,25 @@ public class Game extends StateBasedGame {
 		Events.on(GameStartedEvent.class, this::onGameStart);
 	}
 
+	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
 		// initialises states automatically
 	}
 
+	/**
+	 * On game started event, set up play state and enter it.
+	 * 
+	 * @param event
+	 */
 	public void onGameStart(GameStartedEvent event) {
 		World.world = event.world;
 		playState.playSetup();
 		this.enterState(Vals.PLAY_STATE);
 	}
 
+	/**
+	 * Initialises the window and UI environment
+	 */
 	public static void init() {
 
 		File JGLLib = null;
@@ -96,6 +111,11 @@ public class Game extends StateBasedGame {
 
 	}
 
+	/**
+	 * Main method used for testing UI elements on their own
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		init();
 	}

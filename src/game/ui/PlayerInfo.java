@@ -25,6 +25,19 @@ public class PlayerInfo {
 	private Image sitDialogue, drinkDialogue, sleepDialogue;
 	private Image playerIdentifier;
 
+	/**
+	 * Constructor: sets up variables and reads in the images needed
+	 * 
+	 * @param world
+	 *            The world variable
+	 * @param localPlayerName
+	 *            The name of the local player
+	 * @param tileWidth
+	 *            The width of an individual tile
+	 * @param tileHeight
+	 *            The height of an individual tile
+	 * @throws SlickException
+	 */
 	public PlayerInfo(World world, String localPlayerName, float tileWidth, float tileHeight) throws SlickException {
 		this.localPlayerName = localPlayerName;
 		players = world.getPlayers();
@@ -39,10 +52,12 @@ public class PlayerInfo {
 	}
 
 	/**
-	 * Render info about the world and other players
+	 * Renders information about the players
 	 * 
 	 * @param g
-	 *            Graphics object g
+	 *            The graphics object
+	 * @param visible
+	 *            The array containing which tiles are visible to the player
 	 */
 	public void render(Graphics g, boolean[][] visible) {
 		for (Player p : players) {
