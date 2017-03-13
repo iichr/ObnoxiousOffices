@@ -1,7 +1,6 @@
 package game.ui.states;
 
 import org.lwjgl.input.Mouse;
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -28,12 +27,8 @@ import game.util.Pair;
  *
  */
 public class Options extends BasicGameState {
-	private Image speakerOn, speakerOff;
-	private Animation turnOn, turnOff, soundStatus;
-	private int[] duration = { 200, 200 };
 	private Music music;
 	private Sound sound;
-	private int mouseX, mouseY;
 	private String mouseCoords;
 	private WordGenerator wg;
 	private float currentSVolume, currentMVolume;
@@ -46,20 +41,8 @@ public class Options extends BasicGameState {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-
-		// sound toggle animation
-		speakerOff = new Image(ImageLocations.SPEAKER_OFF);
-		speakerOn = new Image(ImageLocations.SPEAKER_ON);
-
-		Image[] speakerTurnOff = { speakerOff, speakerOn };
-		Image[] speakerTurnOn = { speakerOn, speakerOff };
-
-		turnOff = new Animation(speakerTurnOff, duration, false);
-		turnOn = new Animation(speakerTurnOn, duration, false);
-
-		// set initial state to ON;
-		soundStatus = turnOn;
 		wg = new WordGenerator();
+
 		// TODO add music and sound
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
@@ -78,7 +61,6 @@ public class Options extends BasicGameState {
 		g.setColor(Color.white);
 
 		// debugging
-		g.drawString(mouseCoords, 10, 50);
 		Pair<Float, Float> wh = wg.getWH("Sound", 0.3f);
 		wg.draw(g, "Sound", Vals.BUTTON_ALIGN_CENTRE_W - wh.getL(), Vals.BUTTON_ALIGN_CENTRE_H - wh.getR(), false,
 				0.3f);
@@ -93,6 +75,7 @@ public class Options extends BasicGameState {
 				changeVolumeL(gc);
 			}
 		}
+
 		// Volume in %
 		wg.draw(g, (int) (currentSVolume * 100) + "%", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 1.5f,
 				Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR(), false, 0.3f);
@@ -106,33 +89,32 @@ public class Options extends BasicGameState {
 				changeVolumeR(gc);
 			}
 		}
+
 		Pair<Float, Float> wh3 = wg.getWH("Display Mode", 0.3f);
 		wg.draw(g, "Display Mode", Vals.BUTTON_ALIGN_CENTRE_W - wh3.getL(), Vals.BUTTON_ALIGN_CENTRE_H, false, 0.3f);
 		// < symbol
-		wg.draw(g, "<", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH/2, Vals.BUTTON_ALIGN_CENTRE_H, false,
-				0.3f);
-		if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH/2
-				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH/2 + wh3.getL()
-				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H && mousey <= Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR()) {
-			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				gc.setFullscreen(!gc.isFullscreen());
-			}
-		}
-		// display modes 
-		wg.draw(g, gc.isFullscreen()?"Full Screen":"Windowed", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH ,
-				Vals.BUTTON_ALIGN_CENTRE_H , false, 0.3f);
-		// > symbol
-		wg.draw(g, ">", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 3f, Vals.BUTTON_ALIGN_CENTRE_H,
-				false, 0.3f);
-		if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 3f
-				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 3f + wh3.getL()
-				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H && mousey <= Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR()) {
+		wg.draw(g, "<", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH / 2, Vals.BUTTON_ALIGN_CENTRE_H, false, 0.3f);
+		if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH / 2
+				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH / 2 + wh3.getL()
+				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H && mousey <= Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR()) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				gc.setFullscreen(!gc.isFullscreen());
 			}
 		}
 
-		// soundStatus.draw(Vals.BUTTON_ALIGN_CENTRE_W,Vals.BUTTON_ALIGN_CENTRE_H-Vals.BUTTON_ALIGN_CENTRE_H/10);
+		// display modes
+		wg.draw(g, gc.isFullscreen() ? "Full Screen" : "Windowed", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH,
+				Vals.BUTTON_ALIGN_CENTRE_H, false, 0.3f);
+		// > symbol
+		wg.draw(g, ">", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 3f, Vals.BUTTON_ALIGN_CENTRE_H, false, 0.3f);
+		if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 3f
+				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 3f + wh3.getL()
+				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H && mousey <= Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR()) {
+			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				gc.setFullscreen(!gc.isFullscreen());
+			}
+		}
+
 		// add back button
 		backButton.render();
 
@@ -171,10 +153,6 @@ public class Options extends BasicGameState {
 		}
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
-		if (input.isKeyPressed(input.KEY_F9)) {
-			gc.setFullscreen(!gc.isFullscreen());
-		}
-
 	}
 
 	@Override
@@ -182,22 +160,4 @@ public class Options extends BasicGameState {
 		return Vals.OPTIONS_STATE;
 	}
 
-	public void mousePressed(int button, int x, int y) {
-		mouseX = x;
-		mouseY = y;
-		if (button == 0) {
-			// png size 128
-			if ((x >= Vals.BUTTON_ALIGN_CENTRE_W && x <= Vals.BUTTON_ALIGN_CENTRE_W + speakerOff.getWidth())
-					&& (y >= Vals.BUTTON_ALIGN_CENTRE_H - 10
-							&& y <= Vals.BUTTON_ALIGN_CENTRE_H - 10 + speakerOff.getHeight())) {
-				if (soundStatus == turnOff) {
-					soundStatus = turnOn;
-					// music.resume();
-				} else {
-					soundStatus = turnOff;
-					// music.stop();
-				}
-			}
-		}
-	}
 }
