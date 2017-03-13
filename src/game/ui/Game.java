@@ -102,9 +102,14 @@ public class Game extends StateBasedGame {
 		try {
 			agc = new AppGameContainer(new Game(Vals.GAME_NAME));
 			agc.setDisplayMode(Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT, false);
+			
+			agc.setUpdateOnlyWhenVisible(true);
+			agc.setMinimumLogicUpdateInterval(10);
 
 			agc.setFullscreen(false);
 			agc.start();
+			
+
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}

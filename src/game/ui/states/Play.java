@@ -60,6 +60,8 @@ public class Play extends BasicGameState {
 	protected World world;
 	private HashMap<Player, PlayerAnimation> playerMap;
 	protected String localPlayerName;
+	private final int rateMilliseconds = 250;
+	private long lastMove = 0;
 
 	// tile information
 	private float tileWidth;
@@ -78,21 +80,23 @@ public class Play extends BasicGameState {
 	// player info
 	private PlayerInfo playerinfo;
 
+	protected int key;
+
 	// overlays
 	private OptionsOverlay optionsOverlay;
 	private GameOverOverlay gameOverOverlay;
 	private HangmanOverlay hangmanOverlay;
 	private PongOverlay pongOverlay;
 
-	boolean showOverview = false;
-
 	// boolean flags
+	private boolean canMove;
 	protected boolean options;
 	protected boolean gameOver;
 	protected boolean exit;
 	private boolean choosingHack;
 	private boolean playingPong;
 	private boolean playingHangman;
+	private boolean showOverview;
 
 	Music bgmusic;
 	private ChatBox cb;
@@ -132,12 +136,16 @@ public class Play extends BasicGameState {
 		this.localPlayerName = Player.localPlayerName;
 
 		// set boolean flags
+		canMove = true;
 		options = false;
 		gameOver = false;
 		exit = false;
 		choosingHack = false;
 		playingPong = false;
 		playingHangman = false;
+		showOverview = false;
+
+		key = -1;
 	}
 
 	@Override
@@ -194,6 +202,37 @@ public class Play extends BasicGameState {
 		// used to stop the music from playing
 		// bgmusic.stop();
 	}
+	
+	@Override
+	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+		Input input = gc.getInput();
+		Player localPlayer = world.getPlayer(localPlayerName);
+
+		cb.update(gc, localPlayerName);
+
+		effectOverview.updateEffects(localPlayer);
+
+		playerOverview.updateContainer(world.getPlayers());
+
+		if (exit) {
+			game.enterState(Vals.MENU_STATE);
+		}
+
+		long time = System.currentTimeMillis();
+        if (time - lastMove >= rateMilliseconds) {
+            canMove = true;
+        }
+
+		if (canMove) {
+			if (key >= 0) {
+				manageMovement(key);
+				canMove = false;
+				lastMove = time;
+			}
+		}
+
+		input.clearKeyPressedRecord();
+	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
@@ -229,22 +268,29 @@ public class Play extends BasicGameState {
 		}
 	}
 
-	@Override
-	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
-		Input input = gc.getInput();
-		Player localPlayer = world.getPlayer(localPlayerName);
-
-		cb.update(gc, localPlayerName);
-
-		effectOverview.updateEffects(localPlayer);
-
-		playerOverview.updateContainer(world.getPlayers());
-
-		if (exit) {
-			game.enterState(Vals.MENU_STATE);
+	private void manageMovement(int key) {
+		switch (key) {
+		case Input.KEY_W:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
+			choosingHack = false;
+			actionSelector.setAction(0);
+			break;
+		case Input.KEY_S:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
+			choosingHack = false;
+			actionSelector.setAction(0);
+			break;
+		case Input.KEY_D:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
+			choosingHack = false;
+			actionSelector.setAction(0);
+			break;
+		case Input.KEY_A:
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
+			choosingHack = false;
+			actionSelector.setAction(0);
+			break;
 		}
-
-		input.clearKeyPressedRecord();
 	}
 
 	/**
@@ -361,15 +407,12 @@ public class Play extends BasicGameState {
 	private void drawPlayers(int x, int y, float tileX, float tileY) {
 		// get players
 		List<Player> players = world.getPlayers();
-
 		// render the players
 		for (Player player : players) {
 			Location playerLocation = player.getLocation();
 			if (playerLocation.coords.x == x && playerLocation.coords.y == y) {
 				changeAnimation(player);
 				if (player.status.hasAction(PlayerActionSleep.class)) {
-					// draw sleeping players sideways
-					// check if next tile is in bounds
 					Location right = new Location(new Coordinates(x - 1, y, 0), world);
 					if (right.checkBounds()) {
 						playerMap.get(player).drawPlayer((x - 1) * tileWidth, (y + 2) * (tileHeight / 2), tileWidth * 2,
@@ -388,6 +431,7 @@ public class Play extends BasicGameState {
 				}
 			}
 		}
+
 	}
 
 	/**
@@ -588,24 +632,16 @@ public class Play extends BasicGameState {
 			showOverview = true;
 			break;
 		case Input.KEY_W:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
-			choosingHack = false;
-			actionSelector.setAction(0);
+			this.key = key;
 			break;
 		case Input.KEY_S:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
-			choosingHack = false;
-			actionSelector.setAction(0);
+			this.key = key;
 			break;
 		case Input.KEY_D:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
-			choosingHack = false;
-			actionSelector.setAction(0);
+			this.key = key;
 			break;
 		case Input.KEY_A:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
-			choosingHack = false;
-			actionSelector.setAction(0);
+			this.key = key;
 			break;
 		case Input.KEY_E:
 			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
@@ -670,6 +706,18 @@ public class Play extends BasicGameState {
 		switch (key) {
 		case Input.KEY_TAB:
 			showOverview = false;
+			break;
+		case Input.KEY_W:
+			this.key = -1;
+			break;
+		case Input.KEY_S:
+			this.key = -1;
+			break;
+		case Input.KEY_D:
+			this.key = -1;
+			break;
+		case Input.KEY_A:
+			this.key = -1;
 		}
 	}
 }
