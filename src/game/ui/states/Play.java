@@ -585,8 +585,9 @@ public class Play extends BasicGameState {
 			playingHangman = true;
 			// System.out.println("ENTERED HANGMAN");
 			break;
+			// TEMPORARY FOR TESTING PONG - PRESS 8
 		case Input.KEY_8:
-			MiniGame.localMiniGame = new MiniGamePong(localPlayerName, localPlayerName);
+			MiniGame.localMiniGame = new MiniGamePong("tim", localPlayerName);
 			playingPong = true;
 			break;
 		case Input.KEY_LALT:

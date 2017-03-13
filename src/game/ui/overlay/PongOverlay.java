@@ -39,12 +39,18 @@ public class PongOverlay extends PopUpOverlay {
 		float paddleHeight = unitY * pong.PADDLE_LEN;
 
 		g.setColor(Color.white);
-		for (String player : pong.getPlayers()) {
-			float paddleX = playX + unitX * pong.getPlayerPos(player).getL();
-			float paddleY = playY + unitY * pong.getPlayerPos(player).getR();
-			Rectangle paddle = new Rectangle(paddleX, paddleY, paddleWidth, paddleHeight);
-			g.fill(paddle);
-		}
+		String p1 = pong.getPlayers().get(1);
+		String p2 = pong.getPlayers().get(2);
+		
+		float paddle1X = playX + unitX * (pong.getPlayerPos(p1).getL() - 1);
+		float paddle1Y = playY + unitY * pong.getPlayerPos(p1).getR();
+		Rectangle paddle1 = new Rectangle(paddle1X, paddle1Y, paddleWidth, paddleHeight);
+		g.fill(paddle1);
+
+		float paddle2X = playX + unitX * pong.getPlayerPos(p2).getL();
+		float paddle2Y = playY + unitY * pong.getPlayerPos(p2).getR();
+		Rectangle paddle2 = new Rectangle(paddle2X, paddle2Y, paddleWidth, paddleHeight);
+		g.fill(paddle2);
 
 		float ballRadius = unitX / 2;
 		float ballX = playX + unitX * pong.getBallPos().getL();
