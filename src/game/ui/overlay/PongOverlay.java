@@ -11,6 +11,10 @@ import game.core.minigame.MiniGamePong;
 
 public class PongOverlay extends PopUpOverlay {
 
+	/**
+	 * Constructor: Sets up overlay
+	 * @throws SlickException
+	 */
 	public PongOverlay() throws SlickException {
 		super();
 	}

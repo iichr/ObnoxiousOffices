@@ -5,6 +5,10 @@ import org.newdawn.slick.SlickException;
 
 public class OptionsOverlay extends PopUpOverlay {
 
+	/**
+	 * Constructor: Sets up overlay
+	 * @throws SlickException
+	 */
 	public OptionsOverlay() throws SlickException {
 		super();
 	}
