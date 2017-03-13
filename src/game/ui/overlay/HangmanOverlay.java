@@ -8,6 +8,10 @@ import game.core.minigame.MiniGameHangman;
 
 public class HangmanOverlay extends PopUpOverlay {
 
+	/**
+	 * Constructor: Sets up overlay
+	 * @throws SlickException
+	 */
 	public HangmanOverlay() throws SlickException {
 		super();
 	}

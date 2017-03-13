@@ -35,11 +35,6 @@ public class Rules extends BasicGameState {
 	// testing with some arbitrary sprites
 	// TODO fetch from the SpriteLocations interface once finalised.
 	private Image desk1, desk2, coffee, hack, sofa1, sofa2;
-	
-
-	public Rules(int state) {
-
-	}
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {

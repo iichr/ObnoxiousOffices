@@ -20,7 +20,6 @@ import game.core.event.GameFinishedEvent;
 import game.core.event.minigame.MiniGameEndedEvent;
 import game.core.event.minigame.MiniGameStartedEvent;
 import game.core.event.player.PlayerInputEvent;
-
 import game.core.input.InputTypeCharacter;
 import game.core.input.InputTypeInteraction;
 import game.core.input.InputTypeMovement;
@@ -97,9 +96,6 @@ public class Play extends BasicGameState {
 
 	Music bgmusic;
 	private ChatBox cb;
-
-	public Play(int state) {
-	}
 
 	@Override
 	public int getID() {
@@ -178,11 +174,10 @@ public class Play extends BasicGameState {
 	}
 
 	/**
-	 * map players to player animations, testing different sprites
-	 * implementation not finalised
+	 * Map players to player animations
 	 * 
 	 * @param players
-	 *            the set of Players in the world
+	 *            The set of Players in the world
 	 * 
 	 * @throws SlickException
 	 */
@@ -203,12 +198,14 @@ public class Play extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setFont(Vals.FONT_PLAY);
+		boolean[][] visible = findVisibles();
 
 		// renders world
-		drawWorld();
+		drawWorld(visible);
 		cb.render(gc, g);
+
 		// add effects overview container
-		effectOverview.render(g);
+		effectOverview.render();
 
 		// shows selectors
 		if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
@@ -218,7 +215,7 @@ public class Play extends BasicGameState {
 		}
 
 		// show ui info to player
-		playerinfo.render(g);
+		playerinfo.render(g, visible);
 		if (gameOver) {
 			gameOverOverlay.render(g);
 		} else if (options) {
@@ -250,13 +247,19 @@ public class Play extends BasicGameState {
 		input.clearKeyPressedRecord();
 	}
 
-	private void drawWorld() throws SlickException {
+	/**
+	 * Renders the world to the screen
+	 * 
+	 * @param visible
+	 *            Array containing whether each tile is visible to he local
+	 *            player
+	 * @throws SlickException
+	 */
+	private void drawWorld(boolean[][] visible) throws SlickException {
 		// draw the wall sprite
 		Image wall = new Image(SpriteLocations.TILE_WALL, false, Image.FILTER_NEAREST);
 		wall.draw(0, 0, Vals.SCREEN_WIDTH, tileHeight);
 
-		boolean[][] visible = findVisibles();
-		
 		// check every position in the world to render what is needed at that
 		// location
 		for (int y = 0; y < world.ySize; y++) {
@@ -281,6 +284,17 @@ public class Play extends BasicGameState {
 		}
 	}
 
+	/**
+	 * Draws a marker for the local players computer
+	 * 
+	 * @param tileX
+	 *            The x position of the tile to draw over
+	 * @param tileY
+	 *            The y position of the tile to draw over
+	 * @param found
+	 *            The tile at this location
+	 * @throws SlickException
+	 */
 	private void drawComputerMarker(float tileX, float tileY, Tile found) throws SlickException {
 		TileType type = found.type;
 		if (type.equals(TileType.COMPUTER) && showOverview) {
@@ -292,6 +306,18 @@ public class Play extends BasicGameState {
 		}
 	}
 
+	/**
+	 * Renders a tile to the screen
+	 * 
+	 * @param tileX
+	 *            The x position to draw the tile on the screen
+	 * @param tileY
+	 *            The y position to draw the tile on the screen
+	 * @param tile
+	 *            The tile to draw
+	 * @param visible
+	 *            Whether the tile is visible or not
+	 */
 	private void drawTile(float tileX, float tileY, Tile tile, boolean visible) {
 		Direction facing = tile.facing;
 		TileType type = tile.type;
@@ -306,13 +332,13 @@ public class Play extends BasicGameState {
 		Image[] images = directionMap.get(facing);
 
 		if (visible) {
-			if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER)) {
+			if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER) || type.equals(TileType.DOOR)) {
 				images[mtID].draw(tileX, tileY - tileHeight / 2, tileWidth, 3 * tileHeight / 2);
 			} else {
 				images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
 			}
 		} else {
-			if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER)) {
+			if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER) || type.equals(TileType.DOOR)) {
 				images[mtID].draw(tileX, tileY - tileHeight / 2, tileWidth, 3 * tileHeight / 2, Color.darkGray);
 			} else {
 				images[mtID].draw(tileX, tileY, tileWidth, tileHeight, Color.darkGray);
@@ -382,6 +408,11 @@ public class Play extends BasicGameState {
 		}
 	}
 
+	/**
+	 * Find which tiles are visible to the local player
+	 * 
+	 * @return 2D boolean array [x][y] = true then visible, false = not visible
+	 */
 	private boolean[][] findVisibles() {
 		boolean[][] visible = new boolean[world.xSize][world.ySize];
 
@@ -402,10 +433,11 @@ public class Play extends BasicGameState {
 	 * Checks if the tile is visible in the current room
 	 * 
 	 * @param visible
-	 *            The visible array
+	 *            Array containing whether each tile is visible to he local
+	 *            player
 	 * @param current
 	 *            The current location being looked at
-	 * @return The visible array
+	 * @return 2D boolean array [x][y] = true then visible, false = not visible
 	 */
 	private boolean[][] getVisibleArray(boolean[][] visible, Location current) {
 		int x = current.coords.x;
@@ -417,22 +449,31 @@ public class Play extends BasicGameState {
 		Location east = current.add(0, 1, 0);
 		Location south = current.add(1, 0, 0);
 		Location west = current.add(0, -1, 0);
+		Location ne = current.add(-1, 1, 0);
+		Location nw = current.add(-1, -1, 0);
+		Location se = current.add(1, 1, 0);
+		Location sw = current.add(1, -1, 0);
 
 		// check if we should continue checking them
 		checkContinue(visible, north);
 		checkContinue(visible, east);
 		checkContinue(visible, south);
 		checkContinue(visible, west);
+		checkContinue(visible, ne);
+		checkContinue(visible, nw);
+		checkContinue(visible, se);
+		checkContinue(visible, sw);
 
 		return visible;
 	}
 
 	/**
 	 * @param visible
-	 *            The visible array
+	 *            Array containing whether each tile is visible to he local
+	 *            player
 	 * @param toCheck
 	 *            The location being checked
-	 * @return The visible array
+	 * @return 2D boolean array [x][y] = true then visible, false = not visible
 	 */
 	private boolean[][] checkContinue(boolean[][] visible, Location toCheck) {
 		int x = toCheck.coords.x;
@@ -441,8 +482,8 @@ public class Play extends BasicGameState {
 			if (visible[x][y] != true) {
 				if (toCheck.checkBounds()) {
 					TileType found = toCheck.getTile().type;
-					// TODO add door checks once doors created
-					if (!found.equals(TileType.WALL) && !found.equals(TileType.WALL_CORNER)) {
+					if (!found.equals(TileType.WALL) && !found.equals(TileType.WALL_CORNER)
+							&& !found.equals(TileType.DOOR)) {
 						visible = getVisibleArray(visible, toCheck);
 					} else {
 						// we can see the wall, but not past it
@@ -454,21 +495,39 @@ public class Play extends BasicGameState {
 		return visible;
 	}
 
+	/**
+	 * Sets game finished to be true;
+	 * 
+	 * @param e
+	 *            A GameFinishedEvent
+	 */
 	private void gameFinished(GameFinishedEvent e) {
 		gameOver = true;
 	}
 
+	/**
+	 * Starts a minigame depending on the event passed
+	 * 
+	 * @param e
+	 *            A MiniGameStartedEvent
+	 */
 	private void startMinigame(MiniGameStartedEvent e) {
-		if(e.game.equals(MiniGameHangman.class)){
+		if (e.game.equals(MiniGameHangman.class)) {
 			playingHangman = true;
-		}else if(e.game.equals(MiniGamePong.class)){
+		} else if (e.game.equals(MiniGamePong.class)) {
 			playingPong = true;
 		}
 	}
 
+	/**
+	 * Closes the current minigame
+	 * 
+	 * @param e
+	 *            A MiniGameEndedEvent
+	 */
 	private void closeMinigame(MiniGameEndedEvent e) {
-			playingHangman = false;
-			playingPong = false;
+		playingHangman = false;
+		playingPong = false;
 	}
 
 	@Override
@@ -477,7 +536,7 @@ public class Play extends BasicGameState {
 			if (playingPong) {
 				pongControls(key);
 			} else if (playingHangman) {
-				hangmanControls(key, c);
+				hangmanControls(c);
 			} else {
 				coreControls(key);
 			}
@@ -487,25 +546,22 @@ public class Play extends BasicGameState {
 	}
 
 	/**
-	 * Hangman - manage input and display
+	 * Manages controls for the hangman minigame
 	 * 
-	 * @param key
 	 * @param c
-	 *            The input char
+	 *            The character of the key pressed
 	 */
-	private void hangmanControls(int key, char c) {
+	private void hangmanControls(char c) {
 		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-			// System.out.println("Entered char = " + c);
-			// also serves to update the display!
 			Events.trigger(new PlayerInputEvent(new InputTypeCharacter(c), localPlayerName));
 		}
 	}
 
 	/**
-	 * Use controls for the pong minigame
+	 * Manages controls for the pong minigame
 	 * 
-	 * @param c
-	 *            The character entered
+	 * @param key
+	 *            The id of the key pressed
 	 */
 	private void pongControls(int key) {
 		switch (key) {
@@ -518,10 +574,10 @@ public class Play extends BasicGameState {
 	}
 
 	/**
-	 * Use controls for normal game
+	 * Manages controls for the core game
 	 * 
 	 * @param key
-	 *            The key pressed
+	 *            The id of the key pressed
 	 */
 	private void coreControls(int key) {
 		switch (key) {
@@ -579,11 +635,19 @@ public class Play extends BasicGameState {
 			playingHangman = true;
 			// System.out.println("ENTERED HANGMAN");
 			break;
+		// TEMPORARY FOR TESTING PONG - PRESS 8
+		case Input.KEY_8:
+			MiniGame.localMiniGame = new MiniGamePong("tim", localPlayerName);
+			playingPong = true;
+			break;
 		case Input.KEY_LALT:
 			cb.toggleFocus();
 		}
 	}
 
+	/**
+	 * Manages input whilst using the action selector
+	 */
 	private void manageSelector() {
 		switch (actionSelector.getSelected()) {
 		case "WORK":

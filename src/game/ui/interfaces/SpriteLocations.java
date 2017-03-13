@@ -31,6 +31,7 @@ public class SpriteLocations {
 		addFishTankImages();
 		addWallImages();
 		addCornerImages();
+		addDoorImages();
 	}
 
 	private void addFloorImages() throws SlickException {
@@ -194,6 +195,20 @@ public class SpriteLocations {
 
 		tileMap.put(TileType.WALL_CORNER, wallMap);
 	}
+	
+	private void addDoorImages() throws SlickException {
+		HashMap<Direction, Image[]> doorMap = new HashMap<>();
+
+		Image dN = new Image(TILE_DOOR_NORTH, false, Image.FILTER_NEAREST);
+		Image[] dNorth = { dN };
+		doorMap.put(Direction.NORTH, dNorth);
+
+		Image dS = new Image(TILE_DOOR_SOUTH, false, Image.FILTER_NEAREST);
+		Image[] dSouth = { dS };
+		doorMap.put(Direction.SOUTH, dSouth);
+
+		tileMap.put(TileType.DOOR, doorMap);
+	}
 
 	// TILE LOCATIONS
 	public static final String TILE_FLOOR = "/res/sprites/tiles/floor.png";
@@ -228,13 +243,16 @@ public class SpriteLocations {
 	
 	public static final String TILE_WALL_NORTH = "/res/sprites/tiles/wallNorth.png";
 	public static final String TILE_WALL_SOUTH = "/res/sprites/tiles/wallSouth.png";
-	public static final String TILE_WALL_EAST = "/res/sprites/tiles/wallEast.png";
-	public static final String TILE_WALL_WEST = "/res/sprites/tiles/wallWest.png";
+	public static final String TILE_WALL_EAST = "/res/sprites/tiles/wallSide.png";
+	public static final String TILE_WALL_WEST = "/res/sprites/tiles/wallSide.png";
 	
 	public static final String TILE_CORNER_NORTH = "/res/sprites/tiles/wallCornerNorthWest.png";
 	public static final String TILE_CORNER_SOUTH = "/res/sprites/tiles/wallCornerSouthEast.png";
 	public static final String TILE_CORNER_EAST = "/res/sprites/tiles/wallCornerNorthEast.png";
 	public static final String TILE_CORNER_WEST = "/res/sprites/tiles/wallCornerSouthWest.png";
+	
+	public static final String TILE_DOOR_NORTH = "/res/sprites/tiles/doorNorth.png";
+	public static final String TILE_DOOR_SOUTH = "/res/sprites/tiles/doorSouth.png";
 
 	// PLAYER SPRITE LOCATIONS
 	public static final String PLAYER_BLONDE_NORTH_WALK1 = "/res/sprites/players/blonde/PlayerBlondeNorthWalk1.png";

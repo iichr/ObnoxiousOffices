@@ -31,11 +31,6 @@ public class Menu extends BasicGameState implements MusicListener {
     };
     private int CURRENT = 0;
     private long lastInput = System.currentTimeMillis();
-    
-
-	public Menu(int state) {
-
-	}
 
 	@Override
 	public int getID() {
@@ -79,6 +74,7 @@ public class Menu extends BasicGameState implements MusicListener {
 
 	}
 
+	@Override
 	public void enter(GameContainer container, StateBasedGame sbg) throws SlickException {
 		// Start the music loop when you first enter the state, will not end
 		// until you use music.stop() or .pause() somewhere, even if you change

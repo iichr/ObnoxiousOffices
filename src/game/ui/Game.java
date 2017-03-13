@@ -27,39 +27,54 @@ public class Game extends StateBasedGame {
 	private Options optionsState;
 	private Rules rulesState;
 	private CharacterSelect chSelectState;
-	private PlayTest playtestState;
+	private PlayTest playTestState;
 
+	/**
+	 * Constructor: sets up states and event listeners
+	 * 
+	 * @param gamename
+	 *            The name of the game
+	 */
 	public Game(String gamename) {
 		super(gamename);
 
-		introState = new Intro(Vals.INTRO_STATE);
+		introState = new Intro();
 		this.addState(introState);
-		menuState = new Menu(Vals.MENU_STATE);
+		menuState = new Menu();
 		this.addState(menuState);
-		playState = new Play(Vals.PLAY_STATE);
+		playState = new Play();
 		this.addState(playState);
-		playtestState = new PlayTest(Vals.PLAY_TEST_STATE);
-		this.addState(playtestState);
-		optionsState = new Options(Vals.OPTIONS_STATE);
+		playTestState = new PlayTest();
+		this.addState(playTestState);
+		optionsState = new Options();
 		this.addState(optionsState);
-		rulesState = new Rules(Vals.RULES_STATE);
+		rulesState = new Rules();
 		this.addState(rulesState);
-		chSelectState = new CharacterSelect(Vals.CHARACTER_SELECT_STATE, playtestState);
+		chSelectState = new CharacterSelect(playTestState);
 		this.addState(chSelectState);
 
 		Events.on(GameStartedEvent.class, this::onGameStart);
 	}
 
+	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
 		// initialises states automatically
 	}
 
+	/**
+	 * On game started event, set up play state and enter it.
+	 * 
+	 * @param event
+	 */
 	public void onGameStart(GameStartedEvent event) {
 		World.world = event.world;
 		playState.playSetup();
 		this.enterState(Vals.PLAY_STATE);
 	}
 
+	/**
+	 * Initialises the window and UI environment
+	 */
 	public static void init() {
 
 		File JGLLib = null;
@@ -96,6 +111,11 @@ public class Game extends StateBasedGame {
 
 	}
 
+	/**
+	 * Main method used for testing UI elements on their own
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		init();
 	}
