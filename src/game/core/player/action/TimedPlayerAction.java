@@ -19,7 +19,7 @@ public abstract class TimedPlayerAction extends PlayerAction implements Serializ
     public void update() {
         timedUpdate();
         incrementCounter();
-        if (ended()) stop();
+        if (ended()) end();
     }
 
     protected abstract void timedUpdate();
@@ -33,11 +33,11 @@ public abstract class TimedPlayerAction extends PlayerAction implements Serializ
 
     @Override
     public void cancel() {
-        stop();
+        end();
     }
 
     @Override
-    public void stop() {
+    public void end() {
         stopCounter();
     }
 

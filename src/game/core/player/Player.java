@@ -120,6 +120,11 @@ public class Player implements Updateable, Serializable {
         return false;
     }
 
+    @Override
+    public void end() {
+
+    }
+
     /**
      * Set the player's work progress
      * @param progress
