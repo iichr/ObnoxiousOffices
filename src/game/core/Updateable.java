@@ -12,6 +12,7 @@ public interface Updateable {
 
     public void update();
     public boolean ended();
+    public void end();
 
     public static <T extends Updateable> List<T> updateAll(Collection<T> updateables) {
         updateables.forEach(Updateable::update);

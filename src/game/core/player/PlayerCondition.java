@@ -1,12 +1,13 @@
 package game.core.player;
 
-/**
- * Created by samtebbs on 10/03/2017.
- */
-public abstract class PlayerCondition {
+import game.core.Updateable;
 
-    public boolean allowsInteraction() {
-        return false;
-    }
+/**
+ * Created by samtebbs on 13/03/2017.
+ */
+public interface PlayerCondition extends Updateable {
+
+    public boolean allowsInteraction();
+    public boolean cancelsOnMove();
 
 }

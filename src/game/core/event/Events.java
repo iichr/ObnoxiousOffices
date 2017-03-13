@@ -24,7 +24,7 @@ public class Events {
         thread.run();
     }
 
-    public static <T extends Event> void on(Class<? extends Event> eventClass, Consumer<T> method) {
+    public static <T extends Event> void on(Class<T> eventClass, Consumer<T> method) {
         if(subscribers.containsKey(eventClass)) subscribers.get(eventClass).add(method);
         else {
             List<Consumer> list = new ArrayList<>();
