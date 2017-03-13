@@ -24,28 +24,32 @@ public class PongOverlay extends PopUpOverlay {
 
 		float playWidth = 3 * width / 4;
 		float playHeight = 3 * height / 4;
-		float playX = x + (width - playWidth);
-		float playY = y + (height - playHeight);
+
+		float playX = x + (width - playWidth) / 2;
+		float playY = y + (height - playHeight) / 2;
+
+		float unitX = playWidth / (float) pong.BOUND_X;
+		float unitY = playHeight / (float) pong.BOUND_Y;
 
 		Rectangle playArea = new Rectangle(playX, playY, playWidth, playHeight);
 		g.setColor(Color.black);
-		g.draw(playArea);
+		g.fill(playArea);
 
-		float paddleWidth = playWidth / ((float) pong.BOUND_X);
-		float paddleHeight = playHeight / ((float) pong.BOUND_Y / (float) pong.PADDLE_LEN);
+		float paddleWidth = unitX;
+		float paddleHeight = unitY * pong.PADDLE_LEN;
 
 		g.setColor(Color.white);
 		for (String player : pong.getPlayers()) {
-			float paddleX = playX + playWidth / (float) pong.getPlayerPos(player).getL();
-			float paddleY = playY + playHeight / (float) pong.getPlayerPos(player).getR();
+			float paddleX = playX + unitX * pong.getPlayerPos(player).getL();
+			float paddleY = playY + unitY * pong.getPlayerPos(player).getR();
 			Rectangle paddle = new Rectangle(paddleX, paddleY, paddleWidth, paddleHeight);
-			g.draw(paddle);
+			g.fill(paddle);
 		}
 
-		float ballDiameter = playWidth / ((float) pong.BOUND_X);
-		float ballX = playX + (playWidth / (float) pong.getBallPos().getL()) - ballDiameter / 2;
-		float ballY = playY + (playHeight / (float) pong.getBallPos().getR()) - ballDiameter / 2;
-		Circle ball = new Circle(ballX, ballY, ballDiameter);
-		g.draw(ball);
+		float ballRadius = unitX / 2;
+		float ballX = playX + unitX * pong.getBallPos().getL();
+		float ballY = playY + unitY * pong.getBallPos().getR();
+		Circle ball = new Circle(ballX, ballY, ballRadius);
+		g.fill(ball);
 	}
 }

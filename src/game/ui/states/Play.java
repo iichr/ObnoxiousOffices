@@ -585,6 +585,10 @@ public class Play extends BasicGameState {
 			playingHangman = true;
 			// System.out.println("ENTERED HANGMAN");
 			break;
+		case Input.KEY_8:
+			MiniGame.localMiniGame = new MiniGamePong(localPlayerName, localPlayerName);
+			playingPong = true;
+			break;
 		case Input.KEY_LALT:
 			cb.toggleFocus();
 		}
