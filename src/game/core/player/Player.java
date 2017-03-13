@@ -19,7 +19,7 @@ import java.io.Serializable;
 public class Player implements Updateable, Serializable {
 
     public final String name;
-    public final PlayerStatus status = new PlayerStatus(this);
+    public PlayerStatus status = new PlayerStatus(this);
     private double progress = 0;
     private Direction facing;
     private Location location;
@@ -118,6 +118,11 @@ public class Player implements Updateable, Serializable {
     @Override
     public boolean ended() {
         return false;
+    }
+
+    @Override
+    public void end() {
+
     }
 
     /**

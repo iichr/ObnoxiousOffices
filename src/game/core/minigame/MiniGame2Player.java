@@ -5,7 +5,7 @@ package game.core.minigame;
  */
 public abstract class MiniGame2Player extends MiniGame {
 
-    protected final String player1, player2;
+    public final String player1, player2;
 
     public MiniGame2Player(String player1, String player2) {
         super(player1, player2);
