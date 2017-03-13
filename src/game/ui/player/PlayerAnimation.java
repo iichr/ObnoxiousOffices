@@ -32,7 +32,7 @@ public class PlayerAnimation {
 			break;
 		case 1:
 			playerSheet = new Image(SpriteLocations.PLAYER_DARK_STANDING, false, Image.FILTER_NEAREST);
-			player = new SpriteSheet(playerSheet, 30, 50, 14, 10);
+			player = new SpriteSheet(playerSheet, 30, 50, 34, 10);
 
 			cN[0] = new Image(SpriteLocations.PLAYER_DARK_NORTH_SEAT, false, Image.FILTER_NEAREST);
 			cS[0] = player.getSprite(2, 0);;
@@ -42,7 +42,7 @@ public class PlayerAnimation {
 			break;
 		case 2:
 			playerSheet = new Image(SpriteLocations.PLAYER_BROWN_STANDING, false, Image.FILTER_NEAREST);
-			player = new SpriteSheet(playerSheet, 30, 50, 14, 10);
+			player = new SpriteSheet(playerSheet, 30, 50, 34, 10);
 
 			cN[0] = new Image(SpriteLocations.PLAYER_BROWN_NORTH_SEAT, false, Image.FILTER_NEAREST);
 			cS[0] = player.getSprite(2, 0);;
@@ -52,7 +52,7 @@ public class PlayerAnimation {
 			break;
 		case 3:
 			playerSheet = new Image(SpriteLocations.PLAYER_PINK_STANDING, false, Image.FILTER_NEAREST);
-			player = new SpriteSheet(playerSheet, 30, 50, 14, 10);
+			player = new SpriteSheet(playerSheet, 30, 50, 34, 10);
 
 			cN[0] = new Image(SpriteLocations.PLAYER_PINK_NORTH_SEAT, false, Image.FILTER_NEAREST);
 			cS[0] = player.getSprite(2, 0);;
