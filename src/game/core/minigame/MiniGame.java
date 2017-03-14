@@ -6,6 +6,7 @@ import game.core.event.minigame.MiniGameEndedEvent;
 import game.core.event.minigame.MiniGameStatChangedEvent;
 import game.core.event.minigame.MiniGameVarChangedEvent;
 import game.core.event.player.PlayerInputEvent;
+import game.core.player.Player;
 import game.core.util.DataHolder;
 
 import java.io.Serializable;
@@ -93,5 +94,9 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
 
     public boolean hasPlayer(String playerName) {
         return players.contains(playerName);
+    }
+
+    public boolean isLocal() {
+        return getPlayers().contains(Player.localPlayerName);
     }
 }
