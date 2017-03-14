@@ -1,28 +1,16 @@
 package game.core.sync;
 
 import game.core.chat.Chat;
-import game.core.event.Events;
-import game.core.event.chat.ChatMessageReceivedEvent;
-import game.core.event.minigame.MiniGameEndedEvent;
-import game.core.event.minigame.MiniGameStartedEvent;
-import game.core.event.player.PlayerAttributeChangedEvent;
-import game.core.event.player.PlayerMovedEvent;
-import game.core.event.player.PlayerProgressUpdateEvent;
-import game.core.event.player.PlayerRotatedEvent;
-import game.core.event.player.PlayerStateAddedEvent;
-import game.core.event.player.PlayerStateRemovedEvent;
-import game.core.event.minigame.MiniGameStatChangedEvent;
-import game.core.event.minigame.MiniGameVarChangedEvent;
-import game.core.event.player.action.PlayerActionAddedEvent;
-import game.core.event.player.action.PlayerActionEndedEvent;
-import game.core.event.player.effect.PlayerEffectAddedEvent;
-import game.core.event.player.effect.PlayerEffectElapsedUpdate;
-import game.core.event.player.effect.PlayerEffectEndedEvent;
-import game.core.event.tile.TileChangedEvent;
+import game.core.event.*;
+import game.core.event.chat.*;
+import game.core.event.minigame.*;
+import game.core.event.player.action.*;
+import game.core.event.player.*;
+import game.core.event.player.effect.*;
+import game.core.event.tile.*;
 import game.core.minigame.MiniGame;
 import game.core.player.Player;
-import game.core.world.Location;
-import game.core.world.World;
+import game.core.world.*;
 
 /**
  * Created by samtebbs on 11/02/2017.
