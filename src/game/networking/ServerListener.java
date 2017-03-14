@@ -194,7 +194,8 @@ public class ServerListener extends Thread {
 	private void sendQueue() {
 		Thread outputThread = new Thread(() -> {
 			Object output;
-			while (true) {
+			boolean notQuit = true;
+			while (notQuit) {
 				output = outputQ.poll();
 				if (output != null) {
 					if (!socket.isClosed()) {
@@ -207,10 +208,10 @@ public class ServerListener extends Thread {
 								System.out.println("ai added");
 								output = null;
 								running = false;
+								notQuit = false;
 								socket.close();
 								connections.remove(playerNumber);
 								NUM_AI_PLAYERS = NUM_AI_PLAYERS + 1;
-								// REMOVE FROM LIST
 								System.out.println("Player Removed");
 							} catch (IOException e1) {
 								System.out.println("e1");
