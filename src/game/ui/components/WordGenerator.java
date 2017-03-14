@@ -34,20 +34,7 @@ public class WordGenerator {
 	public WordGenerator() throws SlickException {
 		ss = new SpriteSheet(new Image("res/alphabets/normal.png"), 150, 150, 0, 0);
 		this.load(wg);
-
-		// TODO extra characters and bold versions
-		for (char c = 'A'; c <= 'Z'; c++) {
-			wgB.put(c, new Image("res/alphabets/bold/" + c + ".png"));
-			wgB.put((char) (c + 32), new Image("res/alphabets/bold/" + c + ".png"));
-		}
-		for (char c = '0'; c <= '9'; c++) {
-			wgB.put(c, new Image("res/alphabets/bold/" + c + ".png"));
-		}
-		wgB.put('_', new Image("res/alphabets/bold/_.png"));
-		wgB.put((char) 32, new Image("res/alphabets/Space.png"));
-		wgB.put('%', new Image("res/alphabets/bold/percentage.png"));
-		wgB.put('<', new Image("res/alphabets/bold/arrowL.png"));
-		wgB.put('>', new Image("res/alphabets/bold/arrowR.png"));
+		this.load(wgB);
 		height = wg.get('%').getHeight();
 		width = wg.get('%').getWidth();
 
