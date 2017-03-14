@@ -55,7 +55,7 @@ public class World implements Updateable, Serializable {
         players.remove(getPlayer(name));
     }
 
-	public void startMiniGame(MiniGame game) {
+    public void startMiniGame(MiniGame game) {
         miniGames.add(game);
         Events.trigger(new MiniGameStartedEvent(game));
     }
@@ -231,6 +231,11 @@ public class World implements Updateable, Serializable {
     public int getMaxPlayers(){
     	return maxPlayers;
     }
+
+	public void removePlayer(int playerNumber) {
+		players.remove(playerNumber);
+		
+	}
 
     public MiniGame getMiniGame(String playerName) {
         return miniGames.stream().filter(m -> m.hasPlayer(playerName)).findFirst().orElse(null);
