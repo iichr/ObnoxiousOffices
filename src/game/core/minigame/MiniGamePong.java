@@ -62,15 +62,15 @@ public class MiniGamePong extends MiniGame2Player {
     }
 
     private void newRound() {
-        setStat(player1, X_POS, 1);
-        setStat(player2, X_POS, BOUND_X - 1);
-        setStat(player1, Y_POS, 0);
-        setStat(player2, Y_POS, 0);
+        setStat(player1, X_POS, 1f);
+        setStat(player2, X_POS, (float)BOUND_X - 1);
+        setStat(player1, Y_POS, 0f);
+        setStat(player2, Y_POS, 0f);
 
-        setVar(X_POS, 0);
-        setVar(Y_POS, 0);
-        setVar(BALL_X_VEL, 1);
-        setVar(BALL_Y_VEL, 0);
+        setVar(X_POS, 0f);
+        setVar(Y_POS, 0f);
+        setVar(BALL_X_VEL, 1f);
+        setVar(BALL_Y_VEL, 0f);
     }
 
     @Override
