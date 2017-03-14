@@ -74,7 +74,7 @@ public class ClientSync {
 
     private static void onMiniGameStarted(MiniGameStartedEvent event) {
         System.out.printf("Mini game started with %s%n", event.game.getPlayers());
-        MiniGame.localMiniGame = event.game;
+        if(event.game.isLocal()) MiniGame.localMiniGame = event.game;
     }
 
     private static void onTileChanged(TileChangedEvent event) {
