@@ -200,7 +200,6 @@ public class ServerListener extends Thread {
 								socket.close();
 								connections.remove(playerNumber);
 								NUM_AI_PLAYERS = NUM_AI_PLAYERS + 1;
-								// REMOVE FROM LIST
 								System.out.println("Player Removed");
 							} catch (IOException e1) {
 								System.out.println("e1");
