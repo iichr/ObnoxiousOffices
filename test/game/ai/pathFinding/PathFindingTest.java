@@ -1,12 +1,11 @@
-package game.ai.JUnitTests;
-
-import static org.junit.Assert.fail;
-
-import org.junit.Before;
-import org.junit.Test;
+package game.ai.pathFinding;
 
 import game.ai.AIPlayer;
 import game.core.world.World;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.fail;
 
 public class PathFindingTest {
 	
