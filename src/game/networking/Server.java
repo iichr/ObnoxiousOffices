@@ -1,14 +1,13 @@
 package game.networking;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
+import org.junit.runner.RunWith;
 
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
@@ -26,28 +25,25 @@ public class Server {
 	private boolean gameEnded = false;
 	private boolean gameStarted = false;
 
-	private final int NUM_PLAYERS = 4;
-	
+	private final int NUM_PLAYERS = 2;
+	/**
+	 * Starts the server
+	 */
 	public Server() {
 		connections = new ArrayList<ServerListener>();
 		final int port = 8942;
 		Events.on(GameStartedEvent.class, this::updateWorld);
-
 		// create the server socket
 		createSocket(port);
-
 		// load the world
 		loadWorld();
-		
 		// listen for new connections
 		listenForConnections();
 	}
 
 	/**
 	 * Creates a server socket on the given port
-	 * 
-	 * @param port
-	 *            The port to create the socket on
+	 * @param port- The port to create the socket on
 	 */
 	private void createSocket(int port) {
 		// Open a server socket:
@@ -94,7 +90,10 @@ public class Server {
 			e2.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Update the world
+	 * @param e- Game started event object
+	 */
 	private void updateWorld(GameStartedEvent e) {
 		Updater worldUpdater = new Updater(e.world, Time.UPDATE_RATE, true);
 		Thread updateThread = new Thread(worldUpdater);
@@ -113,7 +112,7 @@ public class Server {
 	// }
 
 	/**
-	 * 
+	 * Main method for starting server
 	 * @param args
 	 */
 	public static void main(String[] args) {

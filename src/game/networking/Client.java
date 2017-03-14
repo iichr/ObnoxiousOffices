@@ -19,7 +19,9 @@ public class Client {
 
 	private Socket server;
 	private ObjectOutputStream od;
-
+	/**
+	 * Listens for events
+	 */
 	public Client() {
 		Events.on(ConnectionAttemptEvent.class, this::connectToServer);
 		Events.on(PlayerCreatedEvent.class, this::setLocalPlayer);
@@ -29,9 +31,7 @@ public class Client {
 
 	/**
 	 * Sends Data to the server for updating the players
-	 * 
-	 * @param data
-	 *            The data to end
+	 * @param data- The data to end
 	 */
 	public void sendDataToServer(Object data) {
 		try {
@@ -47,9 +47,7 @@ public class Client {
 	/**
 	 * Attempt to connect to the server when ConnectionAttemptEvent is received
 	 * If it fails then send connectionFailedEvent
-	 * 
-	 * @param event
-	 *            The ConnectionAttemptEvent
+	 * @param event-The ConnectionAttemptEvent
 	 */
 	public void connectToServer(ConnectionAttemptEvent event) {
 		int port = 8942;
@@ -83,9 +81,7 @@ public class Client {
 
 	/**
 	 * Sets the local player name on PlayerCreatedEvent
-	 * 
-	 * @param e
-	 *            THe playerCreatedEvent
+	 * @param e- The playerCreatedEvent
 	 */
 	public void setLocalPlayer(PlayerCreatedEvent e) {
 		Player.localPlayerName = e.localPlayerName;
