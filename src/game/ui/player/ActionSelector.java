@@ -6,6 +6,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import game.core.event.Events;
+import game.core.event.player.PlayerInputEvent;
+import game.core.input.InputTypeInteraction;
+import game.core.input.InteractionType;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -22,12 +26,14 @@ public class ActionSelector {
 	private LinkedList<String> toShow;
 	private WordGenerator wg;
 	private int action;
+	private boolean choosingHack;
 
 	/**
 	 * Constructor: Created an action selector with current action 0
 	 */
 	public ActionSelector() {
 		action = 0;
+		choosingHack = false;
 	}
 
 	/**
@@ -47,7 +53,7 @@ public class ActionSelector {
 	 *            The Graphics object
 	 * @throws SlickException
 	 */
-	public void updateSelector(World world, String localPlayerName, boolean hacking, float tileWidth, float tileHeight,
+	public void updateSelector(World world, String localPlayerName, float tileWidth, float tileHeight,
 			Graphics g) throws SlickException {
 		Player localPlayer = world.getPlayer(localPlayerName);
 		Direction facing = localPlayer.getFacing();
@@ -61,7 +67,7 @@ public class ActionSelector {
 			// check the tile is a computer
 			if (actionTile.equals(TileType.COMPUTER)) {
 				// set up selector
-				setUpSelector(world, localPlayerName, hacking, tile);
+				setUpSelector(world, localPlayerName, tile);
 
 				// render selector
 				render(g, inFront, tileWidth, tileHeight / 2);
@@ -82,7 +88,7 @@ public class ActionSelector {
 	 *            The tile in front of the player
 	 * @throws SlickException
 	 */
-	private void setUpSelector(World world, String localPlayerName, boolean hacking, Tile tile) throws SlickException {
+	private void setUpSelector(World world, String localPlayerName, Tile tile) throws SlickException {
 		// set up variables
 		String ownerName = TileTypeComputer.getOwningPlayer((MetaTile) tile);
 		selectorBack = new Image(ImageLocations.SELECTOR, false, Image.FILTER_NEAREST);
@@ -92,7 +98,7 @@ public class ActionSelector {
 		// display different things for your pc to others
 		if (ownerName.equals(localPlayerName)) {
 			// show player selection if choosing who to hack
-			if (hacking) {
+			if (choosingHack) {
 				for (Player p : world.getPlayers()) {
 					if (!p.name.equals(localPlayerName)) {
 						toShow.add(p.name);
@@ -145,6 +151,26 @@ public class ActionSelector {
 		wg.drawCenter(g, toShow.get(action), x + width / 2, y + height / 2, true, width / 700);
 
 	}
+	
+	/**
+	 * Manages input whilst using the action selector
+	 */
+	public void manageSelection(String localPlayerName) {
+		switch (toShow.get(action)) {
+		case "WORK":
+			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
+			break;
+		case "HACK":
+			choosingHack = true;
+			action = 0;
+			break;
+		case "NONE":
+			// do nothing
+			break;
+		default:
+			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
+		}
+	}
 
 	/**
 	 * Gets the current value from the selector
@@ -163,5 +189,24 @@ public class ActionSelector {
 	 */
 	public void setAction(int action) {
 		this.action = action;
+	}
+
+	/**
+	 * Sets whether the user is selecting who to hack
+	 * 
+	 * @param toSet
+	 *            The new value of choosingHack
+	 */
+	public void setHack(boolean toSet) {
+		choosingHack = toSet;
+	}
+
+	/**
+	 * Gets whether the user is selecting who to hack
+	 * 
+	 * @return boolean: choosingHack
+	 */
+	public boolean getHack() {
+		return choosingHack;
 	}
 }
