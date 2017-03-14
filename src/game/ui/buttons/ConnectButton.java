@@ -1,5 +1,7 @@
 package game.ui.buttons;
 
+import java.util.regex.Pattern;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
@@ -7,6 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import game.core.event.ConnectionAttemptEvent;
 import game.core.event.Events;
+import game.ui.states.CharacterSelect;
 
 /**
  * Used to create a new labelled button for the menu. Label is centred to the
@@ -53,13 +56,18 @@ public class ConnectButton extends Button {
 	 *            The new state to enter.
 	 */
 	public void update(GameContainer gc, StateBasedGame game, float mouseX, float mouseY, String serverAddress,
-			String name) {
+			String name, CharacterSelect cs) {
 		Input input = gc.getInput();
 		if (active) {
 			if (inRange(mouseX, mouseY)) {
 				button = select;
 				if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-					Events.trigger(new ConnectionAttemptEvent(name, serverAddress));
+					if (Pattern.matches("[a-zA-Z0-9_]*", name)) {
+						cs.setInvalidName(false);
+						Events.trigger(new ConnectionAttemptEvent(name, serverAddress));
+					} else {
+						cs.setInvalidName(true);
+					}
 				}
 			} else {
 				button = unselect;
