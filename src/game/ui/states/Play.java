@@ -24,6 +24,7 @@ import game.ui.components.ChatBox;
 import game.ui.components.Controls;
 import game.ui.components.Effect;
 import game.ui.components.Renderer;
+import game.ui.components.WordGenerator;
 import game.ui.interfaces.Vals;
 import game.ui.overlay.GameOverOverlay;
 import game.ui.overlay.HangmanOverlay;
@@ -47,6 +48,7 @@ public class Play extends BasicGameState {
 	// helper objects
 	protected Controls ctrs;
 	protected Renderer renderer;
+	protected WordGenerator wg;
 
 	// tile info
 	private float tileWidth;
@@ -97,9 +99,6 @@ public class Play extends BasicGameState {
 		Vals.FONT_PLAY.getEffects().add(new ColorEffect());
 		Vals.FONT_PLAY.loadGlyphs();
 
-		// create new actionSelector
-		actionSelector = new ActionSelector();
-
 		// listen for events
 		Events.on(GameFinishedEvent.class, this::gameFinished);
 		Events.on(MiniGameStartedEvent.class, this::startMinigame);
@@ -142,24 +141,28 @@ public class Play extends BasicGameState {
 		// setup tile sizes
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
 		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
+		
+		wg = new WordGenerator();
 
 		// set up renderer
 		renderer = new Renderer(world, localPlayerName, tileWidth, tileHeight, showOverview);
 
 		// set up player info
-		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight);
+		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight, wg);
 
 		// Effect container
 		effectOverview = new Effect(tileWidth, tileHeight);
 
 		// player overview
 		playerOverview = new PlayerOverview(localPlayerName, 0, 0);
+		
+		actionSelector = new ActionSelector(wg);
 
 		// popUps
-		optionsOverlay = new OptionsOverlay();
-		gameOverOverlay = new GameOverOverlay(world.getPlayers());
-		hangmanOverlay = new HangmanOverlay();
-		pongOverlay = new PongOverlay();
+		optionsOverlay = new OptionsOverlay(wg);
+		gameOverOverlay = new GameOverOverlay(world.getPlayers(), wg);
+		hangmanOverlay = new HangmanOverlay(wg);
+		pongOverlay = new PongOverlay(wg);
 	}
 
 	@Override

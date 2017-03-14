@@ -5,6 +5,7 @@ import org.newdawn.slick.SlickException;
 
 import game.core.minigame.MiniGame;
 import game.core.minigame.MiniGameHangman;
+import game.ui.components.WordGenerator;
 
 public class HangmanOverlay extends PopUpOverlay {
 
@@ -12,8 +13,8 @@ public class HangmanOverlay extends PopUpOverlay {
 	 * Constructor: Sets up overlay
 	 * @throws SlickException
 	 */
-	public HangmanOverlay() throws SlickException {
-		super();
+	public HangmanOverlay(WordGenerator wg) throws SlickException {
+		super(wg);
 	}
 
 	@Override

@@ -114,6 +114,7 @@ public class Controls {
 		} else if (key == SELECTOR_DOWN) {
 			actionSelector.changeSelection(-1);
 		} else if (key == SELECTOR_BACK) {
+			actionSelector.setAction(1);
 			actionSelector.setHack(false);
 		}
 		return actionSelector;

@@ -31,9 +31,10 @@ public class ActionSelector {
 	/**
 	 * Constructor: Created an action selector with current action 0
 	 */
-	public ActionSelector() {
+	public ActionSelector(WordGenerator wg) {
 		action = 0;
 		choosingHack = false;
+		this.wg = wg;
 	}
 
 	/**
@@ -93,7 +94,7 @@ public class ActionSelector {
 		String ownerName = TileTypeComputer.getOwningPlayer((MetaTile) tile);
 		selectorBack = new Image(ImageLocations.SELECTOR, false, Image.FILTER_NEAREST);
 		toShow = new LinkedList<String>();
-		wg = new WordGenerator();
+		
 
 		// display different things for your pc to others
 		if (ownerName.equals(localPlayerName)) {
