@@ -9,8 +9,10 @@ import game.core.player.Player;
 public class PlayerCreatedEvent extends Event {
 
     public final String localPlayerName;
+    public final int playersLeft;
 
-    public PlayerCreatedEvent(String localPlayerName) {
+    public PlayerCreatedEvent(String localPlayerName, int playersLeft) {
         this.localPlayerName = localPlayerName;
+        this.playersLeft = playersLeft;
     }
 }

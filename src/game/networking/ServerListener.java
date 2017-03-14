@@ -249,8 +249,8 @@ public class ServerListener extends Thread {
 			Player playerObject = new Player(name, Direction.SOUTH, world.getSpawnPoint(playerNumber));
 			playerObject.setHair(playerNumber);
 			world.addPlayer(playerObject);
-
-			PlayerCreatedEvent event = new PlayerCreatedEvent(name);
+			int playersLeft = world.getMaxPlayers() - world.getPlayers().size();
+			PlayerCreatedEvent event = new PlayerCreatedEvent(name, playersLeft);
 			Events.trigger(event);
 			forwardInfo(event);
 			System.out.println("Player " + name + " added to the game!");
