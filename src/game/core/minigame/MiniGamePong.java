@@ -15,7 +15,9 @@ public class MiniGamePong extends MiniGame2Player {
 
     public MiniGamePong(String player1, String player2) {
         super(player1, player2);
+        initialising = true;
         newRound();
+        initialising = false;
     }
 
     public Pair<Integer, Integer> getBallPos() {
