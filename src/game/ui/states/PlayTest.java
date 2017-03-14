@@ -12,8 +12,8 @@ import game.core.test.Test;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
+import game.ui.components.Controls;
 import game.ui.interfaces.Vals;
-import game.ui.player.Controls;
 
 public class PlayTest extends Play {
 

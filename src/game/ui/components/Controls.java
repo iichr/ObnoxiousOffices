@@ -1,4 +1,4 @@
-package game.ui.player;
+package game.ui.components;
 
 import org.newdawn.slick.Input;
 
@@ -9,7 +9,7 @@ import game.core.input.InputTypeInteraction;
 import game.core.input.InputTypeMovement;
 import game.core.input.InteractionType;
 import game.core.input.MovementType;
-import game.ui.components.ChatBox;
+import game.ui.player.ActionSelector;
 
 public class Controls {
 	private final int MOVE_UP = Input.KEY_W;
