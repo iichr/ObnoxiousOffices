@@ -1,5 +1,6 @@
 package game.core.player.action;
 
+import game.core.minigame.MiniGameHangman;
 import game.core.minigame.MiniGamePong;
 import game.core.player.Player;
 import game.core.world.World;
@@ -14,7 +15,7 @@ public class PlayerActionHack extends TimedPlayerAction {
     public PlayerActionHack(Player player, Player target) {
         super(player);
         this.target = target;
-        World.world.startMiniGame(new MiniGamePong(player.name, target.name));
+        World.world.startMiniGame(new MiniGameHangman(player.name));
     }
 
     @Override
