@@ -13,6 +13,7 @@ import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
 import game.ui.interfaces.Vals;
+import game.ui.player.Controls;
 
 public class PlayTest extends Play {
 
@@ -37,13 +38,15 @@ public class PlayTest extends Play {
 		this.world = w;
 		this.localPlayerName = Test.localPlayer;
 		World.world = w;
+		
+		ctrs = new Controls();
 
 		// set boolean flags
 		options = false;
 		gameOver = false;
 		exit = false;
 
-		key = -1;
+		heldKey = -1;
 
 		// test game finished screen
 		// Events.trigger(new GameFinishedEvent());

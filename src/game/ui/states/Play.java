@@ -30,7 +30,9 @@ import game.core.minigame.MiniGameHangman;
 import game.core.minigame.MiniGamePong;
 import game.core.player.Player;
 import game.core.player.PlayerState;
+import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.player.action.PlayerActionSleep;
+import game.core.player.effect.PlayerEffectSleeping;
 import game.core.util.Coordinates;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -49,6 +51,7 @@ import game.ui.overlay.HangmanOverlay;
 import game.ui.overlay.OptionsOverlay;
 import game.ui.overlay.PongOverlay;
 import game.ui.player.ActionSelector;
+import game.ui.player.Controls;
 import game.ui.player.PlayerAnimation;
 import game.ui.player.PlayerInfo;
 import game.ui.player.PlayerOverview;
@@ -58,6 +61,7 @@ public class Play extends BasicGameState {
 
 	// world information
 	protected World world;
+	protected Controls ctrs;
 	private HashMap<Player, PlayerAnimation> playerMap;
 	protected String localPlayerName;
 	private final int rateMilliseconds = 250;
@@ -80,7 +84,7 @@ public class Play extends BasicGameState {
 	// player info
 	private PlayerInfo playerinfo;
 
-	protected int key;
+	protected int heldKey;
 
 	// overlays
 	private OptionsOverlay optionsOverlay;
@@ -93,7 +97,6 @@ public class Play extends BasicGameState {
 	protected boolean options;
 	protected boolean gameOver;
 	protected boolean exit;
-	private boolean choosingHack;
 	private boolean playingPong;
 	private boolean playingHangman;
 	private boolean showOverview;
@@ -134,18 +137,18 @@ public class Play extends BasicGameState {
 	public void playSetup() {
 		this.world = World.world;
 		this.localPlayerName = Player.localPlayerName;
+		ctrs = new Controls();
 
 		// set boolean flags
 		canMove = true;
 		options = false;
 		gameOver = false;
 		exit = false;
-		choosingHack = false;
 		playingPong = false;
 		playingHangman = false;
 		showOverview = false;
 
-		key = -1;
+		heldKey = -1;
 	}
 
 	@Override
@@ -202,7 +205,7 @@ public class Play extends BasicGameState {
 		// used to stop the music from playing
 		// bgmusic.stop();
 	}
-	
+
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
@@ -219,13 +222,13 @@ public class Play extends BasicGameState {
 		}
 
 		long time = System.currentTimeMillis();
-        if (time - lastMove >= rateMilliseconds) {
-            canMove = true;
-        }
+		if (time - lastMove >= rateMilliseconds) {
+			canMove = true;
+		}
 
 		if (canMove) {
-			if (key >= 0) {
-				manageMovement(key);
+			if (heldKey >= 0) {
+				manageMovement(heldKey);
 				canMove = false;
 				lastMove = time;
 			}
@@ -249,7 +252,7 @@ public class Play extends BasicGameState {
 		// shows selectors
 		if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
 			if (world.getPlayer(localPlayerName).status.getActions().size() == 0) {
-				actionSelector.updateSelector(world, localPlayerName, choosingHack, tileWidth, tileHeight, g);
+				actionSelector.updateSelector(world, localPlayerName, tileWidth, tileHeight, g);
 			}
 		}
 
@@ -272,22 +275,22 @@ public class Play extends BasicGameState {
 		switch (key) {
 		case Input.KEY_W:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
-			choosingHack = false;
+			actionSelector.setHack(false);
 			actionSelector.setAction(0);
 			break;
 		case Input.KEY_S:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
-			choosingHack = false;
+			actionSelector.setHack(false);
 			actionSelector.setAction(0);
 			break;
 		case Input.KEY_D:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
-			choosingHack = false;
+			actionSelector.setHack(false);
 			actionSelector.setAction(0);
 			break;
 		case Input.KEY_A:
 			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
-			choosingHack = false;
+			actionSelector.setHack(false);
 			actionSelector.setAction(0);
 			break;
 		}
@@ -578,42 +581,14 @@ public class Play extends BasicGameState {
 	public void keyPressed(int key, char c) {
 		if (!gameOver) {
 			if (playingPong) {
-				pongControls(key);
+				ctrs.pong(localPlayerName, key);
 			} else if (playingHangman) {
-				hangmanControls(c);
+				ctrs.hangman(localPlayerName, c);
 			} else {
 				coreControls(key);
 			}
 		} else {
 			exit = true;
-		}
-	}
-
-	/**
-	 * Manages controls for the hangman minigame
-	 * 
-	 * @param c
-	 *            The character of the key pressed
-	 */
-	private void hangmanControls(char c) {
-		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-			Events.trigger(new PlayerInputEvent(new InputTypeCharacter(c), localPlayerName));
-		}
-	}
-
-	/**
-	 * Manages controls for the pong minigame
-	 * 
-	 * @param key
-	 *            The id of the key pressed
-	 */
-	private void pongControls(int key) {
-		switch (key) {
-		case Input.KEY_W:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
-			break;
-		case Input.KEY_S:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
 		}
 	}
 
@@ -624,47 +599,18 @@ public class Play extends BasicGameState {
 	 *            The id of the key pressed
 	 */
 	private void coreControls(int key) {
+		heldKey = ctrs.coreMoveStart(heldKey, key);
+		if(world.getPlayer(localPlayerName).status.hasState(PlayerState.sleeping)){
+			actionSelector = ctrs.selectorInput(actionSelector, localPlayerName, key);
+		}else{
+			ctrs.interaction(localPlayerName, key);
+		}
+		showOverview = ctrs.openOverview(showOverview, key);
+		cb = ctrs.toggleChat(cb, key);
+		options = ctrs.toggleOptions(options, key);
+		
+		//TEMPORARY MINIGAME TESTING
 		switch (key) {
-		case Input.KEY_ESCAPE:
-			options = !options;
-			break;
-		case Input.KEY_TAB:
-			showOverview = true;
-			break;
-		case Input.KEY_W:
-			this.key = key;
-			break;
-		case Input.KEY_S:
-			this.key = key;
-			break;
-		case Input.KEY_D:
-			this.key = key;
-			break;
-		case Input.KEY_A:
-			this.key = key;
-			break;
-		case Input.KEY_E:
-			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-				manageSelector();
-			} else {
-				Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
-			}
-			break;
-		case Input.KEY_UP:
-			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-				actionSelector.changeSelection(1);
-			}
-			break;
-		case Input.KEY_DOWN:
-			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-				actionSelector.changeSelection(-1);
-			}
-			break;
-		case Input.KEY_LEFT:
-			if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-				choosingHack = false;
-			}
-			break;
 		// TEMPORARY FOR TESTING HANGMAN - PRESS 9
 		case Input.KEY_9:
 			MiniGame.localMiniGame = new MiniGameHangman("chris");
@@ -676,48 +622,12 @@ public class Play extends BasicGameState {
 			MiniGame.localMiniGame = new MiniGamePong("tim", localPlayerName);
 			playingPong = true;
 			break;
-		case Input.KEY_LALT:
-			cb.toggleFocus();
-		}
-	}
-
-	/**
-	 * Manages input whilst using the action selector
-	 */
-	private void manageSelector() {
-		switch (actionSelector.getSelected()) {
-		case "WORK":
-			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
-			break;
-		case "HACK":
-			choosingHack = true;
-			actionSelector.setAction(0);
-			break;
-		case "NONE":
-			// do nothing
-			break;
-		default:
-			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
 		}
 	}
 
 	@Override
 	public void keyReleased(int key, char c) {
-		switch (key) {
-		case Input.KEY_TAB:
-			showOverview = false;
-			break;
-		case Input.KEY_W:
-			this.key = -1;
-			break;
-		case Input.KEY_S:
-			this.key = -1;
-			break;
-		case Input.KEY_D:
-			this.key = -1;
-			break;
-		case Input.KEY_A:
-			this.key = -1;
-		}
+		showOverview = ctrs.closeOverview(showOverview, key);
+		heldKey = ctrs.coreMoveFinish(heldKey, key);
 	}
 }
