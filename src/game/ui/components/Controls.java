@@ -89,7 +89,7 @@ public class Controls {
 	 * @return heldKey The movement key to set
 	 */
 	public int coreMoveFinish(int heldKey, int key) {
-		if (key == MOVE_UP || key == MOVE_DOWN || key == MOVE_LEFT || key == MOVE_RIGHT) {
+		if (heldKey == key && (key == MOVE_UP || key == MOVE_DOWN || key == MOVE_LEFT || key == MOVE_RIGHT)) {
 			return -1;
 		}
 		return heldKey;
@@ -204,10 +204,9 @@ public class Controls {
 		}
 		return heldKey;
 	}
-	
 
 	public int pongMoveFinish(int heldKey, int key) {
-		if (key == MOVE_UP || key == MOVE_DOWN) {
+		if (heldKey == key && (key == MOVE_UP || key == MOVE_DOWN)) {
 			return -1;
 		}
 		return heldKey;
