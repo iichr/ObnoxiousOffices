@@ -11,6 +11,8 @@ import java.util.Map;
  */
 public abstract class DataHolder {
 
+    protected boolean initialising = true;
+
     private Map<String, Object> vars = new HashMap<>();
 
     protected abstract Event getUpdateEvent(String var, Object val);

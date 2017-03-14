@@ -19,7 +19,6 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
     public static final String SCORE = "SCORE";
     protected boolean ended = false;
     public final int MAX_SCORE = 2;
-    protected boolean initialising = true;
 
     public static MiniGame localMiniGame;
 
@@ -70,11 +69,6 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
     public int getIntStat(String player, String var) {
         Object val = getStat(player, var);
         return val == null ? 0 : (Integer) val;
-    }
-
-    @Override
-    public void setVar(String var, Object val) {
-        if(!initialising) super.setVar(var, val);
     }
 
     @Override
