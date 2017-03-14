@@ -131,7 +131,6 @@ public class Options extends BasicGameState {
 				gc.setFullscreen(!gc.isFullscreen());
 			}
 		}
-
 		// soundStatus.draw(Vals.BUTTON_ALIGN_CENTRE_W,Vals.BUTTON_ALIGN_CENTRE_H-Vals.BUTTON_ALIGN_CENTRE_H/10);
 		// add back button
 		backButton.render();
