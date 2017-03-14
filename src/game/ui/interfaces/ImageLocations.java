@@ -32,7 +32,6 @@ public interface ImageLocations {
 
 	// PLAYER IMAGES
 	public static final String PLAYER_HEADS = "res/sprites/players/heads.png";
-	
 	public static final String PLAYER_IDENTIFIER = "res/sprites/players/playerIdentifier.png";
 
 	// IN GAME UI ELEMENTS

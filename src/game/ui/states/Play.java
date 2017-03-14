@@ -1,12 +1,7 @@
 package game.ui.states;
 
-import java.util.HashMap;
-import java.util.List;
-
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
@@ -19,53 +14,43 @@ import game.core.event.Events;
 import game.core.event.GameFinishedEvent;
 import game.core.event.minigame.MiniGameEndedEvent;
 import game.core.event.minigame.MiniGameStartedEvent;
-import game.core.event.player.PlayerInputEvent;
-import game.core.input.InputTypeMovement;
-import game.core.input.MovementType;
 import game.core.minigame.MiniGame;
 import game.core.minigame.MiniGameHangman;
 import game.core.minigame.MiniGamePong;
 import game.core.player.Player;
 import game.core.player.PlayerState;
-import game.core.player.action.PlayerActionSleep;
-import game.core.util.Coordinates;
-import game.core.world.Direction;
-import game.core.world.Location;
 import game.core.world.World;
-import game.core.world.tile.MetaTile;
-import game.core.world.tile.Tile;
-import game.core.world.tile.type.TileType;
-import game.core.world.tile.type.TileTypeComputer;
 import game.ui.components.ChatBox;
 import game.ui.components.Controls;
 import game.ui.components.Effect;
-import game.ui.interfaces.ImageLocations;
-import game.ui.interfaces.SpriteLocations;
+import game.ui.components.Renderer;
 import game.ui.interfaces.Vals;
 import game.ui.overlay.GameOverOverlay;
 import game.ui.overlay.HangmanOverlay;
 import game.ui.overlay.OptionsOverlay;
 import game.ui.overlay.PongOverlay;
 import game.ui.player.ActionSelector;
-import game.ui.player.PlayerAnimation;
 import game.ui.player.PlayerInfo;
 import game.ui.player.PlayerOverview;
 
 public class Play extends BasicGameState {
 	// private String mouseCoords = "No input yet!";
 
-	// world information
+	// world info
 	protected World world;
-	protected Controls ctrs;
-	private HashMap<Player, PlayerAnimation> playerMap;
 	protected String localPlayerName;
+
+	// time info
 	private final int rateMilliseconds = 250;
 	private long lastMove = 0;
 
-	// tile information
+	// helper objects
+	protected Controls ctrs;
+	protected Renderer renderer;
+
+	// tile info
 	private float tileWidth;
 	private float tileHeight;
-	private HashMap<TileType, HashMap<Direction, Image[]>> tileMap;
 
 	// status container
 	private PlayerOverview playerOverview;
@@ -79,6 +64,7 @@ public class Play extends BasicGameState {
 	// player info
 	private PlayerInfo playerinfo;
 
+	// movement info
 	protected int heldKey;
 
 	// overlays
@@ -106,15 +92,15 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		playerMap = new HashMap<Player, PlayerAnimation>();
-
 		// Font
 		Vals.FONT_PLAY.addAsciiGlyphs();
 		Vals.FONT_PLAY.getEffects().add(new ColorEffect());
 		Vals.FONT_PLAY.loadGlyphs();
 
+		// create new actionSelector
 		actionSelector = new ActionSelector();
 
+		// listen for events
 		Events.on(GameFinishedEvent.class, this::gameFinished);
 		Events.on(MiniGameStartedEvent.class, this::startMinigame);
 		Events.on(MiniGameEndedEvent.class, this::closeMinigame);
@@ -122,16 +108,17 @@ public class Play extends BasicGameState {
 		// KEEP COMMENTED until we've all added the required libraries.
 		// Initialise the background music
 		// bgmusic = new Music("res/music/toocheerful.ogg");
+
 		cb = new ChatBox(gc, new Chat());
 	}
 
 	/**
-	 * Sets up the play state which should be called at the start of each game
-	 *
+	 * Sets up the play state: Should be called at the start of each game
 	 */
 	public void playSetup() {
 		this.world = World.world;
 		this.localPlayerName = Player.localPlayerName;
+
 		ctrs = new Controls();
 
 		// set boolean flags
@@ -156,12 +143,8 @@ public class Play extends BasicGameState {
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
 		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
 
-		// add player animations
-		animatePlayers(world.getPlayers());
-
-		// get the tileMap
-		SpriteLocations sp = new SpriteLocations();
-		tileMap = sp.getTileMap();
+		// set up renderer
+		renderer = new Renderer(world, localPlayerName, tileWidth, tileHeight, showOverview);
 
 		// set up player info
 		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight);
@@ -177,21 +160,6 @@ public class Play extends BasicGameState {
 		gameOverOverlay = new GameOverOverlay(world.getPlayers());
 		hangmanOverlay = new HangmanOverlay();
 		pongOverlay = new PongOverlay();
-	}
-
-	/**
-	 * Map players to player animations
-	 * 
-	 * @param players
-	 *            The set of Players in the world
-	 * 
-	 * @throws SlickException
-	 */
-	private void animatePlayers(List<Player> players) throws SlickException {
-		for (Player p : players) {
-			PlayerAnimation animation = new PlayerAnimation(p.getHair(), p.getFacing());
-			playerMap.put(p, animation);
-		}
 	}
 
 	@Override
@@ -223,7 +191,7 @@ public class Play extends BasicGameState {
 
 		if (canMove) {
 			if (heldKey >= 0) {
-				manageMovement(heldKey);
+				ctrs.manageMovement(actionSelector, localPlayerName, heldKey);
 				canMove = false;
 				lastMove = time;
 			}
@@ -235,10 +203,10 @@ public class Play extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setFont(Vals.FONT_PLAY);
-		boolean[][] visible = findVisibles();
+		boolean[][] visible = renderer.findVisibles();
 
 		// renders world
-		drawWorld(visible);
+		renderer.drawWorld(visible);
 		cb.render(gc, g);
 
 		// add effects overview container
@@ -266,275 +234,58 @@ public class Play extends BasicGameState {
 		}
 	}
 
-	private void manageMovement(int key) {
+	@Override
+	public void keyPressed(int key, char c) {
+		if (!gameOver) {
+			if (playingPong) {
+				ctrs.pong(localPlayerName, key);
+			} else if (playingHangman) {
+				ctrs.hangman(localPlayerName, c);
+			} else {
+				coreControls(key);
+			}
+		} else {
+			exit = true;
+		}
+	}
+
+	/**
+	 * Manages controls for the core game
+	 * 
+	 * @param key
+	 *            The id of the key pressed
+	 */
+	private void coreControls(int key) {
+		heldKey = ctrs.coreMoveStart(heldKey, key);
+		if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
+			actionSelector = ctrs.selectorInput(actionSelector, localPlayerName, key);
+		} else {
+			ctrs.interaction(localPlayerName, key);
+		}
+		showOverview = ctrs.openOverview(showOverview, key);
+		cb = ctrs.toggleChat(cb, key);
+		options = ctrs.toggleOptions(options, key);
+
+		// TEMPORARY MINIGAME TESTING
 		switch (key) {
-		case Input.KEY_W:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
-			actionSelector.setHack(false);
-			actionSelector.setAction(0);
+		// TEMPORARY FOR TESTING HANGMAN - PRESS 9
+		case Input.KEY_9:
+			MiniGame.localMiniGame = new MiniGameHangman("chris");
+			playingHangman = true;
+			// System.out.println("ENTERED HANGMAN");
 			break;
-		case Input.KEY_S:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
-			actionSelector.setHack(false);
-			actionSelector.setAction(0);
-			break;
-		case Input.KEY_D:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
-			actionSelector.setHack(false);
-			actionSelector.setAction(0);
-			break;
-		case Input.KEY_A:
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
-			actionSelector.setHack(false);
-			actionSelector.setAction(0);
+		// TEMPORARY FOR TESTING PONG - PRESS 8
+		case Input.KEY_8:
+			MiniGame.localMiniGame = new MiniGamePong("tim", localPlayerName);
+			playingPong = true;
 			break;
 		}
 	}
 
-	/**
-	 * Renders the world to the screen
-	 * 
-	 * @param visible
-	 *            Array containing whether each tile is visible to he local
-	 *            player
-	 * @throws SlickException
-	 */
-	private void drawWorld(boolean[][] visible) throws SlickException {
-		// draw the wall sprite
-		Image wall = new Image(SpriteLocations.TILE_WALL, false, Image.FILTER_NEAREST);
-		wall.draw(0, 0, Vals.SCREEN_WIDTH, tileHeight);
-
-		// check every position in the world to render what is needed at that
-		// location
-		for (int y = 0; y < world.ySize; y++) {
-			for (int x = 0; x < world.xSize; x++) {
-				float tileX = x * tileWidth;
-				float tileY = (y + 1) * (tileHeight / 2);
-
-				// find out what tile is in this location
-				Tile found = world.getTile(x, y, 0);
-
-				// check to draw computer marker
-				drawComputerMarker(tileX, tileY, found);
-
-				// draw the tile at this location
-				drawTile(tileX, tileY, found, visible[x][y]);
-
-				// draw any players at this location
-				if (visible[x][y]) {
-					drawPlayers(x, y, tileX, tileY);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Draws a marker for the local players computer
-	 * 
-	 * @param tileX
-	 *            The x position of the tile to draw over
-	 * @param tileY
-	 *            The y position of the tile to draw over
-	 * @param found
-	 *            The tile at this location
-	 * @throws SlickException
-	 */
-	private void drawComputerMarker(float tileX, float tileY, Tile found) throws SlickException {
-		TileType type = found.type;
-		if (type.equals(TileType.COMPUTER) && showOverview) {
-			String ownerName = TileTypeComputer.getOwningPlayer((MetaTile) found);
-			if (ownerName.equals(localPlayerName)) {
-				Image identifier = new Image(ImageLocations.PLAYER_IDENTIFIER, false, Image.FILTER_NEAREST);
-				identifier.draw(tileX + tileWidth / 6, tileY + tileHeight / 8, 2 * tileWidth / 3, tileHeight / 8);
-			}
-		}
-	}
-
-	/**
-	 * Renders a tile to the screen
-	 * 
-	 * @param tileX
-	 *            The x position to draw the tile on the screen
-	 * @param tileY
-	 *            The y position to draw the tile on the screen
-	 * @param tile
-	 *            The tile to draw
-	 * @param visible
-	 *            Whether the tile is visible or not
-	 */
-	private void drawTile(float tileX, float tileY, Tile tile, boolean visible) {
-		Direction facing = tile.facing;
-		TileType type = tile.type;
-
-		// draw the tile
-		int mtID = tile.multitileID;
-		if (mtID == -1) {
-			mtID++;
-		}
-
-		HashMap<Direction, Image[]> directionMap = tileMap.get(type);
-		Image[] images = directionMap.get(facing);
-
-		if (visible) {
-			if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER) || type.equals(TileType.DOOR)) {
-				images[mtID].draw(tileX, tileY - tileHeight / 2, tileWidth, 3 * tileHeight / 2);
-			} else {
-				images[mtID].draw(tileX, tileY, tileWidth, tileHeight);
-			}
-		} else {
-			if (type.equals(TileType.WALL) || type.equals(TileType.WALL_CORNER) || type.equals(TileType.DOOR)) {
-				images[mtID].draw(tileX, tileY - tileHeight / 2, tileWidth, 3 * tileHeight / 2, Color.darkGray);
-			} else {
-				images[mtID].draw(tileX, tileY, tileWidth, tileHeight, Color.darkGray);
-			}
-		}
-	}
-
-	/**
-	 * Renders the players in the world
-	 * 
-	 * @param x
-	 *            the x location being checked
-	 * @param y
-	 *            the y location being checked
-	 * @param tileX
-	 *            the x location of the tiles on screen
-	 * @param tileY
-	 *            the y location of the tiles on screen
-	 */
-	private void drawPlayers(int x, int y, float tileX, float tileY) {
-		// get players
-		List<Player> players = world.getPlayers();
-		// render the players
-		for (Player player : players) {
-			Location playerLocation = player.getLocation();
-			if (playerLocation.coords.x == x && playerLocation.coords.y == y) {
-				changeAnimation(player);
-				if (player.status.hasAction(PlayerActionSleep.class)) {
-					Location right = new Location(new Coordinates(x - 1, y, 0), world);
-					if (right.checkBounds()) {
-						playerMap.get(player).drawPlayer((x - 1) * tileWidth, (y + 2) * (tileHeight / 2), tileWidth * 2,
-								tileHeight / 2);
-					} else {
-						// otherwise draw to the left
-						playerMap.get(player).drawPlayer(tileX, (y + 2) * (tileHeight / 2), tileWidth * 2,
-								tileHeight / 2);
-					}
-				} else {
-					playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
-					Tile tile = playerLocation.getTile();
-					if (tile.type.equals(TileType.CHAIR) && tile.facing.equals(Direction.NORTH)) {
-						tileMap.get(tile.type).get(tile.facing)[0].draw(tileX, tileY, tileWidth, tileHeight);
-					}
-				}
-			}
-		}
-
-	}
-
-	/**
-	 * Animates the players turning by checking their previous location and
-	 * adjusting appropriately
-	 * 
-	 * @param player
-	 *            the player to check
-	 */
-	private void changeAnimation(Player player) {
-		Direction playerFacing = player.getFacing();
-		if (player.status.hasAction(PlayerActionSleep.class)) {
-			playerMap.get(player).sleeping(playerFacing);
-		} else if (player.status.hasState(PlayerState.sitting)) {
-			playerMap.get(player).seated(playerFacing);
-		} else {
-			playerMap.get(player).turn(player.getFacing());
-		}
-	}
-
-	/**
-	 * Find which tiles are visible to the local player
-	 * 
-	 * @return 2D boolean array [x][y] = true then visible, false = not visible
-	 */
-	private boolean[][] findVisibles() {
-		boolean[][] visible = new boolean[world.xSize][world.ySize];
-
-		// set values to false initially
-		for (int x = 0; x < world.xSize; x++) {
-			for (int y = 0; y < world.ySize; y++) {
-				visible[x][y] = false;
-			}
-		}
-
-		// find any which should be true
-		getVisibleArray(visible, world.getPlayer(localPlayerName).getLocation());
-
-		return visible;
-	}
-
-	/**
-	 * Checks if the tile is visible in the current room
-	 * 
-	 * @param visible
-	 *            Array containing whether each tile is visible to he local
-	 *            player
-	 * @param current
-	 *            The current location being looked at
-	 * @return 2D boolean array [x][y] = true then visible, false = not visible
-	 */
-	private boolean[][] getVisibleArray(boolean[][] visible, Location current) {
-		int x = current.coords.x;
-		int y = current.coords.y;
-		visible[x][y] = true;
-
-		// find surrounding locations
-		Location north = current.add(-1, 0, 0);
-		Location east = current.add(0, 1, 0);
-		Location south = current.add(1, 0, 0);
-		Location west = current.add(0, -1, 0);
-		Location ne = current.add(-1, 1, 0);
-		Location nw = current.add(-1, -1, 0);
-		Location se = current.add(1, 1, 0);
-		Location sw = current.add(1, -1, 0);
-
-		// check if we should continue checking them
-		checkContinue(visible, north);
-		checkContinue(visible, east);
-		checkContinue(visible, south);
-		checkContinue(visible, west);
-		checkContinue(visible, ne);
-		checkContinue(visible, nw);
-		checkContinue(visible, se);
-		checkContinue(visible, sw);
-
-		return visible;
-	}
-
-	/**
-	 * @param visible
-	 *            Array containing whether each tile is visible to he local
-	 *            player
-	 * @param toCheck
-	 *            The location being checked
-	 * @return 2D boolean array [x][y] = true then visible, false = not visible
-	 */
-	private boolean[][] checkContinue(boolean[][] visible, Location toCheck) {
-		int x = toCheck.coords.x;
-		int y = toCheck.coords.y;
-		if (x >= 0 && x < visible.length && y >= 0 && y < visible[0].length) {
-			if (visible[x][y] != true) {
-				if (toCheck.checkBounds()) {
-					TileType found = toCheck.getTile().type;
-					if (!found.equals(TileType.WALL) && !found.equals(TileType.WALL_CORNER)
-							&& !found.equals(TileType.DOOR)) {
-						visible = getVisibleArray(visible, toCheck);
-					} else {
-						// we can see the wall, but not past it
-						visible[x][y] = true;
-					}
-				}
-			}
-		}
-		return visible;
+	@Override
+	public void keyReleased(int key, char c) {
+		showOverview = ctrs.closeOverview(showOverview, key);
+		heldKey = ctrs.coreMoveFinish(heldKey, key);
 	}
 
 	/**
@@ -570,59 +321,5 @@ public class Play extends BasicGameState {
 	private void closeMinigame(MiniGameEndedEvent e) {
 		playingHangman = false;
 		playingPong = false;
-	}
-
-	@Override
-	public void keyPressed(int key, char c) {
-		if (!gameOver) {
-			if (playingPong) {
-				ctrs.pong(localPlayerName, key);
-			} else if (playingHangman) {
-				ctrs.hangman(localPlayerName, c);
-			} else {
-				coreControls(key);
-			}
-		} else {
-			exit = true;
-		}
-	}
-
-	/**
-	 * Manages controls for the core game
-	 * 
-	 * @param key
-	 *            The id of the key pressed
-	 */
-	private void coreControls(int key) {
-		heldKey = ctrs.coreMoveStart(heldKey, key);
-		if(world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)){
-			actionSelector = ctrs.selectorInput(actionSelector, localPlayerName, key);
-		}else{
-			ctrs.interaction(localPlayerName, key);
-		}
-		showOverview = ctrs.openOverview(showOverview, key);
-		cb = ctrs.toggleChat(cb, key);
-		options = ctrs.toggleOptions(options, key);
-		
-		//TEMPORARY MINIGAME TESTING
-		switch (key) {
-		// TEMPORARY FOR TESTING HANGMAN - PRESS 9
-		case Input.KEY_9:
-			MiniGame.localMiniGame = new MiniGameHangman("chris");
-			playingHangman = true;
-			// System.out.println("ENTERED HANGMAN");
-			break;
-		// TEMPORARY FOR TESTING PONG - PRESS 8
-		case Input.KEY_8:
-			MiniGame.localMiniGame = new MiniGamePong("tim", localPlayerName);
-			playingPong = true;
-			break;
-		}
-	}
-
-	@Override
-	public void keyReleased(int key, char c) {
-		showOverview = ctrs.closeOverview(showOverview, key);
-		heldKey = ctrs.coreMoveFinish(heldKey, key);
-	}
+	}	
 }
