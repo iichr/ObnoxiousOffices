@@ -20,8 +20,8 @@ public class PathFindingTest {
 	
 	@Before
 	public void createWorld() {
-		world = new World(4, sizeX, sizeY, sizeZ);
-		ai = new AIPlayer("Volker", facing, location, mode)
+//		world = new World(4, sizeX, sizeY, sizeZ);s
+//		ai = new AIPlayer("Volker", facing, location, mode)
 	}
 
 }
