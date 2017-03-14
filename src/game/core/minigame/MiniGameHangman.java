@@ -16,12 +16,23 @@ public class MiniGameHangman extends MiniGame1Player {
     public static final String NUM_CHARS = "n", PROGRESS = "p", ENTERED = "e", WRONG = "w";
     public static final int MAX_WRONG = 10;
 
-    public MiniGameHangman(String player) {
-        super(player);
-        setVar(NUM_CHARS, word.length());
-        setVar(PROGRESS, new char[word.length()]);
-        setVar(ENTERED, "");
-    }
+	/**
+	 * Hangman mini-game constructor, the word is converted to a char array for
+	 * display. Initialises number of wrong attempts and letters entered thus
+	 * far.
+	 * 
+	 * @param player
+	 *            A player name.
+	 */
+	public MiniGameHangman(String player) {
+		super(player);
+		initialising = true;
+		setVar(NUM_CHARS, word.length());
+		setVar(PROGRESS, makeCharArrayGreatAgain(word.length()));
+		setVar(ENTERED, "");
+		setVar(WRONG, 0);
+		initialising = false;
+	}
 
     @Override
     public void onInput(PlayerInputEvent event) {

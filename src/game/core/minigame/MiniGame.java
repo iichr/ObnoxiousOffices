@@ -19,6 +19,7 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
     public static final String SCORE = "SCORE";
     protected boolean ended = false;
     public final int MAX_SCORE = 2;
+    protected boolean initialising = true;
 
     public static MiniGame localMiniGame;
 
@@ -30,6 +31,7 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
             setStat(p, SCORE, 0);
             addPlayer(p);
         });
+        initialising = false;
     }
 
     protected void addStat(String player, String stat, int val) {
@@ -43,7 +45,7 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
             addPlayer(player);
         }
         stats.get(player).put(stat, val);
-        Events.trigger(new MiniGameStatChangedEvent(player, stat, val), true);
+        if(!initialising) Events.trigger(new MiniGameStatChangedEvent(player, stat, val), true);
     }
 
     protected void addPlayer(String player) {
@@ -68,6 +70,11 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
     public int getIntStat(String player, String var) {
         Object val = getStat(player, var);
         return val == null ? 0 : (Integer) val;
+    }
+
+    @Override
+    public void setVar(String var, Object val) {
+        if(!initialising) super.setVar(var, val);
     }
 
     @Override
