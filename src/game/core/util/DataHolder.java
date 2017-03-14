@@ -11,6 +11,8 @@ import java.util.Map;
  */
 public abstract class DataHolder {
 
+    protected boolean initialising = true;
+
     private Map<String, Object> vars = new HashMap<>();
 
     protected abstract Event getUpdateEvent(String var, Object val);
@@ -22,10 +24,14 @@ public abstract class DataHolder {
     protected void addVar(String var, int val) {
         setVar(var, getIntVar(var) + val);
     }
+    
+    protected void addVar(String var, float val) {
+        setVar(var, (float)getVar(var) + val);
+    }
 
     public void setVar(String var, Object val) {
         vars.put(var, val);
-        Events.trigger(getUpdateEvent(var, val), true);
+        if(!initialising) Events.trigger(getUpdateEvent(var, val), true);
     }
 
     protected void negVar(String var) {

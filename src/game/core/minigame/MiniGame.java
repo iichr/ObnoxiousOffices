@@ -6,6 +6,7 @@ import game.core.event.minigame.MiniGameEndedEvent;
 import game.core.event.minigame.MiniGameStatChangedEvent;
 import game.core.event.minigame.MiniGameVarChangedEvent;
 import game.core.event.player.PlayerInputEvent;
+import game.core.player.Player;
 import game.core.util.DataHolder;
 
 import java.io.Serializable;
@@ -19,7 +20,6 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
     public static final String SCORE = "SCORE";
     protected boolean ended = false;
     public final int MAX_SCORE = 2;
-    protected boolean initialising = true;
 
     public static MiniGame localMiniGame;
 
@@ -40,7 +40,7 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
 
     public abstract void onInput(PlayerInputEvent event);
 
-    public void setStat(String player, String stat, int val) {
+    public void setStat(String player, String stat, Object val) {
         if(!stats.containsKey(player)) {
             addPlayer(player);
         }
@@ -73,11 +73,6 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
     }
 
     @Override
-    public void setVar(String var, Object val) {
-        if(!initialising) super.setVar(var, val);
-    }
-
-    @Override
     public boolean ended() {
         return ended;
     }
@@ -99,5 +94,9 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
 
     public boolean hasPlayer(String playerName) {
         return players.contains(playerName);
+    }
+
+    public boolean isLocal() {
+        return getPlayers().contains(Player.localPlayerName);
     }
 }
