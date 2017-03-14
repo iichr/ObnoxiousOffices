@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  * Created by samtebbs on 15/01/2017.
  */
-public abstract class PlayerEffect extends PlayerCondition implements Updateable, Serializable {
+public abstract class PlayerEffect implements PlayerCondition, Serializable {
 
     protected final int duration;
     protected int elapsed;
@@ -42,6 +42,21 @@ public abstract class PlayerEffect extends PlayerCondition implements Updateable
 
     public boolean ended() {
         return expired;
+    }
+
+    @Override
+    public boolean allowsInteraction() {
+        return true;
+    }
+
+    @Override
+    public boolean cancelsOnMove() {
+        return false;
+    }
+
+    @Override
+    public void end() {
+        expired = true;
     }
 
     public void setElapsed(int elapsed) {

@@ -9,7 +9,8 @@ import java.io.Serializable;
 /**
  * Created by samtebbs on 16/01/2017.
  */
-public abstract class PlayerAction extends PlayerCondition implements Updateable, Serializable {
+
+public abstract class PlayerAction implements PlayerCondition, Serializable {
 
     public final Player player;
     public boolean forced = false;
@@ -33,15 +34,14 @@ public abstract class PlayerAction extends PlayerCondition implements Updateable
      * Cancel the action
      */
     public abstract void cancel();
-    public abstract void stop();
 
-    /**
-     * Returns true if the action has ended
-     * @return (see above)
-     */
-    public abstract boolean ended();
-
+    @Override
     public boolean cancelsOnMove() {
         return true;
+    }
+
+    @Override
+    public boolean allowsInteraction() {
+        return false;
     }
 }

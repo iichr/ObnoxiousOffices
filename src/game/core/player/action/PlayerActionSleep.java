@@ -18,8 +18,8 @@ public class PlayerActionSleep extends TimedPlayerAction {
     }
 
     @Override
-    public void stop() {
-        super.stop();
+    public void end() {
+        super.end();
         player.status.removeEffect(PlayerEffectSleeping.class);
     }
 
