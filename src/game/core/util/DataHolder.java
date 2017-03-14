@@ -24,6 +24,10 @@ public abstract class DataHolder {
     protected void addVar(String var, int val) {
         setVar(var, getIntVar(var) + val);
     }
+    
+    protected void addVar(String var, float val) {
+        setVar(var, (float)getVar(var) + val);
+    }
 
     public void setVar(String var, Object val) {
         vars.put(var, val);

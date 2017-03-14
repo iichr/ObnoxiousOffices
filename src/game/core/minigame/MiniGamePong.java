@@ -11,7 +11,8 @@ import game.util.Pair;
 public class MiniGamePong extends MiniGame2Player {
 
     public static final String Y_POS = "y", X_POS = "x", BALL_X_VEL = "bvx", BALL_Y_VEL = "bvy";
-    public static final int BOUND_Y = 15, BOUND_X = 20, PADDLE_LEN = 5, BALL_SIZE = 1;
+    public static final int BOUND_Y = 15, BOUND_X = 20;
+    public static final float PADDLE_LEN = 5, BALL_SIZE = 1;
 
     public MiniGamePong(String player1, String player2) {
         super(player1, player2);
@@ -20,28 +21,28 @@ public class MiniGamePong extends MiniGame2Player {
         initialising = false;
     }
 
-    public Pair<Integer, Integer> getBallPos() {
-        return new Pair<>(getIntVar(X_POS), getIntVar(Y_POS));
+    public Pair<Float, Float> getBallPos() {
+        return new Pair<>((float)getVar(X_POS), (float)getVar(Y_POS));
     }
 
-    public Pair<Integer, Integer> getPlayerPos(String player) {
-        return new Pair<>(getIntStat(player, X_POS), getIntStat(player, Y_POS));
+    public Pair<Float, Float> getPlayerPos(String player) {
+        return new Pair<>((float)getStat(player, X_POS), (float)getStat(player, Y_POS));
     }
 
     @Override
     public void update() {
         super.update();
         if(!ended) {
-            addVar(X_POS, getIntVar(BALL_X_VEL));
-            addVar(Y_POS, getIntVar(BALL_Y_VEL));
-            int ballX = getIntVar(X_POS), ballY = getIntVar(Y_POS);
-            if(ballX <= 0) {
+            addVar(X_POS, (float)getVar(BALL_X_VEL));
+            addVar(Y_POS, (float)getVar(BALL_Y_VEL));
+            float ballX = (float)getVar(X_POS), ballY = (float)getVar(Y_POS);
+            if(ballX + BALL_SIZE/2 <= 0) {
                 addStat(player1, SCORE, 1);
                 newRound();
-            } else if(ballX >= BOUND_X) {
+            } else if(ballX + BALL_SIZE/2>= BOUND_X) {
                 addStat(player2, SCORE, 1);
                 newRound();
-            } else if (ballY >= BOUND_Y || ballY <= 0) bounceBall(BALL_Y_VEL, null, 0);
+            } else if (ballY + BALL_SIZE/2 >= BOUND_Y || ballY + BALL_SIZE/2 <= 0) bounceBall(BALL_Y_VEL, null, 0);
             else {
                 checkPaddleBounce(player2, ballX, ballY);
                 checkPaddleBounce(player1, ballX, ballY);
@@ -49,13 +50,13 @@ public class MiniGamePong extends MiniGame2Player {
         }
     }
 
-    private void checkPaddleBounce(String player, int ballX, int ballY) {
-        int playerX = getIntStat(player, X_POS), playerY = getIntStat(player, Y_POS);
-        int yDiff = ballY - playerY;
-        if(ballX == playerX && yDiff >= 0 && yDiff < PADDLE_LEN) bounceBall(BALL_X_VEL, BALL_Y_VEL, PADDLE_LEN - yDiff);
+    private void checkPaddleBounce(String player, float ballX, float ballY) {
+        float playerX = (float)getStat(player, X_POS), playerY = (float)getStat(player, Y_POS);
+        float yDiff = ballY - playerY;
+        if(ballX + BALL_SIZE/2 == playerX && yDiff >= 0 && yDiff < PADDLE_LEN) bounceBall(BALL_X_VEL, BALL_Y_VEL, PADDLE_LEN - yDiff);
     }
 
-    private void bounceBall(String varToNegate, String otherVer, int velVal) {
+    private void bounceBall(String varToNegate, String otherVer, float velVal) {
         negVar(varToNegate);
         if(otherVer != null) setVar(otherVer, velVal);
     }
@@ -78,17 +79,17 @@ public class MiniGamePong extends MiniGame2Player {
         String player = event.playerName;
         // Using this check as we may want to process other input types (like interaction)
         if(type.isMovement()) {
-            int yAdd = 0;
+            float yAdd = 0;
             switch (((InputTypeMovement) type).type) {
                 case MOVE_UP:
-                    yAdd = -1;
+                    yAdd = -0.25f;
                     break;
                 case MOVE_DOWN:
-                    yAdd = 1;
+                    yAdd = 0.25f;
                     break;
             }
             if(yAdd != 0) {
-                int newPos = yAdd + getIntStat(player, Y_POS);
+                float newPos = yAdd + getIntStat(player, Y_POS);
                 if (newPos < BOUND_Y && newPos > 0) setStat(player, Y_POS, newPos);
             }
         }
