@@ -8,12 +8,13 @@ import game.core.event.minigame.MiniGameVarChangedEvent;
 import game.core.event.player.PlayerInputEvent;
 import game.core.util.DataHolder;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by samtebbs on 18/02/2017.
  */
-public abstract class MiniGame extends DataHolder implements Updateable {
+public abstract class MiniGame extends DataHolder implements Updateable, Serializable {
 
     public static final String SCORE = "SCORE";
     protected boolean ended = false;
