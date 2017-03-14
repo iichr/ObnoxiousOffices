@@ -31,6 +31,39 @@ public class Controls {
 	private final int PONG_DOWN = Input.KEY_S;
 
 	/**
+	 * Manages the movement to make based on the key currently held byt the
+	 * player
+	 * 
+	 * @param actionSelector
+	 *            The action selector object
+	 * @param localPlayerName
+	 *            The name of the local player
+	 * @param heldKey
+	 *            The key currently being held
+	 * @return
+	 */
+	public ActionSelector manageMovement(ActionSelector actionSelector, String localPlayerName, int heldKey) {
+		if (heldKey == MOVE_UP) {
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
+			actionSelector.setHack(false);
+			actionSelector.setAction(0);
+		} else if (heldKey == MOVE_DOWN) {
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
+			actionSelector.setHack(false);
+			actionSelector.setAction(0);
+		} else if (heldKey == MOVE_RIGHT) {
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_RIGHT), localPlayerName));
+			actionSelector.setHack(false);
+			actionSelector.setAction(0);
+		} else if (heldKey == MOVE_LEFT) {
+			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_LEFT), localPlayerName));
+			actionSelector.setHack(false);
+			actionSelector.setAction(0);
+		}
+		return actionSelector;
+	}
+
+	/**
 	 * Starts movement presses for core game
 	 * 
 	 * @param heldKey
