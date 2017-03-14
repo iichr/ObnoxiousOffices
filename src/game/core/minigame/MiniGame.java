@@ -39,7 +39,7 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
 
     public abstract void onInput(PlayerInputEvent event);
 
-    public void setStat(String player, String stat, int val) {
+    public void setStat(String player, String stat, Object val) {
         if(!stats.containsKey(player)) {
             addPlayer(player);
         }
