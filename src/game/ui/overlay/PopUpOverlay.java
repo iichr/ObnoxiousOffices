@@ -40,13 +40,16 @@ public class PopUpOverlay {
 	
 	protected final float scale = 0.7f;
 
-	public PopUpOverlay() throws SlickException {
+	/**
+	 * Constructor: Sets up overlay and loads background image
+	 * @throws SlickException
+	 */
+	public PopUpOverlay(WordGenerator wg) throws SlickException {
 		width = Vals.SCREEN_WIDTH * scale;
 		height = Vals.SCREEN_HEIGHT * scale;
 		x = (Vals.SCREEN_WIDTH - width)/2;
 		y = (Vals.SCREEN_HEIGHT - height)/2;
-		
-		wg = new WordGenerator();
+		this.wg = wg;
 		
 		background = new Image(ImageLocations.OVERLAY_BACKGROUND, false, Image.FILTER_NEAREST);
 		
@@ -54,11 +57,16 @@ public class PopUpOverlay {
 
 	/**
 	 * Renders the components of the popUp
+	 * @param g The graphics object
 	 */
 	public void render(Graphics g) {
 		
 	}	
 	
+	/**
+	 * Takes a screenshot of the screen
+	 * @param name The name to save the image as
+	 */
 	public void createPNG(String name){
 		java.awt.Rectangle screenRect = new java.awt.Rectangle(new Dimension(Vals.screenRes));
 		
@@ -66,10 +74,8 @@ public class PopUpOverlay {
 			BufferedImage capture = new Robot().createScreenCapture(screenRect);
 			ImageIO.write(capture, "png", new File(name+".png"));
 		} catch (IOException | AWTException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
 	
 }

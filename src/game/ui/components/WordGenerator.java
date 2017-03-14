@@ -2,7 +2,6 @@ package game.ui.components;
 
 import java.util.HashMap;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -27,10 +26,14 @@ public class WordGenerator {
 									{ '0', '1', '2', '3', '4' }, 
 									{ '5', '6', '7', '8', '9' } };
 
+	/**
+	 * Constructor: loads all of the images needed by the word generator
+	 * 
+	 * @throws SlickException
+	 */
 	public WordGenerator() throws SlickException {
 		ss = new SpriteSheet(new Image("res/alphabets/normal.png"), 150, 150, 0, 0);
 		this.load(wg);
-		// for normal characters
 
 		// TODO extra characters and bold versions
 		for (char c = 'A'; c <= 'Z'; c++) {
@@ -38,7 +41,7 @@ public class WordGenerator {
 			wgB.put((char) (c + 32), new Image("res/alphabets/bold/" + c + ".png"));
 		}
 		for (char c = '0'; c <= '9'; c++) {
-				wgB.put(c, new Image("res/alphabets/bold/" + c + ".png"));
+			wgB.put(c, new Image("res/alphabets/bold/" + c + ".png"));
 		}
 		wgB.put('_', new Image("res/alphabets/bold/_.png"));
 		wgB.put((char) 32, new Image("res/alphabets/Space.png"));
@@ -47,6 +50,7 @@ public class WordGenerator {
 		wgB.put('>', new Image("res/alphabets/bold/arrowR.png"));
 		height = wg.get('%').getHeight();
 		width = wg.get('%').getWidth();
+
 	}
 
 	private void load(HashMap<Character, Image> hm) throws SlickException {
@@ -90,10 +94,19 @@ public class WordGenerator {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Get the Width and Height of a generated Word as a Pair
 	 * 
 	 * @return Pair(Width, Height)
+=======
+	 * Gets the width and height of a generated word
+>>>>>>> d6b8b9b3fe37d1773d6388b79a61a93a58c6f3aa
 	 * 
+	 * @param text
+	 *            The text to get the width and height of
+	 * @param scale
+	 *            The scale to be used for the image
+	 * @return A pair <Width, Height>
 	 */
 
 	public Pair<Float, Float> getWH(String text, float scale) {
@@ -139,6 +152,7 @@ public class WordGenerator {
 		}
 	}
 
+
 	public Pair<Float, Float> getXY(String text, float f, float h, float scale) {
 		float totalX = 0;
 		float totalY = 0;
@@ -151,6 +165,16 @@ public class WordGenerator {
 		}
 		return new Pair<Float, Float>(f - totalX / 2, h - totalY / 2);
 	}
+
+	/**
+	 * Get the image for a particular character
+	 * 
+	 * @param c
+	 *            The character to get the image of
+	 * @param bold
+	 *            Whether the character is bold or not
+	 * @return The image for the given character
+	 */
 
 	public Image get(char c, boolean bold) {
 		if (bold) {

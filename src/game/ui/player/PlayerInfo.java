@@ -1,4 +1,4 @@
-package game.ui;
+package game.ui.player;
 
 import java.util.List;
 
@@ -25,26 +25,41 @@ public class PlayerInfo {
 	private Image sitDialogue, drinkDialogue, sleepDialogue;
 	private Image playerIdentifier;
 
-	public PlayerInfo(World world, String localPlayerName, float tileWidth, float tileHeight) throws SlickException {
+	/**
+	 * Constructor: sets up variables and reads in the images needed
+	 * 
+	 * @param world
+	 *            The world variable
+	 * @param localPlayerName
+	 *            The name of the local player
+	 * @param tileWidth
+	 *            The width of an individual tile
+	 * @param tileHeight
+	 *            The height of an individual tile
+	 * @throws SlickException
+	 */
+	public PlayerInfo(World world, String localPlayerName, float tileWidth, float tileHeight, WordGenerator wg) throws SlickException {
 		this.localPlayerName = localPlayerName;
 		players = world.getPlayers();
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
+		this.wg = wg;
 
 		sitDialogue = new Image(ImageLocations.SIT_DIALOGUE, false, Image.FILTER_NEAREST);
 		drinkDialogue = new Image(ImageLocations.DRINK_DIALOGUE, false, Image.FILTER_NEAREST);
 		sleepDialogue = new Image(ImageLocations.SLEEP_DIALOGUE, false, Image.FILTER_NEAREST);
 		playerIdentifier = new Image(ImageLocations.PLAYER_IDENTIFIER, false, Image.FILTER_NEAREST);
-		wg = new WordGenerator();
 	}
 
 	/**
-	 * Render info about the world and other players
+	 * Renders information about the players
 	 * 
 	 * @param g
-	 *            Graphics object g
+	 *            The graphics object
+	 * @param visible
+	 *            The array containing which tiles are visible to the player
 	 */
-	public void render(Graphics g) {
+	public void render(Graphics g, boolean[][] visible) {
 		for (Player p : players) {
 			g.setColor(Color.black);
 			Location pLocation = p.getLocation();
@@ -55,7 +70,9 @@ public class PlayerInfo {
 			float offsetY = tileHeight / 8;
 
 			// draw player names
-			wg.drawCenter(g, p.name, (playerX + offsetX), (playerY - offsetY), true, 0.1f);
+			if (visible[pLocation.coords.x][pLocation.coords.y]) {
+				wg.drawCenter(g, p.name, (playerX + offsetX), (playerY - offsetY), true, 0.1f);
+			}
 
 			if (p.name.equals(localPlayerName)) {
 				// add identifier for player

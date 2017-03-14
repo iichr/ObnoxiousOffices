@@ -27,9 +27,6 @@ public class Intro extends BasicGameState {
 	private final float logoWidth = 3*Vals.SCREEN_WIDTH / 5;
 	private final float logoHeight = Vals.SCREEN_HEIGHT / 4;
 
-	public Intro(int introState) {
-	}
-
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		ticks = 0;
