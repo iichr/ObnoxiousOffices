@@ -198,20 +198,19 @@ public class Controls {
 		return showOverview;
 	}
 
-	/**
-	 * Manages input for pong minigame
-	 * 
-	 * @param localPlayerName
-	 *            The name of the local player
-	 * @param key
-	 *            The key being pressed
-	 */
-	public void pong(String localPlayerName, int key) {
-		if (key == PONG_UP) {
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_UP), localPlayerName));
-		} else if (key == PONG_DOWN) {
-			Events.trigger(new PlayerInputEvent(new InputTypeMovement(MovementType.MOVE_DOWN), localPlayerName));
+	public int pongMoveStart(int heldKey, int key) {
+		if (key == MOVE_UP || key == MOVE_DOWN) {
+			return key;
 		}
+		return heldKey;
+	}
+	
+
+	public int pongMoveFinish(int heldKey, int key) {
+		if (key == MOVE_UP || key == MOVE_DOWN) {
+			return -1;
+		}
+		return heldKey;
 	}
 
 	/**
