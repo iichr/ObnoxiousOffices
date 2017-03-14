@@ -600,7 +600,7 @@ public class Play extends BasicGameState {
 	 */
 	private void coreControls(int key) {
 		heldKey = ctrs.coreMoveStart(heldKey, key);
-		if(world.getPlayer(localPlayerName).status.hasState(PlayerState.sleeping)){
+		if(world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)){
 			actionSelector = ctrs.selectorInput(actionSelector, localPlayerName, key);
 		}else{
 			ctrs.interaction(localPlayerName, key);
