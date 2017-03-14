@@ -133,6 +133,7 @@ public class ServerListener extends Thread {
 						}
 					}
 					if (world.getPlayers().size() == world.getMaxPlayers()) {
+						Server.listen = false;
 						GameStartedEvent gameStart = new GameStartedEvent(world);
 						sendToAllClients(gameStart);
 						Events.trigger(gameStart);

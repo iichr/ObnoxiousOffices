@@ -24,8 +24,8 @@ public class Server {
 	private World world;
 	private boolean gameEnded = false;
 	private boolean gameStarted = false;
-
-	private final int NUM_PLAYERS = 2;
+	public static boolean listen = true;
+	private final int NUM_PLAYERS = 4;
 	/**
 	 * Starts the server
 	 */
@@ -38,7 +38,9 @@ public class Server {
 		// load the world
 		loadWorld();
 		// listen for new connections
+		while(listen){
 		listenForConnections();
+		}
 	}
 
 	/**
