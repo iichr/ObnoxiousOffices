@@ -193,13 +193,6 @@ public class PathFinding implements Runnable, Serializable {
 		Cell current;
 		closed = new boolean[rowLength][colLength];
 
-		// set the starting point
-		// startCell(player.getLocation().coords.x,
-		// player.getLocation().coords.y);
-
-		// create a grid of cells from the world
-		// worldToCell();
-
 		// add the starting location to the open list
 		open.add(grid[startI][startJ]);
 

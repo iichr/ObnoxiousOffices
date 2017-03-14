@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import game.ai.AIPlayer;
@@ -123,7 +124,6 @@ public class LogicEasy implements Logic, Serializable {
 		 Location l = p.getLocation().forward(p.getFacing());
 		 l.getTile().onInteraction(p);
 
-		 l.getTile().onInteraction(p);
 
 		while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
 			// do nothing
@@ -173,8 +173,7 @@ public class LogicEasy implements Logic, Serializable {
 		// check whether the player is at the coffee machine or sofa
 		if (p.getLocation().coords.x == fromCM.get(1).getL() && p.getLocation().coords.y == fromCM.get(1).getR()) {
 			// if at the coffee machine, go through the array list of i, j
-			// coords
-			// to the desk from the coffee machine
+			// coords  to the desk from the coffee machine
 			for (int i = 2; i < fromCM.size(); i++) {
 
 				//make a move
@@ -207,7 +206,8 @@ public class LogicEasy implements Logic, Serializable {
 		List<Player> players = World.world.getPlayers();
 
 		//choose a random player
-		int random = ThreadLocalRandom.current().nextInt(0, players.size());
+		Random r = new Random();
+		int random = r.nextInt(players.size());
 		Player randomPlayer = players.get(random);
 
 		//if the chosen player is an AI, check again

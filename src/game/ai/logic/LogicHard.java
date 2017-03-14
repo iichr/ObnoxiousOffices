@@ -179,14 +179,14 @@ public class LogicHard implements Logic, Serializable {
 		// check whether the player is at the coffee machine or sofa
 		if (p.getLocation().coords.x == fromCM.get(1).getL() && p.getLocation().coords.y == fromCM.get(1).getR()) {
 			// if at the coffee machine, go through the array list of i, j
-			// coords
-			// to the desk from the coffee machine
+			// coords to the desk from the coffee machine
 			for (int i = 2; i < fromCM.size(); i++) {
 
 				//make a move
 				move(p, fromCM, i);
 			}
 		} else {
+			
 			// if at the sofa, go through the array list of i, j coords
 			// to the desk from the sofa
 			for (int i = 1; i < fromBed.size(); i++) {

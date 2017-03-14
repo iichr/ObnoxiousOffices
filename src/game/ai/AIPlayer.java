@@ -10,6 +10,7 @@ import game.ai.ruleBasedAI.WorkingMemory;
 import game.core.event.Events;
 import game.core.event.player.PlayerQuitEvent;
 import game.core.player.Player;
+import game.core.player.action.PlayerActionHack;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
@@ -71,9 +72,9 @@ public class AIPlayer extends Player {
 		this.mode = mode;
 		// check for the mode and initialise the correct logic
 		if (mode.equals("e"))
-			logicHard = new LogicHard();
-		else
 			logicEasy = new LogicEasy();
+		else
+			logicHard = new LogicHard();
 
 		// initialise everything
 		initialise();
@@ -129,7 +130,7 @@ public class AIPlayer extends Player {
 
 		wm = new WorkingMemory(player); // create the working memory
 
-		if (!fr.isMoving) {
+		if (!fr.isMoving && this.status.hasAction(PlayerActionHack.class)) {
 			Thread fire = new Thread(() -> {
 				fr.fireRules();
 			});

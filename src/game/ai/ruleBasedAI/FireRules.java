@@ -46,7 +46,7 @@ public class FireRules implements Serializable {
 
 			// update the working memory
 			uwm.updateInfo();
-
+			
 			// iterate over the rules
 			for (int i = 0; i < r.size(); i++) {
 				if (r.get(i) == wm) // check if the rule == working memory
