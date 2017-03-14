@@ -18,6 +18,7 @@ import game.core.event.player.PlayerAttributeChangedEvent;
 import game.core.event.player.PlayerCreatedEvent;
 import game.core.event.player.PlayerMovedEvent;
 import game.core.event.player.PlayerProgressUpdateEvent;
+import game.core.event.player.PlayerQuitEvent;
 import game.core.event.player.PlayerRotatedEvent;
 import game.core.event.player.PlayerStateAddedEvent;
 import game.core.event.player.PlayerStateRemovedEvent;
@@ -41,14 +42,15 @@ public class ServerListener extends Thread {
 	public World world;
 	private final Object queueWait;
 	boolean running = true;
-	public static final int NUM_AI_PLAYERS = 1;
+	public static int NUM_AI_PLAYERS = 1;
+	public String playerName;
 
 	/**
 	 * 
-	 * @param socket-
-	 *            The socket its connected to
-	 * @param connection-
-	 *            The server listeners
+	 * @param socket-The
+	 *            socket its connected to
+	 * @param connection-The
+	 *            server listeners
 	 * @param world-
 	 *            The game world
 	 */
@@ -115,7 +117,7 @@ public class ServerListener extends Thread {
 			if (!makingAI) {
 				if (world.getPlayers().size() < connections.size()) {
 					try {
-						String playerName = is.readObject().toString();
+						playerName = is.readObject().toString();
 						this.addPlayerToGame(playerName);
 					} catch (ClassNotFoundException e) {
 						e.printStackTrace();
@@ -191,29 +193,33 @@ public class ServerListener extends Thread {
 							os.flush();
 						} catch (IOException e) {
 							try {
+								Events.trigger(new PlayerQuitEvent(playerName));
+								System.out.println("ai added");
 								output = null;
 								running = false;
 								socket.close();
-								world.removePlayer(playerNumber);
-								// makingAI = true;
-								// Events.trigger(new
-								// CreateAIPlayerRequest(this, (NUM_AI_PLAYERS +
-								// 1)));
+								connections.remove(playerNumber);
+								NUM_AI_PLAYERS = NUM_AI_PLAYERS + 1;
+								// REMOVE FROM LIST
 								System.out.println("Player Removed");
 							} catch (IOException e1) {
-								e1.printStackTrace();
+								System.out.println("e1");
 							}
 						}
 					} else {
 						System.out.println("Player left");
 					}
 				} else {
-					try {
-						synchronized (this.queueWait) {
-							this.queueWait.wait();
+					if (running) {
+						try {
+							synchronized (this.queueWait) {
+								this.queueWait.wait();
+							}
+						} catch (InterruptedException e1) {
+							System.out.print("INterrupted exception:  ");
+							e1.printStackTrace();
+
 						}
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -224,8 +230,8 @@ public class ServerListener extends Thread {
 	/**
 	 * Adds a player to the game.
 	 * 
-	 * @param name-
-	 *            The name of the player to add.
+	 * @param name-The
+	 *            name of the player to add.
 	 */
 	private void addPlayerToGame(String name) {
 		if (!this.playerNameUsed(name)) {
@@ -257,8 +263,8 @@ public class ServerListener extends Thread {
 	/**
 	 * Remove a player from the game.
 	 * 
-	 * @param name-
-	 *            The name of the player to be removed.
+	 * @param name-The
+	 *            name of the player to be removed.
 	 */
 	private void removePlayerFromGame(String name) {
 		if (this.playerNameUsed(name)) {
@@ -271,8 +277,8 @@ public class ServerListener extends Thread {
 	/**
 	 * Check to see if the player name has been used
 	 * 
-	 * @param name-
-	 *            The name to check
+	 * @param name-The
+	 *            name to check
 	 * @return Whether or not the name is being used
 	 */
 	private boolean playerNameUsed(String name) {
@@ -286,7 +292,9 @@ public class ServerListener extends Thread {
 
 	/**
 	 * Close the connection when the game ends
-	 * @param recieved- Object reiceved from the game closed event
+	 * 
+	 * @param recieved-
+	 *            Object reiceved from the game closed event
 	 */
 	private void closeConnection(Object recieved) {
 		forwardInfo(recieved);
