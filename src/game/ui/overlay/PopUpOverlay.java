@@ -44,13 +44,12 @@ public class PopUpOverlay {
 	 * Constructor: Sets up overlay and loads background image
 	 * @throws SlickException
 	 */
-	public PopUpOverlay() throws SlickException {
+	public PopUpOverlay(WordGenerator wg) throws SlickException {
 		width = Vals.SCREEN_WIDTH * scale;
 		height = Vals.SCREEN_HEIGHT * scale;
 		x = (Vals.SCREEN_WIDTH - width)/2;
 		y = (Vals.SCREEN_HEIGHT - height)/2;
-		
-		wg = new WordGenerator();
+		this.wg = wg;
 		
 		background = new Image(ImageLocations.OVERLAY_BACKGROUND, false, Image.FILTER_NEAREST);
 		

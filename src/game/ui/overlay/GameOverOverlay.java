@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import game.core.player.Player;
+import game.ui.components.WordGenerator;
 
 public class GameOverOverlay extends PopUpOverlay {
 
@@ -18,8 +19,8 @@ public class GameOverOverlay extends PopUpOverlay {
 	 *            The list of players
 	 * @throws SlickException
 	 */
-	public GameOverOverlay(List<Player> players) throws SlickException {
-		super();
+	public GameOverOverlay(List<Player> players, WordGenerator wg) throws SlickException {
+		super(wg);
 		this.players = players;
 	}
 

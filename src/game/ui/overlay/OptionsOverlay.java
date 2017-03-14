@@ -3,14 +3,16 @@ package game.ui.overlay;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
+import game.ui.components.WordGenerator;
+
 public class OptionsOverlay extends PopUpOverlay {
 
 	/**
 	 * Constructor: Sets up overlay
 	 * @throws SlickException
 	 */
-	public OptionsOverlay() throws SlickException {
-		super();
+	public OptionsOverlay(WordGenerator wg) throws SlickException {
+		super(wg);
 	}
 
 	@Override

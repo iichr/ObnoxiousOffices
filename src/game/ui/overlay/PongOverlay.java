@@ -8,6 +8,7 @@ import org.newdawn.slick.geom.Rectangle;
 
 import game.core.minigame.MiniGame;
 import game.core.minigame.MiniGamePong;
+import game.ui.components.WordGenerator;
 
 public class PongOverlay extends PopUpOverlay {
 
@@ -15,8 +16,8 @@ public class PongOverlay extends PopUpOverlay {
 	 * Constructor: Sets up overlay
 	 * @throws SlickException
 	 */
-	public PongOverlay() throws SlickException {
-		super();
+	public PongOverlay(WordGenerator wg) throws SlickException {
+		super(wg);
 	}
 
 	@Override

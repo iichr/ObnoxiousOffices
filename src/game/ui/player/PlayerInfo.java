@@ -38,17 +38,17 @@ public class PlayerInfo {
 	 *            The height of an individual tile
 	 * @throws SlickException
 	 */
-	public PlayerInfo(World world, String localPlayerName, float tileWidth, float tileHeight) throws SlickException {
+	public PlayerInfo(World world, String localPlayerName, float tileWidth, float tileHeight, WordGenerator wg) throws SlickException {
 		this.localPlayerName = localPlayerName;
 		players = world.getPlayers();
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
+		this.wg = wg;
 
 		sitDialogue = new Image(ImageLocations.SIT_DIALOGUE, false, Image.FILTER_NEAREST);
 		drinkDialogue = new Image(ImageLocations.DRINK_DIALOGUE, false, Image.FILTER_NEAREST);
 		sleepDialogue = new Image(ImageLocations.SLEEP_DIALOGUE, false, Image.FILTER_NEAREST);
 		playerIdentifier = new Image(ImageLocations.PLAYER_IDENTIFIER, false, Image.FILTER_NEAREST);
-		wg = new WordGenerator();
 	}
 
 	/**
