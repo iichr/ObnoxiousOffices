@@ -31,7 +31,7 @@ public abstract class DataHolder {
 
     public void setVar(String var, Object val) {
         vars.put(var, val);
-        Events.trigger(getUpdateEvent(var, val), true);
+        if(!initialising) Events.trigger(getUpdateEvent(var, val), true);
     }
 
     protected void negVar(String var) {
