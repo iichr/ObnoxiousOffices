@@ -43,6 +43,7 @@ public class Play extends BasicGameState {
 
 	// time info
 	private final int rateMilliseconds = 250;
+	private final int rateMillisecondsPong = 50;
 	private long lastMove = 0;
 
 	// helper objects
@@ -188,8 +189,14 @@ public class Play extends BasicGameState {
 		}
 
 		long time = System.currentTimeMillis();
-		if (time - lastMove >= rateMilliseconds) {
-			canMove = true;
+		if(playingPong){
+			if (time - lastMove >= rateMillisecondsPong) {
+				canMove = true;
+			}
+		}else{
+			if (time - lastMove >= rateMilliseconds) {
+				canMove = true;
+			}
 		}
 
 		if (canMove) {
@@ -241,7 +248,7 @@ public class Play extends BasicGameState {
 	public void keyPressed(int key, char c) {
 		if (!gameOver) {
 			if (playingPong) {
-				ctrs.pong(localPlayerName, key);
+				ctrs.pongMoveStart(heldKey, key);
 			} else if (playingHangman) {
 				ctrs.hangman(localPlayerName, c);
 			} else {
@@ -289,6 +296,7 @@ public class Play extends BasicGameState {
 	public void keyReleased(int key, char c) {
 		showOverview = ctrs.closeOverview(showOverview, key);
 		heldKey = ctrs.coreMoveFinish(heldKey, key);
+		heldKey = ctrs.pongMoveFinish(heldKey, key);
 	}
 
 	/**
@@ -308,10 +316,10 @@ public class Play extends BasicGameState {
 	 *            A MiniGameStartedEvent
 	 */
 	private void startMinigame(MiniGameStartedEvent e) {
-		if (e.game.equals(MiniGameHangman.class)) {
-			playingHangman = true;
-		} else if (e.game.equals(MiniGamePong.class)) {
-			playingPong = true;
+		if(e.game.isLocal()) {
+			Class<? extends MiniGame> cls = e.game.getClass();
+			if (cls == MiniGameHangman.class) playingHangman = true;
+			else if (cls == MiniGamePong.class) playingPong = true;
 		}
 	}
 

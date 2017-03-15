@@ -44,11 +44,11 @@ public class ClientSync {
     }
 
     private static void onMiniGameVarChanged(MiniGameVarChangedEvent event) {
-        MiniGame.localMiniGame.setVar(event.var, event.val);
+        if(MiniGame.localMiniGame != null) MiniGame.localMiniGame.setVar(event.var, event.val);
     }
 
     private static void onMiniGameStatChanged(MiniGameStatChangedEvent event) {
-        MiniGame.localMiniGame.setStat(event.player, event.stat, event.val);
+        if(MiniGame.localMiniGame != null) MiniGame.localMiniGame.setStat(event.player, event.stat, event.val);
     }
 
     private static void onPlayerEffectElapsedUpdate(PlayerEffectElapsedUpdate event) {
@@ -74,7 +74,7 @@ public class ClientSync {
 
     private static void onMiniGameStarted(MiniGameStartedEvent event) {
         System.out.printf("Mini game started with %s%n", event.game.getPlayers());
-        MiniGame.localMiniGame = event.game;
+        if(event.game.isLocal()) MiniGame.localMiniGame = event.game;
     }
 
     private static void onTileChanged(TileChangedEvent event) {

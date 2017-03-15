@@ -32,16 +32,19 @@ public class CharacterSelect extends BasicGameState {
 	private String playerStr = "Enter Player Name:";
 	private String waitingString = "Connected: Waiting for more players";
 	private String connectFailString = "Connection failed: please check the ip and try again";
+	private String invalidNameString = "Invalid name, must be alphanumeric or underscore";
 
 	private boolean toPlay = false;
 	private boolean connected = false;
 	private boolean connectFailed = false;
+	private boolean invalidName = false;
 	private PlayTest playTest;
 
 	/**
 	 * Constructor: Creates the character select state and starts event
 	 * listeners
-	 * @param test 
+	 * 
+	 * @param test
 	 */
 	public CharacterSelect(PlayTest test) {
 		this.playTest = test;
@@ -145,7 +148,11 @@ public class CharacterSelect extends BasicGameState {
 		} else {
 			connectButton.setActive(true);
 			connectButton.render();
-			if (connectFailed) {
+			if (invalidName) {
+				g.drawString(invalidNameString,
+						connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(invalidNameString) / 2,
+						connectButton.getY() + 3 * Vals.BUTTON_HEIGHT / 2);
+			} else if (connectFailed) {
 				g.drawString(connectFailString,
 						connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(connectFailString) / 2,
 						connectButton.getY() + 3 * Vals.BUTTON_HEIGHT / 2);
@@ -161,7 +168,7 @@ public class CharacterSelect extends BasicGameState {
 		int mouseY = gc.getHeight() - Mouse.getY();
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
-		connectButton.update(gc, game, mouseX, mouseY, addressValue, nameValue);
+		connectButton.update(gc, game, mouseX, mouseY, addressValue, nameValue, this);
 
 		if (toPlay) {
 			playTest.testSetup();
@@ -200,5 +207,9 @@ public class CharacterSelect extends BasicGameState {
 		case Input.KEY_ESCAPE:
 			toPlay = true;
 		}
+	}
+
+	public void setInvalidName(boolean toSet) {
+		invalidName = toSet;
 	}
 }
