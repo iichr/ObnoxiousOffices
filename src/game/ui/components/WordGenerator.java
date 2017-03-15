@@ -41,15 +41,15 @@ public class WordGenerator {
 	}
 
 	private void load(HashMap<Character, Image> hm) throws SlickException {
-		for(int y=0;y<8;y++){
-			for(int x=0;x<5;x++){
-				if(map[y][x]-32>='A' && map[y][x]-32<='Z'){
-					hm.put((char) (((int)map[y][x])-32),ss.getSprite(x, y));
+		for (int y = 0; y < 8; y++) {
+			for (int x = 0; x < 5; x++) {
+				if (map[y][x] - 32 >= 'A' && map[y][x] - 32 <= 'Z') {
+					hm.put((char) (((int) map[y][x]) - 32), ss.getSprite(x, y));
 				}
 				hm.put(map[y][x], ss.getSprite(x, y));
 			}
 		}
-		hm.put((char)32, new Image ("res/alphabets/Space.png"));
+		hm.put((char) 32, new Image("res/alphabets/Space.png"));
 
 	}
 
@@ -74,20 +74,17 @@ public class WordGenerator {
 			try {
 				g.drawImage(img.getScaledCopy(scale), f, h);
 			} catch (NullPointerException e) {
-				System.err.println("Symbol "+text.charAt(length)+" doesn't exist in the HashMap");
+				System.err.println("Symbol " + text.charAt(length) + " doesn't exist in the HashMap");
 			}
 			f += img.getWidth() * scale;
 		}
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Get the Width and Height of a generated Word as a Pair
 	 * 
-	 * @return Pair(Width, Height)
-=======
-	 * Gets the width and height of a generated word
->>>>>>> d6b8b9b3fe37d1773d6388b79a61a93a58c6f3aa
+	 * @return Pair(Width, Height) Gets the width and height of a generated word
+	 * 
 	 * 
 	 * @param text
 	 *            The text to get the width and height of
@@ -139,7 +136,6 @@ public class WordGenerator {
 		}
 	}
 
-
 	public Pair<Float, Float> getXY(String text, float f, float h, float scale) {
 		float totalX = 0;
 		float totalY = 0;
@@ -168,10 +164,6 @@ public class WordGenerator {
 			return wgB.get(c);
 		}
 		return wg.get(c);
-	}
-
-	public SpriteSheet getSS() {
-		return ss;
 	}
 
 }
