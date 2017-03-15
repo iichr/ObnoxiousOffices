@@ -146,7 +146,8 @@ public class MiniGameHangman extends MiniGame1Player {
     }
 
     public int getAttemptsLeft() {
-        return MAX_WRONG - getIntVar(WRONG);
+    	
+        return MAX_WRONG - getIntVar(WRONG)<=0?0:MAX_WRONG - getIntVar(WRONG);
     }
 
 }
