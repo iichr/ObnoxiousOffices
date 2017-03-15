@@ -90,8 +90,8 @@ public class PlayerStatus implements Serializable {
      */
     public void addAction(PlayerAction action) {
         actions.add(action);
-        action.start();
         Events.trigger(new PlayerActionAddedEvent(action, player.name), true);
+        action.start();
     }
 
     public <T extends PlayerAction> boolean hasAction(Class<T> actionClass) {
