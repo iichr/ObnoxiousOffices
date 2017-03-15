@@ -31,7 +31,6 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
             setStat(p, SCORE, 0);
             addPlayer(p);
         });
-        initialising = false;
     }
 
     protected void addStat(String player, String stat, int val) {
@@ -45,7 +44,7 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
             addPlayer(player);
         }
         stats.get(player).put(stat, val);
-        if(!initialising) Events.trigger(new MiniGameStatChangedEvent(player, stat, val), true);
+        Events.trigger(new MiniGameStatChangedEvent(player, stat, val), true);
     }
 
     protected void addPlayer(String player) {

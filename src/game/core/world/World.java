@@ -8,6 +8,8 @@ import game.core.event.player.PlayerEvent;
 import game.core.event.player.PlayerQuitEvent;
 import game.core.minigame.MiniGame;
 import game.core.player.Player;
+import game.core.sync.ClientSync;
+import game.core.sync.ServerSync;
 import game.core.util.Coordinates;
 import game.core.world.tile.Tile;
 import game.core.world.tile.TilePrototype;
@@ -56,8 +58,10 @@ public class World implements Updateable, Serializable {
     }
 
     public void startMiniGame(MiniGame game) {
-        miniGames.add(game);
-        Events.trigger(new MiniGameStartedEvent(game));
+        if(!ClientSync.isClient) {
+            miniGames.add(game);
+            Events.trigger(new MiniGameStartedEvent(game), true);
+        }
     }
 
     public Location getSpawnPoint(int i) {
