@@ -11,9 +11,7 @@ public class ComputerMetadata extends TileMetadata {
 
     public ComputerMetadata(Coordinates tile, String owningPlayer) {
         super(tile);
-        initialising = true;
         setVar(PLAYER, owningPlayer);
-        initialising = false;
     }
 
 }

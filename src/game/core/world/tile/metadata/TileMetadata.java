@@ -16,7 +16,6 @@ public abstract class TileMetadata extends DataHolder implements Serializable {
 
     protected TileMetadata(Coordinates tile) {
         this.tile = tile;
-        initialising = false;
     }
 
     @Override

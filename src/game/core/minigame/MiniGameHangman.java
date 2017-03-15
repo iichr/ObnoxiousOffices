@@ -38,12 +38,10 @@ public class MiniGameHangman extends MiniGame1Player {
      */
     public MiniGameHangman(String player) {
         super(player);
-        initialising = true;
         setVar(NUM_CHARS, word.length());
         setVar(PROGRESS, makeCharArrayGreatAgain(word.length()));
         setVar(ENTERED, "");
         setVar(WRONG, 0);
-        initialising = false;
     }
 
     // Load all words from the word list(dictionary) provided.

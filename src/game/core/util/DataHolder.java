@@ -3,15 +3,14 @@ package game.core.util;
 import game.core.event.Event;
 import game.core.event.Events;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by samtebbs on 22/02/2017.
  */
-public abstract class DataHolder {
-
-    protected boolean initialising = true;
+public abstract class DataHolder implements Serializable {
 
     private Map<String, Object> vars = new HashMap<>();
 
@@ -31,7 +30,7 @@ public abstract class DataHolder {
 
     public void setVar(String var, Object val) {
         vars.put(var, val);
-        if(!initialising) Events.trigger(getUpdateEvent(var, val), true);
+        Events.trigger(getUpdateEvent(var, val), true);
     }
 
     protected void negVar(String var) {
