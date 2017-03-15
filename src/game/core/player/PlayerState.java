@@ -18,7 +18,7 @@ public abstract class PlayerState implements PlayerCondition, Serializable {
 
     @Override
     public boolean allowsInteraction() {
-        return false;
+        return true;
     }
 
     @Override
