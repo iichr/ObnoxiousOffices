@@ -195,7 +195,6 @@ public class Player implements Updateable, Serializable {
     public void setHair(int hair) {
         this.hair = hair;
     }
-
     @Override
     public String toString() {
         return "Player{" +
