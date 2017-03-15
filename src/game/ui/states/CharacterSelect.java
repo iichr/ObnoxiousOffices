@@ -1,6 +1,7 @@
 package game.ui.states;
 
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -30,7 +31,7 @@ public class CharacterSelect extends BasicGameState {
 	private TextField serverAddress, playerName;
 	private String serverStr = "Enter Server Address:";
 	private String playerStr = "Enter Player Name:";
-	private String waitingString = "Connected: Waiting for more players";
+	private String waitingString = "Connected: Waiting for ";	
 	private String connectFailString = "Connection failed: please check the ip and try again";
 	private String invalidNameString = "Invalid name, must be alphanumeric or underscore";
 
@@ -39,6 +40,7 @@ public class CharacterSelect extends BasicGameState {
 	private boolean connectFailed = false;
 	private boolean invalidName = false;
 	private PlayTest playTest;
+	private int playerLeft = 0 ;
 
 	/**
 	 * Constructor: Creates the character select state and starts event
@@ -143,7 +145,7 @@ public class CharacterSelect extends BasicGameState {
 					waitingDiam);
 
 			// display text
-			g.drawString(waitingString, connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(waitingString) / 2,
+			g.drawString(waitingString+(playerLeft==0?"more players.":(playerLeft+" more players.")), connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(waitingString) / 2,
 					connectButton.getY() + waitingDiam / 2 + Vals.BUTTON_HEIGHT / 2);
 		} else {
 			connectButton.setActive(true);
@@ -162,11 +164,15 @@ public class CharacterSelect extends BasicGameState {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+		AppGameContainer container = (AppGameContainer) gc;
+		Input input = gc.getInput();
 		String addressValue = serverAddress.getText();
 		String nameValue = playerName.getText();
 		int mouseX = Mouse.getX();
 		int mouseY = gc.getHeight() - Mouse.getY();
-
+		if(input.isKeyPressed(Input.KEY_F11)){			
+			container.setDisplayMode(800, 600, false);
+		}
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 		connectButton.update(gc, game, mouseX, mouseY, addressValue, nameValue, this);
 
@@ -186,6 +192,7 @@ public class CharacterSelect extends BasicGameState {
 	private void connected(PlayerCreatedEvent e) {
 		connected = true;
 		connectFailed = false;
+		playerLeft =e.playersLeft;
 	}
 
 	/**
