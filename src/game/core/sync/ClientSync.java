@@ -68,12 +68,10 @@ public class ClientSync {
     }
 
     private static void onMiniGameEnded(MiniGameEndedEvent event) {
-        System.out.printf("Mini game ended, %s won!%n", event.victor);
         MiniGame.localMiniGame = null;
     }
 
     private static void onMiniGameStarted(MiniGameStartedEvent event) {
-        System.out.printf("Mini game started with %s%n", event.game.getPlayers());
         if(event.game.isLocal()) MiniGame.localMiniGame = event.game;
     }
 
