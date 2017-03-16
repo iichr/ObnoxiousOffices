@@ -112,28 +112,27 @@ public class MiniGameHangman extends MiniGame1Player {
      *            The chars already entered.
      */
     private void processCharacter(char ch, String entered) {
+        System.out.printf("processCharacter %c, entered: %s%n", ch, entered);
         // if the char hasn't been encountered before
-        if (!Arrays.asList(entered.toCharArray()).contains(ch)) {
+        if (!entered.contains(ch + "")) {
+            System.out.printf("entered !contains%n");
             // store the indexes where the char is located at
             List<Integer> indexes = IntStream.range(0, word.length()).filter(i -> word.charAt(i) == ch).boxed()
                     .collect(Collectors.toList());
             if (indexes.size() > 0) {
+                System.out.printf("indexes: %s%n", indexes);
                 char[] progress = (char[]) getVar(PROGRESS);
                 indexes.forEach(i -> progress[i] = ch);
                 // word to be displayed has that char visible
                 setVar(PROGRESS, progress);
-            } else
-                // if char not in word, increase count of wrong attempts
-                setVar(WRONG, (int) getVar(WRONG) + 1);
-            setVar(ENTERED, entered + ch);
+            } else addVar(WRONG, 1);
 
+            setVar(ENTERED, entered + ch);
             // HANDLE WIN/LOSS CONDITIONS
             // if there are no more attempts remaining => AI wins
-            if ((int) getVar(WRONG) >= MAX_WRONG)
-                addVar(AI_SCORE, 1);
+            if ((int) getVar(WRONG) >= MAX_WRONG) addVar(AI_SCORE, 1);
                 // if word is guessed => Player wins.
-            else if (word.equals(new String((char[]) getVar(PROGRESS))))
-                addStat(getPlayers().get(0), SCORE, 1);
+            else if (word.equals(new String((char[]) getVar(PROGRESS)))) addStat(getPlayers().get(0), SCORE, 1);
         }
     }
 
