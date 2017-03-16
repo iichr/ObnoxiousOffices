@@ -127,9 +127,9 @@ public class MiniGameHangman extends MiniGame1Player {
             setVar(ENTERED, entered + ch);
             // HANDLE WIN/LOSS CONDITIONS
             // if there are no more attempts remaining => AI wins
-            if ((int) getVar(WRONG) >= MAX_WRONG) addVar(AI_SCORE, 1);
+            if (getAttemptsLeft() <= 0) addVar(AI_SCORE, 1);
                 // if word is guessed => Player wins.
-            else if (word.equals(getVar(PROGRESS))) addStat(getPlayers().get(0), SCORE, 1);
+            else if (word.equals(getVar(PROGRESS))) setStat(getPlayers().get(0), SCORE, MAX_SCORE);
         }
     }
 
