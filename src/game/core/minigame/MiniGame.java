@@ -28,8 +28,8 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
 
     public MiniGame(String... players) {
         Arrays.stream(players).forEach(p -> {
-            setStat(p, SCORE, 0);
             addPlayer(p);
+            setStat(p, SCORE, 0);
         });
     }
 
