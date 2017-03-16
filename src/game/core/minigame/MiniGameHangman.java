@@ -39,7 +39,7 @@ public class MiniGameHangman extends MiniGame1Player {
     public MiniGameHangman(String player) {
         super(player);
         setVar(NUM_CHARS, word.length());
-        setVar(PROGRESS, makeCharArrayGreatAgain(word.length()));
+        setVar(PROGRESS, new String(makeCharArrayGreatAgain(word.length())));
         setVar(ENTERED, "");
         setVar(WRONG, 0);
     }
@@ -121,10 +121,10 @@ public class MiniGameHangman extends MiniGame1Player {
                     .collect(Collectors.toList());
             if (indexes.size() > 0) {
                 System.out.printf("indexes: %s%n", indexes);
-                char[] progress = (char[]) getVar(PROGRESS);
+                char[] progress = ((String) getVar(PROGRESS)).toCharArray();
                 indexes.forEach(i -> progress[i] = ch);
                 // word to be displayed has that char visible
-                setVar(PROGRESS, progress);
+                setVar(PROGRESS, new String(progress));
             } else addVar(WRONG, 1);
 
             setVar(ENTERED, entered + ch);
@@ -132,12 +132,12 @@ public class MiniGameHangman extends MiniGame1Player {
             // if there are no more attempts remaining => AI wins
             if ((int) getVar(WRONG) >= MAX_WRONG) addVar(AI_SCORE, 1);
                 // if word is guessed => Player wins.
-            else if (word.equals(new String((char[]) getVar(PROGRESS)))) addStat(getPlayers().get(0), SCORE, 1);
+            else if (word.equals(getVar(PROGRESS))) addStat(getPlayers().get(0), SCORE, 1);
         }
     }
 
     public String getDisplayWord() {
-        return new String((char[]) getVar(PROGRESS));
+        return (String)getVar(PROGRESS);
     }
 
     public String getEntered() {
