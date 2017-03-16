@@ -112,7 +112,7 @@ public class Player implements Updateable, Serializable {
     }
 
     public void update() {
-        status.update(this);
+        if(getLocation().world.getMiniGame(name) == null) status.update(this);
     }
 
     @Override
