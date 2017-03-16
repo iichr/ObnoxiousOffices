@@ -25,6 +25,6 @@ public class PlayerActionHack extends PlayerActionMinigame {
 
     @Override
     public MiniGame getMiniGame() {
-        return new MiniGameHangman(player.name);
+        return target.isAI ? new MiniGameHangman(player.name) : new MiniGamePong(player.name, target.name);
     }
 }
