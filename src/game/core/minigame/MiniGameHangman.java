@@ -26,7 +26,7 @@ public class MiniGameHangman extends MiniGame1Player {
     String word = pickWord(initDictionary());
     public static final String NUM_CHARS = "n", PROGRESS = "p", ENTERED = "e", WRONG = "w";
     // set maximum attempts to 5
-    public static final int MAX_WRONG = 5;
+    public static final int MAX_WRONG = 10;
 
     /**
      * Hangman mini-game constructor, the word is converted to a char array for

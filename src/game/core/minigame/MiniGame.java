@@ -83,7 +83,7 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
 
     protected void end(String winner) {
         ended = true;
-        Events.trigger(new MiniGameEndedEvent(getPlayers(), winner));
+        Events.trigger(new MiniGameEndedEvent(getPlayers(), winner),true);
     }
 
     @Override

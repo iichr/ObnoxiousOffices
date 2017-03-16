@@ -112,7 +112,7 @@ public class Player implements Updateable, Serializable {
     }
 
     public void update() {
-        status.update(this);
+        if(getLocation().world.getMiniGame(name) == null) status.update(this);
     }
 
     @Override
@@ -160,7 +160,7 @@ public class Player implements Updateable, Serializable {
      * Add the standard amount of progress (using multiplier)
      */
     public void addProgress() {
-        double toAdd = 0.02;// * getProgressMultiplier();
+        double toAdd = 20 * getProgressMultiplier();
         setProgress(progress + toAdd);
     }
 
