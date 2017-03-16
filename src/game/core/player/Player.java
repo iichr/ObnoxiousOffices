@@ -169,7 +169,7 @@ public class Player implements Updateable, Serializable {
      * @return
      */
     // TODO: Consider fatigue
-    private double getProgressMultiplier() {
+    public double getProgressMultiplier() {
         return status.getAttribute(PlayerStatus.PlayerAttribute.PRODUCTIVITY);
     }
 
