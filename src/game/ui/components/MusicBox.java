@@ -1,4 +1,4 @@
-package game.ui;
+package game.ui.components;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Music;

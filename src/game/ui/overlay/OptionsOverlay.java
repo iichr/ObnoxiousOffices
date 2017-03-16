@@ -5,7 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
-import game.ui.MusicBox;
+import game.ui.components.MusicBox;
 import game.ui.components.WordGenerator;
 import game.ui.interfaces.Vals;
 import game.util.Pair;
