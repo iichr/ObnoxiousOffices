@@ -44,13 +44,10 @@ public class ServerSync {
 	}
 
     private static void onGameStarted(GameStartedEvent event) {
-        System.out.println("########### on game started");
         event.world.getPlayers().forEach(player -> {
-            System.out.println("Adding sitting state to player " + player.name);
             // Make player sit on chair and face correct way
             player.setFacing(player.getLocation().getTile().facing);
             player.status.addState(PlayerState.sitting);
-            System.out.println(player.status.hasState(PlayerState.sitting));
         });
     }
 
