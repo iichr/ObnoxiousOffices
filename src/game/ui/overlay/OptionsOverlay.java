@@ -34,11 +34,11 @@ public class OptionsOverlay extends PopUpOverlay {
 		
 		// debugging
 				Pair<Float, Float> wh = wg.getWH("Sound", 0.2f);
-				wg.draw(g, "Sound", Vals.BUTTON_ALIGN_CENTRE_W - wh.getL(), Vals.BUTTON_ALIGN_CENTRE_H - wh.getR(), false,
+				wg.draw(g, "Sound", Vals.BUTTON_ALIGN_CENTRE_W - wh.getL(), Vals.BUTTON_ALIGN_CENTRE_H - wh.getR(), true,
 						0.2f);
 				// < symbol
 				Pair<Float, Float> wh2 = wg.getWH("<", 0.2f);
-				wg.draw(g, "<", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH, Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR(), false,
+				wg.draw(g, "<", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH, Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR(), true,
 						0.2f);
 				if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH
 						&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH + wh2.getL()
@@ -50,10 +50,10 @@ public class OptionsOverlay extends PopUpOverlay {
 
 				// Volume in %
 				wg.draw(g, (int) (currentSVolume * 100) + "%", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 1.5f,
-						Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR(), false, 0.2f);
+						Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR(), true, 0.2f);
 				// > symbol
 				wg.draw(g, ">", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f, Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR(),
-						false, 0.2f);
+						true, 0.2f);
 				if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f
 						&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f + wh2.getL()
 						&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR() && mousey <= Vals.BUTTON_ALIGN_CENTRE_H) {
@@ -63,10 +63,10 @@ public class OptionsOverlay extends PopUpOverlay {
 				}
 				// debugging
 						Pair<Float, Float> wh4 = wg.getWH("Music", 0.2f);
-						wg.draw(g, "Music", Vals.BUTTON_ALIGN_CENTRE_W - wh4.getL(), Vals.BUTTON_ALIGN_CENTRE_H , false,
+						wg.draw(g, "Music", Vals.BUTTON_ALIGN_CENTRE_W - wh4.getL(), Vals.BUTTON_ALIGN_CENTRE_H , true,
 								0.2f);
 						// < symbol
-						wg.draw(g, "<", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH, Vals.BUTTON_ALIGN_CENTRE_H , false,
+						wg.draw(g, "<", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH, Vals.BUTTON_ALIGN_CENTRE_H , true,
 								0.2f);
 						if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH
 								&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH + wh2.getL()
@@ -78,10 +78,10 @@ public class OptionsOverlay extends PopUpOverlay {
 
 						// Volume in %
 						wg.draw(g, (int) (currentMVolume * 100) + "%", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 1.5f,
-								Vals.BUTTON_ALIGN_CENTRE_H, false, 0.2f);
+								Vals.BUTTON_ALIGN_CENTRE_H, true, 0.2f);
 						// > symbol
 						wg.draw(g, ">", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f, Vals.BUTTON_ALIGN_CENTRE_H,
-								false, 0.2f);
+								true, 0.2f);
 						if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f
 								&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f + wh2.getL()
 								&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H && mousey <= Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR()) {
@@ -92,9 +92,9 @@ public class OptionsOverlay extends PopUpOverlay {
 				
 
 				Pair<Float, Float> wh3 = wg.getWH("Display Mode", 0.2f);
-				wg.draw(g, "Display Mode", Vals.BUTTON_ALIGN_CENTRE_W - wh3.getL(), Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), false, 0.2f);
+				wg.draw(g, "Display Mode", Vals.BUTTON_ALIGN_CENTRE_W - wh3.getL(), Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), true, 0.2f);
 				// < symbol
-				wg.draw(g, "<", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH , Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), false, 0.2f);
+				wg.draw(g, "<", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH , Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), true, 0.2f);
 				if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH
 						&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH + wh3.getL()
 						&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR() && mousey <= Vals.BUTTON_ALIGN_CENTRE_H + 2*wh2.getR()) {
@@ -105,9 +105,9 @@ public class OptionsOverlay extends PopUpOverlay {
 
 				// display modes
 				wg.draw(g, gc.isFullscreen() ? "Full Screen" : "Window", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 1.5f,
-						Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), false, 0.2f);
+						Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), true, 0.2f);
 				// > symbol
-				wg.draw(g, ">", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f, Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), false, 0.2f);
+				wg.draw(g, ">", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f, Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), true, 0.2f);
 				if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f
 						&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f + wh3.getL()
 						&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR() && mousey <= Vals.BUTTON_ALIGN_CENTRE_H + 2*wh2.getR()) {
