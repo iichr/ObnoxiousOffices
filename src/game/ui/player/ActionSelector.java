@@ -167,7 +167,7 @@ public class ActionSelector {
 		switch (toShow.get(action)) {
 		
 		case "WORK":
-			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
+			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(new InteractionType.InteractionTypeWork()), localPlayerName));
 			break;
 		case "HACK":
 			choosingHack = true;
@@ -177,7 +177,8 @@ public class ActionSelector {
 			// do nothing
 			break;
 		default:
-			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.HACK), localPlayerName));
+			System.out.println(toShow.get(action));
+			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(new InteractionType.InteractionTypeHack(toShow.get(action))), localPlayerName));
 		}
 	}
 

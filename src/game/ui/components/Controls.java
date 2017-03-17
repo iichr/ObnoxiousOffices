@@ -156,7 +156,7 @@ public class Controls {
 	 */
 	public void interaction(String localPlayerName, int key) {
 		if (key == INTERACT) {
-			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.OTHER), localPlayerName));
+			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(new InteractionType.InteractionTypeOther()), localPlayerName));
 		}
 	}
 
