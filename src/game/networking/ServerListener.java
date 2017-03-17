@@ -253,7 +253,7 @@ public class ServerListener extends Thread {
 			int playersLeft = world.getMaxPlayers() - world.getPlayers().size();
 			PlayerCreatedEvent event = new PlayerCreatedEvent(name, playersLeft);
 			Events.trigger(event);
-			forwardInfo(event);
+			sendToAllClients(event);
 			System.out.println("Player " + name + " added to the game!");
 		} else {
 			System.out.println("Player " + name + " has already been added to the game!");
