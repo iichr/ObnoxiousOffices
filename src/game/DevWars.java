@@ -7,7 +7,6 @@ import game.ui.Game;
 public class DevWars {
 
 	public static Client client;
-
 	public static void main(String[] args) {
 		ClientSync.init();
 		client = new Client();
