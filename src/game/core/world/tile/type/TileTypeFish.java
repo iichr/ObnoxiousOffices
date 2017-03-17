@@ -1,5 +1,6 @@
 package game.core.world.tile.type;
 
+import game.core.input.InteractionType;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -28,7 +29,7 @@ public class TileTypeFish extends TileType {
     }
 
     @Override
-    public void onInteraction(Player player, Tile tile) {
+    public void onInteraction(Player player, Tile tile, InteractionType type) {
 
     }
 

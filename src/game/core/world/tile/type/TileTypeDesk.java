@@ -1,5 +1,6 @@
 package game.core.world.tile.type;
 
+import game.core.input.InteractionType;
 import game.core.player.Player;
 import game.core.world.tile.Tile;
 
@@ -22,7 +23,7 @@ public class TileTypeDesk extends TileType {
     }
 
     @Override
-    public void onInteraction(Player player, Tile tile) {
+    public void onInteraction(Player player, Tile tile, InteractionType type) {
 
     }
 }
