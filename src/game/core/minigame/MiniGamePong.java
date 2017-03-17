@@ -36,13 +36,13 @@ public class MiniGamePong extends MiniGame2Player {
             addVar(X_POS, (float)getVar(BALL_X_VEL));
             addVar(Y_POS, (float)getVar(BALL_Y_VEL));
             float ballX = (float)getVar(X_POS), ballY = (float)getVar(Y_POS);
-            if(ballX + BALL_SIZE/2 <= 0) {
+            if(ballX - BALL_SIZE/2 <= 0) {
                 addStat(player1, SCORE, 1);
                 newRound();
             } else if(ballX + BALL_SIZE/2>= BOUND_X) {
                 addStat(player2, SCORE, 1);
                 newRound();
-            } else if (ballY + BALL_SIZE/2 >= BOUND_Y || ballY + BALL_SIZE/2 <= 0) bounceBall(BALL_Y_VEL, null, 0);
+            } else if (ballY + BALL_SIZE/2 >= BOUND_Y || ballY - BALL_SIZE/2 <= 0) bounceBall(BALL_Y_VEL, null, 0);
             else {
                 checkPaddleBounce(player2, ballX, ballY);
                 checkPaddleBounce(player1, ballX, ballY);
