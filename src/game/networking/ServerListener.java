@@ -246,7 +246,10 @@ public class ServerListener extends Thread {
 	 *            name of the player to add.
 	 */
 	private void addPlayerToGame(String name) {
-		if (!this.playerNameUsed(name)) {
+		if (this.playerNameUsed(name)) {
+			name = name + "x";
+			playerName = playerName + "x";
+		}
 			Player playerObject = new Player(name, Direction.SOUTH, world.getSpawnPoint(playerNumber));
 			playerObject.setHair(playerNumber);
 			world.addPlayer(playerObject);
@@ -255,9 +258,6 @@ public class ServerListener extends Thread {
 			Events.trigger(event);
 			forwardInfo(event);
 			System.out.println("Player " + name + " added to the game!");
-		} else {
-			System.out.println("Player " + name + " has already been added to the game!");
-		}
 	}
 
 	/**
