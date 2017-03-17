@@ -215,7 +215,7 @@ public class CharacterSelect extends BasicGameState {
 	}
 	
 	private void gameFull(GameFullEvent e){
-		
+		gameFull = true;
 	}
 
 	@Override
