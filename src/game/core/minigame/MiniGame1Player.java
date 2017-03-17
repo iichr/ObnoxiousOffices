@@ -9,7 +9,9 @@ public abstract class MiniGame1Player extends MiniGame {
 
     public MiniGame1Player(String player) {
         super(player);
+        initialising = true;
         setVar(AI_SCORE, 0);
+        initialising = false;
     }
 
     @Override
