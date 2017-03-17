@@ -23,6 +23,7 @@ public class OptionsOverlay extends PopUpOverlay {
 	}
 
 	public void render(GameContainer gc,Graphics g) throws SlickException {
+		System.out.println("drawing options");
 		mb=new MusicBox(gc);
 		// draw the background
 		background.draw(x, y, width, height);
@@ -31,8 +32,7 @@ public class OptionsOverlay extends PopUpOverlay {
 		float mousey=input.getMouseY();
 		float currentSVolume = gc.getSoundVolume();
 		float currentMVolume = gc.getMusicVolume();
-
-		wg.drawCenter(g, "CLOSE", x + width / 2, y + height / 2 - height/6, true, scale / 3);
+		
 		// debugging
 				Pair<Float, Float> wh = wg.getWH("Sound", 0.2f);
 				wg.draw(g, "Sound", Vals.BUTTON_ALIGN_CENTRE_W - wh.getL(), Vals.BUTTON_ALIGN_CENTRE_H - wh.getR(), false,
@@ -95,9 +95,9 @@ public class OptionsOverlay extends PopUpOverlay {
 				Pair<Float, Float> wh3 = wg.getWH("Display Mode", 0.2f);
 				wg.draw(g, "Display Mode", Vals.BUTTON_ALIGN_CENTRE_W - wh3.getL(), Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), false, 0.2f);
 				// < symbol
-				wg.draw(g, "<", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH / 2, Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), false, 0.2f);
-				if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH / 2
-						&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH / 2 + wh3.getL()
+				wg.draw(g, "<", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH , Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), false, 0.2f);
+				if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH
+						&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH + wh3.getL()
 						&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR() && mousey <= Vals.BUTTON_ALIGN_CENTRE_H + 2*wh2.getR()) {
 					if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 						gc.setFullscreen(!gc.isFullscreen());
@@ -105,12 +105,12 @@ public class OptionsOverlay extends PopUpOverlay {
 				}
 
 				// display modes
-				wg.draw(g, gc.isFullscreen() ? "Full Screen" : "Window", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH,
+				wg.draw(g, gc.isFullscreen() ? "Full Screen" : "Window", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 1.5f,
 						Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), false, 0.2f);
 				// > symbol
-				wg.draw(g, ">", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 3f, Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), false, 0.2f);
-				if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 3f
-						&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 3f + wh3.getL()
+				wg.draw(g, ">", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f, Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), false, 0.2f);
+				if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f
+						&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f + wh3.getL()
 						&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR() && mousey <= Vals.BUTTON_ALIGN_CENTRE_H + 2*wh2.getR()) {
 					if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 						gc.setFullscreen(!gc.isFullscreen());
