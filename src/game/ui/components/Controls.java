@@ -35,6 +35,8 @@ public class Controls {
 	public HashMap<String, String> allControls;
 	
 	public Controls(){
+		allControls = new HashMap<String, String>();
+		
 		allControls.put("Move Up", Input.getKeyName(MOVE_UP));
 		allControls.put("Move Down", Input.getKeyName(MOVE_DOWN));
 		allControls.put("Move Left", Input.getKeyName(MOVE_LEFT));

@@ -25,7 +25,7 @@ public class PongOverlay extends PopUpOverlay {
 		MiniGamePong pong = (MiniGamePong) MiniGame.localMiniGame;
 
 		// draw the background
-		background.draw(x, y, width, height);
+		background.draw(x, y, width, height, Color.red);
 
 		float playWidth = 3 * width / 4;
 		float playHeight = 3 * height / 4;
