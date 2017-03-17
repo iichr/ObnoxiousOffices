@@ -23,7 +23,6 @@ public class OptionsOverlay extends PopUpOverlay {
 	}
 
 	public void render(GameContainer gc,Graphics g) throws SlickException {
-		System.out.println("drawing options");
 		mb=new MusicBox(gc);
 		// draw the background
 		background.draw(x, y, width, height);
