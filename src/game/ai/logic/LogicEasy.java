@@ -4,15 +4,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import game.ai.AIPlayer;
 import game.ai.pathFinding.Pair;
 import game.ai.pathFinding.PathFinding;
+import game.core.input.InteractionType.InteractionTypeOther;
+import game.core.input.InteractionType.InteractionTypeSit;
+import game.core.input.InteractionType.InteractionTypeWork;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.player.action.PlayerActionHack;
-import game.core.player.action.PlayerActionWork;
+import game.core.player.action.PlayerActionWorkTimed;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
@@ -44,8 +48,8 @@ public class LogicEasy implements Logic, Serializable {
 
 	@Override
 	public void aiWork(AIPlayer ai) {
-		if(!ai.status.hasAction(PlayerActionWork.class))
-			ai.status.addAction(new PlayerActionWork(ai));
+		if(!ai.status.hasAction(PlayerActionWorkTimed.class))
+			ai.status.addAction(new PlayerActionWorkTimed(ai));
 	}
 
 	@Override
@@ -100,7 +104,6 @@ public class LogicEasy implements Logic, Serializable {
 
 	@Override
 	public void goToCoffeeMachineAndBack(World w, AIPlayer p) {
-
 		findCoffeeMachine(w, p);
 
 		// go through the array list of i, j coords
@@ -120,9 +123,8 @@ public class LogicEasy implements Logic, Serializable {
 
 		// interact with the tile
 		 Location l = p.getLocation().forward(p.getFacing());
-		 l.getTile().onInteraction(p);
+		 l.getTile().onInteraction(p, new InteractionTypeOther());
 
-		 l.getTile().onInteraction(p);
 
 		while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
 			// do nothing
@@ -155,7 +157,7 @@ public class LogicEasy implements Logic, Serializable {
 
 		// interact with the tile
 		Location l = p.getLocation().forward(p.getFacing());
-		l.getTile().onInteraction(p);
+		l.getTile().onInteraction(p, new InteractionTypeOther());
 
 		// go back to your desk
 		while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
@@ -172,8 +174,7 @@ public class LogicEasy implements Logic, Serializable {
 		// check whether the player is at the coffee machine or sofa
 		if (p.getLocation().coords.x == fromCM.get(1).getL() && p.getLocation().coords.y == fromCM.get(1).getR()) {
 			// if at the coffee machine, go through the array list of i, j
-			// coords
-			// to the desk from the coffee machine
+			// coords  to the desk from the coffee machine
 			for (int i = 2; i < fromCM.size(); i++) {
 
 				//make a move
@@ -193,11 +194,11 @@ public class LogicEasy implements Logic, Serializable {
 
 		// interact with the tile
 		Location l = p.getLocation().forward(p.getFacing());
-		l.getTile().onInteraction(p);
+		l.getTile().onInteraction(p, new InteractionTypeSit());
 
 		//interact with the computer and start working
 		l = p.getLocation().forward(p.getFacing());
-		l.getTile().onInteraction(p);
+		l.getTile().onInteraction(p, new InteractionTypeWork());
 	}
 
 	@Override
@@ -206,7 +207,8 @@ public class LogicEasy implements Logic, Serializable {
 		List<Player> players = World.world.getPlayers();
 
 		//choose a random player
-		int random = ThreadLocalRandom.current().nextInt(0, players.size());
+		Random r = new Random();
+		int random = r.nextInt(players.size());
 		Player randomPlayer = players.get(random);
 
 		//if the chosen player is an AI, check again
@@ -237,7 +239,6 @@ public class LogicEasy implements Logic, Serializable {
 			//stop the AI from moving, so it doesn't teleport
 			Thread.sleep(aiSpeed);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

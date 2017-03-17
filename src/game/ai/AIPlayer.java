@@ -10,6 +10,7 @@ import game.ai.ruleBasedAI.WorkingMemory;
 import game.core.event.Events;
 import game.core.event.player.PlayerQuitEvent;
 import game.core.player.Player;
+import game.core.player.action.PlayerActionHack;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
@@ -45,7 +46,7 @@ public class AIPlayer extends Player {
 	private static final long serialVersionUID = 1L;
 
 	static {
-		Events.on(PlayerQuitEvent.class, e -> World.world.addPlayer(new AIPlayer(World.world.getPlayer(e.playerName))));
+		Events.on(Events.EventPriority.HIGH, PlayerQuitEvent.class, e -> World.world.addPlayer(new AIPlayer(World.world.getPlayer(e.playerName))));
 	}
 
 	// constructor from Player class
@@ -129,8 +130,7 @@ public class AIPlayer extends Player {
 
 		wm = new WorkingMemory(player); // create the working memory
 
-		if (!fr.isMoving) {
-			this.getLogic().aiWork(this);
+		if (!fr.isMoving && this.status.hasAction(PlayerActionHack.class)) {
 			Thread fire = new Thread(() -> {
 				fr.fireRules();
 			});
