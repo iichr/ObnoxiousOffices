@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import game.core.event.Events;
+import game.core.event.GameFinishedEvent;
 import game.core.event.GameFullEvent;
 import game.core.event.GameStartedEvent;
 import game.core.sync.ServerSync;
@@ -23,14 +24,17 @@ public class Server {
 	private World world;
 	public static boolean listen = true;
 	private final int NUM_PLAYERS = 4;
+	
 
 	/**
 	 * Starts the server
 	 */
 	public Server() {
+		listen = true;
 		connections = new ArrayList<ServerListener>();
 		final int port = 8942;
 		Events.on(GameStartedEvent.class, this::updateWorld);
+		Events.on(GameFinishedEvent.class, this::endGame);
 		// create the server socket
 		createSocket(port);
 		// load the world
@@ -115,6 +119,10 @@ public class Server {
 		}
 		updateThread.start();
 	}
+	private void endGame(Object recieved){
+		new Server();
+		
+	}
 
 	/**
 	 * Main method for starting server
@@ -125,5 +133,6 @@ public class Server {
 		ServerSync.init();
 		new Server();
 	}
+	
 
 }

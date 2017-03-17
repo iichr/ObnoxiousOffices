@@ -8,6 +8,7 @@ import java.util.Queue;
 
 import game.core.event.Event;
 import game.core.event.Events;
+import game.core.event.GameFinishedEvent;
 import game.core.event.GameFullEvent;
 
 public class ClientListner extends Thread {
@@ -23,7 +24,7 @@ public class ClientListner extends Thread {
 		this.server = server;
 		
 		Events.on(GameFullEvent.class, this::gameFull);
-
+		Events.on(GameFinishedEvent.class, this::endGame);
 		inputQ = new LinkedList<Object>();
 		manageEvents();
 	}
@@ -71,6 +72,9 @@ public class ClientListner extends Thread {
 	}
 	
 	private void gameFull(GameFullEvent e){
+		connected = false;
+	}
+	private void endGame(GameFinishedEvent e){
 		connected = false;
 	}
 }

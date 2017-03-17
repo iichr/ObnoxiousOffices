@@ -10,6 +10,7 @@ import java.util.Queue;
 import game.core.event.ConnectionAttemptEvent;
 import game.core.event.ConnectionFailedEvent;
 import game.core.event.Events;
+import game.core.event.GameFinishedEvent;
 import game.core.event.GameFullEvent;
 import game.core.event.chat.ChatMessageCreatedEvent;
 import game.core.event.player.PlayerCreatedEvent;
@@ -30,6 +31,7 @@ public class Client {
 		Events.on(PlayerInputEvent.class, this::sendDataToServer);
 		Events.on(ChatMessageCreatedEvent.class, this::sendDataToServer);
 		Events.on(GameFullEvent.class, this::gameFull);
+		Events.on(GameFinishedEvent.class, this::endGame);
 	}
 
 	/**
@@ -91,6 +93,9 @@ public class Client {
 	}
 	
 	private void gameFull(GameFullEvent e){
+		connected = false;
+	}
+	private void endGame(GameFinishedEvent e){
 		connected = false;
 	}
 
