@@ -1,5 +1,6 @@
 package game.ui.overlay;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
@@ -21,7 +22,7 @@ public class HangmanOverlay extends PopUpOverlay {
 	public void render(Graphics g) {
 		MiniGameHangman hangman = (MiniGameHangman) MiniGame.localMiniGame;
 		// temporarily use the default background
-		background.draw(x, y, width, height);
+		background.draw(x, y, width, height, Color.blue);
 
 		wg.drawCenter(g, hangman.getDisplayWord(), x + width / 2, y + height / 2 - height / 6, true, scale / 3);
 		wg.drawCenter(g, "GUESSED    " + hangman.getEntered(), x + width / 2, y + height / 2, true, scale / 3);
