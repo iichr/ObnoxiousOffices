@@ -92,8 +92,6 @@ public class ServerListener extends Thread {
 		Events.on(MiniGameEndedEvent.class, this::forwardInfo);
 		Events.on(MiniGameVarChangedEvent.class, this::forwardInfo);
 		Events.on(MiniGameStatChangedEvent.class, this::forwardInfo);
-
-		// Events.on(GameFinishedEvent.class, this::forwardInfo);
 		Events.on(GameFinishedEvent.class, this::closeConnection);
 		Events.on(ChatMessageReceivedEvent.class, this::forwardInfo);
 	}

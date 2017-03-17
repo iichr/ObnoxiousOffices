@@ -52,6 +52,7 @@ public class ClientListner extends Thread {
 	 */
 	private void manageEvents() {
 		Thread manageInputs = new Thread(() -> {
+			connected = true;
 			while (connected) {
 				try {
 					Thread.sleep(5);
