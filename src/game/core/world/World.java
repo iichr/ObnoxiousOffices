@@ -44,7 +44,7 @@ public class World implements Updateable, Serializable {
         zSize = sizeZ;
         ySize = sizeY;
         xSize = sizeX;
-        Events.on(PlayerQuitEvent.class, this::onPlayerQuit);
+        Events.on(Events.EventPriority.LOW, PlayerQuitEvent.class, this::onPlayerQuit);
     }
 
     private void onPlayerQuit(PlayerQuitEvent event) {
