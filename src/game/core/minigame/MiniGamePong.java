@@ -53,7 +53,7 @@ public class MiniGamePong extends MiniGame2Player {
     private void checkPaddleBounce(String player, float ballX, float ballY) {
         float playerX = (float)getStat(player, X_POS), playerY = (float)getStat(player, Y_POS);
         float yDiff = ballY - playerY;
-        if(ballX + BALL_SIZE/2 == playerX && yDiff >= 0 && yDiff < PADDLE_LEN) bounceBall(BALL_X_VEL, BALL_Y_VEL, PADDLE_LEN - yDiff);
+        if((ballX + BALL_SIZE/2 == playerX || ballX - BALL_SIZE/2 == playerX) && yDiff >= 0 && yDiff < PADDLE_LEN) bounceBall(BALL_X_VEL, BALL_Y_VEL, PADDLE_LEN - yDiff);
     }
 
     private void bounceBall(String varToNegate, String otherVer, float velVal) {
