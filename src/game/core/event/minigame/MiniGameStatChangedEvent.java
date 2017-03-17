@@ -8,9 +8,9 @@ import game.core.event.Event;
 public class MiniGameStatChangedEvent extends Event {
 
     public final String player, stat;
-    public final int val;
+    public final Object val;
 
-    public MiniGameStatChangedEvent(String player, String stat, int val) {
+    public MiniGameStatChangedEvent(String player, String stat, Object val) {
         this.player = player;
         this.stat = stat;
         this.val = val;

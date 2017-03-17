@@ -25,7 +25,6 @@ public class Player implements Updateable, Serializable {
     private Location location;
     private int hair = BLONDE;
     public boolean isAI = false;
-    private int progressUpdates = 0;
     
     public static String localPlayerName = "";
     public static int BLONDE = 0;
@@ -33,7 +32,6 @@ public class Player implements Updateable, Serializable {
     public static int DARK = 2;
     public static int PINK = 3;
     public int timesDrunkCoffee = 0;
-    public static final int PROGRESS_UPDATE_THRESHOLD = 3;
 
     public Player(String name, Direction facing, Location location) {
         this.name = name;
@@ -112,7 +110,7 @@ public class Player implements Updateable, Serializable {
     }
 
     public void update() {
-        status.update(this);
+        if(getLocation().world.getMiniGame(name) == null) status.update(this);
     }
 
     @Override
@@ -131,16 +129,10 @@ public class Player implements Updateable, Serializable {
      */
     public void setProgress(double progress) {
         if(progress != this.progress) {
-            if (progress < 0) progress = 0;
-            if (progress > 100) progress = 100;
+            progress = Math.max(0, Math.min(100, progress));
             this.progress = progress;
-            if (this.progress == 100) {
-                onProgressDone();
-            }
-            if(++progressUpdates >= PROGRESS_UPDATE_THRESHOLD) {
-                Events.trigger(new PlayerProgressUpdateEvent(this.progress, this.name), true);
-                progressUpdates = 0;
-            }
+            if (this.progress == 100) onProgressDone();
+            Events.trigger(new PlayerProgressUpdateEvent(this.progress, this.name), true);
         }
     }
 
@@ -160,7 +152,7 @@ public class Player implements Updateable, Serializable {
      * Add the standard amount of progress (using multiplier)
      */
     public void addProgress() {
-        double toAdd = 1.0;// * getProgressMultiplier();
+        double toAdd = 20 * getProgressMultiplier();
         setProgress(progress + toAdd);
     }
 
@@ -169,7 +161,7 @@ public class Player implements Updateable, Serializable {
      * @return
      */
     // TODO: Consider fatigue
-    private double getProgressMultiplier() {
+    public double getProgressMultiplier() {
         return status.getAttribute(PlayerStatus.PlayerAttribute.PRODUCTIVITY);
     }
 
@@ -192,7 +184,17 @@ public class Player implements Updateable, Serializable {
 		return hair;
 	}
 
-	public void setHair(int hair) {
-		this.hair = hair;
-	}
+    public void setHair(int hair) {
+        this.hair = hair;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", facing=" + facing +
+                ", location=" + location +
+                ", isAI=" + isAI +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package game.core.world.tile.type;
 
+import game.core.input.InteractionType;
 import game.core.player.Player;
 import game.core.player.action.PlayerAction;
 import game.core.player.action.PlayerActionDrink;
@@ -25,7 +26,7 @@ public class TileTypeCoffeeMachine extends TileTypeAction {
     }
 
     @Override
-    protected PlayerAction getAction(Player player, Tile tile) {
+    protected PlayerAction getAction(Player player, Tile tile, InteractionType type) {
         return new PlayerActionDrink(player);
     }
 }

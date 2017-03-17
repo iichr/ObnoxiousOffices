@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 
+import game.core.input.InteractionType;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -62,7 +63,7 @@ public abstract class TileType implements Serializable {
 
     public abstract boolean canWalkOver();
 
-    public abstract void onInteraction(Player player, Tile tile);
+    public abstract void onInteraction(Player player, Tile tile, InteractionType type);
 
     public static boolean typeExists(char ch) {
         return types.containsKey(ch);

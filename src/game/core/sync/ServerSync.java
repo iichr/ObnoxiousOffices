@@ -31,10 +31,10 @@ import java.util.Set;
  */
 public class ServerSync {
 
-	static Map<InteractionType, Set<TileType>> interactionMap = new HashMap<InteractionType, Set<TileType>>() {{
-		put(InteractionType.HACK, Sets.asSet(TileType.COMPUTER));
-		put(InteractionType.WORK, Sets.asSet(TileType.COMPUTER));
-		put(InteractionType.OTHER, Sets.asSet(TileType.CHAIR, TileType.COFFEE_MACHINE, TileType.SOFA));
+	static Map<Class<? extends InteractionType>, Set<TileType>> interactionMap = new HashMap<Class<? extends InteractionType>, Set<TileType>>() {{
+		put(InteractionType.InteractionTypeHack.class, Sets.asSet(TileType.COMPUTER));
+		put(InteractionType.InteractionTypeWork.class, Sets.asSet(TileType.COMPUTER));
+		put(InteractionType.InteractionTypeOther.class, Sets.asSet(TileType.CHAIR, TileType.COFFEE_MACHINE, TileType.SOFA));
 	}};
 
 	public static void init() {
@@ -44,13 +44,10 @@ public class ServerSync {
 	}
 
     private static void onGameStarted(GameStartedEvent event) {
-        System.out.println("########### on game started");
         event.world.getPlayers().forEach(player -> {
-            System.out.println("Adding sitting state to player " + player.name);
             // Make player sit on chair and face correct way
             player.setFacing(player.getLocation().getTile().facing);
             player.status.addState(PlayerState.sitting);
-            System.out.println(player.status.hasState(PlayerState.sitting));
         });
     }
 
@@ -73,8 +70,8 @@ public class ServerSync {
 	    if (!player.status.canInteract()) return;
         Tile targetTile = player.getLocation().forward(player.getFacing()).getTile();
         if(targetTile != null) {
-            boolean valid = interactionMap.get(type.type).stream().anyMatch(t -> t.equals(targetTile.type));
-            if(valid) targetTile.onInteraction(player);
+            boolean valid = interactionMap.get(type.type.getClass()).stream().anyMatch(t -> t.equals(targetTile.type));
+            if(valid) targetTile.onInteraction(player, type.type);
         }
     }
 
