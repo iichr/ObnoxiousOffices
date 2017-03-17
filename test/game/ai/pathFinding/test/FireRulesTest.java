@@ -1,6 +1,6 @@
 package game.ai.pathFinding.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -11,10 +11,11 @@ import org.junit.Test;
 
 import game.ai.AIPlayer;
 import game.ai.pathFinding.Pair;
+import game.ai.ruleBasedAI.WorkingMemory.activityValues;
 import game.core.player.Player;
+import game.core.player.action.PlayerActionWork;
 import game.core.world.Direction;
-import game.core.world.World;
-import game.ai.ruleBasedAI.WorkingMemory.activityValues;;
+import game.core.world.World;;
 
 public class FireRulesTest {
 	
@@ -27,10 +28,10 @@ public class FireRulesTest {
 	@Test
 	public void test() {
 		ai.fr.fireRules();
-		assertTrue(ai.wm.getHasProgressedMore() != activityValues.Unknown);
-		assertTrue(ai.wm.getIsHacking() != activityValues.Unknown);
-		assertTrue(ai.wm.getIsRefreshing() != activityValues.Unknown);
-		assertTrue(ai.wm.getIsWorking() != activityValues.Unknown);
+		assertTrue(ai.wm.getHasProgressedMore() == activityValues.Yes);
+		assertTrue(ai.wm.getIsHacking() == activityValues.No);
+		assertTrue(ai.wm.getIsRefreshing() == activityValues.No);
+		assertTrue(ai.wm.getIsWorking() == activityValues.Yes);
 		assertTrue(ai.wm.getWMplayer() == p);
 	}
 	
@@ -52,6 +53,8 @@ public class FireRulesTest {
 		while (p.getProgress() < 20) {
 			p.status.player.addProgress();
 		}
+		//
+		p.status.addAction(new PlayerActionWork(p));
 		
 		// add them to the world
 		World.world.addPlayer(p);

@@ -49,9 +49,12 @@ public class FireRules implements Serializable {
 
 			// iterate over the rules
 			for (int i = 0; i < r.size(); i++) {
-				if (r.get(i) == wm)
+				if (r.get(i).getHasProgressedMore() == wm.getHasProgressedMore() && r.get(i).getIsHacking() == wm.getIsHacking()
+					&&	r.get(i).getIsRefreshing() == wm.getIsRefreshing() && r.get(i).getIsWorking() == wm.getIsWorking()) {
 					matchedRules.add(r.get(i));
+				}
 			}
+			System.out.println(matchedRules.size());
 			if (!matchedRules.isEmpty()) {
 				for (int i = 0; i < matchedRules.size(); i++) {
 					WorkingMemory w = matchedRules.get(i);
