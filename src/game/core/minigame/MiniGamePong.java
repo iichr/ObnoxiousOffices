@@ -1,5 +1,7 @@
 package game.core.minigame;
 
+import java.util.Random;
+
 import game.core.event.player.PlayerInputEvent;
 import game.core.input.InputType;
 import game.core.input.InputTypeMovement;
@@ -34,13 +36,13 @@ public class MiniGamePong extends MiniGame2Player {
             addVar(X_POS, (float)getVar(BALL_X_VEL));
             addVar(Y_POS, (float)getVar(BALL_Y_VEL));
             float ballX = (float)getVar(X_POS), ballY = (float)getVar(Y_POS);
-            if(ballX + BALL_SIZE/2 <= 0) {
+            if(ballX - BALL_SIZE/2 <= 0) {
                 addStat(player1, SCORE, 1);
                 newRound();
             } else if(ballX + BALL_SIZE/2>= BOUND_X) {
                 addStat(player2, SCORE, 1);
                 newRound();
-            } else if (ballY + BALL_SIZE/2 >= BOUND_Y || ballY + BALL_SIZE/2 <= 0) bounceBall(BALL_Y_VEL, null, 0);
+            } else if (ballY + BALL_SIZE/2 >= BOUND_Y || ballY - BALL_SIZE/2 <= 0) bounceBall(BALL_Y_VEL, null, 0);
             else {
                 checkPaddleBounce(player2, ballX, ballY);
                 checkPaddleBounce(player1, ballX, ballY);
@@ -60,15 +62,19 @@ public class MiniGamePong extends MiniGame2Player {
     }
 
     private void newRound() {
+    	Random r = new Random();
+    	float xVel = r.nextFloat() * 1;
+    	float yVel = r.nextFloat() * 1;
+    	
         setStat(player1, X_POS, 1f);
         setStat(player2, X_POS, (float)BOUND_X - 1);
         setStat(player1, Y_POS, 0f);
         setStat(player2, Y_POS, 0f);
 
-        setVar(X_POS, 0f);
-        setVar(Y_POS, 0f);
-        setVar(BALL_X_VEL, 1f);
-        setVar(BALL_Y_VEL, 0f);
+        setVar(X_POS, BOUND_X/2);
+        setVar(Y_POS, BOUND_Y/2);
+        setVar(BALL_X_VEL, xVel);
+        setVar(BALL_Y_VEL, yVel);
     }
 
     @Override
