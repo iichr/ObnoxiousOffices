@@ -94,6 +94,8 @@ public class CharacterSelect extends BasicGameState {
 
 		serverAddress.setBackgroundColor(Color.white);
 		serverAddress.setTextColor(Color.black);
+		
+		
 
 		// Player name text field.
 		playerName = new TextField(gc, Vals.FONT_MAIN, Vals.TFIELD_ALIGN_CENTRE_W, Vals.SCREEN_HEIGHT / 4,
@@ -104,6 +106,7 @@ public class CharacterSelect extends BasicGameState {
 				});
 		playerName.setBackgroundColor(Color.white);
 		playerName.setTextColor(Color.black);
+		playerName.setMaxLength(30);
 	}
 
 	@Override

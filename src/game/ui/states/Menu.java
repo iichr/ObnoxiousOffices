@@ -13,6 +13,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
+import game.ui.interfaces.MusicLocations;
 import game.ui.interfaces.Vals;
 
 public class Menu extends BasicGameState implements MusicListener {
@@ -64,7 +65,7 @@ public class Menu extends BasicGameState implements MusicListener {
 				exit.getHeight(), exit, exitR);
 
 
-		// music = new Music (MusicLocations.MENU_MUSIC);
+		 music = new Music (MusicLocations.MENU_MUSIC);
 		// music.addListener(this);
 		// music.setVolume(0.5f);
 		buttons= new MenuButton[]{ playButton,
@@ -79,7 +80,7 @@ public class Menu extends BasicGameState implements MusicListener {
 		// Start the music loop when you first enter the state, will not end
 		// until you use music.stop() or .pause() somewhere, even if you change
 		// states.
-		// music.loop();
+		 music.loop();
 	}
 
 	@Override

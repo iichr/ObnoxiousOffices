@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 
 import game.core.event.Events;
 import game.core.event.player.PlayerInputEvent;
@@ -20,6 +21,7 @@ import game.core.world.tile.type.TileType;
 import game.core.world.tile.type.TileTypeComputer;
 import game.ui.components.WordGenerator;
 import game.ui.interfaces.ImageLocations;
+import game.ui.interfaces.MusicLocations;
 
 public class ActionSelector {
 	private Image selectorBack;
@@ -27,14 +29,19 @@ public class ActionSelector {
 	private WordGenerator wg;
 	private int action;
 	private boolean choosingHack;
+	private Sound coffee;
+	private Sound select;
 
 	/**
 	 * Constructor: Created an action selector with current action 0
+	 * @throws SlickException 
 	 */
-	public ActionSelector(WordGenerator wg) {
+	public ActionSelector(WordGenerator wg) throws SlickException {
 		action = 0;
 		choosingHack = false;
 		this.wg = wg;
+		coffee=new Sound(MusicLocations.COFFEE);
+		select=new Sound(MusicLocations.SELECT);
 	}
 
 	/**
@@ -129,6 +136,7 @@ public class ActionSelector {
 		} else {
 			action = (action + 1) % toShow.size();
 		}
+		select.play();
 	}
 
 	/**
@@ -150,7 +158,6 @@ public class ActionSelector {
 		float characterMod = ((float) toShow.get(action).length()) / 4;
 		selectorBack.draw(x + width / 2 - (width * characterMod) / 2, y, width * characterMod, height);
 		wg.drawCenter(g, toShow.get(action), x + width / 2, y + height / 2, true, width / 700);
-
 	}
 	
 	/**
@@ -158,6 +165,7 @@ public class ActionSelector {
 	 */
 	public void manageSelection(String localPlayerName) {
 		switch (toShow.get(action)) {
+		
 		case "WORK":
 			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(InteractionType.WORK), localPlayerName));
 			break;
