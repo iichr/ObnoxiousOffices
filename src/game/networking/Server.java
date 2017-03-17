@@ -1,6 +1,7 @@
 package game.networking;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,9 +9,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import game.core.event.Events;
+import game.core.event.GameFullEvent;
 import game.core.event.GameStartedEvent;
 import game.core.sync.ServerSync;
-import game.core.player.Player;
 import game.core.sync.Updater;
 import game.core.world.World;
 import game.util.Time;
@@ -20,10 +21,9 @@ public class Server {
 	public ArrayList<ServerListener> connections;
 	private ServerSocket serverSocket = null;
 	private World world;
-	private boolean gameEnded = false;
-	private boolean gameStarted = false;
+	public static boolean listen = true;
+	private final int NUM_PLAYERS = 4;
 
-	private final int NUM_PLAYERS = 2;
 	/**
 	 * Starts the server
 	 */
@@ -41,16 +41,19 @@ public class Server {
 
 	/**
 	 * Creates a server socket on the given port
-	 * @param port- The port to create the socket on
+	 * 
+	 * @param port-
+	 *            The port to create the socket on
 	 */
 	private void createSocket(int port) {
 		// Open a server socket:
 		// We must try because it may fail with a checked exception:
 		try {
 			this.serverSocket = new ServerSocket(port);
-//			URL url = new URL("http://checkip.amazonaws.com/");
-//			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-//			System.out.println("Server IP : "+br.readLine());
+			// URL url = new URL("http://checkip.amazonaws.com/");
+			// BufferedReader br = new BufferedReader(new
+			// InputStreamReader(url.openStream()));
+			// System.out.println("Server IP : "+br.readLine());
 			System.out.println("local Address: " + Inet4Address.getLocalHost().getHostAddress());
 			System.out.println("Server registered to port " + port);
 		} catch (IOException e) {
@@ -63,17 +66,23 @@ public class Server {
 	 * Listen for connections from clients make a new server listener for each
 	 */
 	private void listenForConnections() {
-		boolean waiting = true;
-		try {
-			while (waiting) {
+		while (true) {
+			try {
 				// Listen to the socket, accepting connections from new clients:
 				Socket socket = this.serverSocket.accept();
-				ServerListener sl = new ServerListener(socket, this.connections, world);
-				this.connections.add(sl);
-				sl.start();
+				if (listen) {
+					ServerListener sl = new ServerListener(socket, this.connections, world);
+					this.connections.add(sl);
+					sl.start();
+				} else {
+					GameFullEvent e = new GameFullEvent();
+					ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+					os.writeObject(e);
+				}
+
+			} catch (IOException e) {
+				System.err.println("IO error " + e.getMessage());
 			}
-		} catch (IOException e) {
-			System.err.println("IO error " + e.getMessage());
 		}
 	}
 
@@ -88,9 +97,12 @@ public class Server {
 			e2.printStackTrace();
 		}
 	}
+
 	/**
 	 * Update the world
-	 * @param e- Game started event object
+	 * 
+	 * @param e-
+	 *            Game started event object
 	 */
 	private void updateWorld(GameStartedEvent e) {
 		Updater worldUpdater = new Updater(e.world, Time.UPDATE_RATE, true);
@@ -104,13 +116,9 @@ public class Server {
 		updateThread.start();
 	}
 
-	// TODO add GameEndedEvent
-	// private void gameEnd(GameEndedEvent e){
-	// gameEnded = true;
-	// }
-
 	/**
 	 * Main method for starting server
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {

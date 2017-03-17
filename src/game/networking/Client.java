@@ -10,6 +10,7 @@ import java.util.Queue;
 import game.core.event.ConnectionAttemptEvent;
 import game.core.event.ConnectionFailedEvent;
 import game.core.event.Events;
+import game.core.event.GameFullEvent;
 import game.core.event.chat.ChatMessageCreatedEvent;
 import game.core.event.player.PlayerCreatedEvent;
 import game.core.event.player.PlayerInputEvent;
@@ -19,6 +20,7 @@ public class Client {
 
 	private Socket server;
 	private ObjectOutputStream od;
+	private boolean connected;
 	/**
 	 * Listens for events
 	 */
@@ -27,6 +29,7 @@ public class Client {
 		Events.on(PlayerCreatedEvent.class, this::setLocalPlayer);
 		Events.on(PlayerInputEvent.class, this::sendDataToServer);
 		Events.on(ChatMessageCreatedEvent.class, this::sendDataToServer);
+		Events.on(GameFullEvent.class, this::gameFull);
 	}
 
 	/**
@@ -51,7 +54,7 @@ public class Client {
 	 */
 	public void connectToServer(ConnectionAttemptEvent event) {
 		int port = 8942;
-		boolean connected = false;
+		connected = false;
 		String hostname = event.ipAddress;
 
 		try {
@@ -85,6 +88,10 @@ public class Client {
 	 */
 	public void setLocalPlayer(PlayerCreatedEvent e) {
 		Player.localPlayerName = e.localPlayerName;
+	}
+	
+	private void gameFull(GameFullEvent e){
+		connected = false;
 	}
 
 }

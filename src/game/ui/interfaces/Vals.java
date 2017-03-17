@@ -19,7 +19,7 @@ public interface Vals {
 	// SCREEN SIZES
 	Dimension screenRes = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int SCREEN_WIDTH = (int) screenRes.getWidth();
-	public static final int SCREEN_HEIGHT = (int) (screenRes.getHeight()-screenRes.getHeight()/10);
+	public static final int SCREEN_HEIGHT = (int) screenRes.getHeight();
 
 	// STATE IDs
 	public static final int INTRO_STATE = 999;
