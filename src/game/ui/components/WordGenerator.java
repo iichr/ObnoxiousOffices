@@ -32,7 +32,7 @@ public class WordGenerator {
 	 * @throws SlickException
 	 */
 	public WordGenerator() throws SlickException {
-		ss = new SpriteSheet(new Image("res/alphabets/normal.png"), 150, 150, 0, 0);
+		ss = new SpriteSheet(new Image("res/alphabets/normal.png"), 149, 149, 1, 0);
 		this.load(wg);
 		this.load(wgB);
 		height = wg.get('%').getHeight();
