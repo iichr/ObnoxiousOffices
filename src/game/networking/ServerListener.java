@@ -273,20 +273,6 @@ public class ServerListener extends Thread {
 	}
 
 	/**
-	 * Remove a player from the game.
-	 * 
-	 * @param name-The
-	 *            name of the player to be removed.
-	 */
-	private void removePlayerFromGame(String name) {
-		if (this.playerNameUsed(name)) {
-			System.out.println("Player " + name + " has been removed from the game!");
-		} else {
-			System.out.println("Player " + name + " is not currently in the game!");
-		}
-	}
-
-	/**
 	 * Check to see if the player name has been used
 	 * 
 	 * @param name-The
@@ -306,7 +292,7 @@ public class ServerListener extends Thread {
 	 * Close the connection when the game ends
 	 * 
 	 * @param recieved-
-	 *            Object reiceved from the game closed event
+	 *            Object received from the game closed event
 	 */
 	private void closeConnection(Object recieved) {
 		forwardInfo(recieved);
