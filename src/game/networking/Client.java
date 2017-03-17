@@ -91,6 +91,7 @@ public class Client {
 	}
 	
 	private void gameFull(GameFullEvent e){
+		System.out.println("got game full event");
 		connected = false;
 	}
 
