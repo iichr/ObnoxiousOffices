@@ -23,7 +23,7 @@ public class Intro extends BasicGameState {
 	private boolean skip;
 
 	private final int FADE_IN = 100;
-	private final int LENGTH = 500;
+	private final int LENGTH = 100;
 	private final int FADE_OUT = 200;
 
 	private final float logoWidth = 3*Vals.SCREEN_WIDTH / 5;
