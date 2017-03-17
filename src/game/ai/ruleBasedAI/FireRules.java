@@ -16,10 +16,10 @@ public class FireRules implements Serializable {
 	private WorkingMemory wm; // the working memory of the player
 	private UpdateMemory uwm; // the update working memory object
 
-	//this is true if the ai is moving around the map
+	// this is true if the ai is moving around the map
 	public boolean isMoving = false;
 
-	//this is true if the ai has just hacked someone
+	// this is true if the ai has just hacked someone
 	public boolean hasHacked = false;
 
 	// constructor
@@ -41,36 +41,32 @@ public class FireRules implements Serializable {
 		// the arraylist of matched rules
 		ArrayList<WorkingMemory> matchedRules = new ArrayList<WorkingMemory>();
 
-		// while the game isn't over 
+		// while the game isn't over
 		if (ai.getProgress() < 100 && ai.status.getAttribute(PlayerAttribute.FATIGUE) < 0.5) {
 
 			// update the working memory
 			uwm.updateInfo();
-			
+
 			// iterate over the rules
 			for (int i = 0; i < r.size(); i++) {
-				if (r.get(i) == wm) // check if the rule == working memory
+				if (r.get(i) == wm)
 					matchedRules.add(r.get(i));
 			}
-			for (int i = 0; i < matchedRules.size(); i++) {
-				if (!matchedRules.isEmpty()) {
+			if (!matchedRules.isEmpty()) {
+				for (int i = 0; i < matchedRules.size(); i++) {
 					WorkingMemory w = matchedRules.get(i);
 					// if the monitored player is working and has progressed
-					// more
-					// than ai - hack him
+					// more than ai - hack him
 					if (w.getIsWorking() == activityValues.Yes && w.getHasProgressedMore() == activityValues.Yes) {
 						ai.getLogic().hackPlayer(ai, wm.getWMplayer());
-						hasHacked = true; // change the flag to true
+						hasHacked = true;
 						// if the monitored player is working and hasn't
-						// progressed
-						// more than ai -
-						// keep doing what you were doing before
+						// progressed more than ai - keep doing what you were doing before
 					} else if (w.getIsWorking() == activityValues.Yes
 							&& w.getHasProgressedMore() == activityValues.No) {
 						// TODO: make sure the ai keeps working
 						// if the monitored player is hacking/being hacked and
-						// has progressed more than ai -
-						// wait for him to finish and then hack him
+						// has progressed more than ai - wait for him to finish and then hack him
 					} else if (w.getIsHacking() == activityValues.Yes
 							&& w.getHasProgressedMore() == activityValues.Yes) {
 						while (w.getIsHacking() == activityValues.Yes
@@ -83,22 +79,17 @@ public class FireRules implements Serializable {
 							ai.getLogic().hackPlayer(ai, wm.getWMplayer());
 							hasHacked = true; // change the flag to true
 						} else {
-							isMoving = true; // the ai is moving so we need to
-												// stop the update method
+							isMoving = true;
 							ai.getLogic().aiRefresh(ai);
-							isMoving = false; // the ai is not moving so we need
-												// to reset the update method
+							isMoving = false;
 						}
 						// if the monitored player is hacking/being hacked and
-						// hasn't progressed more than ai -
-						// keep doing what you were doing
+						// hasn't progressed more than ai - keep doing what you were doing
 					} else if (w.getIsHacking() == activityValues.Yes
 							&& w.getHasProgressedMore() == activityValues.No) {
 						// TODO: make sure the ai keeps working
 						// if the monitored player is refreshing and has
-						// progressed
-						// more - wait for him to go back to his desk and hack
-						// him
+						// progressed more - wait for him to go back to his desk and hack him
 					} else if (w.getIsRefreshing() == activityValues.Yes
 							&& w.getHasProgressedMore() == activityValues.Yes) {
 						while (w.getIsHacking() == activityValues.Yes
@@ -109,34 +100,31 @@ public class FireRules implements Serializable {
 						// if the ai has enough energy - hack, else go to the CM
 						if (ai.status.getAttribute(PlayerAttribute.FATIGUE) < 0.5) {
 							ai.getLogic().hackPlayer(ai, wm.getWMplayer());
-							hasHacked = true; // change the flag to true
+							hasHacked = true;
 						} else {
-							isMoving = true; // the ai is moving so we need to
-												// stop the update method
+							isMoving = true;
 							ai.getLogic().aiRefresh(ai);
-							isMoving = false; // the ai is not moving so we need
-												// to reset the update method
+							isMoving = false;
 						}
 						// if the monitored player is refreshing and has not
-						// progressed
-						// more - keep doing what you were doing
+						// progressed more - keep doing what you were doing
 					} else if (w.getIsRefreshing() == activityValues.Yes
 							&& w.getHasProgressedMore() == activityValues.No) {
 						// TODO: make sure the ai keeps working
 					}
-				} else {
-					//if no rules were matched, keep doing your work
 				}
+			} else {
+				// if no rules were matched, keep doing your work
 			}
 		}
 		// if the ai is being too fatigued, go refresh
 		if (ai.status.getAttribute(PlayerAttribute.FATIGUE) > 0.5) {
-			
+
 			// the ai is moving so we need to stop the update method
-			isMoving = true; 
+			isMoving = true;
 			ai.getLogic().aiRefresh(ai);
 			// the ai is not moving so we need to reset the update method
-			isMoving = false; 
+			isMoving = false;
 		}
 	}
 }

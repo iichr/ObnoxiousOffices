@@ -11,9 +11,9 @@ import game.core.player.Player;
 public class WorkingMemory implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	enum activityValues {
+	public enum activityValues {
 		Yes, No, Unknown
-	}; // Work, Hack, Refresh, Progress, Unknown
+	}; 
 
 	// checks if a player is working
 	private activityValues isWorking;
