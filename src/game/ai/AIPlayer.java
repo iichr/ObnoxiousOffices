@@ -46,7 +46,7 @@ public class AIPlayer extends Player {
 	private static final long serialVersionUID = 1L;
 
 	static {
-		Events.on(PlayerQuitEvent.class, e -> World.world.addPlayer(new AIPlayer(World.world.getPlayer(e.playerName))));
+		Events.on(Events.EventPriority.HIGH, PlayerQuitEvent.class, e -> World.world.addPlayer(new AIPlayer(World.world.getPlayer(e.playerName))));
 	}
 
 	// constructor from Player class
