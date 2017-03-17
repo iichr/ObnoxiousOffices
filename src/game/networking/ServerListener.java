@@ -144,6 +144,7 @@ public class ServerListener extends Thread {
 					}
 					if (world.getPlayers().size() == world.getMaxPlayers()) {
 						Server.listen = false;
+						System.out.println(Server.listen);
 						GameStartedEvent gameStart = new GameStartedEvent(world);
 						sendToAllClients(gameStart);
 						Events.trigger(gameStart);
@@ -205,15 +206,16 @@ public class ServerListener extends Thread {
 							os.flush();
 						} catch (IOException e) {
 							try {
+								System.out.println("Trying to add AI player");
 								Events.trigger(new PlayerQuitEvent(playerName));
 								System.out.println("ai added");
+								NUM_AI_PLAYERS = NUM_AI_PLAYERS + 1;
+								connections.remove(playerNumber);
+								System.out.println("Player Removed");
 								output = null;
 								running = false;
 								notQuit = false;
 								socket.close();
-								connections.remove(playerNumber);
-								NUM_AI_PLAYERS = NUM_AI_PLAYERS + 1;
-								System.out.println("Player Removed");
 							} catch (IOException e1) {
 								System.out.println("e1");
 							}
