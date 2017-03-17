@@ -5,7 +5,6 @@ import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Queue;
 
 import game.core.event.ConnectionAttemptEvent;
 import game.core.event.ConnectionFailedEvent;

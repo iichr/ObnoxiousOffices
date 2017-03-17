@@ -54,10 +54,6 @@ public class Server {
 		// We must try because it may fail with a checked exception:
 		try {
 			this.serverSocket = new ServerSocket(port);
-			// URL url = new URL("http://checkip.amazonaws.com/");
-			// BufferedReader br = new BufferedReader(new
-			// InputStreamReader(url.openStream()));
-			// System.out.println("Server IP : "+br.readLine());
 			System.out.println("local Address: " + Inet4Address.getLocalHost().getHostAddress());
 			System.out.println("Server registered to port " + port);
 		} catch (IOException e) {
