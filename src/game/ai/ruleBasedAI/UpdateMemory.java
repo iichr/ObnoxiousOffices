@@ -31,27 +31,26 @@ public class UpdateMemory implements Serializable{
 	public void updateInfo() {
 		// might be the wrong way of checking the the player is up to
 		if (wm.getWMplayer().status.hasAction(PlayerActionWork.class)) //checks if the player is currently working
-			wm.setAll(activityValues.Yes, activityValues.No, activityValues.No, wm.getHasProgressedMore());
+			wm.setAll(activityValues.Yes, activityValues.No, activityValues.No, compareProgress());
 		//checks if the player is currently drinking coffee or sleeping on the sofa TODO: change the PlayerActionSleep
 		else if (wm.getWMplayer().status.hasAction(PlayerActionDrink.class) || wm.getWMplayer().status.hasAction(PlayerActionSleep.class)) 
-			wm.setAll(activityValues.No, activityValues.No, activityValues.Yes, wm.getHasProgressedMore());
+			wm.setAll(activityValues.No, activityValues.No, activityValues.Yes, compareProgress());
 		//checks if the player is currently hacking someone
 		else if (wm.getWMplayer().status.hasAction(PlayerActionHack.class))
-			wm.setAll(activityValues.No, activityValues.Yes, activityValues.No, wm.getHasProgressedMore());
+			wm.setAll(activityValues.No, activityValues.Yes, activityValues.No, compareProgress());
 		else
-			wm.setAll(activityValues.No, activityValues.No, activityValues.No, wm.getHasProgressedMore());
-		compareProgress();
+			wm.setAll(activityValues.No, activityValues.No, activityValues.No, compareProgress());
 	}
 
 	/**
 	 * Checks if a player has done more work towards the goal than the ai player
 	 * and updates the working memory accordingly
 	 */
-	public void compareProgress() {
+	public activityValues compareProgress() {
 		//if a given player is closer to winning than ai, put that info in the working memory
 		if (ai.getProgress() + 10 <= wm.getWMplayer().getProgress())
-			wm.setHasProgressedMore(activityValues.No);
+			return activityValues.Yes;
 		else
-			wm.setHasProgressedMore(activityValues.Yes);
+			return activityValues.No;
 	}
 }
