@@ -5,7 +5,6 @@ import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Queue;
 
 import game.core.event.ConnectionAttemptEvent;
 import game.core.event.ConnectionFailedEvent;
@@ -21,6 +20,7 @@ public class Client {
 	private Socket server;
 	private ObjectOutputStream od;
 	private boolean connected;
+
 	/**
 	 * Listens for events
 	 */
@@ -34,7 +34,9 @@ public class Client {
 
 	/**
 	 * Sends Data to the server for updating the players
-	 * @param data- The data to end
+	 * 
+	 * @param data-
+	 *            The data to end
 	 */
 	public void sendDataToServer(Object data) {
 		try {
@@ -50,7 +52,9 @@ public class Client {
 	/**
 	 * Attempt to connect to the server when ConnectionAttemptEvent is received
 	 * If it fails then send connectionFailedEvent
-	 * @param event-The ConnectionAttemptEvent
+	 * 
+	 * @param event-The
+	 *            ConnectionAttemptEvent
 	 */
 	public void connectToServer(ConnectionAttemptEvent event) {
 		int port = 8942;
@@ -84,13 +88,17 @@ public class Client {
 
 	/**
 	 * Sets the local player name on PlayerCreatedEvent
-	 * @param e- The playerCreatedEvent
+	 * 
+	 * @param e-
+	 *            The playerCreatedEvent
 	 */
 	public void setLocalPlayer(PlayerCreatedEvent e) {
-		Player.localPlayerName = e.localPlayerName;
+		if (Player.localPlayerName.equals("")) {
+			Player.localPlayerName = e.localPlayerName;
+		}
 	}
-	
-	private void gameFull(GameFullEvent e){
+
+	private void gameFull(GameFullEvent e) {
 		System.out.println("got game full event");
 		connected = false;
 	}
