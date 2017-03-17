@@ -8,17 +8,21 @@ import java.util.Queue;
 
 import game.core.event.Event;
 import game.core.event.Events;
+import game.core.event.GameFullEvent;
 
 public class ClientListner extends Thread {
 	private Socket server;
 	private ObjectInputStream is;
 	private Queue<Object> inputQ;
+	private boolean connected;
 	/**
 	 * Starts the client listener
 	 * @param server- The socket it is connected two
 	 */
 	public ClientListner(Socket server) {
 		this.server = server;
+		
+		Events.on(GameFullEvent.class, this::gameFull);
 
 		inputQ = new LinkedList<Object>();
 		manageEvents();
@@ -32,8 +36,8 @@ public class ClientListner extends Thread {
 	public void run() {
 		try {
 			is = new ObjectInputStream(this.server.getInputStream());
-			boolean running = true;
-			while (running) {
+			connected = true;
+			while (connected) {
 				Object input = is.readObject();
 				inputQ.offer(input);
 			}
@@ -48,7 +52,7 @@ public class ClientListner extends Thread {
 	 */
 	private void manageEvents() {
 		Thread manageInputs = new Thread(() -> {
-			while (true) {
+			while (connected) {
 				try {
 					Thread.sleep(5);
 				} catch (InterruptedException e1) {
@@ -62,5 +66,9 @@ public class ClientListner extends Thread {
 			}
 		});
 		manageInputs.start();
+	}
+	
+	private void gameFull(GameFullEvent e){
+		connected = false;
 	}
 }

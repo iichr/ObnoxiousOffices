@@ -1,6 +1,8 @@
 package game.networking;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import game.core.event.Events;
+import game.core.event.GameFullEvent;
 import game.core.event.GameStartedEvent;
 import game.core.sync.ServerSync;
 import game.core.player.Player;
@@ -67,12 +70,16 @@ public class Server {
 	private void listenForConnections() {
 		while (true) {
 			try {
-				if (listen) {
 					// Listen to the socket, accepting connections from new clients:
 					Socket socket = this.serverSocket.accept();
+					if (listen) {
 					ServerListener sl = new ServerListener(socket, this.connections, world);
 					this.connections.add(sl);
 					sl.start();
+				}else{
+					GameFullEvent e = new GameFullEvent();
+					ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+					os.writeObject(e);
 				}
 			} catch (IOException e) {
 				System.err.println("IO error " + e.getMessage());
