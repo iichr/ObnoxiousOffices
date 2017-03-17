@@ -11,10 +11,13 @@ import java.util.concurrent.ThreadLocalRandom;
 import game.ai.AIPlayer;
 import game.ai.pathFinding.Pair;
 import game.ai.pathFinding.PathFinding;
+import game.core.input.InteractionType.InteractionTypeOther;
+import game.core.input.InteractionType.InteractionTypeSit;
+import game.core.input.InteractionType.InteractionTypeWork;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.player.action.PlayerActionHack;
-import game.core.player.action.PlayerActionWork;
+import game.core.player.action.PlayerActionWorkTimed;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
@@ -46,8 +49,8 @@ public class LogicEasy implements Logic, Serializable {
 
 	@Override
 	public void aiWork(AIPlayer ai) {
-		if(!ai.status.hasAction(PlayerActionWork.class))
-			ai.status.addAction(new PlayerActionWork(ai));
+		if(!ai.status.hasAction(PlayerActionWorkTimed.class))
+			ai.status.addAction(new PlayerActionWorkTimed(ai));
 	}
 
 	@Override
@@ -121,7 +124,7 @@ public class LogicEasy implements Logic, Serializable {
 
 		// interact with the tile
 		 Location l = p.getLocation().forward(p.getFacing());
-		 l.getTile().onInteraction(p);
+		 l.getTile().onInteraction(p, new InteractionTypeOther());
 
 
 		while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
@@ -155,7 +158,7 @@ public class LogicEasy implements Logic, Serializable {
 
 		// interact with the tile
 		Location l = p.getLocation().forward(p.getFacing());
-		l.getTile().onInteraction(p);
+		l.getTile().onInteraction(p, new InteractionTypeOther());
 
 		// go back to your desk
 		while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
@@ -192,11 +195,11 @@ public class LogicEasy implements Logic, Serializable {
 
 		// interact with the tile
 		Location l = p.getLocation().forward(p.getFacing());
-		l.getTile().onInteraction(p);
+		l.getTile().onInteraction(p, new InteractionTypeSit());
 
 		//interact with the computer and start working
 		l = p.getLocation().forward(p.getFacing());
-		l.getTile().onInteraction(p);
+		l.getTile().onInteraction(p, new InteractionTypeWork());
 	}
 
 	@Override
