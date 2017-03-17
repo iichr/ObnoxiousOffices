@@ -67,13 +67,15 @@ public class Server {
 	private void listenForConnections() {
 		while (true) {
 			try {
+
+				// Listen to the socket, accepting connections from new clients:
+				Socket socket = this.serverSocket.accept();
 				if (listen) {
-					// Listen to the socket, accepting connections from new clients:
-					Socket socket = this.serverSocket.accept();
 					ServerListener sl = new ServerListener(socket, this.connections, world);
 					this.connections.add(sl);
 					sl.start();
 				}
+
 			} catch (IOException e) {
 				System.err.println("IO error " + e.getMessage());
 			}
