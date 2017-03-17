@@ -130,7 +130,7 @@ public class AIPlayer extends Player {
 
 		wm = new WorkingMemory(player); // create the working memory
 
-		if (!fr.isMoving && this.status.hasAction(PlayerActionHack.class)) {
+		if (!fr.isMoving && !this.status.hasAction(PlayerActionHack.class)) {
 			Thread fire = new Thread(() -> {
 				fr.fireRules();
 			});

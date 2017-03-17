@@ -54,15 +54,14 @@ public class FireRules implements Serializable {
 					matchedRules.add(r.get(i));
 				}
 			}
-			System.out.println(matchedRules.size());
 			if (!matchedRules.isEmpty()) {
 				for (int i = 0; i < matchedRules.size(); i++) {
 					WorkingMemory w = matchedRules.get(i);
 					// if the monitored player is working and has progressed
 					// more than ai - hack him
 					if (w.getIsWorking() == activityValues.Yes && w.getHasProgressedMore() == activityValues.Yes) {
-						ai.getLogic().hackPlayer(ai, wm.getWMplayer());
 						hasHacked = true;
+						ai.getLogic().hackPlayer(ai, wm.getWMplayer());
 						// if the monitored player is working and hasn't
 						// progressed more than ai - keep doing what you were doing before
 					} else if (w.getIsWorking() == activityValues.Yes
