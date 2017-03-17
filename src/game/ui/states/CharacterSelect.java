@@ -110,7 +110,7 @@ public class CharacterSelect extends BasicGameState {
 				});
 		playerName.setBackgroundColor(Color.white);
 		playerName.setTextColor(Color.black);
-		playerName.setMaxLength(30);
+		playerName.setMaxLength(15);
 	}
 
 	@Override
