@@ -248,7 +248,7 @@ public class Play extends BasicGameState {
 	public void keyPressed(int key, char c) {
 		if (!gameOver) {
 			if (playingPong) {
-				ctrs.pongMoveStart(heldKey, key);
+				heldKey = ctrs.pongMoveStart(heldKey, key);
 			} else if (playingHangman) {
 				ctrs.hangman(localPlayerName, c);
 			} else {
