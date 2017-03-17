@@ -88,9 +88,7 @@ public class PathFindingTestEasy {
 		// create the ai player
 		ai = new AIPlayer("Volker", Direction.SOUTH, world.getSpawnPoint(1), "e");
 		//add the ai to the world
-		World.world.addPlayer(ai);
-
-		
+		World.world.addPlayer(ai);		
 	}
 
 

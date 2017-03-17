@@ -102,7 +102,6 @@ public class LogicEasy implements Logic, Serializable {
 
 	@Override
 	public void goToCoffeeMachineAndBack(World w, AIPlayer p) {
-
 		findCoffeeMachine(w, p);
 
 		// go through the array list of i, j coords
@@ -238,7 +237,6 @@ public class LogicEasy implements Logic, Serializable {
 			//stop the AI from moving, so it doesn't teleport
 			Thread.sleep(aiSpeed);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

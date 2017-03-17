@@ -42,7 +42,7 @@ public class FireRules implements Serializable {
 		ArrayList<WorkingMemory> matchedRules = new ArrayList<WorkingMemory>();
 
 		// while the game isn't over 
-		if (ai.getProgress() < 100 && ai.status.getAttribute(PlayerAttribute.FATIGUE) < 0.8) {
+		if (ai.getProgress() < 100 && ai.status.getAttribute(PlayerAttribute.FATIGUE) < 0.5) {
 
 			// update the working memory
 			uwm.updateInfo();
@@ -74,12 +74,12 @@ public class FireRules implements Serializable {
 					} else if (w.getIsHacking() == activityValues.Yes
 							&& w.getHasProgressedMore() == activityValues.Yes) {
 						while (w.getIsHacking() == activityValues.Yes
-								&& ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80) {
+								&& ai.status.getAttribute(PlayerAttribute.FATIGUE) < 0.5) {
 							// TODO: make sure the ai keeps working
 							uwm.updateInfo();
 						}
 						// if the ai has enough energy - hack, else go to the CM
-						if (ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80) {
+						if (ai.status.getAttribute(PlayerAttribute.FATIGUE) < 0.5) {
 							ai.getLogic().hackPlayer(ai, wm.getWMplayer());
 							hasHacked = true; // change the flag to true
 						} else {
@@ -102,12 +102,12 @@ public class FireRules implements Serializable {
 					} else if (w.getIsRefreshing() == activityValues.Yes
 							&& w.getHasProgressedMore() == activityValues.Yes) {
 						while (w.getIsHacking() == activityValues.Yes
-								&& ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80) {
+								&& ai.status.getAttribute(PlayerAttribute.FATIGUE) < 0.5) {
 							// TODO: make sure the ai keeps working
 							uwm.updateInfo();
 						}
 						// if the ai has enough energy - hack, else go to the CM
-						if (ai.status.getAttribute(PlayerAttribute.FATIGUE) < 80) {
+						if (ai.status.getAttribute(PlayerAttribute.FATIGUE) < 0.5) {
 							ai.getLogic().hackPlayer(ai, wm.getWMplayer());
 							hasHacked = true; // change the flag to true
 						} else {
@@ -130,7 +130,7 @@ public class FireRules implements Serializable {
 			}
 		}
 		// if the ai is being too fatigued, go refresh
-		if (ai.status.getAttribute(PlayerAttribute.FATIGUE) > 0.8) {
+		if (ai.status.getAttribute(PlayerAttribute.FATIGUE) > 0.5) {
 			
 			// the ai is moving so we need to stop the update method
 			isMoving = true; 
