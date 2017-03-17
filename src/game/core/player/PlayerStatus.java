@@ -201,7 +201,7 @@ public class PlayerStatus implements Serializable {
     }
 
     public enum PlayerAttribute {
-        FATIGUE(0.0, 1.0), PRODUCTIVITY(1.0, 1.0, FATIGUE, (diff, val) -> -val);
+        FATIGUE(0.0, 1.0), PRODUCTIVITY(1.0, 1.0, FATIGUE, (diff, val) -> -val); // synchronise productivity with fatigue
 
         public final double initialVal, maxVal;
         public final PlayerAttribute sync;
