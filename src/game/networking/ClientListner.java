@@ -41,6 +41,7 @@ public class ClientListner extends Thread {
 				Object input = is.readObject();
 				inputQ.offer(input);
 			}
+			is.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -52,6 +53,7 @@ public class ClientListner extends Thread {
 	 */
 	private void manageEvents() {
 		Thread manageInputs = new Thread(() -> {
+			connected = true;
 			while (connected) {
 				try {
 					Thread.sleep(5);
