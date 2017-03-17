@@ -1,11 +1,18 @@
 package game.ui.overlay;
 
+import java.awt.AWTException;
+import java.awt.Dimension;
 import java.awt.RenderingHints;
+import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+
+import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL45;
@@ -33,13 +40,16 @@ public class PopUpOverlay {
 	
 	protected final float scale = 0.7f;
 
-	public PopUpOverlay() throws SlickException {
+	/**
+	 * Constructor: Sets up overlay and loads background image
+	 * @throws SlickException
+	 */
+	public PopUpOverlay(WordGenerator wg) throws SlickException {
 		width = Vals.SCREEN_WIDTH * scale;
 		height = Vals.SCREEN_HEIGHT * scale;
 		x = (Vals.SCREEN_WIDTH - width)/2;
 		y = (Vals.SCREEN_HEIGHT - height)/2;
-		
-		wg = new WordGenerator();
+		this.wg = wg;
 		
 		background = new Image(ImageLocations.OVERLAY_BACKGROUND, false, Image.FILTER_NEAREST);
 		
@@ -47,10 +57,25 @@ public class PopUpOverlay {
 
 	/**
 	 * Renders the components of the popUp
+	 * @param g The graphics object
 	 */
 	public void render(Graphics g) {
 		
 	}	
 	
+	/**
+	 * Takes a screenshot of the screen
+	 * @param name The name to save the image as
+	 */
+	public void createPNG(String name){
+		java.awt.Rectangle screenRect = new java.awt.Rectangle(new Dimension(Vals.screenRes));
+		
+		try {
+			BufferedImage capture = new Robot().createScreenCapture(screenRect);
+			ImageIO.write(capture, "png", new File(name+".png"));
+		} catch (IOException | AWTException e) {
+			e.printStackTrace();
+		}
+	}
 	
 }

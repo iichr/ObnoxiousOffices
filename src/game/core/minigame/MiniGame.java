@@ -6,6 +6,7 @@ import game.core.event.minigame.MiniGameEndedEvent;
 import game.core.event.minigame.MiniGameStatChangedEvent;
 import game.core.event.minigame.MiniGameVarChangedEvent;
 import game.core.event.player.PlayerInputEvent;
+import game.core.player.Player;
 import game.core.util.DataHolder;
 
 import java.io.Serializable;
@@ -19,7 +20,6 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
     public static final String SCORE = "SCORE";
     protected boolean ended = false;
     public final int MAX_SCORE = 2;
-    protected boolean initialising = true;
 
     public static MiniGame localMiniGame;
 
@@ -28,10 +28,9 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
 
     public MiniGame(String... players) {
         Arrays.stream(players).forEach(p -> {
-            setStat(p, SCORE, 0);
             addPlayer(p);
+            setStat(p, SCORE, 0);
         });
-        initialising = false;
     }
 
     protected void addStat(String player, String stat, int val) {
@@ -40,12 +39,12 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
 
     public abstract void onInput(PlayerInputEvent event);
 
-    public void setStat(String player, String stat, int val) {
+    public void setStat(String player, String stat, Object val) {
         if(!stats.containsKey(player)) {
             addPlayer(player);
         }
         stats.get(player).put(stat, val);
-        if(!initialising) Events.trigger(new MiniGameStatChangedEvent(player, stat, val), true);
+        Events.trigger(new MiniGameStatChangedEvent(player, stat, val), true);
     }
 
     protected void addPlayer(String player) {
@@ -73,11 +72,6 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
     }
 
     @Override
-    public void setVar(String var, Object val) {
-        if(!initialising) super.setVar(var, val);
-    }
-
-    @Override
     public boolean ended() {
         return ended;
     }
@@ -89,7 +83,7 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
 
     protected void end(String winner) {
         ended = true;
-        Events.trigger(new MiniGameEndedEvent(getPlayers(), winner));
+        Events.trigger(new MiniGameEndedEvent(getPlayers(), winner),true);
     }
 
     @Override
@@ -99,5 +93,9 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
 
     public boolean hasPlayer(String playerName) {
         return players.contains(playerName);
+    }
+
+    public boolean isLocal() {
+        return getPlayers().contains(Player.localPlayerName);
     }
 }

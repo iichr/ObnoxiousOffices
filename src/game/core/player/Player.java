@@ -112,7 +112,7 @@ public class Player implements Updateable, Serializable {
     }
 
     public void update() {
-        status.update(this);
+        if(getLocation().world.getMiniGame(name) == null) status.update(this);
     }
 
     @Override
@@ -160,7 +160,7 @@ public class Player implements Updateable, Serializable {
      * Add the standard amount of progress (using multiplier)
      */
     public void addProgress() {
-        double toAdd = 0.02;// * getProgressMultiplier();
+        double toAdd = 20 * getProgressMultiplier();
         setProgress(progress + toAdd);
     }
 
@@ -169,7 +169,7 @@ public class Player implements Updateable, Serializable {
      * @return
      */
     // TODO: Consider fatigue
-    private double getProgressMultiplier() {
+    public double getProgressMultiplier() {
         return status.getAttribute(PlayerStatus.PlayerAttribute.PRODUCTIVITY);
     }
 
@@ -194,5 +194,14 @@ public class Player implements Updateable, Serializable {
 
     public void setHair(int hair) {
         this.hair = hair;
+    }
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", facing=" + facing +
+                ", location=" + location +
+                ", isAI=" + isAI +
+                '}';
     }
 }

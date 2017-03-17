@@ -1,4 +1,3 @@
-
 package game.ai.logic;
 
 import java.io.Serializable;
@@ -25,19 +24,22 @@ import game.core.world.World;
 public class LogicEasy implements Logic, Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	//speed of AI, depends on difficulty 
+
+	//speed of AI, depends on difficulty
 	public int aiSpeed = 500;
 
 	// create a PathFinding object
 	public PathFinding pf;
 
 	// paths
-	public ArrayList<Pair<Integer, Integer>> toBed, toCM, fromBed, fromCM;
+	public ArrayList<Pair<Integer, Integer>> toBed = new ArrayList<Pair<Integer, Integer>>();
+	public ArrayList<Pair<Integer, Integer>> toCM = new ArrayList<Pair<Integer, Integer>>();
+	public ArrayList<Pair<Integer, Integer>> fromBed = new ArrayList<Pair<Integer, Integer>>();
+	public ArrayList<Pair<Integer, Integer>> fromCM = new ArrayList<Pair<Integer, Integer>>();
 
 	// @Override
 	public void aiRefresh(AIPlayer ai) {
-		goToCoffeeMachineAndBack(World.world, ai); 
+		goToCoffeeMachineAndBack(World.world, ai);
 	}
 
 	@Override
@@ -47,53 +49,18 @@ public class LogicEasy implements Logic, Serializable {
 	}
 
 	@Override
-	public void findCoffeeMachine(World w, Player p) {
-		// create the list of blocks in the grid that represents the path
-		ArrayList<Pair<Integer, Integer>> path = new ArrayList<Pair<Integer, Integer>>();
-
-		// call the constructor of PathFinding and run the run() method
-		pf = new PathFinding(w, p, "cm");
-		pf.run();
-
-		// get the path so it is from goal to start, save it
-		path = pf.getPath();
-		fromCM = path;
-
-		// create a new arraylist, in which you copy the first one, so you don't
-		// copy the first one
-		ArrayList<Pair<Integer, Integer>> pathRev = new ArrayList<Pair<Integer, Integer>>();
-		pathRev.addAll(path);
-
-		// reverse it, and save
-		Collections.reverse(pathRev);
-		toCM = pathRev;
+	public void findCoffeeMachine(World w, AIPlayer p) {
+		fromCM = findPath(w, p, "cm").get(1);
+		toCM = findPath(w, p, "cm").get(0);
 	}
 
 	@Override
-	public void findBed(World w, Player p) {
-		// create the list of blocks in the grid that represents the path
-		ArrayList<Pair<Integer, Integer>> path = new ArrayList<Pair<Integer, Integer>>();
-
-		// call the constructor of PathFinding and run the run() method
-		pf = new PathFinding(w, p, "b");
-		pf.run();
-
-		// get the path so it is from goal to start, save it
-		path = pf.getPath();
-		fromBed = path;
-
-		// create a new arraylist, in which you copy the first one, so you don't
-		// copy the first one
-		ArrayList<Pair<Integer, Integer>> pathRev = new ArrayList<Pair<Integer, Integer>>();
-		pathRev.addAll(path);
-
-		// reverse the path and save it
-		Collections.reverse(pathRev);
-		toBed = pathRev;
-
+	public void findBed(World w, AIPlayer p) {
+		fromBed = findPath(w, p, "b").get(1);
+		toBed = findPath(w, p, "b").get(0);
 	}
 
-	public void figureOutFacing(Player p, Pair<Integer, Integer> pair) {
+	public void figureOutFacing(AIPlayer p, Pair<Integer, Integer> pair) {
 
 		// get the i, j coords of the tile the player is on
 		// i == y; j == x;
@@ -132,7 +99,7 @@ public class LogicEasy implements Logic, Serializable {
 	}
 
 	@Override
-	public void goToCoffeeMachineAndBack(World w, Player p) {
+	public void goToCoffeeMachineAndBack(World w, AIPlayer p) {
 
 		findCoffeeMachine(w, p);
 
@@ -145,23 +112,16 @@ public class LogicEasy implements Logic, Serializable {
 			if (toCM.size() - i == 1)
 				figureOutFacing(p, toCM.get(i));
 			else {
-				// get the right facing
-				figureOutFacing(p, toCM.get(i));
 
-				// make a move
-				p.moveForwards();
-			}
-			try {
-				Thread.sleep(aiSpeed);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+				//make a move
+				move(p, toCM, i);
 			}
 		}
 
 		// interact with the tile
 		 Location l = p.getLocation().forward(p.getFacing());
 		 l.getTile().onInteraction(p);
-		 
+
 		 l.getTile().onInteraction(p);
 
 		while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
@@ -173,8 +133,8 @@ public class LogicEasy implements Logic, Serializable {
 	}
 
 	@Override
-	public void goToBedAndBack(World w, Player p) {
-		
+	public void goToBedAndBack(World w, AIPlayer p) {
+
 		//find the sofas on the map
 		findBed(w, p);
 
@@ -187,17 +147,9 @@ public class LogicEasy implements Logic, Serializable {
 			if (toBed.size() - i == 1)
 				figureOutFacing(p, toBed.get(i));
 			else {
-				// get the right facing
-				figureOutFacing(p, toBed.get(i));
 
-				// make a move
-				p.moveForwards();
-
-				try {
-					Thread.sleep(aiSpeed);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				//make a move
+				move(p, toBed, i);
 			}
 		}
 
@@ -215,11 +167,8 @@ public class LogicEasy implements Logic, Serializable {
 	}
 
 	@Override
-	public void toTheDesk(World w, Player p) {
-		
-		//need to find the path to the coffee machine TODO: remove for final version
-		findCoffeeMachine(w, p);
-		
+	public void toTheDesk(World w, AIPlayer p) {
+
 		// check whether the player is at the coffee machine or sofa
 		if (p.getLocation().coords.x == fromCM.get(1).getL() && p.getLocation().coords.y == fromCM.get(1).getR()) {
 			// if at the coffee machine, go through the array list of i, j
@@ -227,18 +176,8 @@ public class LogicEasy implements Logic, Serializable {
 			// to the desk from the coffee machine
 			for (int i = 2; i < fromCM.size(); i++) {
 
-				// get the right facing
-				figureOutFacing(p, fromCM.get(i));
-
-				// make a move
-				p.moveForwards();
-				
-				try {
-					Thread.sleep(aiSpeed);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				//make a move
+				move(p, fromCM, i);
 			}
 		} else {
 
@@ -246,18 +185,8 @@ public class LogicEasy implements Logic, Serializable {
 			// to the desk from the sofa
 			for (int i = 1; i < fromBed.size(); i++) {
 
-				// get the right facing
-				figureOutFacing(p, fromBed.get(i));
-
-				// make a move
-				p.moveForwards();
-				
-				try {
-					Thread.sleep(aiSpeed);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				//make a move
+				move(p, fromBed, i);
 			}
 
 		}
@@ -265,7 +194,7 @@ public class LogicEasy implements Logic, Serializable {
 		// interact with the tile
 		Location l = p.getLocation().forward(p.getFacing());
 		l.getTile().onInteraction(p);
-		
+
 		//interact with the computer and start working
 		l = p.getLocation().forward(p.getFacing());
 		l.getTile().onInteraction(p);
@@ -275,19 +204,19 @@ public class LogicEasy implements Logic, Serializable {
 	public Player closestToWin(AIPlayer ai) {
 		// get all players from the world
 		List<Player> players = World.world.getPlayers();
-		
+
 		//choose a random player
 		int random = ThreadLocalRandom.current().nextInt(0, players.size());
 		Player randomPlayer = players.get(random);
-		
+
 		//if the chosen player is an AI, check again
 		while (randomPlayer.isAI && !randomPlayer.name.equals(ai.name)) {
 			random = ThreadLocalRandom.current().nextInt(0, players.size());
 			randomPlayer = players.get(random);
 		}
-		
+
 		return randomPlayer;
-		
+
 	}
 
 	public void hackPlayer(AIPlayer ai, Player player) {
@@ -295,4 +224,63 @@ public class LogicEasy implements Logic, Serializable {
 		if (!ai.status.hasAction(PlayerActionHack.class))
 			ai.status.addAction(new PlayerActionHack(ai, player));
 	}
-}
+
+	@Override
+	public void move(AIPlayer ai, ArrayList<Pair<Integer, Integer>> path, int i) {
+		// get the right facing
+		figureOutFacing(ai, path.get(i));
+
+		// make a move
+		ai.moveForwards();
+
+		try {
+			//stop the AI from moving, so it doesn't teleport
+			Thread.sleep(aiSpeed);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public ArrayList<ArrayList<Pair<Integer, Integer>>> findPath(World w, AIPlayer p, String go) {
+
+		//create fromSomewhere and toSomewhere arrays
+		ArrayList<Pair<Integer, Integer>> to = new ArrayList<Pair<Integer, Integer>>();
+		ArrayList<Pair<Integer, Integer>> from = new ArrayList<Pair<Integer, Integer>>();
+		// create the list of blocks in the grid that represents the path
+		ArrayList<Pair<Integer, Integer>> path = new ArrayList<Pair<Integer, Integer>>();
+		//create the list for the return
+		ArrayList<ArrayList<Pair<Integer, Integer>>> listOfArrayLists = new ArrayList<ArrayList<Pair<Integer, Integer>>>();
+
+		if (go.equals("b")) {
+
+			// call the constructor of PathFinding and run the run() method
+			pf = new PathFinding(w, p, "b");
+			pf.run();
+		} else {
+
+			// call the constructor of PathFinding and run the run() method
+			pf = new PathFinding(w, p, "cm");
+			pf.run();
+		}
+
+		// get the path so it is from goal to start, save it
+		path = pf.getPath();
+		from = path;
+
+		// create a new arraylist, in which you copy the first one, so you don't
+		// copy the first one
+		ArrayList<Pair<Integer, Integer>> pathRev = new ArrayList<Pair<Integer, Integer>>();
+		pathRev.addAll(path);
+
+		// reverse it, and save
+		Collections.reverse(pathRev);
+		to = pathRev;
+
+		//add both arrays to the array that will be returned
+		listOfArrayLists.add(to);
+		listOfArrayLists.add(from);
+		return listOfArrayLists;
+	}
+}

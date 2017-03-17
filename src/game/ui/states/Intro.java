@@ -24,11 +24,8 @@ public class Intro extends BasicGameState {
 	private final int LENGTH = 700;
 	private final int FADE_OUT = 200;
 
-	private final float logoWidth = Vals.SCREEN_WIDTH / 2;
+	private final float logoWidth = 3*Vals.SCREEN_WIDTH / 5;
 	private final float logoHeight = Vals.SCREEN_HEIGHT / 4;
-
-	public Intro(int introState) {
-	}
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
@@ -70,9 +67,7 @@ public class Intro extends BasicGameState {
 
 	@Override
 	public void keyPressed(int key, char c) {
-		System.out.println("pressed" + key);
 		if (key == Input.KEY_ENTER) {
-			System.out.println("enter");
 			skip = true;
 		}
 	}
