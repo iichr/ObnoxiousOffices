@@ -1,5 +1,7 @@
 package game.core.minigame;
 
+import java.util.Random;
+
 import game.core.event.player.PlayerInputEvent;
 import game.core.input.InputType;
 import game.core.input.InputTypeMovement;
@@ -60,15 +62,19 @@ public class MiniGamePong extends MiniGame2Player {
     }
 
     private void newRound() {
+    	Random r = new Random();
+    	float xVel = r.nextFloat() * 1;
+    	float yVel = r.nextFloat() * 1;
+    	
         setStat(player1, X_POS, 1f);
         setStat(player2, X_POS, (float)BOUND_X - 1);
         setStat(player1, Y_POS, 0f);
         setStat(player2, Y_POS, 0f);
 
-        setVar(X_POS, 0f);
-        setVar(Y_POS, 0f);
-        setVar(BALL_X_VEL, 1f);
-        setVar(BALL_Y_VEL, 0f);
+        setVar(X_POS, BOUND_X/2);
+        setVar(Y_POS, BOUND_Y/2);
+        setVar(BALL_X_VEL, xVel);
+        setVar(BALL_Y_VEL, yVel);
     }
 
     @Override
