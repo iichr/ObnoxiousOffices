@@ -1,5 +1,6 @@
 package game.core.world.tile;
 
+import game.core.input.InteractionType;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -32,8 +33,8 @@ public class Tile implements Serializable {
         type.onWalkOver(player);
     }
 
-    public void onInteraction(Player player) {
-        type.onInteraction(player, this);
+    public void onInteraction(Player player, InteractionType type) {
+        this.type.onInteraction(player, this, type);
     }
 
     @Override
