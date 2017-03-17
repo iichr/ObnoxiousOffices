@@ -17,6 +17,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import game.core.event.ConnectionFailedEvent;
 import game.core.event.Events;
+import game.core.event.GameFullEvent;
 import game.core.event.player.PlayerCreatedEvent;
 import game.ui.buttons.ConnectButton;
 import game.ui.buttons.MenuButton;
@@ -33,12 +34,14 @@ public class CharacterSelect extends BasicGameState {
 	private String playerStr = "Enter Player Name:";
 	private String waitingString = "Connected: Waiting for ";	
 	private String connectFailString = "Connection failed: please check the ip and try again";
+	private String gameFullSring = "Game is already full, try a different server";
 	private String invalidNameString = "Invalid name, must be alphanumeric or underscore";
 
 	private boolean toPlay = false;
 	private boolean connected = false;
 	private boolean connectFailed = false;
 	private boolean invalidName = false;
+	private boolean gameFull = false;
 	private PlayTest playTest;
 	private int playerLeft = 0 ;
 
@@ -52,6 +55,7 @@ public class CharacterSelect extends BasicGameState {
 		this.playTest = test;
 		Events.on(PlayerCreatedEvent.class, this::connected);
 		Events.on(ConnectionFailedEvent.class, this::connectFail);
+		Events.on(GameFullEvent.class, this::gameFull);
 	}
 
 	@Override
@@ -94,6 +98,8 @@ public class CharacterSelect extends BasicGameState {
 
 		serverAddress.setBackgroundColor(Color.white);
 		serverAddress.setTextColor(Color.black);
+		
+		
 
 		// Player name text field.
 		playerName = new TextField(gc, Vals.FONT_MAIN, Vals.TFIELD_ALIGN_CENTRE_W, Vals.SCREEN_HEIGHT / 4,
@@ -104,6 +110,7 @@ public class CharacterSelect extends BasicGameState {
 				});
 		playerName.setBackgroundColor(Color.white);
 		playerName.setTextColor(Color.black);
+		playerName.setMaxLength(30);
 	}
 
 	@Override
@@ -158,6 +165,10 @@ public class CharacterSelect extends BasicGameState {
 				g.drawString(connectFailString,
 						connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(connectFailString) / 2,
 						connectButton.getY() + 3 * Vals.BUTTON_HEIGHT / 2);
+			}else if(gameFull){
+				g.drawString(gameFullSring,
+						connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(gameFullSring) / 2,
+						connectButton.getY() + 3 * Vals.BUTTON_HEIGHT / 2);
 			}
 		}
 	}
@@ -201,6 +212,10 @@ public class CharacterSelect extends BasicGameState {
 	private void connectFail(ConnectionFailedEvent e) {
 		connectFailed = true;
 		connected = false;
+	}
+	
+	private void gameFull(GameFullEvent e){
+		
 	}
 
 	@Override
