@@ -104,8 +104,12 @@ public class OptionsOverlay extends PopUpOverlay {
 				}
 
 				// display modes
-				wg.draw(g, gc.isFullscreen() ? "Full Screen" : "Window", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 1.5f,
-						Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), true, 0.2f);
+				String toShow = "Window";
+				if(gc.isFullscreen()){
+					toShow = "Full Screen";
+				}
+				Pair<Float, Float> wh5 = wg.getWH(toShow, 0.2f);
+				wg.drawCenter(g, toShow, Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH*1.8f, Vals.BUTTON_ALIGN_CENTRE_H+wh5.getR() + wh5.getR()/10, true, 0.2f);
 				// > symbol
 				wg.draw(g, ">", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f, Vals.BUTTON_ALIGN_CENTRE_H+wh2.getR(), true, 0.2f);
 				if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f
