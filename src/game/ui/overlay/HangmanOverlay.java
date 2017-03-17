@@ -22,7 +22,7 @@ public class HangmanOverlay extends PopUpOverlay {
 	public void render(Graphics g) {
 		MiniGameHangman hangman = (MiniGameHangman) MiniGame.localMiniGame;
 		// temporarily use the default background
-		background.draw(x, y, width, height, Color.blue);
+		background.draw(x, y, width, height);
 
 		wg.drawCenter(g, hangman.getDisplayWord(), x + width / 2, y + height / 2 - height / 6, true, scale / 3);
 		wg.drawCenter(g, "GUESSED    " + hangman.getEntered(), x + width / 2, y + height / 2, true, scale / 3);
