@@ -13,7 +13,6 @@ public class WordGenerator {
 	Graphics g;
 	float height;
 	float width;
-	SpriteSheet ss;
 	HashMap<Character, Image> wg = new HashMap<>();
 	HashMap<Character, Image> wgB = new HashMap<>();
 	int a = (int) 'a';
@@ -32,21 +31,22 @@ public class WordGenerator {
 	 * @throws SlickException
 	 */
 	public WordGenerator() throws SlickException {
-		ss = new SpriteSheet(new Image("res/alphabets/normal.png"), 149, 149, 1, 0);
-		this.load(wg);
-		this.load(wgB);
+		SpriteSheet ss = new SpriteSheet(new Image("res/alphabets/normal.png"), 149, 149, 1, 0);
+		SpriteSheet ssB = new SpriteSheet(new Image("res/alphabets/bold.png"), 149, 149, 1, 0);
+		this.load(wg, ss);
+		this.load(wgB, ssB);
 		height = wg.get('%').getHeight();
 		width = wg.get('%').getWidth();
 
 	}
 
-	private void load(HashMap<Character, Image> hm) throws SlickException {
+	private void load(HashMap<Character, Image> hm, SpriteSheet spriteSheet) throws SlickException {
 		for (int y = 0; y < 8; y++) {
 			for (int x = 0; x < 5; x++) {
 				if (map[y][x] - 32 >= 'A' && map[y][x] - 32 <= 'Z') {
-					hm.put((char) (((int) map[y][x]) - 32), ss.getSprite(x, y));
+					hm.put((char) (((int) map[y][x]) - 32), spriteSheet.getSprite(x, y));
 				}
-				hm.put(map[y][x], ss.getSprite(x, y));
+				hm.put(map[y][x], spriteSheet.getSprite(x, y));
 			}
 		}
 		hm.put((char) 32, new Image("res/alphabets/Space.png"));

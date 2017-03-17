@@ -234,7 +234,7 @@ public class Play extends BasicGameState {
 		if (gameOver) {
 			gameOverOverlay.render(g);
 		} else if (options) {
-			optionsOverlay.render(g);
+			optionsOverlay.render(gc, g);
 		} else if (playingHangman) {
 			hangmanOverlay.render(g);
 		} else if (playingPong) {
