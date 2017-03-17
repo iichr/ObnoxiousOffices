@@ -44,8 +44,8 @@ public class PongOverlay extends PopUpOverlay {
 		float paddleHeight = unitY * pong.PADDLE_LEN;
 
 		g.setColor(Color.white);
-		String p1 = pong.getPlayers().get(1);
-		String p2 = pong.getPlayers().get(2);
+		String p1 = pong.getPlayers().get(0);
+		String p2 = pong.getPlayers().get(1);
 		
 		float paddle1X = playX + unitX * (pong.getPlayerPos(p1).getL() - 1);
 		float paddle1Y = playY + unitY * pong.getPlayerPos(p1).getR();
