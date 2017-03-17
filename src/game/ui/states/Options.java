@@ -33,16 +33,19 @@ public class Options extends BasicGameState {
 	private WordGenerator wg;
 	private float currentSVolume, currentMVolume;
 	private MusicBox mb;
-	private MenuButton backButton;
+	private MenuButton backButton, nextPageButton;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		wg = new WordGenerator();
 
-		// TODO add music and sound
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
+		
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
+		nextPageButton = new MenuButton(52.0f, 134.0f, 60, 60, wg.get('>', true), wg.get('>', true));
+		//nextPageButton = new MenuButton(52.0f, 134.0f, 40, 40, back, back);
+		
 		gc.setSoundVolume(1.0f);
 		
 		mb=new MusicBox(gc);
@@ -143,6 +146,7 @@ public class Options extends BasicGameState {
 		}
 		// add back button
 		backButton.render();
+		nextPageButton.render();
 
 	}
 
@@ -151,6 +155,7 @@ public class Options extends BasicGameState {
 		int mouseX = Mouse.getX();
 		int mouseY = gc.getHeight() - Mouse.getY();
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
+		nextPageButton.update(gc,game,mouseX,mouseY, Vals.OPTIONS_STATE_PAGE2);
 	}
 
 	@Override

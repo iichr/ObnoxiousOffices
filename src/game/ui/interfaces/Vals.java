@@ -31,6 +31,7 @@ public interface Vals {
 	public static final int PLAY_STATE = 4;
 	public static final int PAUSE_STATE = 5;
 	public static final int PLAY_TEST_STATE = 6;
+	public static final int OPTIONS_STATE_PAGE2 = 7;
 
 	// BUTTON SIZES
 	public static final float BUTTON_WIDTH = SCREEN_WIDTH / 7;
@@ -41,7 +42,6 @@ public interface Vals {
 	public static final int TFIELD_HEIGHT = SCREEN_HEIGHT / 15;
 	public static final int TFIELD_ALIGN_CENTRE_W = (SCREEN_WIDTH - TFIELD_WIDTH) / 2;
 
-	// FONTS
 	// FONTS
 	public static final UnicodeFont FONT_MAIN = new UnicodeFont(new Font("Arial", Font.BOLD, 20));
 	public static final UnicodeFont FONT_RULES = new UnicodeFont(new Font("Arial", Font.BOLD, 18));
