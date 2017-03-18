@@ -34,7 +34,7 @@ public abstract class DataHolder implements Serializable {
     }
 
     protected void negVar(String var) {
-        setVar(var, -getIntVar(var));
+        setVar(var, -(float)getVar(var));
     }
 
     public int getIntVar(String var) {
