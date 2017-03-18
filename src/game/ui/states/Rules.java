@@ -30,6 +30,7 @@ public class Rules extends BasicGameState {
 	private String gameTitle;
 	private String rules;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		Image back = new Image(ImageLocations.BACK);

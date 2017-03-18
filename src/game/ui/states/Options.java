@@ -6,9 +6,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -26,8 +24,6 @@ import game.util.Pair;
  *
  */
 public class Options extends BasicGameState {
-	private Music music;
-	private Sound sound;
 	private WordGenerator wg;
 	private float currentSVolume, currentMVolume;
 	private MusicBox mb;
@@ -92,8 +88,7 @@ public class Options extends BasicGameState {
 				mb.changeSVolumeR(gc);
 			}
 		}
-		// debugging
-		Pair<Float, Float> wh4 = wg.getWH("Music", 0.3f);
+		
 		wg.draw(g, "Music", Vals.BUTTON_ALIGN_CENTRE_W - wh.getL(), Vals.BUTTON_ALIGN_CENTRE_H, false, 0.3f);
 		// < symbol
 		wg.draw(g, "<", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH, Vals.BUTTON_ALIGN_CENTRE_H, false, 0.3f);

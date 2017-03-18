@@ -82,6 +82,7 @@ public class CharacterSelect extends BasicGameState {
 	 *            The game container
 	 * @throws SlickException
 	 */
+	@SuppressWarnings("unchecked")
 	private void addTextFields(GameContainer gc) throws SlickException {
 		// Server address text field.
 		Vals.FONT_MAIN.addAsciiGlyphs();
