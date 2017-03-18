@@ -32,15 +32,14 @@ public class Options extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		wg = new WordGenerator();
-
+		
 		// set up back button
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
-		
 		// the next page button leading to the keyboard controls screen
-		nextPageButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W - wg.getWH(">", 0.3f).getL(),
-				Vals.BUTTON_ALIGN_CENTRE_H + 1.75f * wg.getWH(">", 0.3f).getR(), 60, 60, wg.get('>', true),
+		nextPageButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W - wg.getWH(">", 1.0f).getL(),
+				Vals.BUTTON_ALIGN_CENTRE_H + 1.75f * wg.getWH(">", 1.0f).getR(), 60, 60, wg.get('>', false),
 				wg.get('>', true));
 
 		gc.setSoundVolume(1.0f);
@@ -58,7 +57,7 @@ public class Options extends BasicGameState {
 		g.setColor(Color.white);
 		currentSVolume = gc.getSoundVolume();
 		currentMVolume = gc.getMusicVolume();
-
+		
 		// debugging
 		Pair<Float, Float> wh = wg.getWH("Sound", 0.3f);
 		wg.draw(g, "Sound", Vals.BUTTON_ALIGN_CENTRE_W - wh.getL(), Vals.BUTTON_ALIGN_CENTRE_H - wh.getR(), false,
@@ -71,6 +70,7 @@ public class Options extends BasicGameState {
 				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH + wh2.getL()
 				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR() && mousey <= Vals.BUTTON_ALIGN_CENTRE_H) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				mb.playPressed();
 				mb.changeSVolumeL(gc);
 			}
 		}
@@ -85,6 +85,7 @@ public class Options extends BasicGameState {
 				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f + wh2.getL()
 				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR() && mousey <= Vals.BUTTON_ALIGN_CENTRE_H) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				mb.playPressed();
 				mb.changeSVolumeR(gc);
 			}
 		}
@@ -96,6 +97,7 @@ public class Options extends BasicGameState {
 				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH + wh2.getL()
 				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H && mousey <= Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR()) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				mb.playPressed();
 				mb.changeMVolumeL(gc);
 			}
 		}
@@ -109,6 +111,7 @@ public class Options extends BasicGameState {
 				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f + wh2.getL()
 				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H && mousey <= Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR()) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				mb.playPressed();
 				mb.changeMVolumeR(gc);
 			}
 		}
@@ -124,6 +127,7 @@ public class Options extends BasicGameState {
 				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR()
 				&& mousey <= Vals.BUTTON_ALIGN_CENTRE_H + 2 * wh2.getR()) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				mb.playPressed();
 				gc.setFullscreen(!gc.isFullscreen());
 			}
 		}
@@ -142,10 +146,11 @@ public class Options extends BasicGameState {
 		if (mousex >= arrowRW && mousex <= arrowRW + wh3.getL() && mousey >= Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR()
 				&& mousey <= Vals.BUTTON_ALIGN_CENTRE_H + 2 * wh2.getR()) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				mb.playPressed();
 				gc.setFullscreen(!gc.isFullscreen());
 			}
 		}
-
+		wg.draw(g,"MORE" , Vals.BUTTON_ALIGN_CENTRE_W-(wg.getWH("MORE",0.3f).getL()*2f), Vals.BUTTON_ALIGN_CENTRE_H + 1.75f * wg.getWH("MORE", 0.5f).getR(), true, 0.3f);
 		// add return and next page buttons
 		backButton.render();
 		nextPageButton.render();
