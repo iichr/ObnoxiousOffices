@@ -48,16 +48,16 @@ public class Controls {
 		allControls.put("Selector Down", Input.getKeyName(SELECTOR_DOWN));
 		allControls.put("Selector Back", Input.getKeyName(SELECTOR_BACK));
 		
-		allControls.put("Show/Hide Options Menu", Input.getKeyName(TOGGLE_OPTIONS));
-		allControls.put("Show/Hide Player Overview", Input.getKeyName(TOGGLE_OVERVIEW));
-		allControls.put("Show/Hide Chat", Input.getKeyName(TOGGLE_CHAT));
+		allControls.put("Show Hide Options Menu", Input.getKeyName(TOGGLE_OPTIONS));
+		allControls.put("Show Hide Player Overview", Input.getKeyName(TOGGLE_OVERVIEW));
+		allControls.put("Show Hide Chat", Input.getKeyName(TOGGLE_CHAT));
 		
-		allControls.put("Move Up (Pong)", Input.getKeyName(PONG_UP));
-		allControls.put("Move Down (Pong)", Input.getKeyName(PONG_DOWN));
+		allControls.put("Move Up in Pong", Input.getKeyName(PONG_UP));
+		allControls.put("Move Down in Pong", Input.getKeyName(PONG_DOWN));
 	}
 	
 	/**
-	 * Manages the movement to make based on the key currently held byt the
+	 * Manages the movement to make based on the key currently held by the
 	 * player
 	 * 
 	 * @param actionSelector
