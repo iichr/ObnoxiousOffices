@@ -24,7 +24,11 @@ public class Server {
 	private ServerSocket serverSocket = null;
 	private World world;
 	public static boolean listen = true;
-	private final int NUM_PLAYERS = 4;
+	private final int NUM_PLAYERS = 2;
+	public String startTime;
+	public int startMins;
+	public int startHours;
+	private final int SO_TIMEOUT = 120000;
 
 	/**
 	 * Starts the server
