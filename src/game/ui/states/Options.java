@@ -12,8 +12,6 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-//import com.sun.imageio.plugins.png.PNGImageReader;
-
 import game.ui.buttons.MenuButton;
 import game.ui.components.MusicBox;
 import game.ui.components.WordGenerator;
@@ -39,12 +37,15 @@ public class Options extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		wg = new WordGenerator();
 
+		// set up back button
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
-
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
-		nextPageButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W- wg.getWH(">", 0.3f).getL(), Vals.BUTTON_ALIGN_CENTRE_H + 1.75f * wg.getWH(">", 0.3f).getR(), 60, 60, wg.get('>', true), wg.get('>', true));
-		// nextPageButton = new MenuButton(52.0f, 134.0f, 40, 40, back, back);
+		
+		// the next page button leading to the keyboard controls screen
+		nextPageButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W - wg.getWH(">", 0.3f).getL(),
+				Vals.BUTTON_ALIGN_CENTRE_H + 1.75f * wg.getWH(">", 0.3f).getR(), 60, 60, wg.get('>', true),
+				wg.get('>', true));
 
 		gc.setSoundVolume(1.0f);
 
@@ -57,7 +58,7 @@ public class Options extends BasicGameState {
 		Input input = gc.getInput();
 		float mousex = input.getMouseX();
 		float mousey = input.getMouseY();
-		
+
 		g.setColor(Color.white);
 		currentSVolume = gc.getSoundVolume();
 		currentMVolume = gc.getMusicVolume();
@@ -150,7 +151,7 @@ public class Options extends BasicGameState {
 			}
 		}
 
-		// add back button
+		// add return and next page buttons
 		backButton.render();
 		nextPageButton.render();
 
