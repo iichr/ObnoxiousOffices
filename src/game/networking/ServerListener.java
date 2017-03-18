@@ -235,8 +235,6 @@ public class ServerListener extends Thread {
 							}
 						} catch (InterruptedException e1) {
 							System.out.print("INterrupted exception:  ");
-							e1.printStackTrace();
-
 						}
 					}
 				}
