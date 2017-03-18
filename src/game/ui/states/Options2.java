@@ -6,7 +6,6 @@ import org.lwjgl.input.Mouse;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -26,14 +25,16 @@ import game.util.Pair;
  */
 public class Options2 extends BasicGameState {
 	private MenuButton backButton;
+	// A word generator for the main game font
 	private WordGenerator wordGen;
+	// A list of all controls in the game
 	private Controls keyboardControls;
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		wordGen = new WordGenerator();
 		keyboardControls = new Controls();
-		
+
 		// set up back button
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
@@ -42,36 +43,41 @@ public class Options2 extends BasicGameState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
-		Input input = gc.getInput();
-		
+		// Coordinates for the display of a key and its description
+		float x = Vals.BUTTON_ALIGN_CENTRE_W + Vals.SCREEN_WIDTH / 7;
+		float y = Vals.BUTTON_ALIGN_CENTRE_H - Vals.SCREEN_HEIGHT / 4;
+
 		backButton.render();
-		
-		int x=100, y=40;
-		for(Map.Entry<String, String> keyBinding: keyboardControls.allControls.entrySet()) {
-			
+
+		// loop through the hash map of controls
+		for (Map.Entry<String, String> keyBinding : keyboardControls.allControls.entrySet()) {
+			// get key value pair
 			String key = keyBinding.getKey();
 			String value = keyBinding.getValue();
-			
-			g.drawString(key, x, y);
-			g.drawString(value, x+400, y);
-			y+=40;
-		}
 
+			// generate word to be drawn
+			Pair<Float, Float> actionDescr = wordGen.getWH(key, 0.2f);
+			// render the key (action description) on the left hand side
+			wordGen.draw(g, key, x - actionDescr.getL(), y, false, 0.2f);
+			// render the value (the key binding) on the right hand side
+			wordGen.draw(g, value, x + Vals.BUTTON_WIDTH, y, false, 0.2f);
+
+			// add padding between each line of key-value pairs rendered
+			y += 40.0f;
+		}
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		int mouseX = Mouse.getX();
 		int mouseY = gc.getHeight() - Mouse.getY();
-		
-		// return button to the previous page of Options
-		backButton.update(gc, game, mouseX, mouseY, Vals.OPTIONS_STATE);
 
+		// return button linking to the previous page of Options
+		backButton.update(gc, game, mouseX, mouseY, Vals.OPTIONS_STATE);
 	}
 
 	@Override
 	public int getID() {
 		return Vals.OPTIONS_STATE_PAGE2;
 	}
-
 }
