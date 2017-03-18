@@ -89,6 +89,7 @@ public class ServerListener extends Thread {
 		Events.on(GameFinishedEvent.class, this::closeConnection);
 		Events.on(ChatMessageReceivedEvent.class, this::forwardInfo);
 		Events.on(PlayerJoinedEvent.class, this::forwardInfo);
+		Events.on(PlayerQuitEvent.class, this::forwardInfo);
 	}
 
 	/**
