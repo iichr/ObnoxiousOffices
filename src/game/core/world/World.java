@@ -48,13 +48,13 @@ public class World implements Updateable, Serializable {
     }
 
     private void onPlayerQuit(PlayerQuitEvent event) {
-        removePlayer(event.playerName);
+        removePlayer(event.player);
     }
 
-    public void removePlayer(String name) {
-        MiniGame minigame = getMiniGame(name);
+    public void removePlayer(Player player) {
+        MiniGame minigame = getMiniGame(player.name);
         if(minigame != null) minigame.end();
-        players.remove(getPlayer(name));
+        players.remove(player);
     }
 
     public void startMiniGame(MiniGame game) {
