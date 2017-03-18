@@ -1,6 +1,6 @@
 package game.ui.components;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.newdawn.slick.Input;
 
@@ -32,10 +32,15 @@ public class Controls {
 	private final int PONG_UP = Input.KEY_W;
 	private final int PONG_DOWN = Input.KEY_S;
 	
-	public HashMap<String, String> allControls;
+	public LinkedHashMap<String, String> allControls;
 	
+	/**
+	 * Creates an instance of a Linked Hash Map, storing the key mappings in the
+	 * order of their insertion. Used to display the keyboard controls in the
+	 * Options menu
+	 */
 	public Controls(){
-		allControls = new HashMap<String, String>();
+		allControls = new LinkedHashMap<String, String>();
 		
 		allControls.put("Move Up", Input.getKeyName(MOVE_UP));
 		allControls.put("Move Down", Input.getKeyName(MOVE_DOWN));
