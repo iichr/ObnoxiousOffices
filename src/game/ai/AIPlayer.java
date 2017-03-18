@@ -7,7 +7,9 @@ import game.ai.ruleBasedAI.FireRules;
 import game.ai.ruleBasedAI.Rules;
 import game.ai.ruleBasedAI.UpdateMemory;
 import game.ai.ruleBasedAI.WorkingMemory;
+import game.core.event.Event;
 import game.core.event.Events;
+import game.core.event.player.PlayerJoinedEvent;
 import game.core.event.player.PlayerQuitEvent;
 import game.core.player.Player;
 import game.core.player.action.PlayerActionHack;
@@ -46,7 +48,7 @@ public class AIPlayer extends Player {
 	private static final long serialVersionUID = 1L;
 
 	static {
-		Events.on(Events.EventPriority.HIGH, PlayerQuitEvent.class, e -> World.world.addPlayer(new AIPlayer(e.player)));
+		Events.on(Events.EventPriority.HIGH, PlayerQuitEvent.class, AIPlayer::onPlayerQuit;
 	}
 
 	// constructor from Player class
@@ -102,6 +104,12 @@ public class AIPlayer extends Player {
 		rules = new Rules(); // create the rule set
 		// create the object to fire rules
 		fr = new FireRules(this, rules, wm, uwm);
+	}
+
+	private static void onPlayerQuit(PlayerQuitEvent event) {
+		AIPlayer player = new AIPlayer(event.player);
+		World.world.addPlayer(player);
+		Events.trigger(new PlayerJoinedEvent(player, player.name));
 	}
 	
 	/**

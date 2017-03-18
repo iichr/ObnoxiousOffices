@@ -5,10 +5,11 @@ import game.core.player.Player;
 /**
  * Created by samtebbs on 18/03/2017.
  */
-public class PlayerJoinedEvent {
+public class PlayerJoinedEvent extends PlayerEvent {
     public final Player player;
 
-    public PlayerJoinedEvent(Player player) {
+    public PlayerJoinedEvent(Player player, String playerName) {
+        super(playerName);
         this.player = player;
     }
 }
