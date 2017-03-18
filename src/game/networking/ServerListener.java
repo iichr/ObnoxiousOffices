@@ -46,8 +46,9 @@ public class ServerListener extends Thread {
 	public World world;
 	private final Object queueWait;
 	boolean running = true;
-	public static int NUM_AI_PLAYERS = 1;
+	public static final int NUM_AI_PLAYERS = 1;
 	public String playerName;
+	Thread outputThread;
 
 	/**
 	 * 
@@ -153,10 +154,24 @@ public class ServerListener extends Thread {
 						System.out.println("recieved: " + eventObject);
 						Events.trigger(eventObject);
 					} catch (Exception e) {
-						Events.trigger(new PlayerQuitEvent(playerName));
+						try {
+							stopRunning();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
 					}
 				}
 			}
+		}
+	}
+
+	private void stopRunning() throws IOException {
+		if(running) {
+			outputThread.interrupt();
+			connections.remove(this);
+			running = false;
+			socket.close();
+			Events.trigger(new PlayerQuitEvent(playerName));
 		}
 	}
 
@@ -192,7 +207,7 @@ public class ServerListener extends Thread {
 	 * the connection and adds and ai player instead
 	 */
 	private void sendQueue() {
-		Thread outputThread = new Thread(() -> {
+		outputThread = new Thread(() -> {
 			Object output;
 			boolean notQuit = true;
 			while (notQuit) {
@@ -204,18 +219,9 @@ public class ServerListener extends Thread {
 							os.flush();
 						} catch (IOException e) {
 							try {
-								System.out.println("Trying to add AI player");
-								Events.trigger(new PlayerQuitEvent(playerName));
-								System.out.println("ai added");
-								NUM_AI_PLAYERS = NUM_AI_PLAYERS + 1;
-								connections.remove(playerNumber);
-								System.out.println("Player Removed");
-								output = null;
-								running = false;
-								notQuit = false;
-								socket.close();
+								stopRunning();
 							} catch (IOException e1) {
-								System.out.println("e1");
+								e1.printStackTrace();
 							}
 						}
 					} else {
