@@ -21,6 +21,7 @@ import game.core.event.GameFullEvent;
 import game.core.event.player.PlayerCreatedEvent;
 import game.ui.buttons.ConnectButton;
 import game.ui.buttons.MenuButton;
+import game.ui.components.WordGenerator;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
@@ -44,6 +45,7 @@ public class CharacterSelect extends BasicGameState {
 	private boolean gameFull = false;
 	private PlayTest playTest;
 	private int playerLeft = 0 ;
+	private WordGenerator wg;
 
 	/**
 	 * Constructor: Creates the character select state and starts event
@@ -70,7 +72,7 @@ public class CharacterSelect extends BasicGameState {
 				Vals.BUTTON_WIDTH, Vals.BUTTON_HEIGHT, conn, connR);
 
 		waiting = new Image(ImageLocations.WAITING, false, Image.FILTER_NEAREST);
-
+		wg=new WordGenerator();
 		// adds the text fields
 		addTextFields(gc);
 	}
@@ -128,9 +130,11 @@ public class CharacterSelect extends BasicGameState {
 
 		// Text fields
 		serverAddress.render(gc, g);
-		g.drawString(serverStr, serverAddress.getX() - Vals.FONT_MAIN.getWidth(serverStr) - 10, Vals.SCREEN_HEIGHT / 3);
+		wg.draw(g, serverStr, serverAddress.getX()-wg.getWH(serverStr, 0.15f).getL(), Vals.SCREEN_HEIGHT / 3, false, 0.15f);
+		//g.drawString(serverStr, serverAddress.getX() - Vals.FONT_MAIN.getWidth(serverStr) - 10, Vals.SCREEN_HEIGHT / 3);
 		playerName.render(gc, g);
-		g.drawString(playerStr, serverAddress.getX() - Vals.FONT_MAIN.getWidth(playerStr) - 10, Vals.SCREEN_HEIGHT / 4);
+		wg.draw(g,playerStr,serverAddress.getX() - wg.getWH(playerStr, 0.15f).getL(),Vals.SCREEN_HEIGHT / 4,false,0.15f);
+		//g.drawString(playerStr, serverAddress.getX() - Vals.FONT_MAIN.getWidth(playerStr) - 10, Vals.SCREEN_HEIGHT / 4);
 	}
 
 	/**

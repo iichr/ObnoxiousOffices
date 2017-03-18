@@ -12,6 +12,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import game.ui.buttons.MenuButton;
+import game.ui.components.MusicBox;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.MusicLocations;
 import game.ui.interfaces.Vals;
@@ -32,6 +33,7 @@ public class Menu extends BasicGameState implements MusicListener {
     };
     private int CURRENT = 0;
     private long lastInput = System.currentTimeMillis();
+	private MusicBox mb;
 
 	@Override
 	public int getID() {
@@ -65,7 +67,7 @@ public class Menu extends BasicGameState implements MusicListener {
 		exitButton = new MenuButton(Vals.SCREEN_WIDTH/2-exit.getWidth()/2, Vals.SCREEN_HEIGHT/2 + 5*padding, exit.getWidth(),
 				exit.getHeight(), exit, exitR);
 
-
+		mb=new MusicBox(gc);
 		 music = new Music (MusicLocations.MENU_MUSIC);
 		// music.addListener(this);
 		// music.setVolume(0.5f);
@@ -81,12 +83,16 @@ public class Menu extends BasicGameState implements MusicListener {
 		// Start the music loop when you first enter the state, will not end
 		// until you use music.stop() or .pause() somewhere, even if you change
 		// states.
+		if(music.playing()){
+			music.resume();
+		}else{
 		 music.loop();
+		}
 	}
 
 	@Override
 	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-
+		music.pause();
 	}
 
 	/*
@@ -131,6 +137,7 @@ public class Menu extends BasicGameState implements MusicListener {
 	public void keyPressed(int key, char c) {
 		switch (key){
 		case Input.KEY_DOWN:
+			mb.playPressed();
 			if (CURRENT == (buttons.length-1)) {
                 CURRENT = 0;
             } else {
@@ -138,6 +145,7 @@ public class Menu extends BasicGameState implements MusicListener {
             }
 			break;
 		case Input.KEY_UP:
+			mb.playPressed();
 			if (CURRENT == 0) {
                 CURRENT = (buttons.length-1);
             } else {

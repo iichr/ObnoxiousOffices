@@ -2,17 +2,23 @@ package game.ui.components;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
+
+import game.ui.interfaces.MusicLocations;
 
 public class MusicBox {
 
 	private GameContainer gc;
 	private float currentSVolume;
 	private float currentMVolume;
+	private Sound pressed;
 
 	public MusicBox(GameContainer gc) throws SlickException {
 		this.gc=gc;
 		currentSVolume=gc.getSoundVolume();
 		currentMVolume=gc.getMusicVolume();
+		pressed = new Sound(MusicLocations.PRESSED);
+		
 	}
 
 	/**
@@ -70,6 +76,10 @@ public class MusicBox {
 		} else {
 			gc.setMusicVolume(currentMVolume += 0.25f);
 		}
+	}
+	
+	public void playPressed(){
+		pressed.play();
 	}
 
 
