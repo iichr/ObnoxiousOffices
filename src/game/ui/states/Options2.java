@@ -43,12 +43,10 @@ public class Options2 extends BasicGameState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
-		// Coordinates for the display of a key and its description
-		float x = Vals.BUTTON_ALIGN_CENTRE_W + Vals.SCREEN_WIDTH / 7;
-		float y = Vals.BUTTON_ALIGN_CENTRE_H - Vals.SCREEN_HEIGHT / 4;
-
 		backButton.render();
 
+		float y = Vals.OPTIONS_CONTR_Y;
+		
 		// loop through the hash map of controls
 		for (Map.Entry<String, String> keyBinding : keyboardControls.allControls.entrySet()) {
 			// get key value pair
@@ -58,9 +56,9 @@ public class Options2 extends BasicGameState {
 			// generate word to be drawn
 			Pair<Float, Float> actionDescr = wordGen.getWH(key, 0.2f);
 			// render the key (action description) on the left hand side
-			wordGen.draw(g, key, x - actionDescr.getL(), y, false, 0.2f);
+			wordGen.draw(g, key, Vals.OPTIONS_CONTR_X - actionDescr.getL(), y, false, 0.2f);
 			// render the value (the key binding) on the right hand side
-			wordGen.draw(g, value, x + Vals.BUTTON_WIDTH, y, false, 0.2f);
+			wordGen.draw(g, value, Vals.OPTIONS_CONTR_X + Vals.BUTTON_WIDTH, y, false, 0.2f);
 
 			// add padding between each line of key-value pairs rendered
 			y += 40.0f;
