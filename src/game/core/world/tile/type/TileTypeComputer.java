@@ -2,6 +2,7 @@ package game.core.world.tile.type;
 
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
+import game.core.input.InteractionType;
 import game.core.player.Player;
 import game.core.player.PlayerState;
 import game.core.player.action.PlayerAction;
@@ -57,9 +58,9 @@ public class TileTypeComputer extends TileTypeAction {
     }
 
     @Override
-    protected PlayerAction getAction(Player player, Tile tile) {
+    protected PlayerAction getAction(Player player, Tile tile, InteractionType type) {
         String owner = getOwningPlayer((MetaTile) tile);
-        return owner.equals(player.name) ? new PlayerActionWork(player) : new PlayerActionHack(player, World.world.getPlayer(owner));
+        return type.getClass() == InteractionType.InteractionTypeWork.class ? new PlayerActionWork(player) : new PlayerActionHack(player, World.world.getPlayer(((InteractionType.InteractionTypeHack) type).target));
     }
 
     @Override
