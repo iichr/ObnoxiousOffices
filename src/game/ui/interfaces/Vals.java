@@ -55,6 +55,10 @@ public interface Vals {
 	// The coords of the screen centre for a Menu Button
 	public static final float BUTTON_ALIGN_CENTRE_W = SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2;
 	public static final float BUTTON_ALIGN_CENTRE_H = SCREEN_HEIGHT / 2 - BUTTON_HEIGHT / 2;
+	
+	// OPTIONS - KEYBOARD BINDINGS Alignment
+	public static final float OPTIONS_CONTR_X = BUTTON_ALIGN_CENTRE_W + SCREEN_WIDTH / 7;
+	public static final float OPTIONS_CONTR_Y = BUTTON_ALIGN_CENTRE_H - SCREEN_HEIGHT / 4;
 
 	// Input checking
 	public static final long INPUT_INTERVAL = 100;

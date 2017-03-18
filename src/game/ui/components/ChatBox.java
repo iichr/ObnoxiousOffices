@@ -83,7 +83,7 @@ public class ChatBox {
 	 */
 	public void update(GameContainer gc, String localPlayerName) {
 		Input input = gc.getInput();
-		if (input.isKeyPressed(input.KEY_ENTER)) {
+		if (input.isKeyPressed(Input.KEY_ENTER)) {
 			if (!typer.getText().isEmpty()) {
 				chat.sendMessage(new ChatMessage(typer.getText(), localPlayerName));
 				typer.setText(message);

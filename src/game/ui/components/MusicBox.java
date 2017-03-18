@@ -1,12 +1,10 @@
 package game.ui.components;
 
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 
 public class MusicBox {
 
-	private Music music;
 	private GameContainer gc;
 	private float currentSVolume;
 	private float currentMVolume;

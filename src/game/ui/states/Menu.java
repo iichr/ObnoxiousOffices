@@ -42,26 +42,27 @@ public class Menu extends BasicGameState implements MusicListener {
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		gc.setShowFPS(false);
 		bg = new Image(ImageLocations.BG, false, Image.FILTER_NEAREST);
-		Image play = new Image(ImageLocations.PLAY);
-		Image playR = new Image(ImageLocations.PLAY_ROLLOVER);
+		Image play = new Image(ImageLocations.PLAY).getScaledCopy(0.8f);
+		Image playR = new Image(ImageLocations.PLAY_ROLLOVER).getScaledCopy(0.8f);
+		float padding=Vals.SCREEN_HEIGHT/15;
 
-		playButton = new MenuButton(Vals.SCREEN_WIDTH/4 - (play.getWidth()/2), Vals.BUTTON_ALIGN_CENTRE_H - 50,
+		playButton = new MenuButton(Vals.SCREEN_WIDTH/2-(play.getWidth()/2), Vals.SCREEN_HEIGHT/2- padding,
 				play.getWidth(), play.getHeight(), play, playR);
 
-		Image options = new Image(ImageLocations.OPTIONS);
-		Image optionsR = new Image(ImageLocations.OPTIONS_ROLLOVER);
-		optionsButton = new MenuButton(3*Vals.SCREEN_WIDTH/4 - (options.getWidth()/2), Vals.BUTTON_ALIGN_CENTRE_H - 50, options.getWidth(),
+		Image options = new Image(ImageLocations.OPTIONS).getScaledCopy(0.8f);
+		Image optionsR = new Image(ImageLocations.OPTIONS_ROLLOVER).getScaledCopy(0.8f);
+		optionsButton = new MenuButton(Vals.SCREEN_WIDTH/2 - (options.getWidth()/2), Vals.SCREEN_HEIGHT/2  + padding  ,options.getWidth(),
 				options.getHeight(), options, optionsR);
 
-		Image rules = new Image(ImageLocations.RULES);
-		Image rulesR = new Image(ImageLocations.RULES_ROLLOVER);
+		Image rules = new Image(ImageLocations.RULES).getScaledCopy(0.8f);
+		Image rulesR = new Image(ImageLocations.RULES_ROLLOVER).getScaledCopy(0.8f);
 
-		rulesButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W/2 - 240, Vals.BUTTON_ALIGN_CENTRE_H + 150, rules.getWidth(),
+		rulesButton = new MenuButton(Vals.SCREEN_WIDTH/2 - rules.getWidth()/2, Vals.SCREEN_HEIGHT/2 +3* padding, rules.getWidth(),
 				rules.getHeight(), rules, rulesR);
 
-		Image exit = new Image(ImageLocations.EXIT);
-		Image exitR = new Image(ImageLocations.EXIT_ROLLOVER);
-		exitButton = new MenuButton(3*Vals.BUTTON_ALIGN_CENTRE_W/2 - 140, Vals.BUTTON_ALIGN_CENTRE_H + 150, exit.getWidth(),
+		Image exit = new Image(ImageLocations.EXIT).getScaledCopy(0.8f);
+		Image exitR = new Image(ImageLocations.EXIT_ROLLOVER).getScaledCopy(0.8f);
+		exitButton = new MenuButton(Vals.SCREEN_WIDTH/2-exit.getWidth()/2, Vals.SCREEN_HEIGHT/2 + 5*padding, exit.getWidth(),
 				exit.getHeight(), exit, exitR);
 
 
