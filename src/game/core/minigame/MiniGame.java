@@ -88,7 +88,7 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
 
     @Override
     protected MiniGameVarChangedEvent getUpdateEvent(String var, Object val) {
-        return new MiniGameVarChangedEvent(var, val);
+        return new MiniGameVarChangedEvent(players.get(0), var, val);
     }
 
     public boolean hasPlayer(String playerName) {
