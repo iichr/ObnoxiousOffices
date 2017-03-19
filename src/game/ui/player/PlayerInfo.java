@@ -16,7 +16,6 @@ import game.ui.components.WordGenerator;
 import game.ui.interfaces.ImageLocations;
 
 public class PlayerInfo {
-	private List<Player> players;
 	private String localPlayerName;
 
 	private float tileWidth;
@@ -38,9 +37,8 @@ public class PlayerInfo {
 	 *            The height of an individual tile
 	 * @throws SlickException
 	 */
-	public PlayerInfo(World world, String localPlayerName, float tileWidth, float tileHeight, WordGenerator wg) throws SlickException {
+	public PlayerInfo(String localPlayerName, float tileWidth, float tileHeight, WordGenerator wg) throws SlickException {
 		this.localPlayerName = localPlayerName;
-		players = world.getPlayers();
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
 		this.wg = wg;
@@ -60,7 +58,7 @@ public class PlayerInfo {
 	 *            The array containing which tiles are visible to the player
 	 */
 	public void render(Graphics g, boolean[][] visible) {
-		for (Player p : players) {
+		for (Player p : World.world.getPlayers()) {
 			g.setColor(Color.black);
 			Location pLocation = p.getLocation();
 

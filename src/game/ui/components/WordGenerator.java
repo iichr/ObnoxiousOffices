@@ -50,6 +50,7 @@ public class WordGenerator {
 			}
 		}
 		hm.put((char) 32, new Image("res/alphabets/Space.png"));
+		hm.put(':', new Image("res/alphabets/colon.png"));
 
 	}
 

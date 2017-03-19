@@ -15,7 +15,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
-import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 
 /**
@@ -30,17 +29,15 @@ public class Rules extends BasicGameState {
 	private String mouseCoords;
 	private String gameTitle;
 	private String rules;
-	private int tileSize = 100;
 
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 
-		// Fonts - temp
-		// only load those actually needed.
+		// Set up fonts
 		ArrayList<UnicodeFont> fontList = new ArrayList<UnicodeFont>();
 		fontList.add(Vals.FONT_RULES);
 		fontList.add(Vals.FONT_HEADING1);

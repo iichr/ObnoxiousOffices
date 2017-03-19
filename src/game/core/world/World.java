@@ -48,13 +48,15 @@ public class World implements Updateable, Serializable {
     }
 
     private void onPlayerQuit(PlayerQuitEvent event) {
-        removePlayer(event.playerName);
+        removePlayer(event.player);
     }
 
-    public void removePlayer(String name) {
-        MiniGame minigame = getMiniGame(name);
-        if(minigame != null) minigame.end();
-        players.remove(getPlayer(name));
+    public void removePlayer(Player player) {
+        synchronized (players) {
+            MiniGame minigame = getMiniGame(player.name);
+            if (minigame != null) minigame.end();
+            players.remove(player);
+        }
     }
 
     public void startMiniGame(MiniGame game) {
@@ -82,7 +84,9 @@ public class World implements Updateable, Serializable {
 
     @Override
     public void update() {
-        Updateable.updateAll(players);
+        synchronized (players) {
+            Updateable.updateAll(players);
+        }
         miniGames.removeAll(Updateable.updateAll(miniGames));
     }
 

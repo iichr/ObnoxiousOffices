@@ -12,6 +12,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import game.ui.buttons.MenuButton;
+import game.ui.components.MusicBox;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.MusicLocations;
 import game.ui.interfaces.Vals;
@@ -32,6 +33,7 @@ public class Menu extends BasicGameState implements MusicListener {
     };
     private int CURRENT = 0;
     private long lastInput = System.currentTimeMillis();
+	private MusicBox mb;
 
 	@Override
 	public int getID() {
@@ -42,29 +44,30 @@ public class Menu extends BasicGameState implements MusicListener {
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		gc.setShowFPS(false);
 		bg = new Image(ImageLocations.BG, false, Image.FILTER_NEAREST);
-		Image play = new Image(ImageLocations.PLAY);
-		Image playR = new Image(ImageLocations.PLAY_ROLLOVER);
+		Image play = new Image(ImageLocations.PLAY).getScaledCopy(0.8f);
+		Image playR = new Image(ImageLocations.PLAY_ROLLOVER).getScaledCopy(0.8f);
+		float padding=Vals.SCREEN_HEIGHT/15;
 
-		playButton = new MenuButton(Vals.SCREEN_WIDTH/4 - (play.getWidth()/2), Vals.BUTTON_ALIGN_CENTRE_H - 50,
+		playButton = new MenuButton(Vals.SCREEN_WIDTH/2-(play.getWidth()/2), Vals.SCREEN_HEIGHT/2- padding,
 				play.getWidth(), play.getHeight(), play, playR);
 
-		Image options = new Image(ImageLocations.OPTIONS);
-		Image optionsR = new Image(ImageLocations.OPTIONS_ROLLOVER);
-		optionsButton = new MenuButton(3*Vals.SCREEN_WIDTH/4 - (options.getWidth()/2), Vals.BUTTON_ALIGN_CENTRE_H - 50, options.getWidth(),
+		Image options = new Image(ImageLocations.OPTIONS).getScaledCopy(0.8f);
+		Image optionsR = new Image(ImageLocations.OPTIONS_ROLLOVER).getScaledCopy(0.8f);
+		optionsButton = new MenuButton(Vals.SCREEN_WIDTH/2 - (options.getWidth()/2), Vals.SCREEN_HEIGHT/2  + padding  ,options.getWidth(),
 				options.getHeight(), options, optionsR);
 
-		Image rules = new Image(ImageLocations.RULES);
-		Image rulesR = new Image(ImageLocations.RULES_ROLLOVER);
+		Image rules = new Image(ImageLocations.RULES).getScaledCopy(0.8f);
+		Image rulesR = new Image(ImageLocations.RULES_ROLLOVER).getScaledCopy(0.8f);
 
-		rulesButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W/2 - 240, Vals.BUTTON_ALIGN_CENTRE_H + 150, rules.getWidth(),
+		rulesButton = new MenuButton(Vals.SCREEN_WIDTH/2 - rules.getWidth()/2, Vals.SCREEN_HEIGHT/2 +3* padding, rules.getWidth(),
 				rules.getHeight(), rules, rulesR);
 
-		Image exit = new Image(ImageLocations.EXIT);
-		Image exitR = new Image(ImageLocations.EXIT_ROLLOVER);
-		exitButton = new MenuButton(3*Vals.BUTTON_ALIGN_CENTRE_W/2 - 140, Vals.BUTTON_ALIGN_CENTRE_H + 150, exit.getWidth(),
+		Image exit = new Image(ImageLocations.EXIT).getScaledCopy(0.8f);
+		Image exitR = new Image(ImageLocations.EXIT_ROLLOVER).getScaledCopy(0.8f);
+		exitButton = new MenuButton(Vals.SCREEN_WIDTH/2-exit.getWidth()/2, Vals.SCREEN_HEIGHT/2 + 5*padding, exit.getWidth(),
 				exit.getHeight(), exit, exitR);
 
-
+		mb=new MusicBox(gc);
 		 music = new Music (MusicLocations.MENU_MUSIC);
 		// music.addListener(this);
 		// music.setVolume(0.5f);
@@ -80,12 +83,16 @@ public class Menu extends BasicGameState implements MusicListener {
 		// Start the music loop when you first enter the state, will not end
 		// until you use music.stop() or .pause() somewhere, even if you change
 		// states.
+		if(music.playing()){
+			music.resume();
+		}else{
 		 music.loop();
+		}
 	}
 
 	@Override
 	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-
+		music.pause();
 	}
 
 	/*
@@ -130,6 +137,7 @@ public class Menu extends BasicGameState implements MusicListener {
 	public void keyPressed(int key, char c) {
 		switch (key){
 		case Input.KEY_DOWN:
+			mb.playPressed();
 			if (CURRENT == (buttons.length-1)) {
                 CURRENT = 0;
             } else {
@@ -137,6 +145,7 @@ public class Menu extends BasicGameState implements MusicListener {
             }
 			break;
 		case Input.KEY_UP:
+			mb.playPressed();
 			if (CURRENT == 0) {
                 CURRENT = (buttons.length-1);
             } else {

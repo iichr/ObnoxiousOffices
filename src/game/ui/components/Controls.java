@@ -1,6 +1,6 @@
 package game.ui.components;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.newdawn.slick.Input;
 
@@ -32,10 +32,15 @@ public class Controls {
 	private final int PONG_UP = Input.KEY_W;
 	private final int PONG_DOWN = Input.KEY_S;
 	
-	public HashMap<String, String> allControls;
+	public LinkedHashMap<String, String> allControls;
 	
+	/**
+	 * Creates an instance of a Linked Hash Map, storing the key mappings in the
+	 * order of their insertion. Used to display the keyboard controls in the
+	 * Options menu
+	 */
 	public Controls(){
-		allControls = new HashMap<String, String>();
+		allControls = new LinkedHashMap<String, String>();
 		
 		allControls.put("Move Up", Input.getKeyName(MOVE_UP));
 		allControls.put("Move Down", Input.getKeyName(MOVE_DOWN));
@@ -48,16 +53,16 @@ public class Controls {
 		allControls.put("Selector Down", Input.getKeyName(SELECTOR_DOWN));
 		allControls.put("Selector Back", Input.getKeyName(SELECTOR_BACK));
 		
-		allControls.put("Show/Hide Options Menu", Input.getKeyName(TOGGLE_OPTIONS));
-		allControls.put("Show/Hide Player Overview", Input.getKeyName(TOGGLE_OVERVIEW));
-		allControls.put("Show/Hide Chat", Input.getKeyName(TOGGLE_CHAT));
+		allControls.put("Show Hide Options Menu", Input.getKeyName(TOGGLE_OPTIONS));
+		allControls.put("Show Hide Player Overview", Input.getKeyName(TOGGLE_OVERVIEW));
+		allControls.put("Show Hide Chat", Input.getKeyName(TOGGLE_CHAT));
 		
-		allControls.put("Move Up (Pong)", Input.getKeyName(PONG_UP));
-		allControls.put("Move Down (Pong)", Input.getKeyName(PONG_DOWN));
+		allControls.put("Move Up in Pong", Input.getKeyName(PONG_UP));
+		allControls.put("Move Down in Pong", Input.getKeyName(PONG_DOWN));
 	}
 	
 	/**
-	 * Manages the movement to make based on the key currently held byt the
+	 * Manages the movement to make based on the key currently held by the
 	 * player
 	 * 
 	 * @param actionSelector

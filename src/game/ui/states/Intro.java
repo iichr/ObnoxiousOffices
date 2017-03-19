@@ -8,11 +8,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import game.ui.interfaces.MusicLocations;
 import game.ui.interfaces.Vals;
 
 public class Intro extends BasicGameState {
@@ -23,12 +21,11 @@ public class Intro extends BasicGameState {
 	private boolean skip;
 
 	private final int FADE_IN = 100;
-	private final int LENGTH = 500;
+	private final int LENGTH = 100;
 	private final int FADE_OUT = 200;
 
 	private final float logoWidth = 3*Vals.SCREEN_WIDTH / 5;
 	private final float logoHeight = Vals.SCREEN_HEIGHT / 4;
-	private Sound intro;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {

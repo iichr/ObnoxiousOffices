@@ -9,5 +9,6 @@ public interface MusicLocations{
 	public static final String COFFEE="res/music/coffee.ogg";
 	public static final String SELECT="res/music/select.ogg";
 	public static final String INTRO="res/music/intro.ogg";
+	public static final String PRESSED = "res/music/pressed.ogg";
 	
 }

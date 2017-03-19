@@ -93,6 +93,7 @@ public class Play extends BasicGameState {
 		return Vals.PLAY_STATE;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		// Font
@@ -107,7 +108,7 @@ public class Play extends BasicGameState {
 
 		// KEEP COMMENTED until we've all added the required libraries.
 		// Initialise the background music
-		// bgmusic = new Music("res/music/toocheerful.ogg");
+		bgmusic = new Music("res/music/main.ogg");
 
 		cb = new ChatBox(gc, new Chat());
 	}
@@ -149,7 +150,7 @@ public class Play extends BasicGameState {
 		renderer = new Renderer(world, localPlayerName, tileWidth, tileHeight, showOverview);
 
 		// set up player info
-		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight, wg);
+		playerinfo = new PlayerInfo(localPlayerName, tileWidth, tileHeight, wg);
 
 		// Effect container
 		effectOverview = new Effect(tileWidth, tileHeight);
@@ -164,6 +165,7 @@ public class Play extends BasicGameState {
 		gameOverOverlay = new GameOverOverlay(world.getPlayers(), wg);
 		hangmanOverlay = new HangmanOverlay(wg);
 		pongOverlay = new PongOverlay(wg);
+		bgmusic.loop();
 	}
 
 	@Override
