@@ -84,7 +84,9 @@ public class World implements Updateable, Serializable {
 
     @Override
     public void update() {
-        Updateable.updateAll(players);
+        synchronized (players) {
+            Updateable.updateAll(players);
+        }
         miniGames.removeAll(Updateable.updateAll(miniGames));
     }
 
