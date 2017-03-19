@@ -150,7 +150,7 @@ public class Play extends BasicGameState {
 		renderer = new Renderer(world, localPlayerName, tileWidth, tileHeight, showOverview);
 
 		// set up player info
-		playerinfo = new PlayerInfo(world, localPlayerName, tileWidth, tileHeight, wg);
+		playerinfo = new PlayerInfo(localPlayerName, tileWidth, tileHeight, wg);
 
 		// Effect container
 		effectOverview = new Effect(tileWidth, tileHeight);
