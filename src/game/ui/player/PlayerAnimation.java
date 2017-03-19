@@ -11,7 +11,7 @@ import game.ui.interfaces.SpriteLocations;
 public class PlayerAnimation {
 	private Animation moveNorth, moveSouth, moveEast, moveWest, seatedNorth, seatedSouth, sleepNorth, sleepSouth, move;
 
-	public PlayerAnimation(int colour, Direction initialDirection) throws SlickException {
+	public PlayerAnimation(int colour) throws SlickException {
 		SpriteSheet player = null;
 
 		Image[] cN = new Image[1];
@@ -61,10 +61,10 @@ public class PlayerAnimation {
 			sS[0] = new Image(SpriteLocations.PLAYER_PINK_SOUTH_SLEEP, false, Image.FILTER_NEAREST);
 			break;
 		}
-		addAnimation(player, initialDirection, cN, cS, sN, sS);
+		addAnimation(player, cN, cS, sN, sS);
 	}
 
-	private void addAnimation(SpriteSheet player, Direction initialDirection, Image[] cN, Image[] cS, Image[] sN, Image[] sS) throws SlickException {
+	private void addAnimation(SpriteSheet player, Image[] cN, Image[] cS, Image[] sN, Image[] sS) throws SlickException {
 		int walkLength = 8;
 		Image[] n = new Image[walkLength];
 		Image[] e = new Image[walkLength];
@@ -78,12 +78,12 @@ public class PlayerAnimation {
 			e[i] = player.getSprite(i, 3);
 		}
 
-		createAnimation(n, e, s, w, cN, cS, sN, sS, initialDirection);
+		createAnimation(n, e, s, w, cN, cS, sN, sS);
 	}
 
 	private void createAnimation(Image[] northAnimations, Image[] eastAnimations, Image[] southAnimations,
 			Image[] westAnimations, Image[] seatedNorthAnimations, Image[] seatedSouthAnimations,
-			Image[] sleepNorthAnimations, Image[] sleepSouthAnimations, Direction initialDirection) {
+			Image[] sleepNorthAnimations, Image[] sleepSouthAnimations) {
 		int duration = 100;
 
 		moveNorth = new Animation(northAnimations, duration, false);
@@ -94,8 +94,6 @@ public class PlayerAnimation {
 		seatedSouth = new Animation(seatedSouthAnimations, duration, false);
 		sleepNorth = new Animation(sleepNorthAnimations, duration, false);
 		sleepSouth = new Animation(sleepSouthAnimations, duration, false);
-
-		turn(initialDirection);
 	}
 
 	public void drawPlayer(float x, float y, float width, float height) {
