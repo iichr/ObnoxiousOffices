@@ -33,7 +33,7 @@ public class World implements Updateable, Serializable {
     private final Tile[][][] tiles;
     public final int xSize, ySize, zSize;
     private List<Location> spawnPoints = new ArrayList<>();
-    private Set<MiniGame> miniGames = new HashSet<>();
+    private final Set<MiniGame> miniGames = new HashSet<>();
 
     public static World world;
 
@@ -52,9 +52,12 @@ public class World implements Updateable, Serializable {
     }
 
     public void removePlayer(Player player) {
-        synchronized (players) {
+        synchronized (players, miniGames) {
             MiniGame minigame = getMiniGame(player.name);
-            if (minigame != null) minigame.end();
+            if (minigame != null) {
+                minigame.end();
+                miniGames.remove(minigame);
+            }
             players.remove(player);
         }
     }
@@ -84,10 +87,10 @@ public class World implements Updateable, Serializable {
 
     @Override
     public void update() {
-        synchronized (players) {
+        synchronized (players, miniGames) {
             Updateable.updateAll(players);
+            miniGames.removeAll(Updateable.updateAll(miniGames));
         }
-        miniGames.removeAll(Updateable.updateAll(miniGames));
     }
 
     @Override
