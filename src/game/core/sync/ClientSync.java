@@ -54,7 +54,7 @@ public class ClientSync {
     }
 
     private static void onMiniGameVarChanged(MiniGameVarChangedEvent event) {
-        if(MiniGame.localMiniGame != null) MiniGame.localMiniGame.setVar(event.var, event.val);
+        if(MiniGame.localMiniGame != null && MiniGame.localMiniGame.isPlaying(event.playerName)) MiniGame.localMiniGame.setVar(event.var, event.val);
     }
 
     private static void onMiniGameStatChanged(MiniGameStatChangedEvent event) {
