@@ -108,7 +108,7 @@ public class Play extends BasicGameState {
 
 		// KEEP COMMENTED until we've all added the required libraries.
 		// Initialise the background music
-		// bgmusic = new Music("res/music/toocheerful.ogg");
+		bgmusic = new Music("res/music/main.ogg");
 
 		cb = new ChatBox(gc, new Chat());
 	}
@@ -165,6 +165,7 @@ public class Play extends BasicGameState {
 		gameOverOverlay = new GameOverOverlay(world.getPlayers(), wg);
 		hangmanOverlay = new HangmanOverlay(wg);
 		pongOverlay = new PongOverlay(wg);
+		bgmusic.loop();
 	}
 
 	@Override
