@@ -1,8 +1,10 @@
 package game.ui.components;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -34,7 +36,7 @@ public class Renderer {
 	private HashMap<TileType, HashMap<Direction, Image[]>> tileMap;
 	
 	//player animations
-	private HashMap<Player, PlayerAnimation> playerMap;
+	private List<PlayerAnimation> playerAnimations;
 	
 	//boolean toggles
 	private boolean showOverview;
@@ -46,16 +48,12 @@ public class Renderer {
 		this.tileHeight = tileHeight;
 		this.showOverview = showOverview;
 		
-		//make new player map
-		playerMap = new HashMap<Player, PlayerAnimation>();
-		
 		// get the tileMap
 		SpriteLocations sp = new SpriteLocations();
 		tileMap = sp.getTileMap();
 		
 		// add player animations
-		animatePlayers(world.getPlayers());
-		
+		playerAnimations = animatePlayers(world.getPlayers());
 	}
 
 	/**
@@ -171,24 +169,25 @@ public class Renderer {
 	 */
 	private void drawPlayers(int x, int y, float tileX, float tileY) {
 		// get players
-		List<Player> players = world.getPlayers();
+		List<Player> players = World.world.getPlayers();
 		// render the players
 		for (Player player : players) {
 			Location playerLocation = player.getLocation();
 			if (playerLocation.coords.x == x && playerLocation.coords.y == y) {
-				changeAnimation(player);
+				PlayerAnimation animation = playerAnimations.get(player.getHair());
+				changeAnimation(player, animation);
 				if (player.status.hasAction(PlayerActionSleep.class)) {
 					Location right = new Location(new Coordinates(x - 1, y, 0), world);
 					if (right.checkBounds()) {
-						playerMap.get(player).drawPlayer((x - 1) * tileWidth, (y + 2) * (tileHeight / 2), tileWidth * 2,
+						animation.drawPlayer((x - 1) * tileWidth, (y + 2) * (tileHeight / 2), tileWidth * 2,
 								tileHeight / 2);
 					} else {
 						// otherwise draw to the left
-						playerMap.get(player).drawPlayer(tileX, (y + 2) * (tileHeight / 2), tileWidth * 2,
+						animation.drawPlayer(tileX, (y + 2) * (tileHeight / 2), tileWidth * 2,
 								tileHeight / 2);
 					}
 				} else {
-					playerMap.get(player).drawPlayer(tileX, tileY, tileWidth, tileHeight);
+					animation.drawPlayer(tileX, tileY, tileWidth, tileHeight);
 					Tile tile = playerLocation.getTile();
 					if (tile.type.equals(TileType.CHAIR) && tile.facing.equals(Direction.NORTH)) {
 						tileMap.get(tile.type).get(tile.facing)[0].draw(tileX, tileY, tileWidth, tileHeight);
@@ -196,7 +195,6 @@ public class Renderer {
 				}
 			}
 		}
-
 	}
 
 	/**
@@ -206,14 +204,14 @@ public class Renderer {
 	 * @param player
 	 *            the player to check
 	 */
-	private void changeAnimation(Player player) {
+	private void changeAnimation(Player player, PlayerAnimation animation) {
 		Direction playerFacing = player.getFacing();
 		if (player.status.hasAction(PlayerActionSleep.class)) {
-			playerMap.get(player).sleeping(playerFacing);
+			animation.sleeping(playerFacing);
 		} else if (player.status.hasState(PlayerState.sitting)) {
-			playerMap.get(player).seated(playerFacing);
+			animation.seated(playerFacing);
 		} else {
-			playerMap.get(player).turn(player.getFacing());
+			animation.turn(player.getFacing());
 		}
 	}
 	
@@ -225,11 +223,14 @@ public class Renderer {
 	 * 
 	 * @throws SlickException
 	 */
-	private void animatePlayers(List<Player> players) throws SlickException {
+	private List<PlayerAnimation> animatePlayers(List<Player> players) throws SlickException {
+		LinkedList<PlayerAnimation> animations = new LinkedList<PlayerAnimation>();
 		for (Player p : players) {
-			PlayerAnimation animation = new PlayerAnimation(p.getHair(), p.getFacing());
-			playerMap.put(p, animation);
+			PlayerAnimation animation = new PlayerAnimation(p.getHair());
+			animation.turn(p.getFacing());
+			animations.add(animation);
 		}
+		return animations;
 	}
 	
 	/**
