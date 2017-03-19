@@ -48,7 +48,7 @@ public class AIPlayer extends Player {
 	private static final long serialVersionUID = 1L;
 
 	static {
-		Events.on(Events.EventPriority.HIGH, PlayerQuitEvent.class, AIPlayer::onPlayerQuit;
+		Events.on(Events.EventPriority.HIGH, PlayerQuitEvent.class, AIPlayer::onPlayerQuit);
 	}
 
 	// constructor from Player class
