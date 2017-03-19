@@ -219,8 +219,6 @@ public class ServerListener extends Thread {
 								e1.printStackTrace();
 							}
 						}
-					} else {
-						System.out.println("Player left");
 					}
 				} else {
 					if (running) {
