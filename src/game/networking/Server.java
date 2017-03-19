@@ -104,11 +104,10 @@ public class Server {
 					os.writeObject(e);
 				}
 			}
-
 			catch (SocketTimeoutException s) {
 				System.out.println("timeout");
 				ServerListener.NUM_AI_PLAYERS = ServerListener.NUM_AI_PLAYERS + 1;
-				listenForConnections();
+				//listenForConnections();
 			} catch (IOException e) {
 				System.err.println("IO error " + e.getMessage());
 			}
