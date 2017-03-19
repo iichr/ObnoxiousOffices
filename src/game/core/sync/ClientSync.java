@@ -32,6 +32,8 @@ public class ClientSync {
         Events.on(PlayerRotatedEvent.class, ClientSync::onPlayerRotated);
         Events.on(PlayerStateAddedEvent.class, ClientSync::onPlayerStateAdded);
         Events.on(PlayerStateRemovedEvent.class, ClientSync::onPlayerStateRemoved);
+        Events.on(PlayerJoinedEvent.class, ClientSync::onPlayerJoined);
+        Events.on(PlayerQuitEvent.class, ClientSync::onPlayerQuit);
 
         Events.on(TileChangedEvent.class, ClientSync::onTileChanged);
 
@@ -41,6 +43,14 @@ public class ClientSync {
         Events.on(MiniGameVarChangedEvent.class, ClientSync::onMiniGameVarChanged);
 
         Events.on(ChatMessageReceivedEvent.class, ClientSync::onChatMessageReceived);
+    }
+
+    private static void onPlayerQuit(PlayerQuitEvent event) {
+        World.world.removePlayer(World.world.getPlayer(event.playerName));
+    }
+
+    private static void onPlayerJoined(PlayerJoinedEvent event) {
+        World.world.addPlayer(event.player);
     }
 
     private static void onMiniGameVarChanged(MiniGameVarChangedEvent event) {
