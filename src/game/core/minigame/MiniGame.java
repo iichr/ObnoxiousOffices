@@ -96,6 +96,10 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
     }
 
     public boolean isLocal() {
-        return getPlayers().contains(Player.localPlayerName);
+        return isPlaying(Player.localPlayerName);
+    }
+
+    public boolean isPlaying(String player) {
+        return getPlayers().contains(player);
     }
 }
