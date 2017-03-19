@@ -134,7 +134,7 @@ public class ServerListener extends Thread {
 						for (int i = 0; i < NUM_AI_PLAYERS; i++) {
 							makingAI = true;
 							Events.trigger(new CreateAIPlayerRequest(this, i));
-						}
+						}	
 					}
 					if (world.getPlayers().size() == world.getMaxPlayers()) {
 						Server.listen = false;

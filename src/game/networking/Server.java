@@ -27,7 +27,7 @@ public class Server {
 	private ServerSocket serverSocket = null;
 	private World world;
 	public static boolean listen = true;
-	private final int NUM_PLAYERS = 2;
+	private final int NUM_PLAYERS = 4;
 	public String startTime;
 	public int startMins;
 	public int startHours;
@@ -84,16 +84,15 @@ public class Server {
 	 * Listen for connections from clients make a new server listener for each
 	 */
 	private void listenForConnections() {
+		boolean secondCall = false;
 		while (true) {
 			try {
-				/*
-				 * System.out.println("Before if"); if(waitingToLong() &&
-				 * listen){ ServerListener.NUM_AI_PLAYERS =
-				 * ServerListener.NUM_AI_PLAYERS + 1; }
-				 */
+				// System.out.println("Before if");
+				if (waitingToLong() && listen) {
+					ServerListener.NUM_AI_PLAYERS = ServerListener.NUM_AI_PLAYERS + 1;
+				}
 				// Listen to the socket, accepting connections from new clients:
 				Socket socket = this.serverSocket.accept();
-
 				if (listen) {
 					ServerListener sl = new ServerListener(socket, this.connections, world);
 					this.connections.add(sl);
@@ -103,15 +102,12 @@ public class Server {
 					ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
 					os.writeObject(e);
 				}
-			}
-			catch (SocketTimeoutException s) {
+			} catch (SocketTimeoutException s) {
 				System.out.println("timeout");
 				ServerListener.NUM_AI_PLAYERS = ServerListener.NUM_AI_PLAYERS + 1;
-				//listenForConnections();
 			} catch (IOException e) {
 				System.err.println("IO error " + e.getMessage());
 			}
-
 		}
 	}
 
@@ -122,14 +118,13 @@ public class Server {
 		Date currentdate = new Date();
 		int CurrentMins = Integer.parseInt((dfMin.format(currentdate)));
 		int CurrentHours = Integer.parseInt((dfHr.format(currentdate)));
-		if ((startHours == CurrentHours && ((startMins - CurrentMins) <= -4))
-				|| ((startHours != CurrentHours) && (((60 - CurrentMins)) - startMins) <= 4)) {
+		if ((startHours == CurrentHours && ((startMins - CurrentMins) <= -2))
+				|| ((startHours != CurrentHours) && (((60 - CurrentMins)) - startMins) <= 2)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-
 	/**
 	 * Load the required world form file
 	 */
@@ -141,7 +136,6 @@ public class Server {
 			e2.printStackTrace();
 		}
 	}
-
 	/**
 	 * Update the world
 	 * 
@@ -159,12 +153,10 @@ public class Server {
 		}
 		updateThread.start();
 	}
-
 	private void endGame(Object recieved) {
 		new Server();
 
 	}
-
 	/**
 	 * Main method for starting server
 	 * 
