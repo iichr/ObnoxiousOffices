@@ -8,7 +8,7 @@ import game.core.player.Player;
 public class PlayerJoinedEvent extends PlayerEvent {
     public final Player player;
 
-    public PlayerJoinedEvent(Player player, String playerName) {
+    public PlayerJoinedEvent(String playerName, Player player) {
         super(playerName);
         this.player = player;
     }

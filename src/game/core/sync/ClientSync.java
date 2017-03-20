@@ -33,6 +33,7 @@ public class ClientSync {
         Events.on(PlayerStateAddedEvent.class, ClientSync::onPlayerStateAdded);
         Events.on(PlayerStateRemovedEvent.class, ClientSync::onPlayerStateRemoved);
         Events.on(PlayerJoinedEvent.class, ClientSync::onPlayerJoined);
+        Events.on(PlayerQuitEvent.class, ClientSync::onPlayerQuit);
 
         Events.on(TileChangedEvent.class, ClientSync::onTileChanged);
 
@@ -44,16 +45,20 @@ public class ClientSync {
         Events.on(ChatMessageReceivedEvent.class, ClientSync::onChatMessageReceived);
     }
 
+    private static void onPlayerQuit(PlayerQuitEvent event) {
+        World.world.removePlayer(World.world.getPlayer(event.playerName));
+    }
+
     private static void onPlayerJoined(PlayerJoinedEvent event) {
         World.world.addPlayer(event.player);
     }
 
     private static void onMiniGameVarChanged(MiniGameVarChangedEvent event) {
-        if(MiniGame.localMiniGame != null) MiniGame.localMiniGame.setVar(event.var, event.val);
+        if(MiniGame.localMiniGame != null && MiniGame.localMiniGame.isPlaying(event.playerName)) MiniGame.localMiniGame.setVar(event.var, event.val);
     }
 
     private static void onMiniGameStatChanged(MiniGameStatChangedEvent event) {
-        if(MiniGame.localMiniGame != null) MiniGame.localMiniGame.setStat(event.player, event.stat, event.val);
+        if(MiniGame.localMiniGame != null && MiniGame.localMiniGame.isPlaying(event.player)) MiniGame.localMiniGame.setStat(event.player, event.stat, event.val);
     }
 
     private static void onPlayerEffectElapsedUpdate(PlayerEffectElapsedUpdate event) {
