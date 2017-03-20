@@ -47,11 +47,13 @@ public class World implements Updateable, Serializable {
     }
 
     public void removePlayer(Player player) {
-        synchronized (miniGames) {
-            MiniGame minigame = getMiniGame(player.name);
-            if (minigame != null) {
-                minigame.end();
-                miniGames.remove(minigame);
+        if(!ClientSync.isClient) {
+            synchronized (miniGames) {
+                MiniGame minigame = getMiniGame(player.name);
+                if (minigame != null) {
+                    minigame.end();
+                    miniGames.remove(minigame);
+                }
             }
         }
         synchronized (players) {
