@@ -16,7 +16,7 @@ import game.ui.states.CharacterSelect;
 import game.ui.states.Intro;
 import game.ui.states.Menu;
 import game.ui.states.Options;
-import game.ui.states.Options2;
+import game.ui.states.Help;
 import game.ui.states.Play;
 import game.ui.states.PlayTest;
 import game.ui.states.Rules;
@@ -29,7 +29,7 @@ public class Game extends StateBasedGame {
 	private Rules rulesState;
 	private CharacterSelect chSelectState;
 	private PlayTest playTestState;
-	private Options2 optionsState2;
+	private Help optionsState2;
 
 	/**
 	 * Constructor: sets up states and event listeners
@@ -54,7 +54,7 @@ public class Game extends StateBasedGame {
 		this.addState(rulesState);
 		chSelectState = new CharacterSelect(playTestState);
 		this.addState(chSelectState);
-		optionsState2 = new Options2();
+		optionsState2 = new Help();
 		this.addState(optionsState2);
 
 		Events.on(GameStartedEvent.class, this::onGameStart);

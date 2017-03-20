@@ -23,12 +23,13 @@ import game.util.Pair;
  * @author iichr
  *
  */
-public class Options2 extends BasicGameState {
+public class Help extends BasicGameState {
 	private MenuButton backButton;
 	// A word generator for the main game font
 	private WordGenerator wordGen;
 	// A list of all controls in the game
 	private Controls keyboardControls;
+	private int StateID;
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
@@ -40,7 +41,6 @@ public class Options2 extends BasicGameState {
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 	}
-
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		backButton.render();
