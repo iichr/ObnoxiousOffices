@@ -12,6 +12,7 @@ import org.newdawn.slick.SpriteSheet;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.player.action.PlayerActionSleep;
+import game.core.world.World;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
@@ -73,7 +74,8 @@ public class PlayerOverview {
 	 *            The list of players
 	 * @throws SlickException
 	 */
-	public void updateContainer(List<Player> players) throws SlickException {
+	public void updateContainer() throws SlickException {
+		List<Player> players = World.world.getPlayers();
 		int size = players.size();
 		playerNames = new String[size];
 		playerAvatars = new Animation[size];
@@ -81,7 +83,7 @@ public class PlayerOverview {
 		playerFatigue = new double[size];
 
 		int i = 1;
-		for (Player p : players) {
+		for (Player p: players) {
 			Image[] temp = new Image[2];
 			if (!p.name.equals(localPlayerName)) {
 				// add name

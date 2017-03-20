@@ -184,7 +184,7 @@ public class Play extends BasicGameState {
 
 		effectOverview.updateEffects(localPlayer);
 
-		playerOverview.updateContainer(world.getPlayers());
+		playerOverview.updateContainer();
 
 		if (exit) {
 			game.enterState(Vals.MENU_STATE);
