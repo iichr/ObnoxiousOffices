@@ -144,4 +144,13 @@ public class PlayerAnimation {
 			break;
 		}
 	}
+	
+	public void nextFrame(){
+		int frame = move.getFrame();
+		if(frame + 2 >= move.getFrameCount()){
+			move.setCurrentFrame(0);
+		}else{
+			move.setCurrentFrame(frame + 2);
+		}
+	}
 }

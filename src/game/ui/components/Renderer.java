@@ -9,6 +9,8 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import game.core.event.Events;
+import game.core.event.player.PlayerMovedEvent;
 import game.core.player.Player;
 import game.core.player.PlayerState;
 import game.core.player.action.PlayerActionSleep;
@@ -47,6 +49,8 @@ public class Renderer {
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
 		this.showOverview = showOverview;
+		
+		Events.on(PlayerMovedEvent.class, this::animateMovement);
 		
 		// get the tileMap
 		SpriteLocations sp = new SpriteLocations();
@@ -231,6 +235,11 @@ public class Renderer {
 			animations.add(animation);
 		}
 		return animations;
+	}
+	
+	private void animateMovement(PlayerMovedEvent e){
+		Player moved = World.world.getPlayer(e.playerName);
+		playerAnimations.get(moved.getHair()).nextFrame();
 	}
 	
 	/**
