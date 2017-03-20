@@ -108,8 +108,10 @@ public class AIPlayer extends Player {
 
 	private static void onPlayerQuit(PlayerQuitEvent event) {
 		AIPlayer player = new AIPlayer(event.player);
+		World.world.removePlayer(event.player);
 		World.world.addPlayer(player);
-		Events.trigger(new PlayerJoinedEvent(player, player.name));
+		Events.trigger(new PlayerQuitEvent(event.playerName), true);
+		Events.trigger(new PlayerJoinedEvent(player, player.name), true);
 	}
 	
 	/**
