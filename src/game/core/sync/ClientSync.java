@@ -12,6 +12,9 @@ import game.core.minigame.MiniGame;
 import game.core.player.Player;
 import game.core.world.*;
 
+import java.util.Optional;
+import java.util.function.Consumer;
+
 /**
  * Created by samtebbs on 11/02/2017.
  */
@@ -54,23 +57,23 @@ public class ClientSync {
     }
 
     private static void onMiniGameVarChanged(MiniGameVarChangedEvent event) {
-        if(MiniGame.localMiniGame != null) MiniGame.localMiniGame.setVar(event.var, event.val);
+        if(MiniGame.localMiniGame != null && MiniGame.localMiniGame.isPlaying(event.playerName)) MiniGame.localMiniGame.setVar(event.var, event.val);
     }
 
     private static void onMiniGameStatChanged(MiniGameStatChangedEvent event) {
-        if(MiniGame.localMiniGame != null) MiniGame.localMiniGame.setStat(event.player, event.stat, event.val);
+        if(MiniGame.localMiniGame != null && MiniGame.localMiniGame.isPlaying(event.player)) MiniGame.localMiniGame.setStat(event.player, event.stat, event.val);
     }
 
     private static void onPlayerEffectElapsedUpdate(PlayerEffectElapsedUpdate event) {
-        getPlayer(event.playerName).status.getEffects().stream().filter(e -> e.getClass() == event.effectClass).findAny().ifPresent(effect -> effect.setElapsed(event.elapsed));
+        actOnPlayer(event.playerName, p-> p.status.getEffects().stream().filter(e -> e.getClass() == event.effectClass).findAny().ifPresent(effect -> effect.setElapsed(event.elapsed)));
     }
 
     private static void onPlayerStateAdded(PlayerStateAddedEvent event) {
-        getPlayer(event.playerName).status.addState(event.state);
+        actOnPlayer(event.playerName, p -> p.status.addState(event.state));
     }
 
     private static void onPlayerStateRemoved(PlayerStateRemovedEvent event) {
-        getPlayer(event.playerName).status.removeState(event.state);
+        actOnPlayer(event.playerName, p -> p.status.removeState(event.state));
     }
 
     private static void onChatMessageReceived(ChatMessageReceivedEvent event) {
@@ -94,40 +97,39 @@ public class ClientSync {
     }
 
     private static void onPlayerRotated(PlayerRotatedEvent event) {
-        getPlayer(event.playerName).setFacing(event.newFacing);
+        actOnPlayer(event.playerName, p -> p.setFacing(event.newFacing));
     }
 
     private static void onPlayerMoved(PlayerMovedEvent event) {
-        Player player = getPlayer(event.playerName);
-        player.setLocation(new Location(event.coords, player.getLocation().world));
+        actOnPlayer(event.playerName, player -> player.setLocation(new Location(event.coords, player.getLocation().world)));
     }
 
     private static void onPlayerAttributeChanged(PlayerAttributeChangedEvent event) {
-        getPlayer(event.playerName).status.setAttribute(event.attribute, event.newVal);
+        actOnPlayer(event.playerName, p -> p.status.setAttribute(event.attribute, event.newVal));
     }
     
     private static void onPlayerProgressUpdate(PlayerProgressUpdateEvent event) {
-        getPlayer(event.playerName).setProgress(event.newVal);
+        actOnPlayer(event.playerName, p -> p.setProgress(event.newVal));
     }
 
     private static void onPlayerEffectEnded(PlayerEffectEndedEvent event) {
-        getPlayer(event.playerName).status.removeEffect(event.effect.getClass());
+        actOnPlayer(event.playerName, p -> p.status.removeEffect(event.effect.getClass()));
     }
 
     private static void onPlayerEffectAdded(PlayerEffectAddedEvent event) {
-        getPlayer(event.playerName).status.addEffect(event.effect);
+        actOnPlayer(event.playerName, p -> p.status.addEffect(event.effect));
     }
 
     private static void onPlayerActionEnded(PlayerActionEndedEvent event) {
-        getPlayer(event.playerName).status.removeAction(event.action.getClass());
+        actOnPlayer(event.playerName, p -> p.status.removeAction(event.action.getClass()));
     }
 
     private static void onPlayerActionAdded(PlayerActionAddedEvent event) {
-        getPlayer(event.playerName).status.addAction(event.action);
+        actOnPlayer(event.playerName, p -> p.status.addAction(event.action));
     }
 
-    private static Player getPlayer(String playerName) {
-        return getWorld().getPlayer(playerName);
+    private static void actOnPlayer(String playerName, Consumer<Player> action) {
+        Optional.ofNullable(getWorld().getPlayer(playerName)).ifPresent(action);
     }
 
 }

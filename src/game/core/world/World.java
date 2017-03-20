@@ -33,7 +33,7 @@ public class World implements Updateable, Serializable {
     private final Tile[][][] tiles;
     public final int xSize, ySize, zSize;
     private List<Location> spawnPoints = new ArrayList<>();
-    private Set<MiniGame> miniGames = new HashSet<>();
+    private final Set<MiniGame> miniGames = new HashSet<>();
 
     public static World world;
 
@@ -44,17 +44,19 @@ public class World implements Updateable, Serializable {
         zSize = sizeZ;
         ySize = sizeY;
         xSize = sizeX;
-        Events.on(Events.EventPriority.LOW, PlayerQuitEvent.class, this::onPlayerQuit);
-    }
-
-    private void onPlayerQuit(PlayerQuitEvent event) {
-        removePlayer(event.player);
     }
 
     public void removePlayer(Player player) {
+        if(!ClientSync.isClient) {
+            synchronized (miniGames) {
+                MiniGame minigame = getMiniGame(player.name);
+                if (minigame != null) {
+                    minigame.end();
+                    miniGames.remove(minigame);
+                }
+            }
+        }
         synchronized (players) {
-            MiniGame minigame = getMiniGame(player.name);
-            if (minigame != null) minigame.end();
             players.remove(player);
         }
     }
@@ -79,13 +81,17 @@ public class World implements Updateable, Serializable {
     }
 
     public List<Player> getPlayers() {
-        return players.stream().collect(Collectors.toList());
+        return players;
     }
 
     @Override
     public void update() {
-        Updateable.updateAll(players);
-        miniGames.removeAll(Updateable.updateAll(miniGames));
+        synchronized (players) {
+            Updateable.updateAll(players);
+        }
+        synchronized (miniGames) {
+            miniGames.removeAll(Updateable.updateAll(miniGames));
+        }
     }
 
     @Override
