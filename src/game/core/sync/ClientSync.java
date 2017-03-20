@@ -65,15 +65,15 @@ public class ClientSync {
     }
 
     private static void onPlayerEffectElapsedUpdate(PlayerEffectElapsedUpdate event) {
-        actOnPlayer(event.playerName, p-> p.status.getEffects().stream().filter(e -> e.getClass() == event.effectClass).findAny().ifPresent(effect -> effect.setElapsed(event.elapsed));
+        actOnPlayer(event.playerName, p-> p.status.getEffects().stream().filter(e -> e.getClass() == event.effectClass).findAny().ifPresent(effect -> effect.setElapsed(event.elapsed)));
     }
 
     private static void onPlayerStateAdded(PlayerStateAddedEvent event) {
-        actOnPlayer(event.playerName, p -> p.status.addState(event.state);
+        actOnPlayer(event.playerName, p -> p.status.addState(event.state));
     }
 
     private static void onPlayerStateRemoved(PlayerStateRemovedEvent event) {
-        actOnPlayer(event.playerName, p -> p.status.removeState(event.state);
+        actOnPlayer(event.playerName, p -> p.status.removeState(event.state));
     }
 
     private static void onChatMessageReceived(ChatMessageReceivedEvent event) {
@@ -97,35 +97,35 @@ public class ClientSync {
     }
 
     private static void onPlayerRotated(PlayerRotatedEvent event) {
-        actOnPlayer(event.playerName, p -> p.setFacing(event.newFacing);
+        actOnPlayer(event.playerName, p -> p.setFacing(event.newFacing));
     }
 
     private static void onPlayerMoved(PlayerMovedEvent event) {
-        actOnPlayer(event.playerName, player -> player.setLocation(new Location(event.coords, player.getLocation().world));
+        actOnPlayer(event.playerName, player -> player.setLocation(new Location(event.coords, player.getLocation().world)));
     }
 
     private static void onPlayerAttributeChanged(PlayerAttributeChangedEvent event) {
-        actOnPlayer(event.playerName, p -> p.status.setAttribute(event.attribute, event.newVal);
+        actOnPlayer(event.playerName, p -> p.status.setAttribute(event.attribute, event.newVal));
     }
     
     private static void onPlayerProgressUpdate(PlayerProgressUpdateEvent event) {
-        actOnPlayer(event.playerName, p -> p.setProgress(event.newVal);
+        actOnPlayer(event.playerName, p -> p.setProgress(event.newVal));
     }
 
     private static void onPlayerEffectEnded(PlayerEffectEndedEvent event) {
-        actOnPlayer(event.playerName, p -> p.status.removeEffect(event.effect.getClass());
+        actOnPlayer(event.playerName, p -> p.status.removeEffect(event.effect.getClass()));
     }
 
     private static void onPlayerEffectAdded(PlayerEffectAddedEvent event) {
-        actOnPlayer(event.playerName, p -> p.status.addEffect(event.effect);
+        actOnPlayer(event.playerName, p -> p.status.addEffect(event.effect));
     }
 
     private static void onPlayerActionEnded(PlayerActionEndedEvent event) {
-        actOnPlayer(event.playerName, p -> p.status.removeAction(event.action.getClass());
+        actOnPlayer(event.playerName, p -> p.status.removeAction(event.action.getClass()));
     }
 
     private static void onPlayerActionAdded(PlayerActionAddedEvent event) {
-        actOnPlayer(event.playerName, p -> p.status.addAction(event.action);
+        actOnPlayer(event.playerName, p -> p.status.addAction(event.action));
     }
 
     private static void actOnPlayer(String playerName, Consumer<Player> action) {
