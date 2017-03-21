@@ -68,9 +68,9 @@ public class Menu extends BasicGameState implements MusicListener {
 				exit.getHeight(), exit, exitR);
 
 		mb=new MusicBox(gc);
-		 music = new Music (MusicLocations.MENU_MUSIC);
+		music = new Music (MusicLocations.MENU_MUSIC);
+		music.setVolume(0.5f);
 		// music.addListener(this);
-		// music.setVolume(0.5f);
 		buttons= new MenuButton[]{ playButton,
 	    		optionsButton,
 	    		rulesButton,
