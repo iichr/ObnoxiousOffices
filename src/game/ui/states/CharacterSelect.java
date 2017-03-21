@@ -36,7 +36,7 @@ public class CharacterSelect extends BasicGameState {
 	private String waitingString = "Connected: Waiting for ";
 	private String connectFailString = "Connection failed: please check the ip and try again";
 	private String gameFullSring = "Game is already full, try a different server";
-	private String invalidNameString = "Invalid name, must be alphanumeric or underscore";
+	private String invalidNameString = "Invalid name: Must be alphanumeric or underscore";
 
 	private boolean toPlay = false;
 	private boolean connected = false;
@@ -157,7 +157,7 @@ public class CharacterSelect extends BasicGameState {
 					waitingDiam);
 
 			// display text
-			wg.drawCenter(g, waitingString + (playerLeft == 0 ? " more players." : (playerLeft + " more players.")),
+			wg.drawCenter(g, waitingString + (playerLeft == 0 ? " more players" : (playerLeft + " more players")),
 					connectButton.getCenterX(), connectButton.getY() + waitingDiam / 2 + Vals.BUTTON_HEIGHT / 2, false,
 					0.15f);
 		} else {
