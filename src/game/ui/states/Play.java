@@ -28,7 +28,6 @@ import game.ui.components.WordGenerator;
 import game.ui.interfaces.Vals;
 import game.ui.overlay.GameOverOverlay;
 import game.ui.overlay.HangmanOverlay;
-import game.ui.overlay.HelpOverlay;
 import game.ui.overlay.OptionsOverlay;
 import game.ui.overlay.PongOverlay;
 import game.ui.player.ActionSelector;
@@ -76,7 +75,6 @@ public class Play extends BasicGameState {
 	private GameOverOverlay gameOverOverlay;
 	private HangmanOverlay hangmanOverlay;
 	private PongOverlay pongOverlay;
-	private HelpOverlay helpOverlay;
 
 	// boolean flags
 	private boolean canMove;
@@ -167,7 +165,6 @@ public class Play extends BasicGameState {
 		gameOverOverlay = new GameOverOverlay(world.getPlayers(), wg);
 		hangmanOverlay = new HangmanOverlay(wg);
 		pongOverlay = new PongOverlay(wg);
-		helpOverlay = new HelpOverlay(wg);
 		bgmusic.loop();
 	}
 
@@ -235,19 +232,11 @@ public class Play extends BasicGameState {
 		}
 
 		// show ui info to player
-		int choice = helpOverlay.getHelp();
 		playerinfo.render(g, visible);
 		if (gameOver) {
 			gameOverOverlay.render(g);
 		} else if (options) {
-			if (choice == 0) {
-				helpOverlay.render(gc, g);
-			} else if (options && choice == 1) {
-				// optionsOverlay.render(gc, g);
-			} else if (options && choice == 2) {
-				optionsOverlay.render(gc, g);
-			}
-
+			optionsOverlay.render(gc, g);
 		} else if (playingHangman) {
 			hangmanOverlay.render(g);
 		} else if (playingPong) {
