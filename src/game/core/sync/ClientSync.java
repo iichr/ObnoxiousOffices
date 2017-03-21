@@ -81,7 +81,7 @@ public class ClientSync {
     }
 
     private static void onMiniGameEnded(MiniGameEndedEvent event) {
-        if(event.players.contains(Player.localPlayerName)) MiniGame.localMiniGame = null;
+        if(event.isLocal()) MiniGame.localMiniGame = null;
     }
 
     private static void onMiniGameStarted(MiniGameStartedEvent event) {
