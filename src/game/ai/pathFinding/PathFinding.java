@@ -275,7 +275,7 @@ public class PathFinding implements Runnable, Serializable {
 	 *            y coord of the chair
 	 * @return the path from the current location of the ai to the chair
 	 */
-	public ArrayList<Pair<Integer, Integer>> pathToCHair(Player ai, Integer x, Integer y) {
+	public ArrayList<Pair<Integer, Integer>> pathToChair(Player ai, Integer x, Integer y) {
 		startCell(ai.getLocation().coords.x, ai.getLocation().coords.y);
 		worldToCell();
 		AStar(x, y);
@@ -345,7 +345,7 @@ public class PathFinding implements Runnable, Serializable {
 				}
 			}
 		} else {
-			path = pathToCHair(player, TileTypeComputer.getChair(player).location.coords.x, TileTypeComputer.getChair(player).location.coords.y);
+			path = pathToChair(player, TileTypeComputer.getChair(player).location.coords.x, TileTypeComputer.getChair(player).location.coords.y);
 		}
 	}
 }
