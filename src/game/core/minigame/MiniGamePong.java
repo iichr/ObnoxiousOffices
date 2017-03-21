@@ -79,6 +79,7 @@ public class MiniGamePong extends MiniGame2Player {
 
     @Override
     public void onInput(PlayerInputEvent event) {
+    	System.out.println("got input");
         InputType type = event.inputType;
         String player = event.playerName;
         // Using this check as we may want to process other input types (like interaction)
