@@ -13,9 +13,6 @@ public abstract class PlayerActionMinigame extends PlayerAction {
 
     public PlayerActionMinigame(Player player) {
         super(player);
-        Events.on(MiniGameEndedEvent.class, e -> {
-            if(e.victor.equals(player.name))  end();
-        });
     }
 
     public abstract MiniGame getMiniGame();
@@ -32,8 +29,17 @@ public abstract class PlayerActionMinigame extends PlayerAction {
 
     @Override
     public void start() {
+        MiniGame miniGame = getMiniGame();
+        miniGame.onEnd(this::end);
         World.world.startMiniGame(getMiniGame());
     }
+
+    @Override
+    public void end() {
+        end(null);
+    }
+
+    public abstract void end(MiniGameEndedEvent event);
 
     @Override
     public void cancel() {

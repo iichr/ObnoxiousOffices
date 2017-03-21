@@ -11,6 +11,7 @@ import game.core.util.DataHolder;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Created by samtebbs on 18/02/2017.
@@ -25,6 +26,7 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
 
     private Map<String, Map<String, Object>> stats = new HashMap<>();
     private List<String> players = new ArrayList<>();
+    private Consumer<MiniGameEndedEvent> onEnd;
 
     public MiniGame(String... players) {
         Arrays.stream(players).forEach(p -> {
@@ -83,7 +85,9 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
 
     protected void end(String winner) {
         ended = true;
-        Events.trigger(new MiniGameEndedEvent(getPlayers(), winner),true);
+        MiniGameEndedEvent event = new MiniGameEndedEvent(getPlayers(), winner);
+        if(onEnd != null) onEnd.accept(event);
+        Events.trigger(event,true);
     }
 
     @Override
@@ -101,5 +105,9 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
 
     public boolean isPlaying(String player) {
         return getPlayers().contains(player);
+    }
+
+    public void onEnd(Consumer<MiniGameEndedEvent> onEnd) {
+        this.onEnd = onEnd;
     }
 }
