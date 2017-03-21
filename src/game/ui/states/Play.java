@@ -143,7 +143,7 @@ public class Play extends BasicGameState {
 		// setup tile sizes
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
 		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
-		
+
 		wg = new WordGenerator();
 
 		// set up renderer
@@ -157,7 +157,7 @@ public class Play extends BasicGameState {
 
 		// player overview
 		playerOverview = new PlayerOverview(localPlayerName, 0, 0);
-		
+
 		actionSelector = new ActionSelector(wg);
 
 		// popUps
@@ -191,11 +191,11 @@ public class Play extends BasicGameState {
 		}
 
 		long time = System.currentTimeMillis();
-		if(playingPong){
+		if (playingPong) {
 			if (time - lastMove >= rateMillisecondsPong) {
 				canMove = true;
 			}
-		}else{
+		} else {
 			if (time - lastMove >= rateMilliseconds) {
 				canMove = true;
 			}
@@ -318,10 +318,12 @@ public class Play extends BasicGameState {
 	 *            A MiniGameStartedEvent
 	 */
 	private void startMinigame(MiniGameStartedEvent e) {
-		if(e.game.isLocal()) {
+		if (e.game.isLocal()) {
 			Class<? extends MiniGame> cls = e.game.getClass();
-			if (cls == MiniGameHangman.class) playingHangman = true;
-			else if (cls == MiniGamePong.class) playingPong = true;
+			if (cls == MiniGameHangman.class)
+				playingHangman = true;
+			else if (cls == MiniGamePong.class)
+				playingPong = true;
 		}
 	}
 
@@ -334,5 +336,5 @@ public class Play extends BasicGameState {
 	private void closeMinigame(MiniGameEndedEvent e) {
 		playingHangman = false;
 		playingPong = false;
-	}	
+	}
 }
