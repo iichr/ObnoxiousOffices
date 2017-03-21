@@ -1,5 +1,6 @@
 package game.core.minigame;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import game.core.event.player.PlayerInputEvent;
@@ -10,7 +11,7 @@ import game.util.Pair;
 /**
  * Created by samtebbs on 18/02/2017.
  */
-public class MiniGamePong extends MiniGame2Player {
+public class MiniGamePong extends MiniGame2Player implements Serializable {
 
     public static final String Y_POS = "y", X_POS = "x", BALL_X_VEL = "bvx", BALL_Y_VEL = "bvy";
     public static final int BOUND_Y = 15, BOUND_X = 20;
