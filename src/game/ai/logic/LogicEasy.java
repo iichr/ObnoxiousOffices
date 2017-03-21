@@ -21,6 +21,7 @@ import game.core.player.action.PlayerActionWorkTimed;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
+import game.core.world.tile.type.TileTypeComputer;
 
 /**
  * @author Atanas K. Harbaliev. Created on 18/01/2017
@@ -30,7 +31,7 @@ public class LogicEasy implements Logic, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	//speed of AI, depends on difficulty
+	// speed of AI, depends on difficulty
 	public int aiSpeed = 500;
 
 	// create a PathFinding object
@@ -49,7 +50,7 @@ public class LogicEasy implements Logic, Serializable {
 
 	@Override
 	public void aiWork(AIPlayer ai) {
-		if(!ai.status.hasAction(PlayerActionWorkTimed.class))
+		if (!ai.status.hasAction(PlayerActionWorkTimed.class))
 			ai.status.addAction(new PlayerActionWorkTimed(ai));
 	}
 
@@ -117,15 +118,14 @@ public class LogicEasy implements Logic, Serializable {
 				figureOutFacing(p, toCM.get(i));
 			else {
 
-				//make a move
+				// make a move
 				move(p, toCM, i);
 			}
 		}
 
 		// interact with the tile
-		 Location l = p.getLocation().forward(p.getFacing());
-		 l.getTile().onInteraction(p, new InteractionTypeOther());
-
+		Location l = p.getLocation().forward(p.getFacing());
+		l.getTile().onInteraction(p, new InteractionTypeOther());
 
 		while (p.status.getAttribute(PlayerAttribute.FATIGUE) != 0) {
 			// do nothing
@@ -138,7 +138,7 @@ public class LogicEasy implements Logic, Serializable {
 	@Override
 	public void goToSofaAndBack(World w, AIPlayer p) {
 
-		//find the sofas on the map
+		// find the sofas on the map
 		findSofa(w, p);
 
 		// go through the array list of i, j coords
@@ -151,7 +151,7 @@ public class LogicEasy implements Logic, Serializable {
 				figureOutFacing(p, toSofa.get(i));
 			else {
 
-				//make a move
+				// make a move
 				move(p, toSofa, i);
 			}
 		}
@@ -175,10 +175,10 @@ public class LogicEasy implements Logic, Serializable {
 		// check whether the player is at the coffee machine or sofa
 		if (p.getLocation().coords.x == fromCM.get(1).getL() && p.getLocation().coords.y == fromCM.get(1).getR()) {
 			// if at the coffee machine, go through the array list of i, j
-			// coords  to the desk from the coffee machine
+			// coords to the desk from the coffee machine
 			for (int i = 2; i < fromCM.size(); i++) {
 
-				//make a move
+				// make a move
 				move(p, fromCM, i);
 			}
 		} else {
@@ -187,7 +187,7 @@ public class LogicEasy implements Logic, Serializable {
 			// to the desk from the sofa
 			for (int i = 1; i < fromSofa.size(); i++) {
 
-				//make a move
+				// make a move
 				move(p, fromSofa, i);
 			}
 
@@ -197,7 +197,7 @@ public class LogicEasy implements Logic, Serializable {
 		Location l = p.getLocation().forward(p.getFacing());
 		l.getTile().onInteraction(p, new InteractionTypeSit());
 
-		//interact with the computer and start working
+		// interact with the computer and start working
 		l = p.getLocation().forward(p.getFacing());
 		l.getTile().onInteraction(p, new InteractionTypeWork());
 	}
@@ -207,12 +207,12 @@ public class LogicEasy implements Logic, Serializable {
 		// get all players from the world
 		List<Player> players = World.world.getPlayers();
 
-		//choose a random player
+		// choose a random player
 		Random r = new Random();
 		int random = r.nextInt(players.size());
 		Player randomPlayer = players.get(random);
 
-		//if the chosen player is an AI, check again
+		// if the chosen player is an AI, check again
 		while (randomPlayer.isAI && !randomPlayer.name.equals(ai.name)) {
 			random = ThreadLocalRandom.current().nextInt(0, players.size());
 			randomPlayer = players.get(random);
@@ -223,7 +223,7 @@ public class LogicEasy implements Logic, Serializable {
 	}
 
 	public void hackPlayer(AIPlayer ai, Player player) {
-		//if the ai is not hacking anyone, hack
+		// if the ai is not hacking anyone, hack
 		if (!ai.status.hasAction(PlayerActionHackTimed.class))
 			ai.status.addAction(new PlayerActionHackTimed(ai, player));
 	}
@@ -237,7 +237,7 @@ public class LogicEasy implements Logic, Serializable {
 		ai.moveForwards();
 
 		try {
-			//stop the AI from moving, so it doesn't teleport
+			// stop the AI from moving, so it doesn't teleport
 			Thread.sleep(aiSpeed);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -247,12 +247,12 @@ public class LogicEasy implements Logic, Serializable {
 	@Override
 	public ArrayList<ArrayList<Pair<Integer, Integer>>> findPaths(World w, AIPlayer p, String go) {
 
-		//create fromSomewhere and toSomewhere arrays
+		// create fromSomewhere and toSomewhere arrays
 		ArrayList<Pair<Integer, Integer>> to = new ArrayList<Pair<Integer, Integer>>();
 		ArrayList<Pair<Integer, Integer>> from = new ArrayList<Pair<Integer, Integer>>();
 		// create the list of blocks in the grid that represents the path
 		ArrayList<Pair<Integer, Integer>> path = new ArrayList<Pair<Integer, Integer>>();
-		//create the list for the return
+		// create the list for the return
 		ArrayList<ArrayList<Pair<Integer, Integer>>> listOfArrayLists = new ArrayList<ArrayList<Pair<Integer, Integer>>>();
 
 		if (go.equals("s")) {
@@ -280,16 +280,20 @@ public class LogicEasy implements Logic, Serializable {
 		Collections.reverse(pathRev);
 		to = pathRev;
 
-		//add both arrays to the array that will be returned
+		// add both arrays to the array that will be returned
 		listOfArrayLists.add(to);
 		listOfArrayLists.add(from);
 		return listOfArrayLists;
 	}
-	
+
 	@Override
 	public void findChair(World w, AIPlayer ai) {
-		//get the coords of the chair
-		Pair<Integer, Integer> chairPos = new Pair<Integer, Integer>(10, 10); //TODO: change those
-		
+		// get the path to the chair
+		ArrayList<Pair<Integer, Integer>> pathToCHair = pf.pathToCHair(ai,
+				TileTypeComputer.getChair(ai).location.coords.x, TileTypeComputer.getChair(ai).location.coords.y);
+		// do all moves in the ArrayList
+		for (int i = 0; i < pathToCHair.size() - 1; i++) {
+			move(ai, pathToCHair, i);
+		}
 	}
 }

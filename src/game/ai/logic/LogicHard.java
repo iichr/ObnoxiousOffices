@@ -18,6 +18,7 @@ import game.core.player.action.PlayerActionWorkTimed;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
+import game.core.world.tile.type.TileTypeComputer;
 
 /**
  * @author Atanas K. Harbaliev. Created on 18/01/2017
@@ -125,7 +126,7 @@ public class LogicHard implements Logic, Serializable {
 				figureOutFacing(p, toCM.get(i));
 			else {
 
-				//make a move
+				// make a move
 				move(p, toCM, i);
 			}
 		}
@@ -158,7 +159,7 @@ public class LogicHard implements Logic, Serializable {
 				figureOutFacing(p, toSofa.get(i));
 			else {
 
-				//make a move
+				// make a move
 				move(p, toSofa, i);
 			}
 		}
@@ -185,16 +186,16 @@ public class LogicHard implements Logic, Serializable {
 			// coords to the desk from the coffee machine
 			for (int i = 2; i < fromCM.size(); i++) {
 
-				//make a move
+				// make a move
 				move(p, fromCM, i);
 			}
 		} else {
-			
+
 			// if at the sofa, go through the array list of i, j coords
 			// to the desk from the sofa
 			for (int i = 1; i < fromSofa.size(); i++) {
 
-				//make a move
+				// make a move
 				move(p, fromSofa, i);
 			}
 
@@ -280,7 +281,7 @@ public class LogicHard implements Logic, Serializable {
 		ai.moveForwards();
 
 		try {
-			//stop the AI from moving, so it doesn't teleport
+			// stop the AI from moving, so it doesn't teleport
 			Thread.sleep(aiSpeed);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -290,12 +291,12 @@ public class LogicHard implements Logic, Serializable {
 
 	public ArrayList<ArrayList<Pair<Integer, Integer>>> findPaths(World w, AIPlayer p, String go) {
 
-		//create fromSomewhere and toSomewhere arrays
+		// create fromSomewhere and toSomewhere arrays
 		ArrayList<Pair<Integer, Integer>> to = new ArrayList<Pair<Integer, Integer>>();
 		ArrayList<Pair<Integer, Integer>> from = new ArrayList<Pair<Integer, Integer>>();
 		// create the list of blocks in the grid that represents the path
 		ArrayList<Pair<Integer, Integer>> path = new ArrayList<Pair<Integer, Integer>>();
-		//create the list for the return
+		// create the list for the return
 		ArrayList<ArrayList<Pair<Integer, Integer>>> listOfArrayLists = new ArrayList<ArrayList<Pair<Integer, Integer>>>();
 
 		if (go.equals("s")) {
@@ -323,14 +324,20 @@ public class LogicHard implements Logic, Serializable {
 		Collections.reverse(pathRev);
 		to = pathRev;
 
-		//add both arrays to the array that will be returned
+		// add both arrays to the array that will be returned
 		listOfArrayLists.add(to);
 		listOfArrayLists.add(from);
 		return listOfArrayLists;
 	}
-	
+
 	@Override
 	public void findChair(World w, AIPlayer ai) {
-		
+		// get the path to the chair
+		ArrayList<Pair<Integer, Integer>> pathToCHair = pf.pathToCHair(ai,
+				TileTypeComputer.getChair(ai).location.coords.x, TileTypeComputer.getChair(ai).location.coords.y);
+		// do all moves in the ArrayList
+		for (int i = 0; i < pathToCHair.size() - 1; i++) {
+			move(ai, pathToCHair, i);
+		}
 	}
 }
