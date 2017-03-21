@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.net.SocketTimeoutException;
 
+import game.ai.AIPlayer;
 import game.core.event.Events;
 import game.core.event.GameFinishedEvent;
 import game.core.event.GameFullEvent;
@@ -37,6 +38,7 @@ public class Server {
 	 * Starts the server
 	 */
 	public Server() {
+		AIPlayer.init();
 		listen = true;
 		connections = new ArrayList<ServerListener>();
 		final int port = 8942;
