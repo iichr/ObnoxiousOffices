@@ -5,10 +5,7 @@ import game.core.event.GameStartedEvent;
 import game.core.input.InteractionType;
 import game.core.player.Player;
 import game.core.player.PlayerState;
-import game.core.player.action.PlayerAction;
-import game.core.player.action.PlayerActionHack;
-import game.core.player.action.PlayerActionWork;
-import game.core.player.action.PlayerActionWorkTimed;
+import game.core.player.action.*;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
@@ -61,7 +58,12 @@ public class TileTypeComputer extends TileTypeAction {
     @Override
     protected PlayerAction getAction(Player player, Tile tile, InteractionType type) {
         String owner = getOwningPlayer((MetaTile) tile);
-        return type.getClass() == InteractionType.InteractionTypeWork.class ? (player.isAI ? new PlayerActionWorkTimed(player) : new PlayerActionWork(player)) : new PlayerActionHack(player, World.world.getPlayer(((InteractionType.InteractionTypeHack) type).target));
+        if(type.getClass() == InteractionType.InteractionTypeWork.class && owner.equals(player.name))
+            return (player.isAI ? new PlayerActionWorkTimed(player) : new PlayerActionWork(player));
+        else {
+            Player target = World.world.getPlayer(((InteractionType.InteractionTypeHack) type).target);
+            return player.isAI ? new PlayerActionHackTimed(player, target) : new PlayerActionHack(player, target);
+        }
     }
 
     @Override
