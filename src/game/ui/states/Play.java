@@ -318,7 +318,7 @@ public class Play extends BasicGameState {
 	 *            A MiniGameStartedEvent
 	 */
 	private void startMinigame(MiniGameStartedEvent e) {
-		if (e.game.isLocal()) {
+		if (e.isLocal()) {
 			Class<? extends MiniGame> cls = e.game.getClass();
 			if (cls == MiniGameHangman.class)
 				playingHangman = true;
@@ -334,7 +334,9 @@ public class Play extends BasicGameState {
 	 *            A MiniGameEndedEvent
 	 */
 	private void closeMinigame(MiniGameEndedEvent e) {
-		playingHangman = false;
-		playingPong = false;
+		if (e.isLocal()) {
+			playingHangman = false;
+			playingPong = false;
+		}
 	}
 }
