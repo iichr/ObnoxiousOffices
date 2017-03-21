@@ -309,6 +309,9 @@ public class Play extends BasicGameState {
 	 */
 	private void gameFinished(GameFinishedEvent e) {
 		gameOver = true;
+		playingPong = false;
+		playingHangman = false;
+		showOverview = false;
 	}
 
 	/**
