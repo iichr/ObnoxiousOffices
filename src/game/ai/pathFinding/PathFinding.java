@@ -71,7 +71,7 @@ public class PathFinding implements Runnable, Serializable {
 	ArrayList<Pair<Integer, Integer>> coffees = new ArrayList<Pair<Integer, Integer>>();
 	ArrayList<Pair<Integer, Integer>> sofas = new ArrayList<Pair<Integer, Integer>>();
 
-	String toGo; // input "cm" for Coffee Machine or "b" for sofa
+	String toGo; // input "cm" for Coffee Machine or "s" for sofa
 
 	// constructor
 	public PathFinding(World w, Player p, String s) {

@@ -54,7 +54,7 @@ public class PathFindingTestEasy {
 		p = new Pair<Integer, Integer>(15, 1);
 		path.add(p);
 
-		assertTrue(path.equals(ai.getLogic().findPath(world, ai, "cm").get(0)));
+		assertTrue(path.equals(ai.getLogic().findPaths(world, ai, "cm").get(0)));
 	}
 	
 	@Test
@@ -62,9 +62,9 @@ public class PathFindingTestEasy {
 		//check if the ai is going back to its chair from the CM
 		Pair<Integer, Integer> toChair = new Pair<Integer, Integer>(13, 7);
 		//get the size of the ArrayList path to the desk
-		int size = ai.getLogic().findPath(world, ai, "cm").get(1).size() - 1;
+		int size = ai.getLogic().findPaths(world, ai, "cm").get(1).size() - 1;
 		
-		assertTrue(toChair.equals(ai.getLogic().findPath(world, ai, "cm").get(1).get(size)));
+		assertTrue(toChair.equals(ai.getLogic().findPaths(world, ai, "cm").get(1).get(size)));
 	}
 	
 	@Before

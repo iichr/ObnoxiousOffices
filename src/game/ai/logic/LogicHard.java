@@ -62,14 +62,14 @@ public class LogicHard implements Logic, Serializable {
 
 	@Override
 	public void findCoffeeMachine(World w, AIPlayer p) {
-		fromCM = findPath(w, p, "cm").get(1);
-		toCM = findPath(w, p, "cm").get(0);
+		fromCM = findPaths(w, p, "cm").get(1);
+		toCM = findPaths(w, p, "cm").get(0);
 	}
 
 	@Override
 	public void findSofa(World w, AIPlayer p) {
-		fromSofa = findPath(w, p, "b").get(1);
-		toSofa = findPath(w, p, "b").get(0);
+		fromSofa = findPaths(w, p, "s").get(1);
+		toSofa = findPaths(w, p, "s").get(0);
 	}
 
 	public void figureOutFacing(AIPlayer p, Pair<Integer, Integer> pair) {
@@ -288,7 +288,7 @@ public class LogicHard implements Logic, Serializable {
 		}
 	}
 
-	public ArrayList<ArrayList<Pair<Integer, Integer>>> findPath(World w, AIPlayer p, String go) {
+	public ArrayList<ArrayList<Pair<Integer, Integer>>> findPaths(World w, AIPlayer p, String go) {
 
 		//create fromSomewhere and toSomewhere arrays
 		ArrayList<Pair<Integer, Integer>> to = new ArrayList<Pair<Integer, Integer>>();
@@ -298,10 +298,10 @@ public class LogicHard implements Logic, Serializable {
 		//create the list for the return
 		ArrayList<ArrayList<Pair<Integer, Integer>>> listOfArrayLists = new ArrayList<ArrayList<Pair<Integer, Integer>>>();
 
-		if (go.equals("b")) {
+		if (go.equals("s")) {
 
 			// call the constructor of PathFinding and run the run() method
-			pf = new PathFinding(w, p, "b");
+			pf = new PathFinding(w, p, "s");
 			pf.run();
 		} else {
 
@@ -327,5 +327,10 @@ public class LogicHard implements Logic, Serializable {
 		listOfArrayLists.add(to);
 		listOfArrayLists.add(from);
 		return listOfArrayLists;
+	}
+	
+	@Override
+	public void findChair(World w, AIPlayer ai) {
+		
 	}
 }
