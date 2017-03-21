@@ -291,12 +291,12 @@ public class LogicEasy implements Logic, Serializable {
 		pf.run();
 		
 		// get the path to the chair
-		ArrayList<Pair<Integer, Integer>> pathToCHair = new ArrayList<Pair<Integer, Integer>>();
-		pathToCHair = pf.getPath();
+		ArrayList<Pair<Integer, Integer>> pathToChair = new ArrayList<Pair<Integer, Integer>>();
+		pathToChair = pf.getPath();
 		
 		// do all moves in the ArrayList
-		for (int i = 0; i < pathToCHair.size() - 1; i++) {
-			move(ai, pathToCHair, i);
+		for (int i = 0; i < pathToChair.size() - 1; i++) {
+			move(ai, pathToChair, i);
 			// interact with the tile
 			Location l = ai.getLocation().forward(ai.getFacing());
 			l.getTile().onInteraction(ai, new InteractionTypeSit());

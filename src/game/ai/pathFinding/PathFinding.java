@@ -24,30 +24,6 @@ public class PathFinding implements Runnable, Serializable {
 	// make eclipse happy
 	private static final long serialVersionUID = 1L;
 
-	// the object that is going to be used to store heuristic value, g cost
-	// final value, coordinates and the parent
-	class Cell implements Serializable {
-		// make eclipse happy
-		private static final long serialVersionUID = 1L;
-
-		int hCost = 0; // heuristic cost
-		int fCost = 0; // total cost, f = g + h
-
-		int i, j; // coordinates of the cell
-		Cell parent; // previous cell
-
-		// constructor
-		Cell(int i, int j) {
-			this.i = i;
-			this.j = j;
-		}
-
-		// @Override
-		// public String toString() {
-		// return "[" + this.i + ", " + this.j + "]";
-		// }
-	}
-
 	final int gVertHorizCost = 10; // the cost of making a horizontal/vertical
 									// move
 
@@ -275,7 +251,7 @@ public class PathFinding implements Runnable, Serializable {
 	 *            y coord of the chair
 	 * @return the path from the current location of the ai to the chair
 	 */
-	public ArrayList<Pair<Integer, Integer>> pathToCHair(Player ai, Integer x, Integer y) {
+	public ArrayList<Pair<Integer, Integer>> pathToChair(Player ai, Integer x, Integer y) {
 		startCell(ai.getLocation().coords.x, ai.getLocation().coords.y);
 		worldToCell();
 		AStar(x, y);
@@ -345,7 +321,7 @@ public class PathFinding implements Runnable, Serializable {
 				}
 			}
 		} else {
-			path = pathToCHair(player, TileTypeComputer.getChair(player).location.coords.x, TileTypeComputer.getChair(player).location.coords.y);
+			path = pathToChair(player, TileTypeComputer.getChair(player).location.coords.x, TileTypeComputer.getChair(player).location.coords.y);
 		}
 	}
 }
