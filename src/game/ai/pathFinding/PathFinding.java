@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-import game.core.player.Player;
+import game.ai.AIPlayer;
 import game.core.world.World;
 import game.core.world.tile.Tile;
 import game.core.world.tile.type.TileType;
@@ -38,7 +38,7 @@ public class PathFinding implements Runnable, Serializable {
 	boolean closed[][]; // array of tiles that are already explored
 
 	World world;
-	Player player;
+	AIPlayer player;
 
 	int startI, startJ; // coordinates for our start point
 
@@ -52,7 +52,7 @@ public class PathFinding implements Runnable, Serializable {
 	String toGo; // input "cm" for Coffee Machine or "s" for sofa, "c" for chair
 
 	// constructor
-	public PathFinding(World w, Player p, String s) {
+	public PathFinding(World w, AIPlayer p, String s) {
 		world = w;
 		player = p;
 		toGo = s;
@@ -251,7 +251,7 @@ public class PathFinding implements Runnable, Serializable {
 	 *            y coord of the chair
 	 * @return the path from the current location of the ai to the chair
 	 */
-	public ArrayList<Pair<Integer, Integer>> pathToChair(Player ai, Integer x, Integer y) {
+	public ArrayList<Pair<Integer, Integer>> pathToChair(AIPlayer ai, Integer x, Integer y) {
 		startCell(ai.getLocation().coords.x, ai.getLocation().coords.y);
 		worldToCell();
 		AStar(x, y);
