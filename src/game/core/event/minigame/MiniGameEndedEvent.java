@@ -1,6 +1,8 @@
 package game.core.event.minigame;
 
 import game.core.event.Event;
+import game.core.player.Player;
+import game.ui.states.Play;
 
 import java.util.List;
 
@@ -16,4 +18,9 @@ public class MiniGameEndedEvent extends Event {
         this.players = players;
         this.victor = victor;
     }
+
+    public boolean isLocal() {
+        return players.contains(Player.localPlayerName);
+    }
+
 }
