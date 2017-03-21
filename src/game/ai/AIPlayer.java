@@ -7,7 +7,6 @@ import game.ai.ruleBasedAI.FireRules;
 import game.ai.ruleBasedAI.Rules;
 import game.ai.ruleBasedAI.UpdateMemory;
 import game.ai.ruleBasedAI.WorkingMemory;
-import game.core.event.Event;
 import game.core.event.Events;
 import game.core.event.player.PlayerJoinedEvent;
 import game.core.event.player.PlayerQuitEvent;
@@ -36,10 +35,10 @@ public class AIPlayer extends Player {
 	public FireRules fr;
 
 	// the easy mode logic for the AI player
-	public LogicEasy logicEasy;
+	private LogicEasy logicEasy;
 
 	// the hard mode logic for the AI player
-	public LogicHard logicHard;
+	private LogicHard logicHard;
 
 	// the mode of the AI
 	public String mode;
