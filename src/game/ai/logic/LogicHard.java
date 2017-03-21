@@ -338,6 +338,9 @@ public class LogicHard implements Logic, Serializable {
 		// do all moves in the ArrayList
 		for (int i = 0; i < pathToCHair.size() - 1; i++) {
 			move(ai, pathToCHair, i);
+			// interact with the tile
+			Location l = ai.getLocation().forward(ai.getFacing());
+			l.getTile().onInteraction(ai, new InteractionTypeSit());
 		}
 	}
 }
