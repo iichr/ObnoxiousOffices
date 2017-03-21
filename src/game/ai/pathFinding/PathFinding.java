@@ -24,30 +24,6 @@ public class PathFinding implements Runnable, Serializable {
 	// make eclipse happy
 	private static final long serialVersionUID = 1L;
 
-	// the object that is going to be used to store heuristic value, g cost
-	// final value, coordinates and the parent
-	class Cell implements Serializable {
-		// make eclipse happy
-		private static final long serialVersionUID = 1L;
-
-		int hCost = 0; // heuristic cost
-		int fCost = 0; // total cost, f = g + h
-
-		int i, j; // coordinates of the cell
-		Cell parent; // previous cell
-
-		// constructor
-		Cell(int i, int j) {
-			this.i = i;
-			this.j = j;
-		}
-
-		// @Override
-		// public String toString() {
-		// return "[" + this.i + ", " + this.j + "]";
-		// }
-	}
-
 	final int gVertHorizCost = 10; // the cost of making a horizontal/vertical
 									// move
 
