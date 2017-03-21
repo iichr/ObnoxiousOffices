@@ -18,7 +18,6 @@ import game.core.player.action.PlayerActionWorkTimed;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
-import game.core.world.tile.type.TileTypeComputer;
 
 /**
  * @author Atanas K. Harbaliev. Created on 18/01/2017
@@ -332,11 +331,14 @@ public class LogicHard implements Logic, Serializable {
 
 	@Override
 	public void findChair(World w, AIPlayer ai) {
+		//get the pathfinding running
+		pf = new PathFinding(w, ai,"c");
+		pf.run();
 		
-		pf = new PathFinding(w, ai,"s");
 		// get the path to the chair
-		ArrayList<Pair<Integer, Integer>> pathToCHair = pf.pathToCHair(ai,
-				TileTypeComputer.getChair(ai).location.coords.x, TileTypeComputer.getChair(ai).location.coords.y);
+		ArrayList<Pair<Integer, Integer>> pathToCHair = new ArrayList<Pair<Integer, Integer>>();
+		pathToCHair = pf.getPath();
+		
 		// do all moves in the ArrayList
 		for (int i = 0; i < pathToCHair.size() - 1; i++) {
 			move(ai, pathToCHair, i);
