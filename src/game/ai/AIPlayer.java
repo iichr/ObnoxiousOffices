@@ -86,7 +86,7 @@ public class AIPlayer extends Player {
 	}
 
 	public static void init() {
-		Events.on(Events.EventPriority.HIGH, PlayerQuitEvent.class, AIPlayer::onPlayerQuit);
+		Events.on(PlayerQuitEvent.class, AIPlayer::onPlayerQuit);
 	}
 
 	public void initialise() {
