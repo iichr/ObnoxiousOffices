@@ -18,7 +18,7 @@ import game.core.minigame.MiniGame;
 import game.core.minigame.MiniGameHangman;
 import game.core.minigame.MiniGamePong;
 import game.core.player.Player;
-import game.core.player.PlayerState;
+import game.core.player.state.PlayerState;
 import game.core.world.World;
 import game.ui.components.ChatBox;
 import game.ui.components.Controls;

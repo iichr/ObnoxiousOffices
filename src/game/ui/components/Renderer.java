@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -12,8 +11,8 @@ import org.newdawn.slick.SlickException;
 import game.core.event.Events;
 import game.core.event.player.PlayerMovedEvent;
 import game.core.player.Player;
-import game.core.player.PlayerState;
 import game.core.player.action.PlayerActionSleep;
+import game.core.player.state.PlayerState;
 import game.core.util.Coordinates;
 import game.core.world.Direction;
 import game.core.world.Location;
