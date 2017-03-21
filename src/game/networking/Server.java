@@ -27,10 +27,14 @@ public class Server {
 	private World world;
 	public static boolean listen;
 	private final int NUM_PLAYERS = 4;
+<<<<<<< HEAD
 	public String startTime;
 	public int startMins;
 	public int startHours;
 	// public static final int timeToWait = 30000;
+=======
+	public static final int timeToWait = 60000;
+>>>>>>> e89133ab2b609947b77fff5f42d236a8d67347db
 
 	/**
 	 * Starts the server
@@ -148,6 +152,12 @@ public class Server {
 	}
 
 	private void endGame(Object recieved) {
+		try {
+			serverSocket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		new Server();
 	}
 
