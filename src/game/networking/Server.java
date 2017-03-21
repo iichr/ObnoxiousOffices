@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import game.ai.AIPlayer;
+import game.core.event.CreateAIPlayerRequest;
 import game.core.event.Events;
 import game.core.event.GameFinishedEvent;
 import game.core.event.GameFullEvent;
@@ -26,7 +27,7 @@ public class Server {
 	private World world;
 	public static boolean listen;
 	private final int NUM_PLAYERS = 4;
-	private final int timeToWait = 20000;
+	public static final int timeToWait = 30000;
 
 	/**
 	 * Starts the server
@@ -87,8 +88,13 @@ public class Server {
 				}
 			} catch (SocketTimeoutException s) {
 				System.out.println("timeout");
-				if (listen) {
-					ServerListener.NUM_AI_PLAYERS = ServerListener.NUM_AI_PLAYERS + 1;
+				if (listen && connections.size() > 0) {
+					System.out.println("adding ai");
+					ServerListener.NUM_AI_PLAYERS = NUM_PLAYERS - connections.size();
+					for (int i = 0; i < ServerListener.NUM_AI_PLAYERS; i++) {
+						Events.trigger(new CreateAIPlayerRequest(connections.get(0), i));
+					}
+					connections.get(0).startGame();
 				}
 			} catch (IOException e) {
 				System.err.println("IO error " + e.getMessage());
@@ -128,7 +134,6 @@ public class Server {
 
 	private void endGame(Object recieved) {
 		new Server();
-
 	}
 
 	/**

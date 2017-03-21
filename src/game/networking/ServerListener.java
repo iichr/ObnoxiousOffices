@@ -18,7 +18,15 @@ import game.core.event.minigame.MiniGameEndedEvent;
 import game.core.event.minigame.MiniGameStartedEvent;
 import game.core.event.minigame.MiniGameStatChangedEvent;
 import game.core.event.minigame.MiniGameVarChangedEvent;
-import game.core.event.player.*;
+import game.core.event.player.PlayerAttributeChangedEvent;
+import game.core.event.player.PlayerCreatedEvent;
+import game.core.event.player.PlayerJoinedEvent;
+import game.core.event.player.PlayerMovedEvent;
+import game.core.event.player.PlayerProgressUpdateEvent;
+import game.core.event.player.PlayerQuitEvent;
+import game.core.event.player.PlayerRotatedEvent;
+import game.core.event.player.PlayerStateAddedEvent;
+import game.core.event.player.PlayerStateRemovedEvent;
 import game.core.event.player.action.PlayerActionAddedEvent;
 import game.core.event.player.action.PlayerActionEndedEvent;
 import game.core.event.player.effect.PlayerEffectAddedEvent;
@@ -113,55 +121,57 @@ public class ServerListener extends Thread {
 	}
 
 	/**
-	 * Add conections and any hard coded AI players, trigger game start event
+	 * Add connections and any hard coded AI players, trigger game start event
 	 */
 	@Override
 	public void run() {
-		while (running) {
-			if (!makingAI) {
-				if (world.getPlayers().size() < connections.size()) {
-					try {
-						playerName = is.readObject().toString();
-						this.addPlayerToGame(playerName);
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+		if (!makingAI) {
+			if (world.getPlayers().size() < connections.size()) {
+				try {
+					playerName = is.readObject().toString();
+					this.addPlayerToGame(playerName);
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 
-					// Allows hard coded AI player to be added for prototype
-					if (world.getPlayers().size() == world.getMaxPlayers() - NUM_AI_PLAYERS && NUM_AI_PLAYERS > 0) {
-						for (int i = 0; i < NUM_AI_PLAYERS; i++) {
-							makingAI = true;
-							Events.trigger(new CreateAIPlayerRequest(this, i));
-						}	
+				// Allows hard coded AI player to be added for prototype
+				if (world.getPlayers().size() == world.getMaxPlayers() - NUM_AI_PLAYERS && NUM_AI_PLAYERS > 0) {
+					for (int i = 0; i < NUM_AI_PLAYERS; i++) {
+						makingAI = true;
+						Events.trigger(new CreateAIPlayerRequest(this, i));
 					}
-					if (world.getPlayers().size() == world.getMaxPlayers()) {
-						Server.listen = false;
-						System.out.println(Server.listen);
-						GameStartedEvent gameStart = new GameStartedEvent(world);
-						sendToAllClients(gameStart);
-						Events.trigger(gameStart);
-					}
-				} else {
+				}
+				if (world.getPlayers().size() == world.getMaxPlayers()) {
+					startGame();
+				}
+			} else {
+				try {
+					Event eventObject = (Event) is.readObject();
+					System.out.println("recieved: " + eventObject);
+					Events.trigger(eventObject);
+				} catch (Exception e) {
 					try {
-						Event eventObject = (Event) is.readObject();
-						System.out.println("recieved: " + eventObject);
-						Events.trigger(eventObject);
-					} catch (Exception e) {
-						try {
-							stopRunning();
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
+						stopRunning();
+					} catch (IOException e1) {
+						e1.printStackTrace();
 					}
 				}
 			}
 		}
 	}
 
+	public void startGame() {
+		Server.listen = false;
+		System.out.println(Server.listen);
+		GameStartedEvent gameStart = new GameStartedEvent(world);
+		sendToAllClients(gameStart);
+		Events.trigger(gameStart);
+	}
+
 	private void stopRunning() throws IOException {
-		if(running) {
+		if (running) {
 			outputThread.interrupt();
 			connections.remove(this);
 			running = false;
@@ -247,14 +257,14 @@ public class ServerListener extends Thread {
 			name = name + "x";
 			playerName = playerName + "x";
 		}
-			Player playerObject = new Player(name, Direction.SOUTH, world.getSpawnPoint(playerNumber));
-			playerObject.setHair(playerNumber);
-			world.addPlayer(playerObject);
-			int playersLeft = world.getMaxPlayers() - world.getPlayers().size();
-			PlayerCreatedEvent event = new PlayerCreatedEvent(name, playersLeft);
-			Events.trigger(event);
-			sendToAllClients(event);
-			System.out.println("Player " + name + " added to the game!");
+		Player playerObject = new Player(name, Direction.SOUTH, world.getSpawnPoint(playerNumber));
+		playerObject.setHair(playerNumber);
+		world.addPlayer(playerObject);
+		int playersLeft = world.getMaxPlayers() - world.getPlayers().size();
+		PlayerCreatedEvent event = new PlayerCreatedEvent(name, playersLeft);
+		Events.trigger(event);
+		sendToAllClients(event);
+		System.out.println("Player " + name + " added to the game!");
 	}
 
 	/**
