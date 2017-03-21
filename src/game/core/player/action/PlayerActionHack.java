@@ -1,5 +1,6 @@
 package game.core.player.action;
 
+import game.core.event.minigame.MiniGameEndedEvent;
 import game.core.minigame.MiniGame;
 import game.core.minigame.MiniGameHangman;
 import game.core.minigame.MiniGamePong;
@@ -19,8 +20,8 @@ public class PlayerActionHack extends PlayerActionMinigame {
     }
 
     @Override
-    public void end() {
-        target.removeProgress();
+    public void end(MiniGameEndedEvent event) {
+        if(event.victor.equals(player.name)) target.removeProgress();
     }
 
     @Override
