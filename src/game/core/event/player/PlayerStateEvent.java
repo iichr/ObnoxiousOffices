@@ -1,6 +1,6 @@
 package game.core.event.player;
 
-import game.core.player.PlayerState;
+import game.core.player.state.PlayerState;
 
 /**
  * Created by samtebbs on 28/02/2017.
