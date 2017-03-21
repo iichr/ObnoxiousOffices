@@ -146,11 +146,25 @@ public interface Logic extends Serializable {
 	public void move(AIPlayer ai, ArrayList<Pair<Integer, Integer>> path, int i);
 
 	/**
-	 *
+	 * Finds path to somewhere and back to the initial starting point.
+	 * 
 	 * @param w
+	 *            the world of the player
 	 * @param p
+	 *            the player that is going to move
 	 * @param go
-	 * @return
+	 *            the destination of the player; "cm" for coffee machine and "s"
+	 *            for sofa
+	 * @return array list containing two array lists. The first one is to the
+	 *         destination and the second one is from the destination to the
+	 *         start point
 	 */
-	public ArrayList<ArrayList<Pair<Integer, Integer>>> findPath(World w, AIPlayer p, String go);
+	public ArrayList<ArrayList<Pair<Integer, Integer>>> findPaths(World w, AIPlayer p, String go);
+	
+	/**
+	 * When a certain player disconnects, an AI replaces him/her. When this is done, if the player was not on his chair, find the path to it and sit. Else, do nothing.
+	 * @param w the world of the player
+	 * @param ai the ai that needs to move 
+	 */
+	public void findChair(World w, AIPlayer ai);
 }

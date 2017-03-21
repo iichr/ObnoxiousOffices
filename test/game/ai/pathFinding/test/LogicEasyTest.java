@@ -40,7 +40,7 @@ public class LogicEasyTest {
 		assertTrue(fatigeBeforeRefresh > fatigueAfterRefresh);
 	}
 	
-	@Test
+/*	@Test
 	public void testWork() {
 		double noWorkProgress = 0;
 		//make ai work
@@ -55,7 +55,7 @@ public class LogicEasyTest {
 		}
 		System.out.println("workProgress " + workProgress);
 		assertTrue(noWorkProgress < workProgress);
-	}
+	}*/
 	
 	@Before
 	public void createWorld() {

@@ -3,9 +3,11 @@ package game.ai.pathFinding;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+import game.ai.AIPlayer;
 import game.core.player.Player;
 import game.core.world.World;
 import game.core.world.tile.Tile;
@@ -71,7 +73,7 @@ public class PathFinding implements Runnable, Serializable {
 	ArrayList<Pair<Integer, Integer>> coffees = new ArrayList<Pair<Integer, Integer>>();
 	ArrayList<Pair<Integer, Integer>> sofas = new ArrayList<Pair<Integer, Integer>>();
 
-	String toGo; // input "cm" for Coffee Machine or "b" for sofa
+	String toGo; // input "cm" for Coffee Machine or "s" for sofa
 
 	// constructor
 	public PathFinding(World w, Player p, String s) {
@@ -130,7 +132,8 @@ public class PathFinding implements Runnable, Serializable {
 					coffees.add(new Pair<Integer, Integer>(i, j));
 				}
 
-				// if the current tile is a sofa, and is closer than the previous
+				// if the current tile is a sofa, and is closer than the
+				// previous
 				// one, save coordinates
 				if (tile.type.equals(TileType.SOFA)) {
 					grid[i][j].hCost = calcHeuristic(i, j);
@@ -258,6 +261,27 @@ public class PathFinding implements Runnable, Serializable {
 			current = current.parent;
 		}
 		return pathToObj;
+	}
+
+	/**
+	 * When a player is disconnected, they need to go to their chair. This
+	 * methods finds the path to it.
+	 * 
+	 * @param ai
+	 *            the ai player that needs to do the moving
+	 * @param x
+	 *            x coord of the chair
+	 * @param y
+	 *            y coord of the chair
+	 * @return the path from the current location of the ai to the chair
+	 */
+	public ArrayList<Pair<Integer, Integer>> pathToCHair(AIPlayer ai, Integer x, Integer y) {
+		startCell(ai.getLocation().coords.x, ai.getLocation().coords.y);
+		worldToCell();
+		AStar(x, y);
+		ArrayList<Pair<Integer, Integer>> pathChair = path(x, y);
+		Collections.reverse(pathChair);
+		return pathChair;
 	}
 
 	/**
