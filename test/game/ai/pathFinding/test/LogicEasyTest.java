@@ -4,13 +4,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import game.ai.AIPlayer;
-import game.ai.pathFinding.Pair;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.world.Direction;
@@ -20,11 +18,10 @@ public class LogicEasyTest {
 	
 	public World world;
 	public AIPlayer ai;
-	public Pair<Integer, Integer> p;
-	ArrayList<Pair<Integer, Integer>> path = new ArrayList<Pair<Integer, Integer>>();
 
 	@Test
 	public void testRefresh() {
+		ai.getLogic().aiWork(ai);
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
