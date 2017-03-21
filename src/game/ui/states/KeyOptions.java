@@ -23,7 +23,7 @@ import game.util.Pair;
  * @author iichr
  *
  */
-public class Options2 extends BasicGameState {
+public class KeyOptions extends BasicGameState {
 	private MenuButton backButton;
 	// A word generator for the main game font
 	private WordGenerator wordGen;
