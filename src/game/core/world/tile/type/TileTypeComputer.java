@@ -17,6 +17,7 @@ import game.util.Sets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by samtebbs on 23/01/2017.
@@ -69,6 +70,21 @@ public class TileTypeComputer extends TileTypeAction {
     @Override
     public Collection<Tile> getTiles(Location location, Direction facing) {
         return Collections.singletonList(new MetaTile(location, this, facing, 0, new ComputerMetadata(location.coords, "")));
+    }
+
+    public static Optional<Tile> getComputer(Player player) {
+        World world = player.getLocation().world;
+        List<Tile> computers = world.getTiles(TileTypeComputer.class);
+        return computers.stream().filter(c -> getOwningPlayer((MetaTile) c).equals(player.name)).findFirst();
+    }
+
+    public static Optional<Tile> getChair(Player player) {
+        Optional<Tile> computer = getComputer(player);
+        if(computer.isPresent()) {
+            List<Tile> neighbours = player.getLocation().world.getNeighbours(computer.get());
+            return neighbours.stream().filter(t -> t.type.equals(TileType.CHAIR)).findFirst();
+        }
+        return Optional.empty();
     }
 
     public static String getOwningPlayer(MetaTile computerTile) {
