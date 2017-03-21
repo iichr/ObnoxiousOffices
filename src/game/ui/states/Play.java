@@ -18,7 +18,7 @@ import game.core.minigame.MiniGame;
 import game.core.minigame.MiniGameHangman;
 import game.core.minigame.MiniGamePong;
 import game.core.player.Player;
-import game.core.player.PlayerState;
+import game.core.player.state.PlayerState;
 import game.core.world.World;
 import game.ui.components.ChatBox;
 import game.ui.components.Controls;
@@ -309,6 +309,9 @@ public class Play extends BasicGameState {
 	 */
 	private void gameFinished(GameFinishedEvent e) {
 		gameOver = true;
+		playingPong = false;
+		playingHangman = false;
+		showOverview = false;
 	}
 
 	/**
@@ -318,7 +321,7 @@ public class Play extends BasicGameState {
 	 *            A MiniGameStartedEvent
 	 */
 	private void startMinigame(MiniGameStartedEvent e) {
-		if (e.game.isLocal()) {
+		if (e.isLocal()) {
 			Class<? extends MiniGame> cls = e.game.getClass();
 			if (cls == MiniGameHangman.class)
 				playingHangman = true;
@@ -334,7 +337,9 @@ public class Play extends BasicGameState {
 	 *            A MiniGameEndedEvent
 	 */
 	private void closeMinigame(MiniGameEndedEvent e) {
-		playingHangman = false;
-		playingPong = false;
+		if (e.isLocal()) {
+			playingHangman = false;
+			playingPong = false;
+		}
 	}
 }

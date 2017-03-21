@@ -243,4 +243,10 @@ public class World implements Updateable, Serializable {
     public MiniGame getMiniGame(String playerName) {
         return miniGames.stream().filter(m -> m.hasPlayer(playerName)).findFirst().orElse(null);
     }
+
+    public List<Tile> getNeighbours(Tile tile) {
+        Location loc = tile.location;
+        List<Location> locs = Arrays.stream(Direction.values()).map(loc::forward).collect(Collectors.toList());
+        return locs.stream().filter(Location::checkBounds).map(Location::getTile).collect(Collectors.toList());
+    }
 }
