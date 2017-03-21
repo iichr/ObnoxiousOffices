@@ -29,7 +29,7 @@ public class PathFinding implements Runnable, Serializable {
 
 	// list of tiles to be explored
 	// change the comparator operation by comparing the final cost of two cells
-	PriorityQueue<Cell> open = new PriorityQueue<>(new Comparator<Cell>() {
+	static PriorityQueue<Cell> open = new PriorityQueue<> (new Comparator<Cell>() {
 		@Override
 		public int compare(Cell c1, Cell c2) {
 			return c1.fCost < c2.fCost ? -1 : c1.fCost > c2.fCost ? 1 : 0;
