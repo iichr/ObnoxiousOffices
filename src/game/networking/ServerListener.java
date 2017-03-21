@@ -125,37 +125,39 @@ public class ServerListener extends Thread {
 	 */
 	@Override
 	public void run() {
-		if (!makingAI) {
-			if (world.getPlayers().size() < connections.size()) {
-				try {
-					playerName = is.readObject().toString();
-					this.addPlayerToGame(playerName);
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-				// Allows hard coded AI player to be added for prototype
-				if (world.getPlayers().size() == world.getMaxPlayers() - NUM_AI_PLAYERS && NUM_AI_PLAYERS > 0) {
-					for (int i = 0; i < NUM_AI_PLAYERS; i++) {
-						makingAI = true;
-						Events.trigger(new CreateAIPlayerRequest(this, i));
-					}
-				}
-				if (world.getPlayers().size() == world.getMaxPlayers()) {
-					startGame();
-				}
-			} else {
-				try {
-					Event eventObject = (Event) is.readObject();
-					System.out.println("recieved: " + eventObject);
-					Events.trigger(eventObject);
-				} catch (Exception e) {
+		while (running) {
+			if (!makingAI) {
+				if (world.getPlayers().size() < connections.size()) {
 					try {
-						stopRunning();
-					} catch (IOException e1) {
-						e1.printStackTrace();
+						playerName = is.readObject().toString();
+						this.addPlayerToGame(playerName);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					// Allows hard coded AI player to be added for prototype
+					if (world.getPlayers().size() == world.getMaxPlayers() - NUM_AI_PLAYERS && NUM_AI_PLAYERS > 0) {
+						for (int i = 0; i < NUM_AI_PLAYERS; i++) {
+							makingAI = true;
+							Events.trigger(new CreateAIPlayerRequest(this, i));
+						}
+					}
+					if (world.getPlayers().size() == world.getMaxPlayers()) {
+						startGame();
+					}
+				} else {
+					try {
+						Event eventObject = (Event) is.readObject();
+						System.out.println("recieved: " + eventObject);
+						Events.trigger(eventObject);
+					} catch (Exception e) {
+						try {
+							stopRunning();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
 					}
 				}
 			}
@@ -308,13 +310,14 @@ public class ServerListener extends Thread {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
+		outputThread.interrupt();
+		connections.remove(this);
+		running = false;
 		try {
-			this.is.close();
-			this.os.close();
+			socket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.socket = null;
 	}
 
 }
