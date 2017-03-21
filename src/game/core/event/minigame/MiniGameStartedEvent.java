@@ -2,6 +2,7 @@ package game.core.event.minigame;
 
 import game.core.event.Event;
 import game.core.minigame.MiniGame;
+import game.core.player.Player;
 
 import java.util.List;
 
@@ -15,4 +16,9 @@ public class MiniGameStartedEvent extends Event {
     public MiniGameStartedEvent(MiniGame game) {
         this.game = game;
     }
+
+    public boolean isLocal() {
+        return game.isLocal();
+    }
+
 }
