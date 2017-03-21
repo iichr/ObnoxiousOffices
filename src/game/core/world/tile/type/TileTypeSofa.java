@@ -2,7 +2,7 @@ package game.core.world.tile.type;
 
 import game.core.input.InteractionType;
 import game.core.player.Player;
-import game.core.player.PlayerState;
+import game.core.player.state.PlayerState;
 import game.core.player.action.PlayerActionSleep;
 import game.core.world.Direction;
 import game.core.world.Location;

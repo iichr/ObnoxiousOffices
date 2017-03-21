@@ -1,8 +1,5 @@
 package game.core.sync;
 
-import game.core.event.CreateAIPlayerRequest;
-import game.ai.AIPlayer;
-import game.core.event.CreateAIPlayerRequest;
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
 import game.core.event.chat.ChatMessageCreatedEvent;
@@ -13,19 +10,16 @@ import game.core.input.InputTypeMovement;
 import game.core.input.InteractionType;
 import game.core.minigame.MiniGame;
 import game.core.player.Player;
-import game.core.player.PlayerState;
-import game.core.player.action.PlayerAction;
+import game.core.player.state.PlayerState;
 import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
 import game.core.world.tile.Tile;
 import game.core.world.tile.type.TileType;
-import game.core.world.tile.type.TileTypeComputer;
 import game.util.Sets;
 import game.networking.ServerListener;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 

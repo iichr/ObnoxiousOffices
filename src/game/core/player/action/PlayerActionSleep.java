@@ -1,7 +1,7 @@
 package game.core.player.action;
 
 import game.core.player.Player;
-import game.core.player.PlayerState;
+import game.core.player.state.PlayerState;
 import game.core.player.PlayerStatus;
 import game.core.player.effect.PlayerEffectSleeping;
 import game.util.Time;
