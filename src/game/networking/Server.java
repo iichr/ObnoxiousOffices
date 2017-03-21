@@ -7,10 +7,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+
+import game.ai.AIPlayer;
+import game.core.event.CreateAIPlayerRequest;
 import game.core.event.Events;
 import game.core.event.GameFinishedEvent;
 import game.core.event.GameFullEvent;
@@ -48,7 +48,6 @@ public class Server {
 		listenForConnections();
 
 	}
-
 
 	/**
 	 * Creates a server socket on the given port
