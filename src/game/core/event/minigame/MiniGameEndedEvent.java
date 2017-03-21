@@ -10,16 +10,16 @@ import game.core.player.Player;
  */
 public class MiniGameEndedEvent extends Event {
 
-    public final String victor;
-    public final List<String> players;
+	public final String victor;
+	public final List<String> players;
 
-    public MiniGameEndedEvent(List<String> players, String victor) {
-        this.players = players;
-        this.victor = victor;
-    }
+	public MiniGameEndedEvent(List<String> players, String victor) {
+		this.players = players;
+		this.victor = victor;
+	}
 
-    public boolean isLocal() {
-        return players.contains(Player.localPlayerName);
-    }
+	public boolean isLocal() {
+		return players.contains(Player.localPlayerName);
+	}
 
 }
