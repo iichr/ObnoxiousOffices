@@ -39,7 +39,7 @@ public class ServerListener extends Thread {
 	public World world;
 	private final Object queueWait;
 	boolean running = true;
-	public static int NUM_AI_PLAYERS = 2;
+	public static int NUM_AI_PLAYERS = 1;
 	public String playerName;
 	Thread outputThread;
 
