@@ -7,10 +7,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import game.ai.AIPlayer;
-import game.core.event.CreateAIPlayerRequest;
+import java.util.Date;
 import game.core.event.Events;
 import game.core.event.GameFinishedEvent;
 import game.core.event.GameFullEvent;
@@ -27,27 +27,41 @@ public class Server {
 	private World world;
 	public static boolean listen;
 	private final int NUM_PLAYERS = 4;
+<<<<<<< HEAD
+	public String startTime;
+	public int startMins;
+	public int startHours;
+	// public static final int timeToWait = 30000;
+=======
 	public static final int timeToWait = 60000;
+>>>>>>> e89133ab2b609947b77fff5f42d236a8d67347db
 
 	/**
 	 * Starts the server
 	 */
 	public Server() {
-		AIPlayer.init();
 		listen = true;
 		connections = new ArrayList<ServerListener>();
 		final int port = 8942;
 		Events.on(GameStartedEvent.class, this::updateWorld);
 		Events.on(GameFinishedEvent.class, this::endGame);
-
+		DateFormat df = new SimpleDateFormat("HH:mm");
+		DateFormat dfMin = new SimpleDateFormat("mm");
+		DateFormat dfHr = new SimpleDateFormat("HH");
+		Date startdate = new Date();
+		startTime = df.format(startdate);
+		System.out.println("HERE");
+		startMins = Integer.parseInt((dfMin.format(startdate)));
+		startHours = Integer.parseInt((dfHr.format(startdate)));
+		System.out.println(startTime);
 		// create the server socket
 		createSocket(port);
 		// load the world
 		loadWorld();
 		// listen for new connections
 		listenForConnections();
-
 	}
+
 
 	/**
 	 * Creates a server socket on the given port
@@ -60,7 +74,7 @@ public class Server {
 		// We must try because it may fail with a checked exception:
 		try {
 			serverSocket = new ServerSocket(port);
-			serverSocket.setSoTimeout(timeToWait);
+			// serverSocket.setSoTimeout(timeToWait);
 			System.out.println("local Address: " + Inet4Address.getLocalHost().getHostAddress());
 			System.out.println("Server registered to port " + port);
 		} catch (IOException e) {
@@ -74,6 +88,9 @@ public class Server {
 	 */
 	private void listenForConnections() {
 		while (listen) {
+			/*if (waitingToLong()) {
+				ServerListener.NUM_AI_PLAYERS = ServerListener.NUM_AI_PLAYERS + 1;
+			}*/
 			try {
 				// Listen to the socket, accepting connections from new clients:
 				Socket socket = serverSocket.accept();
@@ -86,17 +103,19 @@ public class Server {
 					ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
 					os.writeObject(e);
 				}
-			} catch (SocketTimeoutException s) {
-				System.out.println("timeout");
-				if (listen && connections.size() > 0) {
-					System.out.println("adding ai");
-					ServerListener.NUM_AI_PLAYERS = NUM_PLAYERS - connections.size();
-					for (int i = 0; i < ServerListener.NUM_AI_PLAYERS; i++) {
-						Events.trigger(new CreateAIPlayerRequest(connections.get(0), i));
-					}
-					connections.get(0).startGame();
-				}
-			} catch (IOException e) {
+			}
+			/*
+			 * catch (SocketTimeoutException s) { System.out.println("timeout");
+			 * if (listen && connections.size() > 0) { System.out.println(
+			 * "adding ai"); ServerListener.NUM_AI_PLAYERS = NUM_PLAYERS -
+			 * connections.size(); for (int i = 0; i <
+			 * ServerListener.NUM_AI_PLAYERS; i++) { Events.trigger(new
+			 * CreateAIPlayerRequest(connections.get(0), i)); }
+			 * 
+			 * 
+			 * } }
+			 */
+			catch (IOException e) {
 				System.err.println("IO error " + e.getMessage());
 			}
 		}
@@ -140,6 +159,22 @@ public class Server {
 			e.printStackTrace();
 		}
 		new Server();
+	}
+
+	private boolean waitingToLong() {
+		System.out.println("CHECKING TIME");
+		DateFormat dfMin = new SimpleDateFormat("mm");
+		DateFormat dfHr = new SimpleDateFormat("HH");
+		Date currentdate = new Date();
+		int CurrentMins = Integer.parseInt((dfMin.format(currentdate)));
+		int CurrentHours = Integer.parseInt((dfHr.format(currentdate)));
+		if ((startHours == CurrentHours && ((startMins - CurrentMins) <= -4)) || ((startHours != CurrentHours) && ((60 - CurrentMins) - startMins) <= 4)) {
+			System.out.println("True");
+			return true;
+		} else {
+			System.out.println("False");
+			return false;
+		}
 	}
 
 	/**
