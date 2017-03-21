@@ -287,6 +287,8 @@ public class LogicEasy implements Logic, Serializable {
 
 	@Override
 	public void findChair(World w, AIPlayer ai) {
+		
+		pf = new PathFinding(w, ai,"s");
 		// get the path to the chair
 		ArrayList<Pair<Integer, Integer>> pathToCHair = pf.pathToCHair(ai,
 				TileTypeComputer.getChair(ai).location.coords.x, TileTypeComputer.getChair(ai).location.coords.y);
