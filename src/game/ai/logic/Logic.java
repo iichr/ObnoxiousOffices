@@ -15,13 +15,6 @@ import game.core.world.World;
  */
 public interface Logic extends Serializable {
 
-	// if player's energy is below the threshold, he needs to go for a refresh
-	static double energyThreshold = 0.8;
-
-	// if a player has done more work than the AI, and that player's progress
-	// is above 65, the AI must hack that player
-	static double hackAfter = 65;
-
 	/**
 	 * Tells the bot/bots what to do while the player is drinking coffee.
 	 */
@@ -52,14 +45,14 @@ public interface Logic extends Serializable {
 	public void findCoffeeMachine(World w, AIPlayer p);
 
 	/**
-	 * Finds the shortest path to the bed from the current place
+	 * Finds the shortest path to the Sofa from the current place
 	 *
 	 * @param w
 	 *            the world
 	 * @param p
 	 *            the player that needs to go to the coffee machine
 	 */
-	public void findBed(World w, AIPlayer p);
+	public void findSofa(World w, AIPlayer p);
 
 	/**
 	 * When player is low on energy, he goes to the coffee machine. It is a fast
@@ -80,7 +73,7 @@ public interface Logic extends Serializable {
 	 * @param w
 	 *            the world of the player
 	 */
-	public void goToBedAndBack(World w, AIPlayer p);
+	public void goToSofaAndBack(World w, AIPlayer p);
 
 	/**
 	 * Before every move, check if the player on the map is facing in the right
