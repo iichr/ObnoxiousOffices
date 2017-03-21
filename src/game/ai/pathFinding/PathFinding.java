@@ -7,11 +7,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-import game.ai.AIPlayer;
 import game.core.player.Player;
 import game.core.world.World;
 import game.core.world.tile.Tile;
 import game.core.world.tile.type.TileType;
+import game.core.world.tile.type.TileTypeComputer;
 
 /**
  * Created on 28.01.2017
@@ -73,7 +73,7 @@ public class PathFinding implements Runnable, Serializable {
 	ArrayList<Pair<Integer, Integer>> coffees = new ArrayList<Pair<Integer, Integer>>();
 	ArrayList<Pair<Integer, Integer>> sofas = new ArrayList<Pair<Integer, Integer>>();
 
-	String toGo; // input "cm" for Coffee Machine or "s" for sofa
+	String toGo; // input "cm" for Coffee Machine or "s" for sofa, "c" for chair
 
 	// constructor
 	public PathFinding(World w, Player p, String s) {
@@ -275,7 +275,7 @@ public class PathFinding implements Runnable, Serializable {
 	 *            y coord of the chair
 	 * @return the path from the current location of the ai to the chair
 	 */
-	public ArrayList<Pair<Integer, Integer>> pathToCHair(AIPlayer ai, Integer x, Integer y) {
+	public ArrayList<Pair<Integer, Integer>> pathToCHair(Player ai, Integer x, Integer y) {
 		startCell(ai.getLocation().coords.x, ai.getLocation().coords.y);
 		worldToCell();
 		AStar(x, y);
@@ -323,7 +323,7 @@ public class PathFinding implements Runnable, Serializable {
 												// best path
 				}
 			}
-		} else {
+		} else if (toGo == "s"){
 			// create an ArrayList to store the current best path
 			ArrayList<Pair<Integer, Integer>> currentPathB = new ArrayList<Pair<Integer, Integer>>();
 			// store the best size
@@ -344,6 +344,8 @@ public class PathFinding implements Runnable, Serializable {
 													// best path
 				}
 			}
+		} else {
+			path = pathToCHair(player, TileTypeComputer.getChair(player).location.coords.x, TileTypeComputer.getChair(player).location.coords.y);
 		}
 	}
 }
