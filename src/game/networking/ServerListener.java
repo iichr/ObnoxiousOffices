@@ -18,7 +18,15 @@ import game.core.event.minigame.MiniGameEndedEvent;
 import game.core.event.minigame.MiniGameStartedEvent;
 import game.core.event.minigame.MiniGameStatChangedEvent;
 import game.core.event.minigame.MiniGameVarChangedEvent;
-import game.core.event.player.*;
+import game.core.event.player.PlayerAttributeChangedEvent;
+import game.core.event.player.PlayerCreatedEvent;
+import game.core.event.player.PlayerJoinedEvent;
+import game.core.event.player.PlayerMovedEvent;
+import game.core.event.player.PlayerProgressUpdateEvent;
+import game.core.event.player.PlayerQuitEvent;
+import game.core.event.player.PlayerRotatedEvent;
+import game.core.event.player.PlayerStateAddedEvent;
+import game.core.event.player.PlayerStateRemovedEvent;
 import game.core.event.player.action.PlayerActionAddedEvent;
 import game.core.event.player.action.PlayerActionEndedEvent;
 import game.core.event.player.effect.PlayerEffectAddedEvent;
@@ -113,7 +121,7 @@ public class ServerListener extends Thread {
 	}
 
 	/**
-	 * Add conections and any hard coded AI players, trigger game start event
+	 * Add connections and any hard coded AI players, trigger game start event
 	 */
 	@Override
 	public void run() {
@@ -137,11 +145,7 @@ public class ServerListener extends Thread {
 						}
 					}
 					if (world.getPlayers().size() == world.getMaxPlayers()) {
-						Server.listen = false;
-						System.out.println(Server.listen);
-						GameStartedEvent gameStart = new GameStartedEvent(world);
-						sendToAllClients(gameStart);
-						Events.trigger(gameStart);
+						startGame();
 					}
 				} else {
 					try {
@@ -160,8 +164,16 @@ public class ServerListener extends Thread {
 		}
 	}
 
+	public void startGame() {
+		Server.listen = false;
+		System.out.println(Server.listen);
+		GameStartedEvent gameStart = new GameStartedEvent(world);
+		sendToAllClients(gameStart);
+		Events.trigger(gameStart);
+	}
+
 	private void stopRunning() throws IOException {
-		if(running) {
+		if (running) {
 			outputThread.interrupt();
 			connections.remove(this);
 			running = false;
@@ -243,18 +255,18 @@ public class ServerListener extends Thread {
 	 *            name of the player to add.
 	 */
 	private void addPlayerToGame(String name) {
-		if (!this.playerNameUsed(name)) {
-			Player playerObject = new Player(name, Direction.SOUTH, world.getSpawnPoint(playerNumber));
-			playerObject.setHair(playerNumber);
-			world.addPlayer(playerObject);
-			int playersLeft = world.getMaxPlayers() - world.getPlayers().size();
-			PlayerCreatedEvent event = new PlayerCreatedEvent(name, playersLeft);
-			Events.trigger(event);
-			sendToAllClients(event);
-			System.out.println("Player " + name + " added to the game!");
-		} else {
-			System.out.println("Player " + name + " has already been added to the game!");
+		if (this.playerNameUsed(name)) {
+			name = name + "x";
+			playerName = playerName + "x";
 		}
+		Player playerObject = new Player(name, Direction.SOUTH, world.getSpawnPoint(playerNumber));
+		playerObject.setHair(playerNumber);
+		world.addPlayer(playerObject);
+		int playersLeft = world.getMaxPlayers() - world.getPlayers().size();
+		PlayerCreatedEvent event = new PlayerCreatedEvent(name, playersLeft);
+		Events.trigger(event);
+		sendToAllClients(event);
+		System.out.println("Player " + name + " added to the game!");
 	}
 
 	/**
@@ -267,20 +279,6 @@ public class ServerListener extends Thread {
 		world.addPlayer(playerToAdd);
 		if (playerToAdd.isAI)
 			makingAI = false;
-	}
-
-	/**
-	 * Remove a player from the game.
-	 * 
-	 * @param name-The
-	 *            name of the player to be removed.
-	 */
-	private void removePlayerFromGame(String name) {
-		if (this.playerNameUsed(name)) {
-			System.out.println("Player " + name + " has been removed from the game!");
-		} else {
-			System.out.println("Player " + name + " is not currently in the game!");
-		}
 	}
 
 	/**
@@ -303,7 +301,7 @@ public class ServerListener extends Thread {
 	 * Close the connection when the game ends
 	 * 
 	 * @param recieved-
-	 *            Object reiceved from the game closed event
+	 *            Object received from the game closed event
 	 */
 	private void closeConnection(Object recieved) {
 		forwardInfo(recieved);
@@ -312,13 +310,14 @@ public class ServerListener extends Thread {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
+		outputThread.interrupt();
+		connections.remove(this);
+		running = false;
 		try {
-			this.is.close();
-			this.os.close();
+			socket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.socket = null;
 	}
 
 }

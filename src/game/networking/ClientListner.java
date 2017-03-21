@@ -8,6 +8,7 @@ import java.util.Queue;
 
 import game.core.event.Event;
 import game.core.event.Events;
+import game.core.event.GameFinishedEvent;
 import game.core.event.GameFullEvent;
 
 public class ClientListner extends Thread {
@@ -15,15 +16,18 @@ public class ClientListner extends Thread {
 	private ObjectInputStream is;
 	private Queue<Object> inputQ;
 	private boolean connected;
+
 	/**
 	 * Starts the client listener
-	 * @param server- The socket it is connected two
+	 * 
+	 * @param server-
+	 *            The socket it is connected two
 	 */
 	public ClientListner(Socket server) {
 		this.server = server;
-		
-		Events.on(GameFullEvent.class, this::gameFull);
 
+		Events.on(GameFullEvent.class, this::gameFull);
+		Events.on(GameFinishedEvent.class, this::endGame);
 		inputQ = new LinkedList<Object>();
 		manageEvents();
 	}
@@ -48,6 +52,7 @@ public class ClientListner extends Thread {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * Takes an event of the queue and triggers it
 	 */
@@ -69,9 +74,14 @@ public class ClientListner extends Thread {
 		});
 		manageInputs.start();
 	}
-	
-	private void gameFull(GameFullEvent e){
+
+	private void gameFull(GameFullEvent e) {
 		System.out.println("got game full event");
 		connected = false;
+	}
+
+	private void endGame(GameFinishedEvent e) {
+		//TODO the client isn't closing properly
+		connected = false;		
 	}
 }
