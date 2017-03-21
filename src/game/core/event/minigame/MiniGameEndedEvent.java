@@ -1,10 +1,9 @@
 package game.core.event.minigame;
 
+import java.util.List;
+
 import game.core.event.Event;
 import game.core.player.Player;
-import game.ui.states.Play;
-
-import java.util.List;
 
 /**
  * Created by samtebbs on 18/02/2017.

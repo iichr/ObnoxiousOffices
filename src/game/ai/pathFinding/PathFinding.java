@@ -64,9 +64,12 @@ public class PathFinding implements Runnable, Serializable {
 
 	int startI, startJ; // coordinates for our start point
 
-	int coffeeI, coffeeJ, bedI, bedJ;
+	int coffeeI;
+	int coffeeJ;
+	int sofaI;
+	int sofaJ;
 	ArrayList<Pair<Integer, Integer>> coffees = new ArrayList<Pair<Integer, Integer>>();
-	ArrayList<Pair<Integer, Integer>> beds = new ArrayList<Pair<Integer, Integer>>();
+	ArrayList<Pair<Integer, Integer>> sofas = new ArrayList<Pair<Integer, Integer>>();
 
 	String toGo; // input "cm" for Coffee Machine or "b" for sofa
 
@@ -102,7 +105,7 @@ public class PathFinding implements Runnable, Serializable {
 
 	/**
 	 * Creates a grid out of the map of the world, and locate the nearest to the
-	 * player coffee machine and bed saving their i, j coordinates
+	 * player coffee machine and sofa saving their i, j coordinates
 	 * 
 	 * @param world
 	 *            the world that is going to be made into a grid
@@ -127,13 +130,11 @@ public class PathFinding implements Runnable, Serializable {
 					coffees.add(new Pair<Integer, Integer>(i, j));
 				}
 
-				// if the current tile is a bed, and is closer than the previous
+				// if the current tile is a sofa, and is closer than the previous
 				// one, save coordinates
 				if (tile.type.equals(TileType.SOFA)) {
 					grid[i][j].hCost = calcHeuristic(i, j);
-					beds.add(new Pair<Integer, Integer>(i, j));
-					// bedI = i;
-					// bedJ = j;
+					sofas.add(new Pair<Integer, Integer>(i, j));
 				}
 			}
 		}
@@ -303,15 +304,15 @@ public class PathFinding implements Runnable, Serializable {
 			ArrayList<Pair<Integer, Integer>> currentPathB = new ArrayList<Pair<Integer, Integer>>();
 			// store the best size
 			int sizeB = 1000;
-			// go through the list of beds
-			for (int i = 0; i < beds.size(); i++) {
-				// get the i, j coordinates of the bed
-				bedI = beds.get(i).getL();
-				bedJ = beds.get(i).getR();
+			// go through the list of sofas
+			for (int i = 0; i < sofas.size(); i++) {
+				// get the i, j coordinates of the sofa
+				sofaI = sofas.get(i).getL();
+				sofaJ = sofas.get(i).getR();
 				// run AStar on them
-				AStar(bedI, bedJ);
+				AStar(sofaI, sofaJ);
 				// get the path after AStar
-				currentPathB = path(bedI, bedJ);
+				currentPathB = path(sofaI, sofaJ);
 				// if the path is smaller than the previous one
 				if (sizeB > currentPathB.size()) {
 					path = currentPathB; // get the new best path

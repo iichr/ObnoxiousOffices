@@ -16,7 +16,7 @@ import game.core.input.InteractionType.InteractionTypeSit;
 import game.core.input.InteractionType.InteractionTypeWork;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
-import game.core.player.action.PlayerActionHack;
+import game.core.player.action.PlayerActionHackTimed;
 import game.core.player.action.PlayerActionWorkTimed;
 import game.core.world.Direction;
 import game.core.world.Location;
@@ -37,9 +37,9 @@ public class LogicEasy implements Logic, Serializable {
 	public PathFinding pf;
 
 	// paths
-	public ArrayList<Pair<Integer, Integer>> toBed = new ArrayList<Pair<Integer, Integer>>();
+	public ArrayList<Pair<Integer, Integer>> toSofa = new ArrayList<Pair<Integer, Integer>>();
 	public ArrayList<Pair<Integer, Integer>> toCM = new ArrayList<Pair<Integer, Integer>>();
-	public ArrayList<Pair<Integer, Integer>> fromBed = new ArrayList<Pair<Integer, Integer>>();
+	public ArrayList<Pair<Integer, Integer>> fromSofa = new ArrayList<Pair<Integer, Integer>>();
 	public ArrayList<Pair<Integer, Integer>> fromCM = new ArrayList<Pair<Integer, Integer>>();
 
 	// @Override
@@ -60,9 +60,9 @@ public class LogicEasy implements Logic, Serializable {
 	}
 
 	@Override
-	public void findBed(World w, AIPlayer p) {
-		fromBed = findPath(w, p, "b").get(1);
-		toBed = findPath(w, p, "b").get(0);
+	public void findSofa(World w, AIPlayer p) {
+		fromSofa = findPath(w, p, "b").get(1);
+		toSofa = findPath(w, p, "b").get(0);
 	}
 
 	public void figureOutFacing(AIPlayer p, Pair<Integer, Integer> pair) {
@@ -136,23 +136,23 @@ public class LogicEasy implements Logic, Serializable {
 	}
 
 	@Override
-	public void goToBedAndBack(World w, AIPlayer p) {
+	public void goToSofaAndBack(World w, AIPlayer p) {
 
 		//find the sofas on the map
-		findBed(w, p);
+		findSofa(w, p);
 
 		// go through the array list of i, j coords
 		// to the sofa
-		for (int i = 0; i < toBed.size(); i++) {
+		for (int i = 0; i < toSofa.size(); i++) {
 
 			// check if you are on the last element, if true - don't do the
 			// moving, just the facing
-			if (toBed.size() - i == 1)
-				figureOutFacing(p, toBed.get(i));
+			if (toSofa.size() - i == 1)
+				figureOutFacing(p, toSofa.get(i));
 			else {
 
 				//make a move
-				move(p, toBed, i);
+				move(p, toSofa, i);
 			}
 		}
 
@@ -185,10 +185,10 @@ public class LogicEasy implements Logic, Serializable {
 
 			// if at the sofa, go through the array list of i, j coords
 			// to the desk from the sofa
-			for (int i = 1; i < fromBed.size(); i++) {
+			for (int i = 1; i < fromSofa.size(); i++) {
 
 				//make a move
-				move(p, fromBed, i);
+				move(p, fromSofa, i);
 			}
 
 		}
@@ -224,8 +224,8 @@ public class LogicEasy implements Logic, Serializable {
 
 	public void hackPlayer(AIPlayer ai, Player player) {
 		//if the ai is not hacking anyone, hack
-		if (!ai.status.hasAction(PlayerActionHack.class))
-			ai.status.addAction(new PlayerActionHack(ai, player));
+		if (!ai.status.hasAction(PlayerActionHackTimed.class))
+			ai.status.addAction(new PlayerActionHackTimed(ai, player));
 	}
 
 	@Override
