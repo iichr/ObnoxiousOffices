@@ -46,10 +46,6 @@ public class AIPlayer extends Player {
 	// serialVersion to shut eclipse
 	private static final long serialVersionUID = 1L;
 
-	static {
-		Events.on(Events.EventPriority.HIGH, PlayerQuitEvent.class, AIPlayer::onPlayerQuit);
-	}
-
 	// constructor from Player class
 	/**
 	 * Constructor
@@ -87,6 +83,10 @@ public class AIPlayer extends Player {
 		this.setHair(player.getHair());
 		this.setProgress(player.getProgress());
 		this.timesDrunkCoffee = player.timesDrunkCoffee;
+	}
+
+	public static void init() {
+		Events.on(Events.EventPriority.HIGH, PlayerQuitEvent.class, AIPlayer::onPlayerQuit);
 	}
 
 	public void initialise() {
