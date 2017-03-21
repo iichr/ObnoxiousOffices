@@ -33,10 +33,10 @@ public class CharacterSelect extends BasicGameState {
 	private TextField serverAddress, playerName;
 	private String serverStr = "Enter Server Address:";
 	private String playerStr = "Enter Player Name:";
-	private String waitingString = "Connected: Waiting for ";	
+	private String waitingString = "Connected: Waiting for ";
 	private String connectFailString = "Connection failed: please check the ip and try again";
 	private String gameFullSring = "Game is already full, try a different server";
-	private String invalidNameString = "Invalid name, must be alphanumeric or underscore";
+	private String invalidNameString = "Invalid name: Must be alphanumeric or underscore";
 
 	private boolean toPlay = false;
 	private boolean connected = false;
@@ -44,7 +44,7 @@ public class CharacterSelect extends BasicGameState {
 	private boolean invalidName = false;
 	private boolean gameFull = false;
 	private PlayTest playTest;
-	private int playerLeft = 0 ;
+	private int playerLeft = 0;
 	private WordGenerator wg;
 
 	/**
@@ -72,7 +72,7 @@ public class CharacterSelect extends BasicGameState {
 				Vals.BUTTON_WIDTH, Vals.BUTTON_HEIGHT, conn, connR);
 
 		waiting = new Image(ImageLocations.WAITING, false, Image.FILTER_NEAREST);
-		wg=new WordGenerator();
+		wg = new WordGenerator();
 		// adds the text fields
 		addTextFields(gc);
 	}
@@ -92,7 +92,8 @@ public class CharacterSelect extends BasicGameState {
 		Vals.FONT_MAIN.getEffects().add(new ColorEffect());
 		Vals.FONT_MAIN.loadGlyphs();
 
-		serverAddress = new TextField(gc, Vals.FONT_MAIN, Vals.TFIELD_ALIGN_CENTRE_W, Vals.SCREEN_HEIGHT / 3,
+		serverAddress = new TextField(gc, Vals.FONT_MAIN,
+				(int) (Vals.TFIELD_ALIGN_CENTRE_W + wg.getWH(serverStr, 0.15f).getL() / 2), Vals.SCREEN_HEIGHT / 3,
 				Vals.TFIELD_WIDTH, Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
 					public void componentActivated(AbstractComponent src) {
 						serverAddress.setFocus(true);
@@ -101,11 +102,10 @@ public class CharacterSelect extends BasicGameState {
 
 		serverAddress.setBackgroundColor(Color.white);
 		serverAddress.setTextColor(Color.black);
-		
-		
 
 		// Player name text field.
-		playerName = new TextField(gc, Vals.FONT_MAIN, Vals.TFIELD_ALIGN_CENTRE_W, Vals.SCREEN_HEIGHT / 4,
+		playerName = new TextField(gc, Vals.FONT_MAIN,
+				(int) (Vals.TFIELD_ALIGN_CENTRE_W + wg.getWH(playerStr, 0.15f).getL() / 2), Vals.SCREEN_HEIGHT / 4,
 				Vals.TFIELD_WIDTH, Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
 					public void componentActivated(AbstractComponent src) {
 						playerName.setFocus(true);
@@ -130,11 +130,11 @@ public class CharacterSelect extends BasicGameState {
 
 		// Text fields
 		serverAddress.render(gc, g);
-		wg.draw(g, serverStr, serverAddress.getX()-wg.getWH(serverStr, 0.15f).getL(), Vals.SCREEN_HEIGHT / 3, false, 0.15f);
-		//g.drawString(serverStr, serverAddress.getX() - Vals.FONT_MAIN.getWidth(serverStr) - 10, Vals.SCREEN_HEIGHT / 3);
+		wg.draw(g, serverStr, serverAddress.getX() - wg.getWH(serverStr, 0.15f).getL(), Vals.SCREEN_HEIGHT / 3, false,
+				0.15f);
 		playerName.render(gc, g);
-		wg.draw(g,playerStr,serverAddress.getX() - wg.getWH(playerStr, 0.15f).getL(),Vals.SCREEN_HEIGHT / 4,false,0.15f);
-		//g.drawString(playerStr, serverAddress.getX() - Vals.FONT_MAIN.getWidth(playerStr) - 10, Vals.SCREEN_HEIGHT / 4);
+		wg.draw(g, playerStr, playerName.getX() - wg.getWH(playerStr, 0.15f).getL(), Vals.SCREEN_HEIGHT / 4, false,
+				0.15f);
 	}
 
 	/**
@@ -157,23 +157,21 @@ public class CharacterSelect extends BasicGameState {
 					waitingDiam);
 
 			// display text
-			g.drawString(waitingString+(playerLeft==0?"more players.":(playerLeft+" more players.")), connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(waitingString) / 2,
-					connectButton.getY() + waitingDiam / 2 + Vals.BUTTON_HEIGHT / 2);
+			wg.drawCenter(g, waitingString + (playerLeft == 0 ? " more players" : (playerLeft + " more players")),
+					connectButton.getCenterX(), connectButton.getY() + waitingDiam / 2 + Vals.BUTTON_HEIGHT / 2, false,
+					0.15f);
 		} else {
 			connectButton.setActive(true);
 			connectButton.render();
 			if (invalidName) {
-				g.drawString(invalidNameString,
-						connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(invalidNameString) / 2,
-						connectButton.getY() + 3 * Vals.BUTTON_HEIGHT / 2);
+				wg.drawCenter(g, invalidNameString, connectButton.getCenterX(),
+						connectButton.getY() + 3 * Vals.BUTTON_HEIGHT / 2, false, 0.15f);
 			} else if (connectFailed) {
-				g.drawString(connectFailString,
-						connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(connectFailString) / 2,
-						connectButton.getY() + 3 * Vals.BUTTON_HEIGHT / 2);
-			}else if(gameFull){
-				g.drawString(gameFullSring,
-						connectButton.getCenterX() - Vals.FONT_MAIN.getWidth(gameFullSring) / 2,
-						connectButton.getY() + 3 * Vals.BUTTON_HEIGHT / 2);
+				wg.drawCenter(g, connectFailString, connectButton.getCenterX(),
+						connectButton.getY() + 3 * Vals.BUTTON_HEIGHT / 2, false, 0.15f);
+			} else if (gameFull) {
+				wg.drawCenter(g, gameFullSring, connectButton.getCenterX(),
+						connectButton.getY() + 3 * Vals.BUTTON_HEIGHT / 2, false, 0.15f);
 			}
 		}
 	}
@@ -186,7 +184,7 @@ public class CharacterSelect extends BasicGameState {
 		String nameValue = playerName.getText();
 		int mouseX = Mouse.getX();
 		int mouseY = gc.getHeight() - Mouse.getY();
-		if(input.isKeyPressed(Input.KEY_F11)){			
+		if (input.isKeyPressed(Input.KEY_F11)) {
 			container.setDisplayMode(800, 600, false);
 		}
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
@@ -208,7 +206,7 @@ public class CharacterSelect extends BasicGameState {
 	private void connected(PlayerCreatedEvent e) {
 		connected = true;
 		connectFailed = false;
-		playerLeft =e.playersLeft;
+		playerLeft = e.playersLeft;
 	}
 
 	/**
@@ -218,8 +216,8 @@ public class CharacterSelect extends BasicGameState {
 		connectFailed = true;
 		connected = false;
 	}
-	
-	private void gameFull(GameFullEvent e){
+
+	private void gameFull(GameFullEvent e) {
 		gameFull = true;
 	}
 
