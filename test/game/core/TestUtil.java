@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * Created by samtebbs on 21/03/2017.
  */
