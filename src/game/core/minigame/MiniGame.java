@@ -56,7 +56,9 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
     }
 
     public Object getStat(String player, String stat) {
-        if(!stats.containsKey(player) || !stats.get(player).containsKey(stat)) return null;
+        if(!stats.containsKey(player) || !stats.get(player).containsKey(stat)){
+        	return null;
+        }
         return stats.get(player).get(stat);
     }
 
@@ -66,7 +68,11 @@ public abstract class MiniGame extends DataHolder implements Updateable, Seriali
 
     @Override
     public void update() {
-        for (String player : getPlayers()) if (getIntStat(player, SCORE) == MAX_SCORE) end(player);
+        for (String player : getPlayers()){
+        	if (getIntStat(player, SCORE) == MAX_SCORE){
+        		end(player);
+        	}
+        }
     }
 
     public int getIntStat(String player, String var) {
