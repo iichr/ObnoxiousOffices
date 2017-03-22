@@ -10,6 +10,8 @@ import java.util.function.Predicate;
 
 import game.util.Pair;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * Created by samtebbs on 21/03/2017.
  */
