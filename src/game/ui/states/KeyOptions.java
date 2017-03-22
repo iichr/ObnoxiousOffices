@@ -19,9 +19,6 @@ import game.util.Pair;
 
 /**
  * The second page of the Options submenu. Used to list all keyboard controls.
- * 
- * @author iichr
- *
  */
 public class KeyOptions extends BasicGameState {
 	private MenuButton backButton;

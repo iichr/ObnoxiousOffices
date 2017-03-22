@@ -22,9 +22,6 @@ import game.ui.interfaces.Vals;
 /**
  * The rules page accessible from the main menu. Provides the user with a guide
  * on how to play.
- * 
- * @author iichr
- *
  */
 public class Rules extends BasicGameState {
 	private MenuButton backButton;
@@ -50,15 +47,13 @@ public class Rules extends BasicGameState {
 			font.getEffects().add(new ColorEffect());
 			font.loadGlyphs();
 		}
-		
+
 		Image sprites = new Image(SpriteLocations.RULES_SPRITES, false, Image.FILTER_NEAREST);
 		allSprites = new SpriteSheet(sprites, 64, 128);
 
 		// character encoding: \u0027 for apostrophe
 		gameTitle = "DevWars";
-		rules = " <insert catchy intro here> \n"
-				+ "The main game actions are:"
-				+ "\n\n"
+		rules = " <insert catchy intro here> \n" + "The main game actions are:" + "\n\n"
 				+ "Work - increases project completion rate. That\u0027s what they hired you for after all, better deliver!"
 				+ "\n\n"
 				+ "Hack - you need to interact with the other players\u0027 computers to hinder their progress. Failure to engage in\n"
@@ -71,8 +66,7 @@ public class Rules extends BasicGameState {
 				+ "\n\n"
 				+ "Naps - under new regulations from Brussels (?!!) the modern 21st century office ought to provide its employees\n"
 				+ "with a place for relaxation. Use that to reduce your fatigue, without negative consequences. I promise."
-				+ "\n\n"
-				+ "Share ideas (player-to-player interaction) - provides a boost to productivity to you\n"
+				+ "\n\n" + "Share ideas (player-to-player interaction) - provides a boost to productivity to you\n"
 				+ "and whom you are chatting away with.";
 	}
 
@@ -81,7 +75,7 @@ public class Rules extends BasicGameState {
 		g.setColor(Color.white);
 		// debugging
 		g.drawString(mouseCoords, 10, 50);
-		
+
 		// title
 		g.setFont(Vals.FONT_HEADING1);
 		g.drawString(gameTitle, (Vals.SCREEN_WIDTH - Vals.FONT_MAIN.getWidth(gameTitle)) / 2, 30);
@@ -125,8 +119,8 @@ public class Rules extends BasicGameState {
 		for (String line : s.split("\n"))
 			// acts as error handling
 			if (Vals.FONT_RULES.getWidth(line) > Vals.RULES_SECT_RIGHT_W) {
-				g.drawString("CONSIDER SHORTENING THIS LINE: " + line.substring(0, 20), Vals.SCREEN_WIDTH - Vals.RULES_SECT_RIGHT_W,
-						y += Vals.FONT_RULES.getLineHeight() * 2);
+				g.drawString("CONSIDER SHORTENING THIS LINE: " + line.substring(0, 20),
+						Vals.SCREEN_WIDTH - Vals.RULES_SECT_RIGHT_W, y += Vals.FONT_RULES.getLineHeight() * 2);
 			} else {
 				g.drawString(line, Vals.SCREEN_WIDTH - Vals.RULES_SECT_RIGHT_W,
 						y += Vals.FONT_RULES.getLineHeight() * 1.7);
