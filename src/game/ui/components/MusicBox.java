@@ -6,6 +6,10 @@ import org.newdawn.slick.Sound;
 
 import game.ui.interfaces.MusicLocations;
 
+/**
+ * Manages the sound and the music volume levels.
+ *
+ */
 public class MusicBox {
 
 	private GameContainer gc;
@@ -13,12 +17,19 @@ public class MusicBox {
 	private float currentMVolume;
 	private Sound pressed;
 
+	/**
+	 * Constructs a new instance of a music/sound manager.
+	 * 
+	 * @param gc
+	 *            the game container
+	 * @throws SlickException
+	 */
 	public MusicBox(GameContainer gc) throws SlickException {
-		this.gc=gc;
-		currentSVolume=gc.getSoundVolume();
-		currentMVolume=gc.getMusicVolume();
+		this.gc = gc;
+		currentSVolume = gc.getSoundVolume();
+		currentMVolume = gc.getMusicVolume();
 		pressed = new Sound(MusicLocations.PRESSED);
-		
+
 	}
 
 	/**
@@ -49,8 +60,9 @@ public class MusicBox {
 			gc.setSoundVolume(currentSVolume += 0.25f);
 		}
 	}
+
 	/**
-	 * Changes the sound volume down
+	 * Changes the music volume down
 	 * 
 	 * @param gc
 	 *            The game container
@@ -65,7 +77,7 @@ public class MusicBox {
 	}
 
 	/**
-	 * Changes the sound volume up
+	 * Changes the music volume up
 	 * 
 	 * @param gc
 	 *            The game container
@@ -77,10 +89,9 @@ public class MusicBox {
 			gc.setMusicVolume(currentMVolume += 0.25f);
 		}
 	}
-	
-	public void playPressed(){
+
+	public void playPressed() {
 		pressed.play();
 	}
-
 
 }

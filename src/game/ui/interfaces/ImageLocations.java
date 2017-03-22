@@ -1,7 +1,7 @@
 package game.ui.interfaces;
 
 /**
- * An interface for all images in the UI. *
+ * An interface for UI Images
  */
 public interface ImageLocations {
 
@@ -51,7 +51,7 @@ public interface ImageLocations {
 	public static final String SLEEP_EFFECT = "/res/ui/sleepEffect.png";
 	public static final String COFFEE_EFFECT = "/res/ui/coffeeEffect.png";
 	
-	//WAITING FOR PLAYERS IMAGE
+	// WAITING FOR PLAYERS IMAGE
 	public static final String WAITING = "/res/ui/waiting.png";
 
 }

@@ -10,6 +10,9 @@ import game.ui.components.WordGenerator;
 import game.ui.interfaces.Vals;
 import game.util.Pair;
 
+/**
+ * Overlay to show options to user in game
+ */
 public class OptionsOverlay extends PopUpOverlay {
 	private MusicBox mb;
 
@@ -23,6 +26,16 @@ public class OptionsOverlay extends PopUpOverlay {
 
 	}
 
+	/**
+	 * Renders the components of the popUp
+	 * 
+	 * @param gc
+	 *            The game container
+	 * @param sbg
+	 *            The state based game
+	 * @param g
+	 *            The graphics object
+	 */
 	public void render(GameContainer gc, Graphics g) throws SlickException {
 		mb = new MusicBox(gc);
 		// draw the background

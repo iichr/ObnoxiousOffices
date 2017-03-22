@@ -4,6 +4,9 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Rectangle;
 
+/**
+ * Superclass for menu buttons
+ */
 public class Button extends Rectangle {
 
 	private static final long serialVersionUID = -3539104161526355883L;

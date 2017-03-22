@@ -23,25 +23,27 @@ import game.ui.components.WordGenerator;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.MusicLocations;
 
+/**
+ * Allows the user to select various actions from their computer
+ */
 public class ActionSelector {
 	private Image selectorBack;
 	private LinkedList<String> toShow;
 	private WordGenerator wg;
 	private int action;
 	private boolean choosingHack;
-	private Sound coffee;
 	private Sound select;
 
 	/**
 	 * Constructor: Created an action selector with current action 0
-	 * @throws SlickException 
+	 * 
+	 * @throws SlickException
 	 */
 	public ActionSelector(WordGenerator wg) throws SlickException {
 		action = 0;
 		choosingHack = false;
 		this.wg = wg;
-		coffee=new Sound(MusicLocations.COFFEE);
-		select=new Sound(MusicLocations.SELECT);
+		select = new Sound(MusicLocations.SELECT);
 	}
 
 	/**
@@ -61,8 +63,8 @@ public class ActionSelector {
 	 *            The Graphics object
 	 * @throws SlickException
 	 */
-	public void updateSelector(World world, String localPlayerName, float tileWidth, float tileHeight,
-			Graphics g) throws SlickException {
+	public void updateSelector(World world, String localPlayerName, float tileWidth, float tileHeight, Graphics g)
+			throws SlickException {
 		Player localPlayer = world.getPlayer(localPlayerName);
 		Direction facing = localPlayer.getFacing();
 		Location inFront = localPlayer.getLocation().forward(facing);
@@ -101,7 +103,6 @@ public class ActionSelector {
 		String ownerName = TileTypeComputer.getOwningPlayer((MetaTile) tile);
 		selectorBack = new Image(ImageLocations.SELECTOR, false, Image.FILTER_NEAREST);
 		toShow = new LinkedList<String>();
-		
 
 		// display different things for your pc to others
 		if (ownerName.equals(localPlayerName)) {
@@ -140,7 +141,7 @@ public class ActionSelector {
 	}
 
 	/**
-	 * The render method
+	 * Renders the selector on the screen
 	 * 
 	 * @param g
 	 *            Graphics object
@@ -159,15 +160,19 @@ public class ActionSelector {
 		selectorBack.draw(x + width / 2 - (width * characterMod) / 2, y, width * characterMod, height);
 		wg.drawCenter(g, toShow.get(action), x + width / 2, y + height / 2, true, width / 700);
 	}
-	
+
 	/**
 	 * Manages input whilst using the action selector
+	 * 
+	 * @param localPlayerName
+	 *            The name of the local player
 	 */
 	public void manageSelection(String localPlayerName) {
 		switch (toShow.get(action)) {
-		
+
 		case "WORK":
-			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(new InteractionType.InteractionTypeWork()), localPlayerName));
+			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(new InteractionType.InteractionTypeWork()),
+					localPlayerName));
 			break;
 		case "HACK":
 			choosingHack = true;
@@ -178,7 +183,9 @@ public class ActionSelector {
 			break;
 		default:
 			System.out.println(toShow.get(action));
-			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(new InteractionType.InteractionTypeHack(toShow.get(action))), localPlayerName));
+			Events.trigger(new PlayerInputEvent(
+					new InputTypeInteraction(new InteractionType.InteractionTypeHack(toShow.get(action))),
+					localPlayerName));
 		}
 	}
 

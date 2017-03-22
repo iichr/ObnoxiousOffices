@@ -9,6 +9,9 @@ import org.newdawn.slick.SpriteSheet;
 import game.core.world.Direction;
 import game.core.world.tile.type.TileType;
 
+/**
+ * Class to load in all the sprite images
+ */
 public class SpriteLocations {
 	private HashMap<TileType, HashMap<Direction, Image[]>> tileMap;
 

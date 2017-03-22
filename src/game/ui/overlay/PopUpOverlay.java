@@ -9,16 +9,17 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.StateBasedGame;
 
 import game.ui.components.WordGenerator;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
+/**
+ * Superclass for overlays
+ */
 public class PopUpOverlay {
 
 	protected Image background;
@@ -27,10 +28,6 @@ public class PopUpOverlay {
 	protected float height;
 	protected float x;
 	protected float y;
-	/** The number of kernels to apply */
-	public static final int NUM_KERNELS = 16;
-	/** The blur kernels applied across the effect */
-
 	protected final float scale = 0.7f;
 
 	/**
@@ -46,20 +43,6 @@ public class PopUpOverlay {
 		this.wg = wg;
 
 		background = new Image(ImageLocations.OVERLAY_BACKGROUND, false, Image.FILTER_NEAREST);
-
-	}
-
-	/**
-	 * Renders the components of the popUp
-	 * 
-	 * @param gc
-	 *            The game container
-	 * @param sbg
-	 *            The state based game
-	 * @param g
-	 *            The grahics object
-	 */
-	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
 
 	}
 

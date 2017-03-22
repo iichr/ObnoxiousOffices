@@ -11,12 +11,13 @@ import org.newdawn.slick.state.StateBasedGame;
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
 import game.core.world.World;
+import game.ui.components.WordGenerator;
 import game.ui.interfaces.Vals;
-import game.ui.states.CharacterSelect;
+import game.ui.states.Connect;
 import game.ui.states.Intro;
+import game.ui.states.KeyOptions;
 import game.ui.states.Menu;
 import game.ui.states.Options;
-import game.ui.states.KeyOptions;
 import game.ui.states.Play;
 import game.ui.states.PlayTest;
 import game.ui.states.Rules;
@@ -27,9 +28,9 @@ public class Game extends StateBasedGame {
 	private Menu menuState;
 	private Options optionsState;
 	private Rules rulesState;
-	private CharacterSelect chSelectState;
+	private Connect connectState;
 	private PlayTest playTestState;
-	private KeyOptions optionsState2;
+	private KeyOptions keyOptionsState;
 
 	/**
 	 * Constructor: sets up states and event listeners
@@ -40,22 +41,22 @@ public class Game extends StateBasedGame {
 	public Game(String gamename) {
 		super(gamename);
 
-		introState = new Intro();
-		this.addState(introState);
-		menuState = new Menu();
-		this.addState(menuState);
-		playState = new Play();
-		this.addState(playState);
-		playTestState = new PlayTest();
-		this.addState(playTestState);
-		optionsState = new Options();
-		this.addState(optionsState);
-		rulesState = new Rules();
-		this.addState(rulesState);
-		chSelectState = new CharacterSelect(playTestState);
-		this.addState(chSelectState);
-		optionsState2 = new KeyOptions();
-		this.addState(optionsState2);
+			introState = new Intro();
+			this.addState(introState);
+			menuState = new Menu();
+			this.addState(menuState);
+			playState = new Play();
+			this.addState(playState);
+			playTestState = new PlayTest();
+			this.addState(playTestState);
+			optionsState = new Options();
+			this.addState(optionsState);
+			rulesState = new Rules();
+			this.addState(rulesState);
+			connectState = new Connect(playTestState);
+			this.addState(connectState);
+			keyOptionsState = new KeyOptions();
+			this.addState(keyOptionsState);
 
 		Events.on(GameStartedEvent.class, this::onGameStart);
 	}
@@ -63,6 +64,13 @@ public class Game extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
 		// initialises states automatically
+
+		WordGenerator wg = new WordGenerator();
+		playState.setWG(wg);
+		optionsState.setWG(wg);
+		connectState.setWG(wg);
+		keyOptionsState.setWG(wg);
+		
 	}
 
 	/**
@@ -106,13 +114,13 @@ public class Game extends StateBasedGame {
 		try {
 			agc = new AppGameContainer(new Game(Vals.GAME_NAME));
 			agc.setDisplayMode(Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT, false);
-			
+
 			agc.setUpdateOnlyWhenVisible(true);
 			agc.setMinimumLogicUpdateInterval(10);
 
+			agc.setShowFPS(false);
 			agc.setFullscreen(false);
 			agc.start();
-			
 
 		} catch (SlickException e) {
 			e.printStackTrace();
