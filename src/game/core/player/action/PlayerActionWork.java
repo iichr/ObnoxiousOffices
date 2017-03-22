@@ -19,7 +19,8 @@ public class PlayerActionWork extends PlayerActionMinigame {
 
     @Override
     public void end(MiniGameEndedEvent event) {
-        if(event.victor.equals(player.name)) player.addProgress();
+        super.end(event);
+        if(event != null && event.victor.equals(player.name)) player.addProgress();
     }
 
     @Override
