@@ -73,7 +73,7 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
 	private void newRound() {
 		Random r = new Random();
 		float xVel = 0.5f;
-		float yVel = r.nextFloat()/2 + 0.25f;
+		float yVel = r.nextFloat() - 0.5f;
 
 		setStat(player1, X_POS, 1f);
 		setStat(player2, X_POS, (float) BOUND_X - 1);
