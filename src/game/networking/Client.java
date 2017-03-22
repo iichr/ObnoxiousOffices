@@ -46,8 +46,7 @@ public class Client {
 			od.flush();
 
 		} catch (IOException e) {
-			System.err.println("ERROR: Can't create Object Stream to send");
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 	}
 
