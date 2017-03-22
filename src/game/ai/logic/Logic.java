@@ -17,17 +17,20 @@ import game.core.world.World;
 public interface Logic extends Serializable {
 
 	/**
-	 * Tells the bot/bots what to do while the player is drinking coffee.
+	 * Sends the ai to the coffee machine
+	 * 
+	 * @param ai
+	 *            the ai that goes to the coffee machine
 	 */
-	public void aiRefresh(AIPlayer p); // TODO: possibly don't need that
+	public void aiRefresh(AIPlayer ai);
 
 	/**
 	 * Make the ai work
 	 *
-	 * @param p
+	 * @param ai
 	 *            the ai that will start working
 	 */
-	public void aiWork(AIPlayer p);
+	public void aiWork(AIPlayer ai);
 
 	/**
 	 * Tells the bot/bots what to do while the player is trying to hack
@@ -40,63 +43,64 @@ public interface Logic extends Serializable {
 	 *
 	 * @param w
 	 *            the world
-	 * @param p
+	 * @param ai
 	 *            the player that needs to go to the coffee machine
 	 */
-	public void findCoffeeMachine(World w, AIPlayer p);
+	public void findCoffeeMachine(World w, AIPlayer ai);
 
 	/**
 	 * Finds the shortest path to the Sofa from the current place
 	 *
 	 * @param w
 	 *            the world
-	 * @param p
+	 * @param ai
 	 *            the player that needs to go to the coffee machine
 	 */
-	public void findSofa(World w, AIPlayer p);
+	public void findSofa(World w, AIPlayer ai);
 
 	/**
 	 * When player is low on energy, he goes to the coffee machine. It is a fast
 	 * way to regenerate energy, but it has a change of giving a coffee buzz
 	 * which will lower ones productivity.
 	 *
-	 * @param p
+	 *@param w the world where the coffee machine is
+	 * @param ai
 	 *            player who needs to go to the coffee machine
 	 */
-	public void goToCoffeeMachineAndBack(World w, AIPlayer p);
+	public void goToCoffeeMachineAndBack(World w, AIPlayer ai);
 
 	/**
 	 * When player is low on energy, he goes to sleep on the sofa. It is a slow
 	 * but safe way to regenerate energy.
 	 *
-	 * @param p
+	 * @param ai
 	 *            player who needs to go to the coffee machine
 	 * @param w
 	 *            the world of the player
 	 */
-	public void goToSofaAndBack(World w, AIPlayer p);
+	public void goToSofaAndBack(World w, AIPlayer ai);
 
 	/**
 	 * Before every move, check if the player on the map is facing in the right
 	 * direction. e.g. if you want to move to a tile south of your current one
 	 * you must be facing south
 	 *
-	 * @param p
+	 * @param ai
 	 *            player that needs to move
 	 * @param pair
 	 *            the pair of coordinates of the tile the player wants to go to
 	 */
-	public void figureOutFacing(AIPlayer p, Pair<Integer, Integer> pair);
+	public void figureOutFacing(AIPlayer ai, Pair<Integer, Integer> pair);
 
 	/**
 	 * Go back to the player's desk
 	 *
-	 * @param p
+	 * @param ai
 	 *            the player that needs to go back to his desk
 	 * @param w
 	 *            the world of the player
 	 */
-	public void toTheDesk(World w, AIPlayer p);
+	public void toTheDesk(World w, AIPlayer ai);
 
 	/**
 	 * Checks all players and the work load they have completed. Then compare
@@ -151,7 +155,7 @@ public interface Logic extends Serializable {
 	 * 
 	 * @param w
 	 *            the world of the player
-	 * @param p
+	 * @param ai
 	 *            the player that is going to move
 	 * @param go
 	 *            the destination of the player; "cm" for coffee machine and "s"
@@ -160,13 +164,17 @@ public interface Logic extends Serializable {
 	 *         destination and the second one is from the destination to the
 	 *         start point
 	 */
-	public ArrayList<ArrayList<Pair<Integer, Integer>>> findPaths(World w, AIPlayer p, String go);
-	
+	public ArrayList<ArrayList<Pair<Integer, Integer>>> findPaths(World w, AIPlayer ai, String go);
+
 	/**
-	 * When a certain player disconnects, an AI replaces him/her. When this is done, if the player was not on his chair, find the path to it and sit. Else, do nothing.
-	 * @param w the world of the player
-	 * @param ai the ai that needs to move 
+	 * When a certain player disconnects, an AI replaces him/her. When this is
+	 * done, if the player was not on his chair, find the path to it and sit.
+	 * Else, do nothing.
+	 * 
+	 * @param w
+	 *            the world of the player
+	 * @param ai
+	 *            the ai that needs to move
 	 */
 	public void findChair(World w, AIPlayer ai);
 }
-

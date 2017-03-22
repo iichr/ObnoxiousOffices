@@ -25,6 +25,7 @@ public class LogicHardTest {
 
 	@Test
 	public void testRefresh() {
+		ai.getLogic().aiWork(ai);
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
@@ -43,22 +44,23 @@ public class LogicHardTest {
 		assertTrue(fatigeBeforeRefresh > fatigueAfterRefresh);
 	}
 	
-	@Test
+/*	@Test
 	public void testWork() {
 		double noWorkProgress = 0;
-		//make ai work
+		// make ai work
 		ai.getLogic().aiWork(ai);
-		//make sure the ai has had the change to progress before doing the assertion
+		// make sure the ai has had the change to progress before doing the
+		// assertion
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		//store the progress of the ai
+		// store the progress of the ai
 		double workProgress = ai.status.getAttribute(PlayerAttribute.FATIGUE);
 		System.out.println("workProgress " + workProgress);
 		assertTrue(noWorkProgress < workProgress);
-	}
+	}*/
 	
 	@Before
 	public void createWorld() {
