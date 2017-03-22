@@ -16,6 +16,7 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
     public static final String Y_POS = "y", X_POS = "x", BALL_X_VEL = "bvx", BALL_Y_VEL = "bvy";
     public static final int BOUND_Y = 15, BOUND_X = 20;
     public static final float PADDLE_LEN = 5, BALL_SIZE = 1;
+    private static final long serialVersionUID = 4633248866421187983L;
 
     public MiniGamePong(String player1, String player2) {
         super(player1, player2);
