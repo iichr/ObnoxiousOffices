@@ -230,6 +230,7 @@ public class SpriteLocations {
 
 	// TILE LOCATIONS
 	public static final String TILES = "/res/sprites/tiles/tiles.png";
+	public static final String RULES_SPRITES = "/res/sprites/tiles/rulesSprites.png";
 
 	public static final String TILE_WALL = "/res/sprites/tiles/wall.png";
 
