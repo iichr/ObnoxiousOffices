@@ -12,7 +12,7 @@ import game.core.event.Events;
 import game.core.event.GameStartedEvent;
 import game.core.world.World;
 import game.ui.interfaces.Vals;
-import game.ui.states.CharacterSelect;
+import game.ui.states.Connect;
 import game.ui.states.Intro;
 import game.ui.states.KeyOptions;
 import game.ui.states.Menu;
@@ -27,7 +27,7 @@ public class Game extends StateBasedGame {
 	private Menu menuState;
 	private Options optionsState;
 	private Rules rulesState;
-	private CharacterSelect chSelectState;
+	private Connect chSelectState;
 	private PlayTest playTestState;
 	private KeyOptions optionsState2;
 
@@ -52,7 +52,7 @@ public class Game extends StateBasedGame {
 		this.addState(optionsState);
 		rulesState = new Rules();
 		this.addState(rulesState);
-		chSelectState = new CharacterSelect(playTestState);
+		chSelectState = new Connect(playTestState);
 		this.addState(chSelectState);
 		optionsState2 = new KeyOptions();
 		this.addState(optionsState2);
