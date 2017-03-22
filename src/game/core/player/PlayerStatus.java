@@ -104,8 +104,12 @@ public class PlayerStatus implements Serializable {
     }
 
     public void update(Player player) {
-        Updateable.updateAll(actions).forEach(a -> removeAction(a.getClass()));
-        Updateable.updateAll(effects).forEach(e -> removeEffect(e.getClass()));
+        synchronized (actions) {
+            Updateable.updateAll(actions).forEach(a -> removeAction(a.getClass()));
+        }
+        synchronized (effects) {
+            Updateable.updateAll(effects).forEach(e -> removeEffect(e.getClass()));
+        }
 
         addToAttribute(PlayerAttribute.FATIGUE, FATIGUE_INCREASE);
         if(getAttribute(PlayerAttribute.FATIGUE) >= PlayerAttribute.FATIGUE.maxVal) {
