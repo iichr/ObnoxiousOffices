@@ -72,7 +72,7 @@ public class Connect extends BasicGameState {
 	 *
 	 * @param test
 	 *            The play test state
-	 * @param wg 
+	 * @param wg
 	 */
 	public Connect(PlayTest test, WordGenerator wg) {
 		this.playTest = test;
@@ -275,7 +275,7 @@ public class Connect extends BasicGameState {
 	public void setInvalidName(boolean toSet) {
 		invalidName = toSet;
 	}
-	
+
 	@Override
 	public int getID() {
 		return Vals.CHARACTER_SELECT_STATE;

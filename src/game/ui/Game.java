@@ -49,7 +49,7 @@ public class Game extends StateBasedGame {
 			this.addState(menuState);
 			playState = new Play(wg);
 			this.addState(playState);
-			playTestState = new PlayTest();
+			playTestState = new PlayTest(wg);
 			this.addState(playTestState);
 			optionsState = new Options(wg);
 			this.addState(optionsState);

@@ -5,8 +5,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
 
-import game.core.event.Events;
-import game.core.event.GameFinishedEvent;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.player.effect.PlayerEffectCoffeeBuzz;
@@ -15,12 +13,13 @@ import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
 import game.ui.components.Controls;
+import game.ui.components.WordGenerator;
 import game.ui.interfaces.Vals;
 
 public class PlayTest extends Play {
 
-	public PlayTest() {
-		super();
+	public PlayTest(WordGenerator wg) {
+		super(wg);
 	}
 
 	@Override
@@ -51,7 +50,7 @@ public class PlayTest extends Play {
 		heldKey = -1;
 
 		// test game finished screen
-		//Events.trigger(new GameFinishedEvent());
+		// Events.trigger(new GameFinishedEvent());
 	}
 
 	/**
