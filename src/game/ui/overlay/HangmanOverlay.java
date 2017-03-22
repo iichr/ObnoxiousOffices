@@ -8,10 +8,14 @@ import game.core.minigame.MiniGame;
 import game.core.minigame.MiniGameHangman;
 import game.ui.components.WordGenerator;
 
+/**
+ * Overlay displayed for hangman mingame
+ */
 public class HangmanOverlay extends PopUpOverlay {
 
 	/**
 	 * Constructor: Sets up overlay
+	 * 
 	 * @throws SlickException
 	 */
 	public HangmanOverlay(WordGenerator wg) throws SlickException {

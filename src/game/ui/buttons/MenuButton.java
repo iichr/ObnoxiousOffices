@@ -10,7 +10,6 @@ import game.ui.interfaces.Vals;
 /**
  * Used to create a new labelled button for the menu. Label is centred to the
  * middle of the button.
- *
  */
 public class MenuButton extends Button {
 

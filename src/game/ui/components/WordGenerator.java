@@ -9,41 +9,31 @@ import org.newdawn.slick.SpriteSheet;
 
 import game.util.Pair;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class WordGenerator.
+ * Generates an image using an in house font from a given string
  */
 public class WordGenerator {
-	
-	/** The g. */
-	Graphics g;
-	
-	/** The height. */
-	float height;
-	
-	/** The width. */
-	float width;
-	
+
+	private Graphics g;
+
+	private float height;
+	private float width;
+
 	/** The HashMap for Normal Characters */
-	HashMap<Character, Image> wg = new HashMap<>();
-	
+	private HashMap<Character, Image> wg = new HashMap<>();
+
 	/** The HashMap for Bolded Characters */
-	HashMap<Character, Image> wgB = new HashMap<>();
-		
+	private HashMap<Character, Image> wgB = new HashMap<>();
+
 	/** The map. */
-	char[][] map = new char[][] { 	{ 'a', 'b', 'c', 'd', 'e' }, 
-									{ 'f', 'g', 'h', 'i', 'j' }, 
-									{ 'k', 'l', 'm', 'n', 'o' },
-									{ 'p', 'q', 'r', 's', 't' }, 
-									{ 'u', 'v', 'w', 'x', 'y' }, 
-									{ 'z', '%', '_', '<', '>' },
-									{ '0', '1', '2', '3', '4' }, 
-									{ '5', '6', '7', '8', '9' } };
+	char[][] map = new char[][] { { 'a', 'b', 'c', 'd', 'e' }, { 'f', 'g', 'h', 'i', 'j' }, { 'k', 'l', 'm', 'n', 'o' },
+			{ 'p', 'q', 'r', 's', 't' }, { 'u', 'v', 'w', 'x', 'y' }, { 'z', '%', '_', '<', '>' },
+			{ '0', '1', '2', '3', '4' }, { '5', '6', '7', '8', '9' } };
 
 	/**
 	 * Constructor: loads all of the images needed by the word generator.
 	 *
-	 * @throws SlickException the slick exception
+	 * @throws SlickException
 	 */
 	public WordGenerator() throws SlickException {
 		SpriteSheet ss = new SpriteSheet(new Image("res/alphabets/normal.png"), 149, 149, 1, 0);
@@ -58,9 +48,11 @@ public class WordGenerator {
 	/**
 	 * Load sprite sheets to hashmaps
 	 *
-	 * @param hm the hm
-	 * @param spriteSheet the sprite sheet
-	 * @throws SlickException the slick exception
+	 * @param hm
+	 *            The hash map from characters to images
+	 * @param spriteSheet
+	 *            The character sprite sheet
+	 * @throws SlickException
 	 */
 	private void load(HashMap<Character, Image> hm, SpriteSheet spriteSheet) throws SlickException {
 		for (int y = 0; y < 8; y++) {
@@ -77,14 +69,20 @@ public class WordGenerator {
 	}
 
 	/**
-	 * Draw.
+	 * Draw a word at x and y coordinates
 	 *
-	 * @param g the g
-	 * @param text            - the text to generate
-	 * @param f            - x coordinate
-	 * @param h            - y coordinate
-	 * @param bold            - Set true if you want text in bold, else false
-	 * @param scale            - scaling factor min 0 max 1
+	 * @param g
+	 *            The graphics object
+	 * @param text
+	 *            The text to generate
+	 * @param f
+	 *            The x coordinate of the top left hand corner
+	 * @param h
+	 *            The y coordinate of the top left hand corner
+	 * @param bold
+	 *            Set true if you want text in bold, else false
+	 * @param scale
+	 *            Scaling factor min 0 max 1
 	 */
 	public void draw(Graphics g, String text, float f, float h, boolean bold, float scale) {
 		this.g = g;
@@ -102,10 +100,12 @@ public class WordGenerator {
 	/**
 	 * Get the Width and Height of a generated Word as a Pair.
 	 *
-	 * @param text            The text to get the width and height of
-	 * @param scale            The scale to be used for the image
+	 * @param text
+	 *            The text to get the width and height of
+	 * @param scale
+	 *            The scale to be used for the image
 	 * @return Pair(Width, Height) Gets the width and height of a generated word
-	 * A pair <Width, Height>
+	 *         A pair <Width, Height>
 	 */
 
 	public Pair<Float, Float> getWH(String text, float scale) {
@@ -115,14 +115,20 @@ public class WordGenerator {
 	}
 
 	/**
-	 * Draw center of the required x and y coordinates
+	 * Draw a word centred around x and y coordinates
 	 *
-	 * @param g the g
-	 * @param text            - the text to generate
-	 * @param f            - x coordinate
-	 * @param h            - y coordinate
-	 * @param bold            - Set true if you want text in bold, else false
-	 * @param scale            - scaling factor min 0 max 1
+	 * @param g
+	 *            The graphics object
+	 * @param text
+	 *            The text to generate
+	 * @param f
+	 *            The x coordinate to draw at
+	 * @param h
+	 *            The y coordinate to draw at
+	 * @param bold
+	 *            Set true if you want text in bold, else false
+	 * @param scale
+	 *            Scaling factor min 0 max 1
 	 */
 	public void drawCenter(Graphics g, String text, float f, float h, boolean bold, float scale) {
 		this.g = g;
@@ -150,13 +156,17 @@ public class WordGenerator {
 	/**
 	 * Gets the XY coordinates.
 	 *
-	 * @param text the text
-	 * @param f the f
-	 * @param h the h
-	 * @param scale the scale
+	 * @param text
+	 *            The text
+	 * @param x
+	 *            The x coordinate of the top left hand corner
+	 * @param y
+	 *            The y coordinate of the top left hand corner
+	 * @param scale
+	 *            The scale
 	 * @return the xy
 	 */
-	public Pair<Float, Float> getXY(String text, float f, float h, float scale) {
+	public Pair<Float, Float> getXY(String text, float x, float y, float scale) {
 		float totalX = 0;
 		float totalY = 0;
 		for (int length = 0; length < text.length(); length++) {
@@ -166,14 +176,16 @@ public class WordGenerator {
 				totalY = img.getScaledCopy(scale).getHeight();
 			}
 		}
-		return new Pair<Float, Float>(f - totalX / 2, h - totalY / 2);
+		return new Pair<Float, Float>(x - totalX / 2, y - totalY / 2);
 	}
 
 	/**
 	 * Get the image for a particular character.
 	 *
-	 * @param c            The character to get the image of
-	 * @param bold            Whether the character is bold or not
+	 * @param c
+	 *            The character to get the image of
+	 * @param bold
+	 *            Whether the character is bold or not
 	 * @return The image for the given character
 	 */
 

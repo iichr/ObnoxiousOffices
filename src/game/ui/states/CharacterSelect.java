@@ -83,9 +83,6 @@ public class CharacterSelect extends BasicGameState {
 		Events.on(GameFullEvent.class, this::gameFull);
 	}
 
-	/* 
-	 * 
-	 */
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		Image back = new Image(ImageLocations.BACK, false);
@@ -111,7 +108,6 @@ public class CharacterSelect extends BasicGameState {
 	 * @throws SlickException
 	 *             the slick exception
 	 */
-	@SuppressWarnings("unchecked")
 	private void addTextFields(GameContainer gc) throws SlickException {
 		// Server address text field.
 		Vals.FONT_MAIN.addAsciiGlyphs();
@@ -143,9 +139,6 @@ public class CharacterSelect extends BasicGameState {
 		playerName.setMaxLength(15);
 	}
 
-	/*
-	 * 
-	 */
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		toPlay = false;
@@ -158,9 +151,6 @@ public class CharacterSelect extends BasicGameState {
 
 	}
 
-	/* 
-	 *
-	 **/
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		// debugging
@@ -221,9 +211,6 @@ public class CharacterSelect extends BasicGameState {
 		}
 	}
 
-	/* 
-	 * 
-	 */
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		AppGameContainer container = (AppGameContainer) gc;
@@ -278,17 +265,11 @@ public class CharacterSelect extends BasicGameState {
 		gameFull = true;
 	}
 
-	/*
-	 * 
-	 */
 	@Override
 	public int getID() {
 		return Vals.CHARACTER_SELECT_STATE;
 	}
 
-	/*
-	 * Check key press
-	 * 	 */
 	@Override
 	public void keyPressed(int key, char c) {
 		switch (key) {

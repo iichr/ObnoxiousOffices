@@ -14,6 +14,9 @@ import game.core.player.effect.PlayerEffectSleeping;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
+/**
+ * Displays effects affecting the player on screen
+ */
 public class Effect {
 	private long activeFor;
 	private float tileWidth;

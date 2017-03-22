@@ -98,7 +98,6 @@ public class Play extends BasicGameState {
 		return Vals.PLAY_STATE;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		// Load the Font
