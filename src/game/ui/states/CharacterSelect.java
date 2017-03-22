@@ -39,49 +39,34 @@ public class CharacterSelect extends BasicGameState {
 	/** The waiting. */
 	private Image waiting;
 
-	/** The player name. */
 	private TextField serverAddress, playerName;
 
-	/** The server str. */
+	// Input fields on the screen
 	private String serverStr = "Enter Server Address:";
-
-	/** The player str. */
 	private String playerStr = "Enter Player Name:";
 
-	/** The waiting string. */
+	// information in response to events
 	private String waitingString = "Connected: Waiting for ";
-
-	/** The connect fail string. */
 	private String connectFailString = "Connection failed: please check the ip and try again";
-
-	/** The game full sring. */
 	private String gameFullSring = "Game is already full, try a different server";
-
-	/** The invalid name string. */
 	private String invalidNameString = "Invalid name: Must be alphanumeric or underscore";
 
 	/** The to play. */
 	private boolean toPlay = false;
 
-	/** The connected. */
+	// Connection status
 	private boolean connected = false;
-
-	/** The connect failed. */
 	private boolean connectFailed = false;
 
-	/** The invalid name. */
+	// invalid name check
 	private boolean invalidName = false;
-
-	/** The game full. */
+	
+	// have enough people connected to the game
 	private boolean gameFull = false;
 
-	/** The play test. */
+	// The play test.
 	private PlayTest playTest;
-
-	/** The player left. */
 	private int playerLeft = 0;
-
-	/** The wg. */
 	private WordGenerator wg;
 
 	/**

@@ -51,7 +51,7 @@ public class PlayTest extends Play {
 		heldKey = -1;
 
 		// test game finished screen
-		Events.trigger(new GameFinishedEvent());
+		//Events.trigger(new GameFinishedEvent());
 	}
 
 	/**

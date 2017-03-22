@@ -1,5 +1,3 @@
-// GameState that shows logo.
-
 package game.ui.states;
 
 import org.newdawn.slick.Color;
@@ -13,18 +11,23 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import game.ui.interfaces.Vals;
 
+/**
+ * The game state displaying the splash screen at the beginning of the game.
+ */
 public class Intro extends BasicGameState {
 
+	
 	private Image logo;
 	private int alpha;
 	private int ticks;
 	private boolean skip;
 
+	// effects length
 	private final int FADE_IN = 100;
 	private final int LENGTH = 100;
 	private final int FADE_OUT = 200;
 
-	private final float logoWidth = 3*Vals.SCREEN_WIDTH / 5;
+	private final float logoWidth = 3 * Vals.SCREEN_WIDTH / 5;
 	private final float logoHeight = Vals.SCREEN_HEIGHT / 4;
 
 	@Override
@@ -34,6 +37,7 @@ public class Intro extends BasicGameState {
 
 		logo = new Image("/res/logo.png", false, Image.FILTER_NEAREST);
 	}
+
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		g.setColor(Color.white);
