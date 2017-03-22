@@ -11,6 +11,8 @@ import game.core.world.World;
  */
 public abstract class PlayerActionMinigame extends PlayerAction {
 
+    protected boolean ended = false;
+
     public PlayerActionMinigame(Player player) {
         super(player);
     }
@@ -19,7 +21,7 @@ public abstract class PlayerActionMinigame extends PlayerAction {
 
     @Override
     public boolean ended() {
-        return false;
+        return ended;
     }
 
     @Override
@@ -31,7 +33,7 @@ public abstract class PlayerActionMinigame extends PlayerAction {
     public void start() {
         MiniGame miniGame = getMiniGame();
         miniGame.onEnd(this::end);
-        World.world.startMiniGame(getMiniGame());
+        if(!World.world.startMiniGame(getMiniGame())) end();
     }
 
     @Override
@@ -39,10 +41,12 @@ public abstract class PlayerActionMinigame extends PlayerAction {
         end(null);
     }
 
-    public abstract void end(MiniGameEndedEvent event);
+    public void end(MiniGameEndedEvent event) {
+        ended = true;
+    }
 
     @Override
     public void cancel() {
-
+        end();
     }
 }
