@@ -8,6 +8,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.BasicGameState;
@@ -15,6 +16,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import game.ui.buttons.MenuButton;
 import game.ui.interfaces.ImageLocations;
+import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 
 /**
@@ -29,6 +31,7 @@ public class Rules extends BasicGameState {
 	private String mouseCoords;
 	private String gameTitle;
 	private String rules;
+	SpriteSheet allSprites;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -47,6 +50,9 @@ public class Rules extends BasicGameState {
 			font.getEffects().add(new ColorEffect());
 			font.loadGlyphs();
 		}
+		
+		Image sprites = new Image(SpriteLocations.RULES_SPRITES, false, Image.FILTER_NEAREST);
+		allSprites = new SpriteSheet(sprites, 64, 128);
 
 		// character encoding: \u0027 for apostrophe
 		gameTitle = "DevWars";
