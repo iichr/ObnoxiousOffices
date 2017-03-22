@@ -95,7 +95,7 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
                     break;
             }
             if(yAdd != 0) {
-                float newPos = yAdd + getIntStat(player, Y_POS);
+                float newPos = yAdd + (float)getStat(player, Y_POS);
                 if (newPos < BOUND_Y && newPos > 0) setStat(player, Y_POS, newPos);
             }
         }
