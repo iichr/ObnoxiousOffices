@@ -58,7 +58,7 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
 		float yDiff = ballY - (playerY + PADDLE_LEN / 2);
 		if (((ballX + BALL_SIZE / 2 >= playerX && !left) || (ballX - BALL_SIZE / 2 <= playerX && left))
 				&& yDiff >= -(PADDLE_LEN / 2) && yDiff < PADDLE_LEN / 2) {
-			bounceBall(BALL_X_VEL, BALL_Y_VEL, PADDLE_LEN - yDiff);
+			bounceBall(BALL_X_VEL, BALL_Y_VEL, yDiff);
 		}
 	}
 
