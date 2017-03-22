@@ -150,7 +150,6 @@ public class ServerListener extends Thread {
 				} else {
 					try {
 						Event eventObject = (Event) is.readObject();
-						System.out.println("recieved: " + eventObject);
 						Events.trigger(eventObject);
 					} catch (Exception e) {
 						try {
@@ -166,7 +165,6 @@ public class ServerListener extends Thread {
 
 	public void startGame() {
 		Server.listen = false;
-		System.out.println(Server.listen);
 		GameStartedEvent gameStart = new GameStartedEvent(world);
 		sendToAllClients(gameStart);
 		Events.trigger(gameStart);
@@ -190,7 +188,6 @@ public class ServerListener extends Thread {
 	 */
 	public void sendToAllClients(Object obj) {
 		for (int i = 0; i < this.connections.size(); i++) {
-			System.out.println("sending " + obj + "to connection " + i);
 			this.connections.get(i).forwardInfo(obj);
 		}
 	}
@@ -239,7 +236,7 @@ public class ServerListener extends Thread {
 								this.queueWait.wait();
 							}
 						} catch (InterruptedException e1) {
-							System.out.print("INterrupted exception:  ");
+							System.out.print("Player left");
 						}
 					}
 				}
@@ -304,7 +301,6 @@ public class ServerListener extends Thread {
 	 *            Object received from the game closed event
 	 */
 	private void closeConnection(Object recieved) {
-		System.out.println("sending game finished to clients");
 		forwardInfo(recieved);
 		try {
 			Thread.sleep(1000);
