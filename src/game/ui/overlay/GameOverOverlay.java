@@ -2,11 +2,16 @@ package game.ui.overlay;
 
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.StateBasedGame;
 
 import game.core.player.Player;
 import game.ui.components.WordGenerator;
+import game.ui.interfaces.Vals;
 
 public class GameOverOverlay extends PopUpOverlay {
 
@@ -24,10 +29,10 @@ public class GameOverOverlay extends PopUpOverlay {
 		this.players = players;
 	}
 
-	@Override
-	public void render(Graphics g) {
+	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		// draw the background
 		background.draw(x, y, width, height);
+		Input input=gc.getInput();
 
 		wg.drawCenter(g, "GAME OVER", x + width / 2, y + height / 2 - height / 3, true, 2 * scale / 3);
 
@@ -41,6 +46,9 @@ public class GameOverOverlay extends PopUpOverlay {
 		}
 
 		wg.drawCenter(g, "PRESS ANY KEY TO EXIT", x + width / 2, y + height / 2 + height / 3, true, scale / 3);
+		if(input.isKeyPressed(Keyboard.getEventKey())){
+			sbg.enterState(Vals.MENU_STATE);
+		}
 
 	}
 }

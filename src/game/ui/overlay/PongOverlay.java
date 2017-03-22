@@ -9,6 +9,7 @@ import org.newdawn.slick.geom.Rectangle;
 import game.core.minigame.MiniGame;
 import game.core.minigame.MiniGamePong;
 import game.ui.components.WordGenerator;
+import game.util.Pair;
 
 public class PongOverlay extends PopUpOverlay {
 
@@ -23,15 +24,22 @@ public class PongOverlay extends PopUpOverlay {
 	@Override
 	public void render(Graphics g) {
 		MiniGamePong pong = (MiniGamePong) MiniGame.localMiniGame;
-
+		
 		// draw the background
 		background.draw(x, y, width, height);
+		
+		String p1 = pong.getPlayers().get(0);
+		String p2 = pong.getPlayers().get(1);
 
 		float playWidth = 3 * width / 4;
 		float playHeight = 3 * height / 4;
 
-		float playX = x + (width - playWidth) / 2;
-		float playY = y + (height - playHeight) / 2;
+		float playX = x + 3*(width - playWidth) / 4;
+		float playY = y + 3*(height - playHeight) / 4;
+		
+		wg.draw(g, p1, playX, playY - wg.getWH(p1, 0.2f).getR(), true, 0.2f);
+		Pair<Float, Float> p = wg.getWH(p2, 0.2f);
+		wg.draw(g, p1, playX + playWidth - p.getL(), playY - p.getR(), true, 0.2f);
 
 		float unitX = playWidth / (float) pong.BOUND_X;
 		float unitY = playHeight / (float) pong.BOUND_Y;
@@ -44,8 +52,6 @@ public class PongOverlay extends PopUpOverlay {
 		float paddleHeight = unitY * pong.PADDLE_LEN;
 
 		g.setColor(Color.white);
-		String p1 = pong.getPlayers().get(0);
-		String p2 = pong.getPlayers().get(1);
 		
 		float paddle1X = playX + unitX * (pong.getPlayerPos(p1).getL() - 1);
 		float paddle1Y = playY + unitY * pong.getPlayerPos(p1).getR();

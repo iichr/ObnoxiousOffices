@@ -25,33 +25,71 @@ import game.ui.components.WordGenerator;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
+/**
+ * The Class CharacterSelect.
+ */
 public class CharacterSelect extends BasicGameState {
+
+	/** The back button. */
 	private MenuButton backButton;
+
+	/** The connect button. */
 	private ConnectButton connectButton;
+
+	/** The waiting. */
 	private Image waiting;
 
+	/** The player name. */
 	private TextField serverAddress, playerName;
+
+	/** The server str. */
 	private String serverStr = "Enter Server Address:";
+
+	/** The player str. */
 	private String playerStr = "Enter Player Name:";
+
+	/** The waiting string. */
 	private String waitingString = "Connected: Waiting for ";
+
+	/** The connect fail string. */
 	private String connectFailString = "Connection failed: please check the ip and try again";
+
+	/** The game full sring. */
 	private String gameFullSring = "Game is already full, try a different server";
+
+	/** The invalid name string. */
 	private String invalidNameString = "Invalid name: Must be alphanumeric or underscore";
 
+	/** The to play. */
 	private boolean toPlay = false;
+
+	/** The connected. */
 	private boolean connected = false;
+
+	/** The connect failed. */
 	private boolean connectFailed = false;
+
+	/** The invalid name. */
 	private boolean invalidName = false;
+
+	/** The game full. */
 	private boolean gameFull = false;
+
+	/** The play test. */
 	private PlayTest playTest;
+
+	/** The player left. */
 	private int playerLeft = 0;
+
+	/** The wg. */
 	private WordGenerator wg;
 
 	/**
 	 * Constructor: Creates the character select state and starts event
-	 * listeners
-	 * 
+	 * listeners.
+	 *
 	 * @param test
+	 *            the test
 	 */
 	public CharacterSelect(PlayTest test) {
 		this.playTest = test;
@@ -60,6 +98,9 @@ public class CharacterSelect extends BasicGameState {
 		Events.on(GameFullEvent.class, this::gameFull);
 	}
 
+	/* 
+	 * 
+	 */
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		Image back = new Image(ImageLocations.BACK, false);
@@ -78,11 +119,12 @@ public class CharacterSelect extends BasicGameState {
 	}
 
 	/**
-	 * Creates the text fields to be shown on the screen
-	 * 
+	 * Creates the text fields to be shown on the screen.
+	 *
 	 * @param gc
 	 *            The game container
 	 * @throws SlickException
+	 *             the slick exception
 	 */
 	@SuppressWarnings("unchecked")
 	private void addTextFields(GameContainer gc) throws SlickException {
@@ -116,6 +158,24 @@ public class CharacterSelect extends BasicGameState {
 		playerName.setMaxLength(15);
 	}
 
+	/*
+	 * 
+	 */
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+		toPlay = false;
+		connected = false;
+		connectFailed = false;
+		invalidName = false;
+		gameFull = false;
+		serverAddress.setText("");
+		playerName.setText("");
+
+	}
+
+	/* 
+	 *
+	 **/
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		// debugging
@@ -139,8 +199,8 @@ public class CharacterSelect extends BasicGameState {
 
 	/**
 	 * Renders the elements on the screen depending on the connection status of
-	 * the client
-	 * 
+	 * the client.
+	 *
 	 * @param g
 	 *            The graphics object g
 	 */
@@ -176,6 +236,9 @@ public class CharacterSelect extends BasicGameState {
 		}
 	}
 
+	/* 
+	 * 
+	 */
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		AppGameContainer container = (AppGameContainer) gc;
@@ -198,8 +261,8 @@ public class CharacterSelect extends BasicGameState {
 	}
 
 	/**
-	 * Sets connected to be true and ensures connectFailed is false;
-	 * 
+	 * Sets connected to be true and connectFailed is false;.
+	 *
 	 * @param e
 	 *            A PlayerCreatedEvent
 	 */
@@ -210,22 +273,37 @@ public class CharacterSelect extends BasicGameState {
 	}
 
 	/**
-	 * Sets connectFailed to be true and ensures connected is false;
+	 * Sets connectFailed to be true and connected is false;.
+	 *
+	 * @param e
+	 *            the e
 	 */
 	private void connectFail(ConnectionFailedEvent e) {
 		connectFailed = true;
 		connected = false;
 	}
 
+	/**
+	 * Game full.
+	 *
+	 * @param e
+	 *            the e
+	 */
 	private void gameFull(GameFullEvent e) {
 		gameFull = true;
 	}
 
+	/*
+	 * 
+	 */
 	@Override
 	public int getID() {
 		return Vals.CHARACTER_SELECT_STATE;
 	}
 
+	/*
+	 * Check key press
+	 * 	 */
 	@Override
 	public void keyPressed(int key, char c) {
 		switch (key) {
@@ -234,6 +312,12 @@ public class CharacterSelect extends BasicGameState {
 		}
 	}
 
+	/**
+	 * Sets the invalid name.
+	 *
+	 * @param toSet
+	 *            the new invalid name
+	 */
 	public void setInvalidName(boolean toSet) {
 		invalidName = toSet;
 	}
