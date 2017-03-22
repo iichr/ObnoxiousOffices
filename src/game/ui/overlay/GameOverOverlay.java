@@ -28,7 +28,8 @@ public class GameOverOverlay extends PopUpOverlay {
 		super(wg);
 		this.players = players;
 	}
-
+	
+	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		// draw the background
 		background.draw(x, y, width, height);
@@ -36,7 +37,6 @@ public class GameOverOverlay extends PopUpOverlay {
 
 		wg.drawCenter(g, "GAME OVER", x + width / 2, y + height / 2 - height / 3, true, 2 * scale / 3);
 
-		// TODO sort players by progress
 		// characters available
 		float playerNumber = 0;
 		for (Player p : players) {
