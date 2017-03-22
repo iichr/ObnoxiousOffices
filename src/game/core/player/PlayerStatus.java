@@ -12,12 +12,11 @@ import game.core.event.player.effect.PlayerEffectEndedEvent;
 import game.core.player.action.PlayerAction;
 import game.core.player.action.PlayerActionSleep;
 import game.core.player.effect.PlayerEffect;
-import game.core.player.effect.PlayerEffectCoffeeBuzz;
+import game.core.player.state.PlayerState;
 
 import java.io.Serializable;
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 

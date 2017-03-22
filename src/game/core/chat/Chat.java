@@ -43,4 +43,7 @@ public class Chat {
         Events.trigger(message.toCreatedEvent());
     }
 
+    public void removeMessage(ChatMessage message) {
+        messages.remove(message);
+    }
 }

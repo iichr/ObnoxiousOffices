@@ -4,7 +4,7 @@ import game.core.event.Events;
 import game.core.event.GameStartedEvent;
 import game.core.input.InteractionType;
 import game.core.player.Player;
-import game.core.player.PlayerState;
+import game.core.player.state.PlayerState;
 import game.core.player.action.*;
 import game.core.world.Direction;
 import game.core.world.Location;
