@@ -43,7 +43,9 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
             } else if(ballX + BALL_SIZE/2>= BOUND_X) {
                 addStat(player2, SCORE, 1);
                 newRound();
-            } else if (ballY + BALL_SIZE/2 >= BOUND_Y || ballY - BALL_SIZE/2 <= 0) bounceBall(BALL_Y_VEL, null, 0);
+            } else if (ballY + BALL_SIZE/2 >= BOUND_Y || ballY - BALL_SIZE/2 <= 0){
+            	bounceBall(BALL_Y_VEL, null, 0);
+            }
             else {
                 checkPaddleBounce(player2, ballX, ballY);
                 checkPaddleBounce(player1, ballX, ballY);
@@ -53,13 +55,17 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
 
     private void checkPaddleBounce(String player, float ballX, float ballY) {
         float playerX = (float)getStat(player, X_POS), playerY = (float)getStat(player, Y_POS);
-        float yDiff = ballY - playerY;
-        if((ballX + BALL_SIZE/2 >= playerX || ballX - BALL_SIZE/2 <= playerX) && yDiff >= 0 && yDiff < PADDLE_LEN) bounceBall(BALL_X_VEL, BALL_Y_VEL, PADDLE_LEN - yDiff);
+        float yDiff = ballY - (playerY + PADDLE_LEN/2);
+        if((ballX + BALL_SIZE/2 >= playerX || ballX - BALL_SIZE/2 <= playerX) && yDiff >= 0 && yDiff < PADDLE_LEN){
+        	bounceBall(BALL_X_VEL, BALL_Y_VEL, PADDLE_LEN - yDiff);
+        }
     }
 
     private void bounceBall(String varToNegate, String otherVer, float velVal) {
         negVar(varToNegate);
-        if(otherVer != null) setVar(otherVer, velVal);
+        if(otherVer != null){
+        	setVar(otherVer, velVal);
+        }
     }
 
     private void newRound() {
@@ -95,7 +101,9 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
             }
             if(yAdd != 0) {
                 float newPos = yAdd + (float)getStat(player, Y_POS);
-                if (newPos < BOUND_Y && newPos > 0) setStat(player, Y_POS, newPos);
+                if (newPos > 0 && newPos + PADDLE_LEN < BOUND_Y ){
+                	setStat(player, Y_POS, newPos);
+                }
             }
         }
     }
