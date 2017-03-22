@@ -216,7 +216,6 @@ public class Play extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setFont(Vals.FONT_PLAY);
 		boolean[][] visible = renderer.findVisibles();
-
 		// renders world
 		renderer.drawWorld(visible);
 		cb.render(gc, g);
@@ -234,7 +233,7 @@ public class Play extends BasicGameState {
 		// show ui info to player
 		playerinfo.render(g, visible);
 		if (gameOver) {
-			gameOverOverlay.render(g);
+			gameOverOverlay.render(gc,sbg,g);
 		} else if (options) {
 			optionsOverlay.render(gc, g);
 		} else if (playingHangman) {
