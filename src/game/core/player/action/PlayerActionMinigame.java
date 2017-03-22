@@ -33,7 +33,7 @@ public abstract class PlayerActionMinigame extends PlayerAction {
     public void start() {
         MiniGame miniGame = getMiniGame();
         miniGame.onEnd(this::end);
-        if(!World.world.startMiniGame(getMiniGame())) end();
+        if(!World.world.startMiniGame(miniGame)) end();
     }
 
     @Override
