@@ -176,10 +176,4 @@ public interface Logic extends Serializable {
 	 *            the ai that needs to move
 	 */
 	public void findChair(World w, AIPlayer ai);
-}
-
-
-	 */
-	public ArrayList<ArrayList<Pair<Integer, Integer>>> findPaths(World w, AIPlayer ai, String go);
-
 }
