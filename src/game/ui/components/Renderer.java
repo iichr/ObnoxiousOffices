@@ -26,35 +26,54 @@ import game.ui.interfaces.SpriteLocations;
 import game.ui.interfaces.Vals;
 import game.ui.player.PlayerAnimation;
 
+/**
+ * Renders the game to the screen
+ */
 public class Renderer {
-	//world info
+	// world info
 	private World world;
 	private String localPlayerName;
-	
-	//tile info
+
+	// tile info
 	private float tileWidth;
 	private float tileHeight;
 	private HashMap<TileType, HashMap<Direction, Image[]>> tileMap;
-	
-	//player animations
+
+	// player animations
 	private List<PlayerAnimation> playerAnimations;
-	
-	//boolean toggles
+
+	// boolean toggles
 	private boolean showOverview;
-	
-	public Renderer(World world, String localPlayerName, float tileWidth, float tileHeight, boolean showOverview) throws SlickException {
+
+	/**
+	 * Constructor: Creates a renderer object and sets up player animations
+	 * 
+	 * @param world
+	 *            The world variable
+	 * @param localPlayerName
+	 *            The name of the local player
+	 * @param tileWidth
+	 *            The width of a single tile
+	 * @param tileHeight
+	 *            The height of a single tile
+	 * @param showOverview
+	 *            Whether the player overview should be rendered
+	 * @throws SlickException
+	 */
+	public Renderer(World world, String localPlayerName, float tileWidth, float tileHeight, boolean showOverview)
+			throws SlickException {
 		this.world = world;
 		this.localPlayerName = localPlayerName;
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
 		this.showOverview = showOverview;
-		
+
 		Events.on(PlayerMovedEvent.class, this::animateMovement);
-		
+
 		// get the tileMap
 		SpriteLocations sp = new SpriteLocations();
 		tileMap = sp.getTileMap();
-		
+
 		// add player animations
 		playerAnimations = animatePlayers(world.getPlayers());
 	}
@@ -95,7 +114,7 @@ public class Renderer {
 			}
 		}
 	}
-	
+
 	/**
 	 * Draws a marker for the local players computer
 	 * 
@@ -186,8 +205,7 @@ public class Renderer {
 								tileHeight / 2);
 					} else {
 						// otherwise draw to the left
-						animation.drawPlayer(tileX, (y + 2) * (tileHeight / 2), tileWidth * 2,
-								tileHeight / 2);
+						animation.drawPlayer(tileX, (y + 2) * (tileHeight / 2), tileWidth * 2, tileHeight / 2);
 					}
 				} else {
 					animation.drawPlayer(tileX, tileY, tileWidth, tileHeight);
@@ -217,7 +235,7 @@ public class Renderer {
 			animation.turn(player.getFacing());
 		}
 	}
-	
+
 	/**
 	 * Map players to player animations
 	 * 
@@ -235,12 +253,18 @@ public class Renderer {
 		}
 		return animations;
 	}
-	
-	private void animateMovement(PlayerMovedEvent e){
+
+	/**
+	 * Animates the players movement
+	 * 
+	 * @param e
+	 *            A player moved event
+	 */
+	private void animateMovement(PlayerMovedEvent e) {
 		Player moved = World.world.getPlayer(e.playerName);
 		playerAnimations.get(moved.getHair()).nextFrame();
 	}
-	
+
 	/**
 	 * Find which tiles are visible to the local player
 	 * 

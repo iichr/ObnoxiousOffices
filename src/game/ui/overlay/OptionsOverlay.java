@@ -10,6 +10,9 @@ import game.ui.components.WordGenerator;
 import game.ui.interfaces.Vals;
 import game.util.Pair;
 
+/**
+ * Overlay to show options to user in game
+ */
 public class OptionsOverlay extends PopUpOverlay {
 	private MusicBox mb;
 

@@ -13,6 +13,9 @@ import game.core.player.Player;
 import game.ui.components.WordGenerator;
 import game.ui.interfaces.Vals;
 
+/**
+ * Overlay displayed at the end of a game
+ */
 public class GameOverOverlay extends PopUpOverlay {
 
 	private List<Player> players;
@@ -28,12 +31,21 @@ public class GameOverOverlay extends PopUpOverlay {
 		super(wg);
 		this.players = players;
 	}
-	
-	@Override
+
+	/**
+	 * Renders the components of the game over overlay
+	 * 
+	 * @param gc
+	 *            The game container
+	 * @param sbg
+	 *            The state based game
+	 * @param g
+	 *            The graphics object
+	 */
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		// draw the background
 		background.draw(x, y, width, height);
-		Input input=gc.getInput();
+		Input input = gc.getInput();
 
 		wg.drawCenter(g, "GAME OVER", x + width / 2, y + height / 2 - height / 3, true, 2 * scale / 3);
 
@@ -46,7 +58,7 @@ public class GameOverOverlay extends PopUpOverlay {
 		}
 
 		wg.drawCenter(g, "PRESS ANY KEY TO EXIT", x + width / 2, y + height / 2 + height / 3, true, scale / 3);
-		if(input.isKeyPressed(Keyboard.getEventKey())){
+		if (input.isKeyPressed(Keyboard.getEventKey())) {
 			sbg.enterState(Vals.MENU_STATE);
 		}
 

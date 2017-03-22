@@ -14,7 +14,6 @@ import game.ui.states.CharacterSelect;
 /**
  * Used to create a new labelled button for the menu. Label is centred to the
  * middle of the button.
- *
  */
 public class ConnectButton extends Button {
 	private boolean active = true;
@@ -62,7 +61,7 @@ public class ConnectButton extends Button {
 			if (inRange(mouseX, mouseY)) {
 				button = select;
 				if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-					if (Pattern.matches("[a-zA-Z0-9_]*", name) && name.length() >=1) {
+					if (Pattern.matches("[a-zA-Z0-9_]*", name) && name.length() >= 1) {
 						cs.setInvalidName(false);
 						Events.trigger(new ConnectionAttemptEvent(name, serverAddress));
 					} else {

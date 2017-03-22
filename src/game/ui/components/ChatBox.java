@@ -15,6 +15,9 @@ import game.core.chat.Chat;
 import game.core.chat.ChatMessage;
 import game.ui.interfaces.Vals;
 
+/**
+ * Class to manage in game chat
+ */
 public class ChatBox {
 	protected Chat chat;
 	private String message = "";
