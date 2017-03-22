@@ -28,8 +28,6 @@ public class Menu extends BasicGameState implements MusicListener {
 	private MenuButton rulesButton;
 	private MenuButton exitButton;
 
-	private String mouseCoords = "No input yet!";
-
 	// The music and sound
 	private Music music;
 	private MusicBox mb;
@@ -42,7 +40,6 @@ public class Menu extends BasicGameState implements MusicListener {
 	private int values[] = new int[] { Vals.CHARACTER_SELECT_STATE, Vals.OPTIONS_STATE, Vals.RULES_STATE, Vals.EXIT };
 
 	private int CURRENT = 0;
-	private long lastInput = System.currentTimeMillis();
 
 	@Override
 	public int getID() {
@@ -119,7 +116,6 @@ public class Menu extends BasicGameState implements MusicListener {
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		float mouseX = Mouse.getX();
 		float mouseY = gc.getHeight() - Mouse.getY();
-		mouseCoords = mouseX + " ," + mouseY;
 
 		// set button properties
 		playButton.update(gc, game, mouseX, mouseY, Vals.CHARACTER_SELECT_STATE);

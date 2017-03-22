@@ -11,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
 import game.core.world.World;
+import game.ui.components.WordGenerator;
 import game.ui.interfaces.Vals;
 import game.ui.states.Connect;
 import game.ui.states.Intro;
@@ -39,23 +40,28 @@ public class Game extends StateBasedGame {
 	 */
 	public Game(String gamename) {
 		super(gamename);
+		try {
+			WordGenerator wg = new WordGenerator();
 
-		introState = new Intro();
-		this.addState(introState);
-		menuState = new Menu();
-		this.addState(menuState);
-		playState = new Play();
-		this.addState(playState);
-		playTestState = new PlayTest();
-		this.addState(playTestState);
-		optionsState = new Options();
-		this.addState(optionsState);
-		rulesState = new Rules();
-		this.addState(rulesState);
-		chSelectState = new Connect(playTestState);
-		this.addState(chSelectState);
-		optionsState2 = new KeyOptions();
-		this.addState(optionsState2);
+			introState = new Intro();
+			this.addState(introState);
+			menuState = new Menu();
+			this.addState(menuState);
+			playState = new Play(wg);
+			this.addState(playState);
+			playTestState = new PlayTest();
+			this.addState(playTestState);
+			optionsState = new Options(wg);
+			this.addState(optionsState);
+			rulesState = new Rules();
+			this.addState(rulesState);
+			chSelectState = new Connect(playTestState, wg);
+			this.addState(chSelectState);
+			optionsState2 = new KeyOptions(wg);
+			this.addState(optionsState2);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
 
 		Events.on(GameStartedEvent.class, this::onGameStart);
 	}

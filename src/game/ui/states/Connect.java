@@ -72,9 +72,11 @@ public class Connect extends BasicGameState {
 	 *
 	 * @param test
 	 *            The play test state
+	 * @param wg 
 	 */
-	public Connect(PlayTest test) {
+	public Connect(PlayTest test, WordGenerator wg) {
 		this.playTest = test;
+		this.wg = wg;
 		Events.on(PlayerCreatedEvent.class, this::connected);
 		Events.on(ConnectionFailedEvent.class, this::connectFail);
 		Events.on(GameFullEvent.class, this::gameFull);

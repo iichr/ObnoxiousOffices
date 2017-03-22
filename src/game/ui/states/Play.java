@@ -93,6 +93,10 @@ public class Play extends BasicGameState {
 	// the background music
 	private Music bgmusic;
 
+	public Play(WordGenerator wg) {
+		this.wg = wg;
+	}
+
 	@Override
 	public int getID() {
 		return Vals.PLAY_STATE;
@@ -142,8 +146,6 @@ public class Play extends BasicGameState {
 		// setup tile sizes
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
 		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
-
-		wg = new WordGenerator();
 
 		// set up renderer
 		renderer = new Renderer(world, localPlayerName, tileWidth, tileHeight, showOverview);

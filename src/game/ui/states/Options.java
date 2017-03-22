@@ -26,10 +26,12 @@ public class Options extends BasicGameState {
 	private MusicBox mb;
 	private MenuButton backButton, nextPageButton;
 
+	public Options(WordGenerator wg) {
+		this.wg = wg;
+	}
+
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-		
-		wg = new WordGenerator();
 
 		// set up back button
 		Image back = new Image(ImageLocations.BACK);
