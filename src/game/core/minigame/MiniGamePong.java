@@ -58,6 +58,7 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
 		float yDiff = ballY - (playerY + PADDLE_LEN / 2);
 		if (((ballX + BALL_SIZE / 2 >= playerX && !left) || (ballX - BALL_SIZE / 2 <= playerX && left))
 				&& yDiff >= -(PADDLE_LEN / 2) && yDiff < PADDLE_LEN / 2) {
+			setVar(BALL_X_VEL, (float)getVar(BALL_X_VEL) + 0.05f);
 			bounceBall(BALL_X_VEL, BALL_Y_VEL, yDiff);
 		}
 	}
@@ -65,14 +66,14 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
 	private void bounceBall(String varToNegate, String otherVer, float velVal) {
 		negVar(varToNegate);
 		if (otherVer != null) {
-			setVar(otherVer, velVal / 10);
+			setVar(otherVer, velVal / 5);
 		}
 	}
 
 	private void newRound() {
 		Random r = new Random();
 		float xVel = 0.5f;
-		float yVel = r.nextFloat();
+		float yVel = r.nextFloat()/2 + 0.25f;
 
 		setStat(player1, X_POS, 1f);
 		setStat(player2, X_POS, (float) BOUND_X - 1);
