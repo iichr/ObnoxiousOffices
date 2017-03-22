@@ -48,16 +48,16 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
             	bounceBall(BALL_Y_VEL, null, 0);
             }
             else {
-                checkPaddleBounce(player2, ballX, ballY);
-                checkPaddleBounce(player1, ballX, ballY);
+                checkPaddleBounce(player2, false, ballX, ballY);
+                checkPaddleBounce(player1, true, ballX, ballY);
             }
         }
     }
 
-    private void checkPaddleBounce(String player, float ballX, float ballY) {
+    private void checkPaddleBounce(String player, boolean left, float ballX, float ballY) {
         float playerX = (float)getStat(player, X_POS), playerY = (float)getStat(player, Y_POS);
         float yDiff = ballY - (playerY + PADDLE_LEN/2);
-        if((ballX + BALL_SIZE/2 >= playerX || ballX - BALL_SIZE/2 <= playerX) && yDiff >= 0 && yDiff < PADDLE_LEN){
+        if((ballX + BALL_SIZE/2 >= playerX && !left) || (ballX - BALL_SIZE/2 <= playerX && left) && yDiff >= 0 && yDiff < PADDLE_LEN){
         	bounceBall(BALL_X_VEL, BALL_Y_VEL, PADDLE_LEN - yDiff);
         }
     }
