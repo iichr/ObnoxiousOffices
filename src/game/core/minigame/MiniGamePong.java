@@ -65,7 +65,7 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
     private void bounceBall(String varToNegate, String otherVer, float velVal) {
         negVar(varToNegate);
         if(otherVer != null){
-        	setVar(otherVer, velVal);
+        	setVar(otherVer, velVal/10);
         }
     }
 
