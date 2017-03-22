@@ -62,7 +62,8 @@ public class World implements Updateable, Serializable {
     }
 
     public void startMiniGame(MiniGame game) {
-        if(!ClientSync.isClient) {
+        boolean noneInMinigame = game.getPlayers().stream().map(this::getMiniGame).allMatch(Objects::isNull);
+        if(!ClientSync.isClient && noneInMinigame) {
             miniGames.add(game);
             Events.trigger(new MiniGameStartedEvent(game), true);
         }
