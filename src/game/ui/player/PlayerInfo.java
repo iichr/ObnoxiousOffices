@@ -1,7 +1,5 @@
 package game.ui.player;
 
-import java.util.List;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -15,6 +13,9 @@ import game.core.world.tile.type.TileType;
 import game.ui.components.WordGenerator;
 import game.ui.interfaces.ImageLocations;
 
+/**
+ * Shows information about the player such as name and dialogue pop-ups
+ */
 public class PlayerInfo {
 	private String localPlayerName;
 
@@ -37,7 +38,8 @@ public class PlayerInfo {
 	 *            The height of an individual tile
 	 * @throws SlickException
 	 */
-	public PlayerInfo(String localPlayerName, float tileWidth, float tileHeight, WordGenerator wg) throws SlickException {
+	public PlayerInfo(String localPlayerName, float tileWidth, float tileHeight, WordGenerator wg)
+			throws SlickException {
 		this.localPlayerName = localPlayerName;
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
