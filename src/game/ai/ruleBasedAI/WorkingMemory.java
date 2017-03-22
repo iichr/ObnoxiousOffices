@@ -5,15 +5,18 @@ import java.io.Serializable;
 import game.core.player.Player;
 
 /**
- * @author Atanas K. Harbaliev. Created on 22.02.2017
+ * The working memory contains information about a given player. This includes
+ * whether or not this player is working, hacking, refreshing, and if he has
+ * done more work towards completing the final goal.
  */
 
-public class WorkingMemory implements Serializable{
-	
+public class WorkingMemory implements Serializable {
+
 	private static final long serialVersionUID = 1L;
+
 	public enum activityValues {
 		Yes, No, Unknown
-	}; 
+	};
 
 	// checks if a player is working
 	private activityValues isWorking;
@@ -26,7 +29,7 @@ public class WorkingMemory implements Serializable{
 
 	// checks if a player has progressed more than the AI
 	private activityValues hasProgressedMore;
-	
+
 	// the player whose working memory this is
 	private Player player;
 
@@ -126,8 +129,10 @@ public class WorkingMemory implements Serializable{
 	public void setHasProgressedMore(activityValues val) {
 		hasProgressedMore = val;
 	}
+
 	/**
 	 * Get method
+	 * 
 	 * @return the player whose working memory this is
 	 */
 	public Player getWMplayer() {

@@ -10,9 +10,7 @@ import game.core.player.Player;
 import game.core.world.World;
 
 /**
- *
- * @author Atanas K. Harabliev. Created on 6/02/2017
- *
+ * Interface
  */
 public interface Logic extends Serializable {
 

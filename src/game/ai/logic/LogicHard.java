@@ -20,7 +20,8 @@ import game.core.world.Location;
 import game.core.world.World;
 
 /**
- * @author Atanas K. Harbaliev. Created on 18/01/2017
+ * Implementation of the Logic interface. It consists of all methods that are
+ * going to be used by an AI player set to hard mode.
  */
 
 public class LogicHard implements Logic, Serializable {
@@ -331,14 +332,14 @@ public class LogicHard implements Logic, Serializable {
 
 	@Override
 	public void findChair(World w, AIPlayer ai) {
-		//get the pathfinding running
-		pf = new PathFinding(w, ai,"c");
+		// get the pathfinding running
+		pf = new PathFinding(w, ai, "c");
 		pf.run();
-		
+
 		// get the path to the chair
 		ArrayList<Pair<Integer, Integer>> pathToChair = new ArrayList<Pair<Integer, Integer>>();
 		pathToChair = pf.getPath();
-		
+
 		// do all moves in the ArrayList
 		for (int i = 0; i < pathToChair.size() - 1; i++) {
 			move(ai, pathToChair, i);

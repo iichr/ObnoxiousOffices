@@ -17,7 +17,7 @@ import game.core.world.Location;
 import game.core.world.World;
 
 /**
- * @author Atanas K. Harbaliev Created on 18/01/2017
+ * Create the AI object.
  */
 
 public class AIPlayer extends Player {
@@ -46,7 +46,6 @@ public class AIPlayer extends Player {
 	// serialVersion to shut eclipse
 	private static final long serialVersionUID = 1L;
 
-	// constructor from Player class
 	/**
 	 * Constructor
 	 * 
@@ -76,7 +75,7 @@ public class AIPlayer extends Player {
 		// initialise everything
 		initialise();
 	}
-
+	// constructor that is going to be called when a player disconnects and is replaced by an AI player
 	public AIPlayer(Player player) {
 		this(player.name, player.getFacing(), player.getLocation(), "e");
 		this.status = player.status;
@@ -105,6 +104,7 @@ public class AIPlayer extends Player {
 		fr = new FireRules(this, rules, wm, uwm);
 	}
 
+	// what happens when a player quits the game or is disconnected
 	private static void onPlayerQuit(PlayerQuitEvent event) {
 		AIPlayer player = new AIPlayer(event.player);
 		World.world.removePlayer(event.player);

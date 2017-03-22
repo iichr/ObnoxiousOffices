@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import game.ai.AIPlayer;
 import game.ai.ruleBasedAI.WorkingMemory.activityValues;
 import game.core.player.PlayerStatus.PlayerAttribute;
-
+/**
+ * This object is going to tell the AI player what to do when certain events occurr.
+ */
 public class FireRules implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -66,14 +68,12 @@ public class FireRules implements Serializable {
 						// progressed more than ai - keep doing what you were doing before
 					} else if (w.getIsWorking() == activityValues.Yes
 							&& w.getHasProgressedMore() == activityValues.No) {
-						// TODO: make sure the ai keeps working
 						// if the monitored player is hacking/being hacked and
 						// has progressed more than ai - wait for him to finish and then hack him
 					} else if (w.getIsHacking() == activityValues.Yes
 							&& w.getHasProgressedMore() == activityValues.Yes) {
 						while (w.getIsHacking() == activityValues.Yes
 								&& ai.status.getAttribute(PlayerAttribute.FATIGUE) < 0.5) {
-							// TODO: make sure the ai keeps working
 							uwm.updateInfo();
 						}
 						// if the ai has enough energy - hack, else go to the CM
@@ -89,14 +89,12 @@ public class FireRules implements Serializable {
 						// hasn't progressed more than ai - keep doing what you were doing
 					} else if (w.getIsHacking() == activityValues.Yes
 							&& w.getHasProgressedMore() == activityValues.No) {
-						// TODO: make sure the ai keeps working
 						// if the monitored player is refreshing and has
 						// progressed more - wait for him to go back to his desk and hack him
 					} else if (w.getIsRefreshing() == activityValues.Yes
 							&& w.getHasProgressedMore() == activityValues.Yes) {
 						while (w.getIsHacking() == activityValues.Yes
 								&& ai.status.getAttribute(PlayerAttribute.FATIGUE) < 0.5) {
-							// TODO: make sure the ai keeps working
 							uwm.updateInfo();
 						}
 						// if the ai has enough energy - hack, else go to the CM
@@ -112,7 +110,6 @@ public class FireRules implements Serializable {
 						// progressed more - keep doing what you were doing
 					} else if (w.getIsRefreshing() == activityValues.Yes
 							&& w.getHasProgressedMore() == activityValues.No) {
-						// TODO: make sure the ai keeps working
 					}
 				}
 			} else {

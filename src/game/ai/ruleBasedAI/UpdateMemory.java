@@ -12,7 +12,7 @@ import game.core.player.action.PlayerActionWork;
 import game.core.player.action.PlayerActionWorkTimed;
 
 /**
- * @author Atanas K. Harbaliev. Created on 22.02.2017
+ * This object is going to update the working memory.
  */
 public class UpdateMemory implements Serializable{
 	

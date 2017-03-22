@@ -5,7 +5,8 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
- * Created by samtebbs on 21/03/2017.
+ * Implementation of a priority queue, that is going to be used for the A*
+ * algorithm.
  */
 public class AIPriorityQueue extends PriorityQueue<Cell> implements Serializable {
 
