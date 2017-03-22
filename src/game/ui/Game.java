@@ -28,9 +28,9 @@ public class Game extends StateBasedGame {
 	private Menu menuState;
 	private Options optionsState;
 	private Rules rulesState;
-	private Connect chSelectState;
+	private Connect connectState;
 	private PlayTest playTestState;
-	private KeyOptions optionsState2;
+	private KeyOptions keyOptionsState;
 
 	/**
 	 * Constructor: sets up states and event listeners
@@ -40,28 +40,23 @@ public class Game extends StateBasedGame {
 	 */
 	public Game(String gamename) {
 		super(gamename);
-		try {
-			WordGenerator wg = new WordGenerator();
 
 			introState = new Intro();
 			this.addState(introState);
 			menuState = new Menu();
 			this.addState(menuState);
-			playState = new Play(wg);
+			playState = new Play();
 			this.addState(playState);
-			playTestState = new PlayTest(wg);
+			playTestState = new PlayTest();
 			this.addState(playTestState);
-			optionsState = new Options(wg);
+			optionsState = new Options();
 			this.addState(optionsState);
 			rulesState = new Rules();
 			this.addState(rulesState);
-			chSelectState = new Connect(playTestState, wg);
-			this.addState(chSelectState);
-			optionsState2 = new KeyOptions(wg);
-			this.addState(optionsState2);
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
+			connectState = new Connect(playTestState);
+			this.addState(connectState);
+			keyOptionsState = new KeyOptions();
+			this.addState(keyOptionsState);
 
 		Events.on(GameStartedEvent.class, this::onGameStart);
 	}
@@ -69,6 +64,13 @@ public class Game extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
 		// initialises states automatically
+
+		WordGenerator wg = new WordGenerator();
+		playState.setWG(wg);
+		optionsState.setWG(wg);
+		connectState.setWG(wg);
+		keyOptionsState.setWG(wg);
+		
 	}
 
 	/**

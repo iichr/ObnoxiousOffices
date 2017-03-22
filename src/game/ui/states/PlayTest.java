@@ -13,13 +13,12 @@ import game.core.world.Direction;
 import game.core.world.Location;
 import game.core.world.World;
 import game.ui.components.Controls;
-import game.ui.components.WordGenerator;
 import game.ui.interfaces.Vals;
 
 public class PlayTest extends Play {
 
-	public PlayTest(WordGenerator wg) {
-		super(wg);
+	public PlayTest() {
+		super();
 	}
 
 	@Override

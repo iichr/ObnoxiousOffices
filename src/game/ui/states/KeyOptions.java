@@ -27,7 +27,7 @@ public class KeyOptions extends BasicGameState {
 	// A list of all controls in the game
 	private Controls keyboardControls;
 
-	public KeyOptions(WordGenerator wg) {
+	public void setWG(WordGenerator wg) {
 		this.wg = wg;
 	}
 
@@ -78,4 +78,5 @@ public class KeyOptions extends BasicGameState {
 	public int getID() {
 		return Vals.OPTIONS_STATE_PAGE2;
 	}
+
 }

@@ -74,12 +74,15 @@ public class Connect extends BasicGameState {
 	 *            The play test state
 	 * @param wg
 	 */
-	public Connect(PlayTest test, WordGenerator wg) {
+	public Connect(PlayTest test) {
 		this.playTest = test;
-		this.wg = wg;
 		Events.on(PlayerCreatedEvent.class, this::connected);
 		Events.on(ConnectionFailedEvent.class, this::connectFail);
 		Events.on(GameFullEvent.class, this::gameFull);
+	}
+	
+	public void setWG(WordGenerator wg) {
+		this.wg = wg;
 	}
 
 	@Override
@@ -288,4 +291,5 @@ public class Connect extends BasicGameState {
 			toPlay = true;
 		}
 	}
+
 }

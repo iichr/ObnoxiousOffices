@@ -26,7 +26,7 @@ public class Options extends BasicGameState {
 	private MusicBox mb;
 	private MenuButton backButton, nextPageButton;
 
-	public Options(WordGenerator wg) {
+	public void setWG(WordGenerator wg) {
 		this.wg = wg;
 	}
 
@@ -37,7 +37,7 @@ public class Options extends BasicGameState {
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
-		
+
 		// the next page button leading to the keyboard controls screen
 		nextPageButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W - wg.getWH(">", 1.0f).getL(),
 				Vals.BUTTON_ALIGN_CENTRE_H + 1.75f * wg.getWH(">", 1.0f).getR(), 60, 60, wg.get('>', false),
@@ -152,7 +152,7 @@ public class Options extends BasicGameState {
 		if (gc.isFullscreen()) {
 			toShow = "Full Screen";
 		}
-		
+
 		Pair<Float, Float> wh5 = wg.getWH(toShow, 0.2f);
 		wg.draw(g, toShow, Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH, Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR(),
 				false, 0.3f);
@@ -166,7 +166,7 @@ public class Options extends BasicGameState {
 				gc.setFullscreen(!gc.isFullscreen());
 			}
 		}
-		
+
 		/****
 		 * LINK TO KEYBOARD CONTROLS PAGE
 		 ****/
@@ -183,7 +183,7 @@ public class Options extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		int mouseX = Mouse.getX();
 		int mouseY = gc.getHeight() - Mouse.getY();
-		// link to the menu state 
+		// link to the menu state
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 		// link to the keyboard control page
 		nextPageButton.update(gc, game, mouseX, mouseY, Vals.OPTIONS_STATE_PAGE2);
