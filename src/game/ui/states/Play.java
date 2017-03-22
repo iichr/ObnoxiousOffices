@@ -170,9 +170,7 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		// KEEP COMMENTED until everybody has added the required libraries.
-		// used to stop the music from playing
-		// bgmusic.stop();
+		 bgmusic.stop();
 	}
 
 	@Override
