@@ -87,7 +87,6 @@ public class Server {
 					os.writeObject(e);
 				}
 			} catch (SocketTimeoutException s) {
-				System.out.println("timeout");
 				if (listen && connections.size() > 0) {
 					System.out.println("adding ai");
 					ServerListener.NUM_AI_PLAYERS = NUM_PLAYERS - connections.size();
