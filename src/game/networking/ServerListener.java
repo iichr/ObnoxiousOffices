@@ -94,7 +94,7 @@ public class ServerListener extends Thread {
 		Events.on(MiniGameEndedEvent.class, this::forwardInfo);
 		Events.on(MiniGameVarChangedEvent.class, this::forwardInfo);
 		Events.on(MiniGameStatChangedEvent.class, this::forwardInfo);
-		Events.on(GameFinishedEvent.class, this::closeConnection);
+		Events.on(Events.EventPriority.HIGH, GameFinishedEvent.class, this::closeConnection);
 		Events.on(ChatMessageReceivedEvent.class, this::forwardInfo);
 		Events.on(PlayerJoinedEvent.class, this::forwardInfo);
 		Events.on(Events.EventPriority.HIGH, PlayerQuitEvent.class, this::forwardInfo);
@@ -304,6 +304,7 @@ public class ServerListener extends Thread {
 	 *            Object received from the game closed event
 	 */
 	private void closeConnection(Object recieved) {
+		System.out.println("sending game finished to clients");
 		forwardInfo(recieved);
 		try {
 			Thread.sleep(1000);
