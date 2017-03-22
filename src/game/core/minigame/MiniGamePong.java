@@ -80,8 +80,8 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
         setStat(player1, Y_POS, 0f);
         setStat(player2, Y_POS, 0f);
 
-        setVar(X_POS, BOUND_X/2);
-        setVar(Y_POS, BOUND_Y/2);
+        setVar(X_POS, (float)(BOUND_X/2));
+        setVar(Y_POS, (float)(BOUND_Y/2));
         setVar(BALL_X_VEL, xVel);
         setVar(BALL_Y_VEL, yVel);
     }
