@@ -14,9 +14,9 @@ import game.core.world.World;
 import game.ui.interfaces.Vals;
 import game.ui.states.CharacterSelect;
 import game.ui.states.Intro;
+import game.ui.states.KeyOptions;
 import game.ui.states.Menu;
 import game.ui.states.Options;
-import game.ui.states.KeyOptions;
 import game.ui.states.Play;
 import game.ui.states.PlayTest;
 import game.ui.states.Rules;
@@ -106,13 +106,13 @@ public class Game extends StateBasedGame {
 		try {
 			agc = new AppGameContainer(new Game(Vals.GAME_NAME));
 			agc.setDisplayMode(Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT, false);
-			
+
 			agc.setUpdateOnlyWhenVisible(true);
 			agc.setMinimumLogicUpdateInterval(10);
 
+			agc.setShowFPS(false);
 			agc.setFullscreen(false);
 			agc.start();
-			
 
 		} catch (SlickException e) {
 			e.printStackTrace();

@@ -42,7 +42,6 @@ public class Menu extends BasicGameState implements MusicListener {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		gc.setShowFPS(false);
 		bg = new Image(ImageLocations.BG, false, Image.FILTER_NEAREST);
 		Image play = new Image(ImageLocations.PLAY).getScaledCopy(0.8f);
 		Image playR = new Image(ImageLocations.PLAY_ROLLOVER).getScaledCopy(0.8f);

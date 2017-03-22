@@ -110,7 +110,6 @@ public class CharacterSelect extends BasicGameState {
 				Vals.BUTTON_WIDTH, Vals.BUTTON_HEIGHT, conn, connR);
 
 		waiting = new Image(ImageLocations.WAITING, false, Image.FILTER_NEAREST);
-		wg = new WordGenerator();
 		// adds the text fields
 		addTextFields(gc);
 	}
