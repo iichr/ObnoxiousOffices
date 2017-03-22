@@ -19,8 +19,6 @@ import game.ui.interfaces.Vals;
 /**
  * The player status container to appear on the left of the screen upon
  * invocation with the TAB key.
- * 
- * @author iichr
  *
  */
 public class PlayerOverview {

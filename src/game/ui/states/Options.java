@@ -19,9 +19,6 @@ import game.util.Pair;
 
 /**
  * The Options submenu.
- * 
- * @author iichr
- *
  */
 public class Options extends BasicGameState {
 	private WordGenerator wg;
@@ -32,7 +29,7 @@ public class Options extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		wg = new WordGenerator();
-		
+
 		// set up back button
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
@@ -57,7 +54,7 @@ public class Options extends BasicGameState {
 		g.setColor(Color.white);
 		currentSVolume = gc.getSoundVolume();
 		currentMVolume = gc.getMusicVolume();
-		
+
 		// debugging
 		Pair<Float, Float> wh = wg.getWH("Sound", 0.3f);
 		wg.draw(g, "Sound", Vals.BUTTON_ALIGN_CENTRE_W - wh.getL(), Vals.BUTTON_ALIGN_CENTRE_H - wh.getR(), false,
@@ -89,7 +86,7 @@ public class Options extends BasicGameState {
 				mb.changeSVolumeR(gc);
 			}
 		}
-		
+
 		wg.draw(g, "Music", Vals.BUTTON_ALIGN_CENTRE_W - wh.getL(), Vals.BUTTON_ALIGN_CENTRE_H, false, 0.3f);
 		// < symbol
 		wg.draw(g, "<", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH, Vals.BUTTON_ALIGN_CENTRE_H, false, 0.3f);
@@ -150,7 +147,8 @@ public class Options extends BasicGameState {
 				gc.setFullscreen(!gc.isFullscreen());
 			}
 		}
-		wg.draw(g,"MORE" , Vals.BUTTON_ALIGN_CENTRE_W-(wg.getWH("MORE",0.3f).getL()*2f), Vals.BUTTON_ALIGN_CENTRE_H + 1.75f * wg.getWH("MORE", 0.5f).getR(), true, 0.3f);
+		wg.draw(g, "MORE", Vals.BUTTON_ALIGN_CENTRE_W - (wg.getWH("MORE", 0.3f).getL() * 2f),
+				Vals.BUTTON_ALIGN_CENTRE_H + 1.75f * wg.getWH("MORE", 0.5f).getR(), true, 0.3f);
 		// add return and next page buttons
 		backButton.render();
 		nextPageButton.render();
