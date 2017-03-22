@@ -248,8 +248,10 @@ public class Play extends BasicGameState {
 		if (!gameOver) {
 			if (playingPong) {
 				heldKey = ctrs.pongMoveStart(heldKey, key);
+				cb = ctrs.toggleChat(cb, key);
 			} else if (playingHangman) {
 				ctrs.hangman(localPlayerName, c);
+				cb = ctrs.toggleChat(cb, key);
 			} else {
 				coreControls(key);
 			}

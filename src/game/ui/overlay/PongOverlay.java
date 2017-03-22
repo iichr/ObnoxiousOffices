@@ -37,9 +37,9 @@ public class PongOverlay extends PopUpOverlay {
 		float playX = x + (width - playWidth) / 2;
 		float playY = y + 3*(height - playHeight) / 4;
 		
-		wg.draw(g, p1, playX, playY, true, 0.2f);
+		wg.draw(g, p1, playX, playY - wg.getWH(p1, 0.2f).getR(), true, 0.2f);
 		Pair<Float, Float> p = wg.getWH(p2, 0.2f);
-		wg.draw(g, p1, playX + playWidth - p.getL(), playY, true, 0.2f);
+		wg.draw(g, p2, playX + playWidth - p.getL(), playY - p.getR(), true, 0.2f);
 
 		float unitX = playWidth / (float) pong.BOUND_X;
 		float unitY = playHeight / (float) pong.BOUND_Y;
