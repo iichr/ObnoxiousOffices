@@ -146,7 +146,7 @@ public class Player implements Updateable, Serializable {
     }
 
     public void removeProgress() {
-        setProgress(getProgress() - 1);
+        setProgress(getProgress() - 50);
     }
 
     /**
