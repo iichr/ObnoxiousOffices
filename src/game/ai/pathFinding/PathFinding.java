@@ -174,7 +174,7 @@ public class PathFinding implements Runnable, Serializable {
 		while (true) {
 			current = open.poll(); // pops the head of the queue
 
-			if (current == null) // if the head of the queue is empty - break
+			if (current == null) 
 				break;
 			closed[current.i][current.j] = true; // put the current cell in the
 													// explored list

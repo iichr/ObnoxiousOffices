@@ -1,16 +1,14 @@
 package game.core;
 
-import game.util.Pair;
 
-import javax.crypto.interfaces.PBEKey;
-import java.util.*;
-import java.util.function.BooleanSupplier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import game.util.Pair;
 
 /**
  * Created by samtebbs on 21/03/2017.
