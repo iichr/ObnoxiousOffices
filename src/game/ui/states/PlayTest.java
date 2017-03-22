@@ -5,6 +5,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
 
+import game.core.event.Events;
+import game.core.event.GameFinishedEvent;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.player.effect.PlayerEffectCoffeeBuzz;
@@ -38,7 +40,7 @@ public class PlayTest extends Play {
 		this.world = w;
 		this.localPlayerName = Test.localPlayer;
 		World.world = w;
-		
+
 		ctrs = new Controls();
 
 		// set boolean flags
@@ -49,7 +51,7 @@ public class PlayTest extends Play {
 		heldKey = -1;
 
 		// test game finished screen
-		// Events.trigger(new GameFinishedEvent());
+		Events.trigger(new GameFinishedEvent());
 	}
 
 	/**
