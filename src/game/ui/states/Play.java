@@ -34,8 +34,10 @@ import game.ui.player.ActionSelector;
 import game.ui.player.PlayerInfo;
 import game.ui.player.PlayerOverview;
 
+/**
+ * The state where the game is played in.
+ */
 public class Play extends BasicGameState {
-	// private String mouseCoords = "No input yet!";
 
 	// world info
 	protected World world;
@@ -47,7 +49,7 @@ public class Play extends BasicGameState {
 	private long lastMove = 0;
 
 	// helper objects
-	protected Controls ctrs;
+	protected Controls controls;
 	protected Renderer renderer;
 	protected WordGenerator wg;
 
@@ -85,8 +87,11 @@ public class Play extends BasicGameState {
 	private boolean playingHangman;
 	private boolean showOverview;
 
-	Music bgmusic;
-	private ChatBox cb;
+	// chatbox
+	private ChatBox chatBox;
+
+	// the background music
+	private Music bgmusic;
 
 	@Override
 	public int getID() {
@@ -96,7 +101,7 @@ public class Play extends BasicGameState {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		// Font
+		// Load the Font
 		Vals.FONT_PLAY.addAsciiGlyphs();
 		Vals.FONT_PLAY.getEffects().add(new ColorEffect());
 		Vals.FONT_PLAY.loadGlyphs();
@@ -106,11 +111,10 @@ public class Play extends BasicGameState {
 		Events.on(MiniGameStartedEvent.class, this::startMinigame);
 		Events.on(MiniGameEndedEvent.class, this::closeMinigame);
 
-		// KEEP COMMENTED until we've all added the required libraries.
 		// Initialise the background music
 		bgmusic = new Music("res/music/main.ogg");
 
-		cb = new ChatBox(gc, new Chat());
+		chatBox = new ChatBox(gc, new Chat());
 	}
 
 	/**
@@ -120,7 +124,7 @@ public class Play extends BasicGameState {
 		this.world = World.world;
 		this.localPlayerName = Player.localPlayerName;
 
-		ctrs = new Controls();
+		controls = new Controls();
 
 		// set boolean flags
 		canMove = true;
@@ -136,10 +140,6 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
-		// UNCOMMENT until everybody add the required libraries.
-		// start the background music in a loop
-		// bgmusic.loop();
-
 		// setup tile sizes
 		tileWidth = (float) Vals.SCREEN_WIDTH / world.xSize;
 		tileHeight = 2 * ((float) Vals.SCREEN_HEIGHT / (world.ySize + 2));
@@ -165,29 +165,34 @@ public class Play extends BasicGameState {
 		gameOverOverlay = new GameOverOverlay(world.getPlayers(), wg);
 		hangmanOverlay = new HangmanOverlay(wg);
 		pongOverlay = new PongOverlay(wg);
+
+		// Play the background music in a loop
 		bgmusic.loop();
 	}
 
 	@Override
 	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		 bgmusic.stop();
+		// stop the background music when a plater leaves the state
+		bgmusic.stop();
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
 		Player localPlayer = world.getPlayer(localPlayerName);
-
-		cb.update(gc, localPlayerName);
-
+		// update the chatbox
+		chatBox.update(gc, localPlayerName);
+		// update the effects overview
 		effectOverview.updateEffects(localPlayer);
-
+		// update the player Overview container
 		playerOverview.updateContainer();
 
 		if (exit) {
+			// enter the main menu state on exit
 			game.enterState(Vals.MENU_STATE);
 		}
 
+		// disable player movement whilst in minigames
 		long time = System.currentTimeMillis();
 		if (playingPong) {
 			if (time - lastMove >= rateMillisecondsPong) {
@@ -201,7 +206,7 @@ public class Play extends BasicGameState {
 
 		if (canMove) {
 			if (heldKey >= 0) {
-				ctrs.manageMovement(actionSelector, localPlayerName, heldKey);
+				controls.manageMovement(actionSelector, localPlayerName, heldKey);
 				canMove = false;
 				lastMove = time;
 			}
@@ -216,7 +221,7 @@ public class Play extends BasicGameState {
 		boolean[][] visible = renderer.findVisibles();
 		// renders world
 		renderer.drawWorld(visible);
-		cb.render(gc, g);
+		chatBox.render(gc, g);
 
 		// add effects overview container
 		effectOverview.render();
@@ -231,7 +236,7 @@ public class Play extends BasicGameState {
 		// show ui info to player
 		playerinfo.render(g, visible);
 		if (gameOver) {
-			gameOverOverlay.render(gc,sbg,g);
+			gameOverOverlay.render(gc, sbg, g);
 		} else if (options) {
 			optionsOverlay.render(gc, g);
 		} else if (playingHangman) {
@@ -247,11 +252,13 @@ public class Play extends BasicGameState {
 	public void keyPressed(int key, char c) {
 		if (!gameOver) {
 			if (playingPong) {
-				heldKey = ctrs.pongMoveStart(heldKey, key);
-				cb = ctrs.toggleChat(cb, key);
+				// use the pong controls if in pong
+				heldKey = controls.pongMoveStart(heldKey, key);
+				chatBox = controls.toggleChat(chatBox, key);
 			} else if (playingHangman) {
-				ctrs.hangman(localPlayerName, c);
-				cb = ctrs.toggleChat(cb, key);
+				// use hangman controls in hangman
+				controls.hangman(localPlayerName, c);
+				chatBox = controls.toggleChat(chatBox, key);
 			} else {
 				coreControls(key);
 			}
@@ -267,37 +274,22 @@ public class Play extends BasicGameState {
 	 *            The id of the key pressed
 	 */
 	private void coreControls(int key) {
-		heldKey = ctrs.coreMoveStart(heldKey, key);
+		heldKey = controls.coreMoveStart(heldKey, key);
 		if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-			actionSelector = ctrs.selectorInput(actionSelector, localPlayerName, key);
+			actionSelector = controls.selectorInput(actionSelector, localPlayerName, key);
 		} else {
-			ctrs.interaction(localPlayerName, key);
+			controls.interaction(localPlayerName, key);
 		}
-		showOverview = ctrs.openOverview(showOverview, key);
-		cb = ctrs.toggleChat(cb, key);
-		options = ctrs.toggleOptions(options, key);
-
-		// TEMPORARY MINIGAME TESTING
-		switch (key) {
-		// TEMPORARY FOR TESTING HANGMAN - PRESS 9
-		case Input.KEY_9:
-			MiniGame.localMiniGame = new MiniGameHangman("chris");
-			playingHangman = true;
-			// System.out.println("ENTERED HANGMAN");
-			break;
-		// TEMPORARY FOR TESTING PONG - PRESS 8
-		case Input.KEY_8:
-			MiniGame.localMiniGame = new MiniGamePong("tim", localPlayerName);
-			playingPong = true;
-			break;
-		}
+		showOverview = controls.openOverview(showOverview, key);
+		chatBox = controls.toggleChat(chatBox, key);
+		options = controls.toggleOptions(options, key);
 	}
 
 	@Override
 	public void keyReleased(int key, char c) {
-		showOverview = ctrs.closeOverview(showOverview, key);
-		heldKey = ctrs.coreMoveFinish(heldKey, key);
-		heldKey = ctrs.pongMoveFinish(heldKey, key);
+		showOverview = controls.closeOverview(showOverview, key);
+		heldKey = controls.coreMoveFinish(heldKey, key);
+		heldKey = controls.pongMoveFinish(heldKey, key);
 	}
 
 	/**
