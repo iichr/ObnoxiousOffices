@@ -26,24 +26,23 @@ import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
 /**
- * The Class CharacterSelect.
+ * The state containing the connect screen where a player is prompted to input a
+ * player name and server address and connect to a game
  */
-public class CharacterSelect extends BasicGameState {
+public class Connect extends BasicGameState {
 
-	/** The back button. */
+	// the menu and connect buttons
 	private MenuButton backButton;
-
-	/** The connect button. */
 	private ConnectButton connectButton;
 
-	/** The waiting. */
+	// the spiral of death
 	private Image waiting;
-
-	private TextField serverAddress, playerName;
 
 	// Input fields on the screen
 	private String serverStr = "Enter Server Address:";
 	private String playerStr = "Enter Player Name:";
+	private TextField serverAddress;
+	private TextField playerName;
 
 	// information in response to events
 	private String waitingString = "Connected: Waiting for ";
@@ -51,7 +50,6 @@ public class CharacterSelect extends BasicGameState {
 	private String gameFullSring = "Game is already full, try a different server";
 	private String invalidNameString = "Invalid name: Must be alphanumeric or underscore";
 
-	/** The to play. */
 	private boolean toPlay = false;
 
 	// Connection status
@@ -60,23 +58,22 @@ public class CharacterSelect extends BasicGameState {
 
 	// invalid name check
 	private boolean invalidName = false;
-	
+
 	// have enough people connected to the game
 	private boolean gameFull = false;
 
-	// The play test.
 	private PlayTest playTest;
 	private int playerLeft = 0;
 	private WordGenerator wg;
 
 	/**
-	 * Constructor: Creates the character select state and starts event
-	 * listeners.
+	 * [USE ONLY IN TESTING] Creates the connect state and starts the necessary
+	 * event listeners.
 	 *
 	 * @param test
-	 *            the test
+	 *            The play test state
 	 */
-	public CharacterSelect(PlayTest test) {
+	public Connect(PlayTest test) {
 		this.playTest = test;
 		Events.on(PlayerCreatedEvent.class, this::connected);
 		Events.on(ConnectionFailedEvent.class, this::connectFail);
@@ -85,6 +82,7 @@ public class CharacterSelect extends BasicGameState {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
+		// all button images
 		Image back = new Image(ImageLocations.BACK, false);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
@@ -94,7 +92,9 @@ public class CharacterSelect extends BasicGameState {
 		connectButton = new ConnectButton(Vals.BUTTON_ALIGN_CENTRE_W, Vals.BUTTON_ALIGN_CENTRE_H + 150,
 				Vals.BUTTON_WIDTH, Vals.BUTTON_HEIGHT, conn, connR);
 
+		// the waiting spiral of death
 		waiting = new Image(ImageLocations.WAITING, false, Image.FILTER_NEAREST);
+
 		wg = new WordGenerator();
 		// adds the text fields
 		addTextFields(gc);
@@ -106,15 +106,15 @@ public class CharacterSelect extends BasicGameState {
 	 * @param gc
 	 *            The game container
 	 * @throws SlickException
-	 *             the slick exception
 	 */
+	@SuppressWarnings("unchecked")
 	private void addTextFields(GameContainer gc) throws SlickException {
-		// Server address text field.
+		// load the font
 		Vals.FONT_MAIN.addAsciiGlyphs();
-		// necessary to load an effect otherwise an exception is thrown!!!
 		Vals.FONT_MAIN.getEffects().add(new ColorEffect());
 		Vals.FONT_MAIN.loadGlyphs();
 
+		// Server address text field
 		serverAddress = new TextField(gc, Vals.FONT_MAIN,
 				(int) (Vals.TFIELD_ALIGN_CENTRE_W + wg.getWH(serverStr, 0.15f).getL() / 2), Vals.SCREEN_HEIGHT / 3,
 				Vals.TFIELD_WIDTH, Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
@@ -126,7 +126,7 @@ public class CharacterSelect extends BasicGameState {
 		serverAddress.setBackgroundColor(Color.white);
 		serverAddress.setTextColor(Color.black);
 
-		// Player name text field.
+		// Player name text field
 		playerName = new TextField(gc, Vals.FONT_MAIN,
 				(int) (Vals.TFIELD_ALIGN_CENTRE_W + wg.getWH(playerStr, 0.15f).getL() / 2), Vals.SCREEN_HEIGHT / 4,
 				Vals.TFIELD_WIDTH, Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
@@ -153,17 +153,15 @@ public class CharacterSelect extends BasicGameState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
-		// debugging
 		g.setFont(Vals.FONT_MAIN);
 		g.setColor(Color.white);
 
-		// add necessary buttons
+		// add the back button
 		backButton.render();
-
 		// show connection status
 		connectStatus(g);
 
-		// Text fields
+		// Render the text fields
 		serverAddress.render(gc, g);
 		wg.draw(g, serverStr, serverAddress.getX() - wg.getWH(serverStr, 0.15f).getL(), Vals.SCREEN_HEIGHT / 3, false,
 				0.15f);
@@ -184,7 +182,7 @@ public class CharacterSelect extends BasicGameState {
 			// make button inactive
 			connectButton.setActive(false);
 
-			// draw waiting spinner
+			// draw waiting spiral of death
 			float waitingDiam = Vals.SCREEN_WIDTH / 20;
 			waiting.setCenterOfRotation(waitingDiam / 2, waitingDiam / 2);
 			waiting.rotate((float) -0.05);
@@ -196,6 +194,7 @@ public class CharacterSelect extends BasicGameState {
 					connectButton.getCenterX(), connectButton.getY() + waitingDiam / 2 + Vals.BUTTON_HEIGHT / 2, false,
 					0.15f);
 		} else {
+			// still not connected
 			connectButton.setActive(true);
 			connectButton.render();
 			if (invalidName) {
@@ -233,7 +232,8 @@ public class CharacterSelect extends BasicGameState {
 	}
 
 	/**
-	 * Sets connected to be true and connectFailed is false;.
+	 * Sets connected to be true and connectFailed is false when a player
+	 * successfully connects.
 	 *
 	 * @param e
 	 *            A PlayerCreatedEvent
@@ -245,10 +245,11 @@ public class CharacterSelect extends BasicGameState {
 	}
 
 	/**
-	 * Sets connectFailed to be true and connected is false;.
+	 * Sets connectFailed to be true and connected is false when player fails to
+	 * connect.
 	 *
 	 * @param e
-	 *            the e
+	 *            The connection failed event
 	 */
 	private void connectFail(ConnectionFailedEvent e) {
 		connectFailed = true;
@@ -256,15 +257,25 @@ public class CharacterSelect extends BasicGameState {
 	}
 
 	/**
-	 * Game full.
+	 * Is the game full?
 	 *
 	 * @param e
-	 *            the e
+	 *            the game full event
 	 */
 	private void gameFull(GameFullEvent e) {
 		gameFull = true;
 	}
 
+	/**
+	 * Sets the invalid name.
+	 *
+	 * @param toSet
+	 *            the new invalid name
+	 */
+	public void setInvalidName(boolean toSet) {
+		invalidName = toSet;
+	}
+	
 	@Override
 	public int getID() {
 		return Vals.CHARACTER_SELECT_STATE;
@@ -276,15 +287,5 @@ public class CharacterSelect extends BasicGameState {
 		case Input.KEY_ESCAPE:
 			toPlay = true;
 		}
-	}
-
-	/**
-	 * Sets the invalid name.
-	 *
-	 * @param toSet
-	 *            the new invalid name
-	 */
-	public void setInvalidName(boolean toSet) {
-		invalidName = toSet;
 	}
 }
