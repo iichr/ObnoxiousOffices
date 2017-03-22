@@ -4,7 +4,6 @@ package game.ai.pathFinding;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.PriorityQueue;
 
 import game.ai.AIPlayer;
@@ -29,7 +28,7 @@ public class PathFinding implements Runnable, Serializable {
 
 	// list of tiles to be explored
 	// change the comparator operation by comparing the final cost of two cells
-	PriorityQueue<Cell> open = new AIPriorityQueue();
+	PriorityQueue<Cell> open = new PriorityQueue<Cell>();
 	boolean closed[][]; // array of tiles that are already explored
 
 	World world;
@@ -175,7 +174,7 @@ public class PathFinding implements Runnable, Serializable {
 		while (true) {
 			current = open.poll(); // pops the head of the queue
 
-			if (current == null) // if the head of the queue is empty - break
+			if (current == null) 
 				break;
 			closed[current.i][current.j] = true; // put the current cell in the
 													// explored list

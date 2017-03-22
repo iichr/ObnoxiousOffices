@@ -1,4 +1,4 @@
-package game.ai.pathFinding.test;
+package game.ai.ruleBasedAI.test;
 
 import static org.junit.Assert.assertTrue;
 
