@@ -1,5 +1,8 @@
 ## Eclipse
 
+# Mac stuff
+.DS_Store
+
 .metadata
 bin/
 tmp/
@@ -7,6 +10,7 @@ tmp/
 *.bak
 *.swp
 *~.nib
+*.eml
 local.properties
 .settings/
 .loadpath
