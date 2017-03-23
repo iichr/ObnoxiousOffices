@@ -34,7 +34,7 @@ public class PlayerActionWork extends PlayerActionMinigame {
 
     @Override
     public int getMaxRepetitions(Random rand) {
-        return 5;
+        return 2;
     }
 
     @Override
