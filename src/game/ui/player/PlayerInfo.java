@@ -3,10 +3,7 @@ package game.ui.player;
 import game.core.world.tile.MetaTile;
 import game.core.world.tile.Tile;
 import game.core.world.tile.type.TileTypeComputer;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 
 import game.core.player.Player;
 import game.core.util.Coordinates;
@@ -29,7 +26,7 @@ public class PlayerInfo {
     private Image drinkDialogue;
     private Image sleepDialogue;
 	private Image playerIdentifier;
-	private Image onFire;
+	private Animation fire;
 
 	/**
 	 * Constructor: sets up variables and reads in the images needed
@@ -55,7 +52,11 @@ public class PlayerInfo {
 		drinkDialogue = new Image(ImageLocations.DRINK_DIALOGUE, false, Image.FILTER_NEAREST);
 		sleepDialogue = new Image(ImageLocations.SLEEP_DIALOGUE, false, Image.FILTER_NEAREST);
 		playerIdentifier = new Image(ImageLocations.PLAYER_IDENTIFIER, false, Image.FILTER_NEAREST);
-		onFire = new Image(ImageLocations.ON_FIRE, false, Image.FILTER_NEAREST);
+		Image onFire = new Image(ImageLocations.ON_FIRE, false, Image.FILTER_NEAREST);
+		SpriteSheet fireSheet = new SpriteSheet(onFire, 600,900);
+		fire = new Animation(fireSheet, 250);
+		fire.setAutoUpdate(true);
+
 	}
 
 	/**
@@ -104,7 +105,7 @@ public class PlayerInfo {
 				int x = found.location.coords.x;
 				int y = found.location.coords.x;
 				if (visible[x][y]) {
-					onFire.draw((float) x * tileWidth, (float) (y + 1) * tileHeight / 2, tileWidth, tileHeight / 2);
+					fire.draw((float) x * tileWidth, (float) y * tileHeight / 2, tileWidth, tileHeight / 2);
 				}
 			}
 		}
