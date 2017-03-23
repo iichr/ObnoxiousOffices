@@ -7,6 +7,10 @@ import game.core.minigame.MiniGame;
 import game.core.minigame.MiniGameHangman;
 import game.core.player.Player;
 import game.core.world.World;
+import game.core.world.tile.MetaTile;
+import game.core.world.tile.type.TileTypeComputer;
+
+import java.util.Random;
 
 /**
  * Created by samtebbs on 16/01/2017.
@@ -15,6 +19,18 @@ public class PlayerActionWork extends PlayerActionMinigame {
 
     public PlayerActionWork(Player player) {
         super(player);
+    }
+
+    @Override
+    public void onMaxRepetitions() {
+        TileTypeComputer.getComputer(player).ifPresent(t -> {
+            TileTypeComputer.ignite((MetaTile) t);
+        });
+    }
+
+    @Override
+    public int getMaxRepetitions(Random rand) {
+        return 5;
     }
 
     @Override
