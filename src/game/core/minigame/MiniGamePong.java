@@ -38,6 +38,10 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
 			addVar(X_POS, (float) getVar(BALL_X_VEL));
 			addVar(Y_POS, (float) getVar(BALL_Y_VEL));
 			float ballX = (float) getVar(X_POS), ballY = (float) getVar(Y_POS);
+
+			checkPaddleBounce(player1, true, ballX, ballY);
+			checkPaddleBounce(player2, false, ballX, ballY);
+
 			if (ballX - BALL_SIZE / 2 <= 0) {
 				addStat(player1, SCORE, 1);
 				newRound();
@@ -46,9 +50,6 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
 				newRound();
 			} else if (ballY + BALL_SIZE / 2 >= BOUND_Y || ballY - BALL_SIZE / 2 <= 0) {
 				bounceBall(BALL_Y_VEL, null, 0);
-			} else {
-				checkPaddleBounce(player2, false, ballX, ballY);
-				checkPaddleBounce(player1, true, ballX, ballY);
 			}
 		}
 	}
@@ -58,8 +59,8 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
 		float yDiff = ballY - (playerY + PADDLE_LEN / 2);
 		if (((ballX + BALL_SIZE / 2 >= playerX && !left) || (ballX - BALL_SIZE / 2 <= playerX && left))
 				&& yDiff >= -(PADDLE_LEN / 2) && yDiff < PADDLE_LEN / 2) {
-			float ballVel = (float)getVar(BALL_X_VEL);
-			setVar(BALL_X_VEL, ballVel + Math.signum(ballVel)*0.2f);
+			float ballVel = (float) getVar(BALL_X_VEL);
+			setVar(BALL_X_VEL, ballVel + Math.signum(ballVel) * 0.05f);
 			bounceBall(BALL_X_VEL, BALL_Y_VEL, yDiff);
 		}
 	}

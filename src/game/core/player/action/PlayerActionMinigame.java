@@ -6,10 +6,15 @@ import game.core.minigame.MiniGame;
 import game.core.player.Player;
 import game.core.world.World;
 
+import java.io.Serializable;
+import java.util.function.Consumer;
+
 /**
  * Created by samtebbs on 14/03/2017.
  */
 public abstract class PlayerActionMinigame extends PlayerAction {
+
+    protected boolean ended = false;
 
     public PlayerActionMinigame(Player player) {
         super(player);
@@ -19,7 +24,7 @@ public abstract class PlayerActionMinigame extends PlayerAction {
 
     @Override
     public boolean ended() {
-        return false;
+        return ended;
     }
 
     @Override
@@ -30,8 +35,8 @@ public abstract class PlayerActionMinigame extends PlayerAction {
     @Override
     public void start() {
         MiniGame miniGame = getMiniGame();
-        miniGame.onEnd(this::end);
-        World.world.startMiniGame(getMiniGame());
+        if(!World.world.startMiniGame(miniGame)) end();
+        miniGame.onEnd((Consumer<MiniGameEndedEvent> & Serializable) this::end);
     }
 
     @Override
@@ -39,10 +44,12 @@ public abstract class PlayerActionMinigame extends PlayerAction {
         end(null);
     }
 
-    public abstract void end(MiniGameEndedEvent event);
+    public void end(MiniGameEndedEvent event) {
+        ended = true;
+    }
 
     @Override
     public void cancel() {
-
+        end();
     }
 }

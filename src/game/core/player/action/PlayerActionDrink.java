@@ -25,7 +25,7 @@ public class PlayerActionDrink extends TimedPlayerAction {
 
     @Override
     protected void timedUpdate() {
-        player.status.addToAttribute(PlayerStatus.PlayerAttribute.FATIGUE, -0.1);
+        player.status.addToAttribute(PlayerStatus.PlayerAttribute.FATIGUE, -0.05);
     }
 
     @Override

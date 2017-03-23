@@ -61,11 +61,13 @@ public class World implements Updateable, Serializable {
         }
     }
 
-    public void startMiniGame(MiniGame game) {
-        if(!ClientSync.isClient) {
+    public boolean startMiniGame(MiniGame game) {
+        boolean noneInMinigame = game.getPlayers().stream().map(this::getMiniGame).allMatch(Objects::isNull);
+        if(!ClientSync.isClient && noneInMinigame) {
             miniGames.add(game);
             Events.trigger(new MiniGameStartedEvent(game), true);
-        }
+            return true;
+        } else return false;
     }
 
     public Location getSpawnPoint(int i) {

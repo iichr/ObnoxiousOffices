@@ -12,6 +12,7 @@ import game.core.world.Direction;
 import game.core.world.Location;
 
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  * Created by samtebbs on 15/01/2017.
@@ -146,7 +147,7 @@ public class Player implements Updateable, Serializable {
     }
 
     public void removeProgress() {
-        setProgress(getProgress() - 1);
+        setProgress(getProgress() - 50);
     }
 
     /**
@@ -163,6 +164,10 @@ public class Player implements Updateable, Serializable {
      */
     public double getProgressMultiplier() {
         return PlayerStatus.PlayerAttribute.FATIGUE.maxVal - status.getAttribute(PlayerStatus.PlayerAttribute.FATIGUE);
+    }
+
+    public boolean workSucceeded(Random rand) {
+        return rand.nextBoolean();
     }
 
     @Override
