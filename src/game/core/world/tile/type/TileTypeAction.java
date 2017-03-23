@@ -26,7 +26,7 @@ public abstract class TileTypeAction extends TileType {
     @Override
     public void onInteraction(Player player, Tile tile, InteractionType type) {
         PlayerAction action = getAction(player, tile, type);
-        if(!player.status.hasAction(action.getClass()) && getRequiredStates().stream().allMatch(player.status::hasState)) player.status.addAction(action);
+        if(action != null && !player.status.hasAction(action.getClass()) && getRequiredStates().stream().allMatch(player.status::hasState)) player.status.addAction(action);
     }
 
     protected abstract PlayerAction getAction(Player player, Tile tile, InteractionType type);

@@ -1,10 +1,10 @@
 package game.core.player.action;
 
-import game.core.Updateable;
 import game.core.player.Player;
 import game.core.player.PlayerCondition;
 
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  * Created by samtebbs on 16/01/2017.
@@ -21,6 +21,14 @@ public abstract class PlayerAction implements PlayerCondition, Serializable {
 
     public boolean allowsMove() {
         return !forced;
+    }
+
+    public int getMaxRepetitions(Random rand) {
+        return Integer.MAX_VALUE;
+    }
+
+    public void onMaxRepetitions() {
+
     }
 
     public abstract void update();
@@ -44,4 +52,5 @@ public abstract class PlayerAction implements PlayerCondition, Serializable {
     public boolean allowsInteraction() {
         return false;
     }
+
 }

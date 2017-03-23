@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * Created by samtebbs on 21/03/2017.
  */
@@ -27,12 +29,37 @@ public class TestUtil {
      * @param action2 The action to run after the second (true) assertion
      * @param <T> The type of 'val'
      */
-    public static <T> void wrappedTest(T val, Predicate<T> condition, Consumer<T> action1, Consumer<T> action2) {
+    public static <T> void wrapped(T val, Predicate<T> condition, Consumer<T> action1, Consumer<T> action2) {
         assertFalse(condition.test(val));
         action1.accept(val);
         assertTrue(condition.test(val));
         action2.accept(val);
         assertFalse(condition.test(val));
+    }
+
+    /**
+     * Asserts false on the condition, eecutes action and asserts true on the condition
+     * @param condition The condition to be false then true
+     * @param action The action to run after the first (false) assertion
+     * @param <T> The type of 'val'
+     */
+    public static <T> void wrapped(BooleanSupplier condition, Runnable action) {
+        assertFalse(condition.getAsBoolean());
+        action.run();
+        assertTrue(condition.getAsBoolean());
+    }
+
+    /**
+     * Asserts false on the condition, eecutes action1 and asserts true on the condition
+     * @param val Value to pass to the condition and action
+     * @param condition The condition to be false then true
+     * @param action The action to run after the first (false) assertion
+     * @param <T> The type of 'val'
+     */
+    public static <T> void wrapped(T val, Predicate<T> condition, Consumer<T> action) {
+        assertFalse(condition.test(val));
+        action.accept(val);
+        assertTrue(condition.test(val));
     }
 
     /**
