@@ -51,7 +51,7 @@ public class Connect extends BasicGameState {
 	private String waitingString = "Connected: Waiting for ";
 	private String connectFailString = "Connection failed: please check the ip and try again";
 	private String gameFullSring = "Game is already full, try a different server";
-	private String invalidNameString = "Invalid name: Must be alphanumeric or underscore";
+	private String invalidNameString = "Invalid name: Must be alphanumeric";
 
 	private boolean toPlay = false;
 
