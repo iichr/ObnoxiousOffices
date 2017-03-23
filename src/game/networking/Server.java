@@ -41,7 +41,7 @@ public class Server {
 	private ServerSocket serverSocket = null;
 	private World world;
 	public static boolean listen;
-	public final int NUM_PLAYERS = Integer.parseInt(properties.getProperty("ai", "2"));
+	public final int NUM_PLAYERS = Integer.parseInt(properties.getProperty("players", "2"));
 	public static final int timeToWait = 60000;
 
 	/**
