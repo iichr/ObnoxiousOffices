@@ -1,13 +1,13 @@
 package game.networking;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import game.ai.AIPlayer;
 import game.core.event.CreateAIPlayerRequest;
@@ -22,11 +22,26 @@ import game.util.Time;
 
 public class Server {
 
+	private static File propertiesFile = new File("server.properties") {{
+		if (!this.exists()) try {
+			this.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}};
+	Properties properties = new Properties() {{
+		try {
+			this.load(new FileInputStream(propertiesFile));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}};
+
 	public ArrayList<ServerListener> connections;
 	private ServerSocket serverSocket = null;
 	private World world;
 	public static boolean listen;
-	private final int NUM_PLAYERS = 4;
+	public final int NUM_PLAYERS = Integer.parseInt(properties.getProperty("ai", "2"));
 	public static final int timeToWait = 60000;
 
 	/**
@@ -34,6 +49,12 @@ public class Server {
 	 */
 	public Server() {
 		AIPlayer.init();
+		try {
+			properties.store(new PrintWriter(propertiesFile), null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		ServerListener.NUM_AI_PLAYERS = Integer.parseInt(properties.getProperty("ai", "0"));
 		listen = true;
 		connections = new ArrayList<ServerListener>();
 		final int port = 8942;
