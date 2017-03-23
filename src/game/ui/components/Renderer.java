@@ -40,6 +40,8 @@ public class Renderer {
 	private List<PlayerAnimation> playerAnimations;
 
 	private Animation fire;
+	private Image timerBarBase;
+	private Image timerBarFull;
 
 	// boolean toggles
 	private boolean showOverview;
@@ -80,6 +82,9 @@ public class Renderer {
 		SpriteSheet fireSheet = new SpriteSheet(onFire, 600,600);
 		fire = new Animation(fireSheet, 250);
 		fire.setAutoUpdate(true);
+
+		timerBarBase = new Image(ImageLocations.ACTION_BAR_BASE, false, Image.FILTER_NEAREST);
+		timerBarFull = new Image(ImageLocations.ACTION_BAR_FULL, false, Image.FILTER_NEAREST);
 
 	}
 
@@ -188,13 +193,24 @@ public class Renderer {
 			if (TileTypeComputer.getOnFire((MetaTile) found)) {
 				int x = found.location.coords.x;
 				int y = found.location.coords.y;
+
+				float xLoc = x * tileWidth;
+				float yLoc = ((y + 2) * tileHeight / 2) - tileHeight/4;
+
+				//TODO fix this
+				int activeFor = 0;
+				Effect e = null;
+
 				if (visible[x][y]) {
-					fire.draw((float) x * tileWidth, ((y + 2) * tileHeight / 2) - tileHeight/4, tileWidth, tileHeight / 2);
+					fire.draw(xLoc, yLoc, tileWidth, tileHeight / 2);
+					timerBarBase.draw(xLoc, yLoc + tileWidth/4, tileWidth, tileHeight / 16);
+					timerBarFull.draw(xLoc, yLoc + tileWidth/4, xLoc + tileWidth * activeFor / e.getDuration(),
+							tileHeight /16, 0, 0,
+							timerBarFull.getWidth() * activeFor / e.getDuration(), timerBarFull.getHeight());
 				}
 			}
 		}
 	}
-
 
 	/**
 	 * Renders the players in the world
