@@ -59,9 +59,13 @@ public class ConnectButton extends Button {
 			if (inRange(mouseX, mouseY)) {
 				button = select;
 				if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-					if (Pattern.matches("[a-zA-Z0-9_ ]*", name) && name.length() >= 1) {
-						cs.setInvalidName(false);
-						Events.trigger(new ConnectionAttemptEvent(name, serverAddress));
+					if (Pattern.matches("[a-zA-Z0-9_]+[a-zA-Z0-9_ ]*", name) && name.length() >= 1) {
+						if(Pattern.matches("Volker_[0-9]+", name)){
+							cs.setInvalidName(true);
+						}else {
+							cs.setInvalidName(false);
+							Events.trigger(new ConnectionAttemptEvent(name, serverAddress));
+						}
 					} else {
 						cs.setInvalidName(true);
 					}
