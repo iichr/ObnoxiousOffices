@@ -5,15 +5,18 @@ import java.io.Serializable;
 import game.core.player.Player;
 
 /**
- * @author Atanas K. Harbaliev. Created on 22.02.2017
+ * The working memory contains information about a given player. This includes
+ * whether or not this player is working, hacking, refreshing, and if he has
+ * done more work towards completing the final goal.
  */
 
-public class WorkingMemory implements Serializable{
-	
+public class WorkingMemory implements Serializable {
+
 	private static final long serialVersionUID = 1L;
+
 	public enum activityValues {
 		Yes, No, Unknown
-	}; 
+	};
 
 	// checks if a player is working
 	private activityValues isWorking;
@@ -26,13 +29,13 @@ public class WorkingMemory implements Serializable{
 
 	// checks if a player has progressed more than the AI
 	private activityValues hasProgressedMore;
-	
+
 	// the player whose working memory this is
 	private Player player;
 
 	/**
 	 * Constructonr
-	 * 
+	 *
 	 * @param isW
 	 *            the value of the isWorking field
 	 * @param isH
@@ -49,7 +52,7 @@ public class WorkingMemory implements Serializable{
 
 	/**
 	 * Get method
-	 * 
+	 *
 	 * @return answer to whether or not a player is working
 	 */
 	public activityValues getIsWorking() {
@@ -58,7 +61,7 @@ public class WorkingMemory implements Serializable{
 
 	/**
 	 * Sets the value of isWorking
-	 * 
+	 *
 	 * @param val
 	 *            if the player is working - Yes, if he isn't - No, else Unknown
 	 */
@@ -68,7 +71,7 @@ public class WorkingMemory implements Serializable{
 
 	/**
 	 * Get method
-	 * 
+	 *
 	 * @return answer to whether or not a player is hacking
 	 */
 	public activityValues getIsHacking() {
@@ -77,7 +80,7 @@ public class WorkingMemory implements Serializable{
 
 	/**
 	 * Sets the value of isWorking
-	 * 
+	 *
 	 * @param val
 	 *            if the player is hacking - Yes, if he isn't - No, else Unknown
 	 */
@@ -87,7 +90,7 @@ public class WorkingMemory implements Serializable{
 
 	/**
 	 * Get method
-	 * 
+	 *
 	 * @return answer to whether or not a player is drinking coffee or sleeping
 	 *         on the sofa
 	 */
@@ -97,7 +100,7 @@ public class WorkingMemory implements Serializable{
 
 	/**
 	 * Sets the value of isWorking
-	 * 
+	 *
 	 * @param val
 	 *            if the player is refreshing - Yes, if he isn't - No, else
 	 *            Unknown
@@ -108,7 +111,7 @@ public class WorkingMemory implements Serializable{
 
 	/**
 	 * Get method
-	 * 
+	 *
 	 * @return answer to whether or not a player is closer to completing his
 	 *         project than the AI
 	 */
@@ -118,7 +121,7 @@ public class WorkingMemory implements Serializable{
 
 	/**
 	 * Sets the value of isWorking
-	 * 
+	 *
 	 * @param val
 	 *            if the player is closer to completing the project than the AI
 	 *            - Yes, if he isn't - No, else Unknown
@@ -126,8 +129,10 @@ public class WorkingMemory implements Serializable{
 	public void setHasProgressedMore(activityValues val) {
 		hasProgressedMore = val;
 	}
+
 	/**
 	 * Get method
+	 *
 	 * @return the player whose working memory this is
 	 */
 	public Player getWMplayer() {
@@ -136,7 +141,7 @@ public class WorkingMemory implements Serializable{
 
 	/**
 	 * Sets the initial values of all fields of a working memory
-	 * 
+	 *
 	 * @param isW
 	 *            whether or not the player is working
 	 * @param isH
@@ -156,7 +161,7 @@ public class WorkingMemory implements Serializable{
 
 	/**
 	 * Sets the initial values of all fields of a working memory
-	 * 
+	 *
 	 * @param isW
 	 *            whether or not the player is working
 	 * @param isH
@@ -169,7 +174,7 @@ public class WorkingMemory implements Serializable{
 	 * @return the working memory
 	 */
 	public WorkingMemory setAllAndReturn(activityValues isW, activityValues isH, activityValues isR,
-			activityValues hasPM) {
+										 activityValues hasPM) {
 		WorkingMemory wm = new WorkingMemory(player);
 
 		wm.setIsWorking(isW);

@@ -73,7 +73,7 @@ public class Effect {
 		float y = tileHeight + height;
 
 		for (PlayerEffect e : pe) {
-			if (!e.ended()) {
+			if (!e.ended() && imgs.containsKey(e.getClass())) {
 				activeFor = e.getDuration() - e.getElapsed();
 
 				// draw image

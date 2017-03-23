@@ -12,6 +12,7 @@ import org.newdawn.slick.SpriteSheet;
 import game.core.player.Player;
 import game.core.player.PlayerStatus.PlayerAttribute;
 import game.core.player.action.PlayerActionSleep;
+import game.core.player.state.PlayerState;
 import game.core.world.World;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
@@ -178,7 +179,7 @@ public class PlayerOverview {
 	 *            playerAvatars array
 	 */
 	private void checkSleep(Player p, int i) {
-		if (p.status.hasAction(PlayerActionSleep.class)) {
+		if (p.status.hasState(PlayerState.sleeping)) {
 			playerAvatars[i].setCurrentFrame(1);
 		} else {
 			playerAvatars[i].setCurrentFrame(0);

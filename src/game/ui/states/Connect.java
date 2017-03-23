@@ -51,7 +51,7 @@ public class Connect extends BasicGameState {
 	private String waitingString = "Connected: Waiting for ";
 	private String connectFailString = "Connection failed: please check the ip and try again";
 	private String gameFullSring = "Game is already full, try a different server";
-	private String invalidNameString = "Invalid name: Must be alphanumeric or underscore";
+	private String invalidNameString = "Invalid name: Must be alphanumeric";
 
 	private boolean toPlay = false;
 
@@ -65,21 +65,14 @@ public class Connect extends BasicGameState {
 	// have enough people connected to the game
 	private boolean gameFull = false;
 
-	private PlayTest playTest;
 	private int playerLeft = 0;
 	private WordGenerator wg;
 	private Music music;
 
 	/**
-	 * [USE ONLY IN TESTING] Creates the connect state and starts the necessary
-	 * event listeners.
-	 *
-	 * @param test
-	 *            The play test state
-	 * @param wg
+	 * Constructor: creates a connect state object
 	 */
-	public Connect(PlayTest test) {
-		this.playTest = test;
+	public Connect() {
 		Events.on(PlayerCreatedEvent.class, this::connected);
 		Events.on(ConnectionFailedEvent.class, this::connectFail);
 		Events.on(GameFullEvent.class, this::gameFull);
@@ -242,12 +235,6 @@ public class Connect extends BasicGameState {
 		}
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 		connectButton.update(gc, game, mouseX, mouseY, addressValue, nameValue, this);
-
-		if (toPlay) {
-			playTest.testSetup();
-			game.enterState(Vals.PLAY_TEST_STATE);
-			toPlay = false;
-		}
 	}
 
 	/**
@@ -298,14 +285,6 @@ public class Connect extends BasicGameState {
 	@Override
 	public int getID() {
 		return Vals.CHARACTER_SELECT_STATE;
-	}
-
-	@Override
-	public void keyPressed(int key, char c) {
-		switch (key) {
-		case Input.KEY_ESCAPE:
-			toPlay = true;
-		}
 	}
 
 }

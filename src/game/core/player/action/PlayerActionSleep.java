@@ -25,7 +25,7 @@ public class PlayerActionSleep extends TimedPlayerAction {
 
     @Override
     protected void timedUpdate() {
-        player.status.addToAttribute(PlayerStatus.PlayerAttribute.FATIGUE, -0.1);
+        player.status.addToAttribute(PlayerStatus.PlayerAttribute.FATIGUE, -0.01);
     }
 
     @Override

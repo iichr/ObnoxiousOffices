@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Created by samtebbs on 09/03/2017.
  */
-class PlayerTest {
+public class PlayerTest {
 
     public static final Player player = new Player("memer", Direction.SOUTH, new Location(new Coordinates(0, 0, 0), null));
 

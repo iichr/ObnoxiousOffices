@@ -35,6 +35,9 @@ public interface ImageLocations {
 	public static final String PLAYER_HEADS = "res/sprites/players/heads.png";
 	public static final String PLAYER_IDENTIFIER = "res/sprites/players/playerIdentifier.png";
 
+	//FIRE IMAGES
+	public static final String ON_FIRE = "res/sprites/fire.png";
+
 	// IN GAME UI ELEMENTS
 	public static final String PROGRESS_BAR_BASE = "/res/ui/progressBarBase.png";
 	public static final String PROGRESS_BAR_FULL = "/res/ui/progressBarFull.png";

@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import game.ai.ruleBasedAI.WorkingMemory.activityValues;
 
 /**
- * 
- * @author Atanas K. Harbaliev. Created on 22.02.2017
- *
+ * ArrayList of all rules.
  */
 public class Rules implements Serializable{
 	

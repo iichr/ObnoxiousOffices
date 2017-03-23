@@ -227,7 +227,7 @@ public class Renderer {
 	 */
 	private void changeAnimation(Player player, PlayerAnimation animation) {
 		Direction playerFacing = player.getFacing();
-		if (player.status.hasAction(PlayerActionSleep.class)) {
+		if (player.status.hasState(PlayerState.sleeping)) {
 			animation.sleeping(playerFacing);
 		} else if (player.status.hasState(PlayerState.sitting)) {
 			animation.seated(playerFacing);

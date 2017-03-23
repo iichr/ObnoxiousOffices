@@ -1,9 +1,9 @@
 package game.ui.player;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
+import game.core.world.tile.MetaTile;
+import game.core.world.tile.Tile;
+import game.core.world.tile.type.TileTypeComputer;
+import org.newdawn.slick.*;
 
 import game.core.player.Player;
 import game.core.util.Coordinates;
@@ -22,20 +22,23 @@ public class PlayerInfo {
 	private float tileWidth;
 	private float tileHeight;
 	private WordGenerator wg;
-	private Image sitDialogue, drinkDialogue, sleepDialogue;
+	private Image sitDialogue;
+    private Image drinkDialogue;
+    private Image sleepDialogue;
 	private Image playerIdentifier;
+	private Animation fire;
 
 	/**
 	 * Constructor: sets up variables and reads in the images needed
-	 * 
-	 * @param world
-	 *            The world variable
+	 *
 	 * @param localPlayerName
 	 *            The name of the local player
 	 * @param tileWidth
 	 *            The width of an individual tile
 	 * @param tileHeight
 	 *            The height of an individual tile
+	 * @param wg
+     *            The word generator object
 	 * @throws SlickException
 	 */
 	public PlayerInfo(String localPlayerName, float tileWidth, float tileHeight, WordGenerator wg)
@@ -49,11 +52,16 @@ public class PlayerInfo {
 		drinkDialogue = new Image(ImageLocations.DRINK_DIALOGUE, false, Image.FILTER_NEAREST);
 		sleepDialogue = new Image(ImageLocations.SLEEP_DIALOGUE, false, Image.FILTER_NEAREST);
 		playerIdentifier = new Image(ImageLocations.PLAYER_IDENTIFIER, false, Image.FILTER_NEAREST);
+		Image onFire = new Image(ImageLocations.ON_FIRE, false, Image.FILTER_NEAREST);
+		SpriteSheet fireSheet = new SpriteSheet(onFire, 600,900);
+		fire = new Animation(fireSheet, 250);
+		fire.setAutoUpdate(true);
+
 	}
 
 	/**
 	 * Renders information about the players
-	 * 
+	 *
 	 * @param g
 	 *            The graphics object
 	 * @param visible
@@ -81,7 +89,9 @@ public class PlayerInfo {
 				// add pop-ups
 				Location inFront = pLocation.forward(p.getFacing());
 				if (inFront.checkBounds()) {
-					TileType type = inFront.getTile().type;
+				    Tile found = inFront.getTile();
+                    showFire(found, visible);
+					TileType type = found.type;
 					Coordinates coords = inFront.coords;
 					checkDialogue(type, coords);
 				}
@@ -89,9 +99,21 @@ public class PlayerInfo {
 		}
 	}
 
+    private void showFire(Tile found, boolean [][] visible){
+		if(found.type.equals(TileType.COMPUTER)) {
+			if (TileTypeComputer.getOnFire((MetaTile) found)) {
+				int x = found.location.coords.x;
+				int y = found.location.coords.x;
+				if (visible[x][y]) {
+					fire.draw((float) x * tileWidth, (float) y * tileHeight / 2, tileWidth, tileHeight / 2);
+				}
+			}
+		}
+    }
+
 	/**
 	 * Check if the tile has a pop-up
-	 * 
+	 *
 	 * @param type
 	 *            The tile type to display dialogue about
 	 * @param coords
@@ -109,7 +131,7 @@ public class PlayerInfo {
 
 	/**
 	 * Display pop-up dialogue about a tile
-	 * 
+	 *
 	 * @param toDraw
 	 *            the dialogue to draw
 	 * @param coords

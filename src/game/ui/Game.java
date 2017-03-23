@@ -22,7 +22,6 @@ import game.ui.states.KeyOptions;
 import game.ui.states.Menu;
 import game.ui.states.Options;
 import game.ui.states.Play;
-import game.ui.states.PlayTest;
 import game.ui.states.Rules;
 
 public class Game extends StateBasedGame {
@@ -32,7 +31,6 @@ public class Game extends StateBasedGame {
 	private Options optionsState;
 	private Rules rulesState;
 	private Connect connectState;
-	private PlayTest playTestState;
 	private KeyOptions keyOptionsState;
 
 	/**
@@ -50,13 +48,11 @@ public class Game extends StateBasedGame {
 		this.addState(menuState);
 		playState = new Play();
 		this.addState(playState);
-		playTestState = new PlayTest();
-		this.addState(playTestState);
 		optionsState = new Options();
 		this.addState(optionsState);
 		rulesState = new Rules();
 		this.addState(rulesState);
-		connectState = new Connect(playTestState);
+		connectState = new Connect();
 		this.addState(connectState);
 		keyOptionsState = new KeyOptions();
 		this.addState(keyOptionsState);

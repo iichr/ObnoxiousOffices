@@ -3,12 +3,8 @@ package game.ai.pathFinding;
 import java.io.Serializable;
 
 /**
- * 
- * @author Atanas K. Harbaliev. Created on 21.04.2017
- * 
- *         the class is going to be used to store heuristic value, g cost final
- *         value, coordinates and the parent
- *
+ * the class is going to be used to store heuristic value, g cost final value,
+ * coordinates and the parent
  */
 public class Cell implements Serializable, Comparable<Cell> {
 
