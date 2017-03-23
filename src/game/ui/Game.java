@@ -91,6 +91,7 @@ public class Game extends StateBasedGame {
 	}
 
 	/**
+	 * Toggle the library folder based on the system platform.
 	 * Initialises the window and UI environment
 	 */
 	public static void init() {
@@ -115,15 +116,15 @@ public class Game extends StateBasedGame {
 		}
 
 		System.setProperty("org.lwjgl.librarypath", JGLLib.getAbsolutePath());
-
+		//System.setProperty("org.lwjgl.opengl.Window.undecorated","true");
+		
 		AppGameContainer agc;
 		try {
 			agc = new AppGameContainer(new Game(Vals.GAME_NAME));
 			agc.setDisplayMode(Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT, false);
-
+			agc.setIcon("res/icon.png");
 			agc.setUpdateOnlyWhenVisible(true);
 			agc.setMinimumLogicUpdateInterval(10);
-
 			agc.setShowFPS(false);
 			agc.setFullscreen(false);
 			agc.start();
