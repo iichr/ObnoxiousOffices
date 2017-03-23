@@ -63,8 +63,10 @@ public class Player implements Updateable, Serializable {
      * @param facing
      */
     public void setFacing(Direction facing) {
-        this.facing = facing;
-        Events.trigger(new PlayerRotatedEvent(facing, this.name), true);
+        if(this.facing != facing) {
+            this.facing = facing;
+            Events.trigger(new PlayerRotatedEvent(facing, this.name), true);
+        }
     }
 
     /**
