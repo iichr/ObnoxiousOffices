@@ -30,8 +30,8 @@ public class PlayerStatus implements Serializable {
     private Map<PlayerAttribute, Double> attributes = new HashMap<>();
     private Map<PlayerAttribute, Integer> attributeUpdateCounter = new HashMap<>();
     private Set<PlayerState> states = new HashSet<>();
-    private Set<PlayerAction> actions = new HashSet<>();
-    private List<PlayerEffect> effects = new ArrayList<>();
+    private final Set<PlayerAction> actions = new HashSet<>();
+    private final List<PlayerEffect> effects = new ArrayList<>();
     public final Player player;
     public boolean initialising = true;
 
@@ -100,7 +100,9 @@ public class PlayerStatus implements Serializable {
     }
 
     public Set<PlayerAction> getActions() {
-        return actions.stream().collect(Collectors.toSet());
+        synchronized (actions) {
+            return new HashSet<>(actions);
+        }
     }
 
     public void update(Player player) {
@@ -190,11 +192,11 @@ public class PlayerStatus implements Serializable {
     }
 
     public Set<PlayerState> getStates() {
-        return states.stream().collect(Collectors.toSet());
+        return new HashSet<>(states);
     }
 
     public PlayerEffect getEffect(Class<? extends PlayerEffect> playerEffectClass) {
-        return getEffects().stream().filter(effect -> effect.getClass() == playerEffectClass).findFirst().get();
+        return getEffects().stream().filter(effect -> effect.getClass() == playerEffectClass).findFirst().orElse(null); // Don't judge me
     }
 
     public boolean canMove() {
