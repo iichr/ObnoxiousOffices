@@ -1,12 +1,12 @@
 package game.ui.states;
 
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
-import org.newdawn.slick.MusicListener;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -14,13 +14,12 @@ import org.newdawn.slick.state.StateBasedGame;
 import game.ui.buttons.MenuButton;
 import game.ui.components.MusicBox;
 import game.ui.interfaces.ImageLocations;
-import game.ui.interfaces.MusicLocations;
 import game.ui.interfaces.Vals;
 
 /**
  * The state containing the Main game menu to be rendered.
  */
-public class Menu extends BasicGameState implements MusicListener {
+public class Menu extends BasicGameState {
 
 	// the menu buttons
 	private MenuButton playButton;
@@ -30,10 +29,11 @@ public class Menu extends BasicGameState implements MusicListener {
 
 	// The music and sound
 	private Music music;
-	private MusicBox mb;
+	private MusicBox musicBox;
 
 	// The background image the menu is set against
-	private Image bg;
+	private Image background;
+	private Image logo;
 
 	// An array of buttons that follows the order of menu
 	private MenuButton buttons[];
@@ -45,12 +45,18 @@ public class Menu extends BasicGameState implements MusicListener {
 	public int getID() {
 		return Vals.MENU_STATE;
 	}
+	
+	public void setDependencies(Music music, MusicBox musicBox) {
+		this.music = music;
+		this.musicBox = musicBox;
+	}
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 
 		// initialise all menu buttons' positions and sizes
-		bg = new Image(ImageLocations.BG, false, Image.FILTER_NEAREST);
+		background = new Image(ImageLocations.BACKGROUND, false, Image.FILTER_NEAREST);
+		logo = new Image(ImageLocations.LOGO, false, Image.FILTER_NEAREST);
 		Image play = new Image(ImageLocations.PLAY).getScaledCopy(0.8f);
 		Image playR = new Image(ImageLocations.PLAY_ROLLOVER).getScaledCopy(0.8f);
 		float padding = Vals.SCREEN_HEIGHT / 15;
@@ -74,11 +80,6 @@ public class Menu extends BasicGameState implements MusicListener {
 		exitButton = new MenuButton(Vals.SCREEN_WIDTH / 2 - exit.getWidth() / 2, Vals.SCREEN_HEIGHT / 2 + 5 * padding,
 				exit.getWidth(), exit.getHeight(), exit, exitR);
 
-		// initialise music and sound
-		mb = new MusicBox(gc);
-		music = new Music(MusicLocations.MENU_MUSIC);
-		music.setVolume(0.5f);
-
 		// add all buttons to an array
 		buttons = new MenuButton[] { playButton, optionsButton, rulesButton, exitButton };
 
@@ -95,15 +96,10 @@ public class Menu extends BasicGameState implements MusicListener {
 	}
 
 	@Override
-	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		// pause music when leaving the menu.
-		music.pause();
-	}
-
-	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		// draw the background
-		bg.draw(0, 0, Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT);
+		background.draw(0, 0, Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT, Color.darkGray);
+		logo.draw(Vals.SCREEN_WIDTH / 4, Vals.SCREEN_HEIGHT / 8, Vals.SCREEN_WIDTH / 2, Vals.SCREEN_HEIGHT / 4);
 
 		// draw buttons
 		playButton.render();
@@ -133,7 +129,7 @@ public class Menu extends BasicGameState implements MusicListener {
 		// handle movement through the menu with the UP and DOWN keys
 		switch (key) {
 		case Input.KEY_DOWN:
-			mb.playPressed();
+			musicBox.playPressed();
 			if (CURRENT == (buttons.length - 1)) {
 				CURRENT = 0;
 			} else {
@@ -141,7 +137,7 @@ public class Menu extends BasicGameState implements MusicListener {
 			}
 			break;
 		case Input.KEY_UP:
-			mb.playPressed();
+			musicBox.playPressed();
 			if (CURRENT == 0) {
 				CURRENT = (buttons.length - 1);
 			} else {
@@ -149,13 +145,5 @@ public class Menu extends BasicGameState implements MusicListener {
 			}
 			break;
 		}
-	}
-
-	@Override
-	public void musicEnded(Music arg0) {
-	}
-
-	@Override
-	public void musicSwapped(Music arg0, Music arg1) {
 	}
 }

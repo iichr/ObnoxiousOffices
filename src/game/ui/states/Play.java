@@ -93,7 +93,7 @@ public class Play extends BasicGameState {
 	// the background music
 	private Music bgmusic;
 
-	public void setWG(WordGenerator wg) {
+	public void setDependencies(WordGenerator wg) {
 		this.wg = wg;
 	}
 

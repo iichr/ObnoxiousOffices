@@ -9,6 +9,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
 /**
@@ -35,7 +36,7 @@ public class Intro extends BasicGameState {
 		ticks = 0;
 		skip = false;
 
-		logo = new Image("/res/logo.png", false, Image.FILTER_NEAREST);
+		logo = new Image(ImageLocations.LOGO, false, Image.FILTER_NEAREST);
 	}
 
 	@Override
