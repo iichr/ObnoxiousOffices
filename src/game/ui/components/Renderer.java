@@ -209,8 +209,8 @@ public class Renderer {
 					fire.draw(xLoc, yLoc, tileWidth, tileHeight / 2);
 					timerBarBase.draw(xLoc, yLoc + tileWidth/4, tileWidth, tileHeight / 16);
 					timerBarFull.draw(xLoc, yLoc + tileWidth/4, xLoc + tileWidth * activeFor / e.getDuration(),
-							tileHeight /16, 0, 0,
-							timerBarFull.getWidth() * activeFor / e.getDuration(), timerBarFull.getHeight());
+							yLoc + tileWidth/4 + tileWidth/16, 0, 0,
+							timerBarFull.getWidth() * activeFor / e.getDuration(),timerBarFull.getHeight());
 				}
 			}
 		}
