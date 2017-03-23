@@ -28,7 +28,7 @@ public abstract class PlayerEffect implements PlayerCondition, Serializable {
     public void update() {
         if(!expired){
             setElapsed(elapsed + 1);
-            if (elapsed >= duration) expired = true;
+            if (elapsed >= duration) end();
         }
     }
 
