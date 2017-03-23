@@ -38,6 +38,31 @@ public class TestUtil {
     }
 
     /**
+     * Asserts false on the condition, eecutes action and asserts true on the condition
+     * @param condition The condition to be false then true
+     * @param action The action to run after the first (false) assertion
+     * @param <T> The type of 'val'
+     */
+    public static <T> void wrappedTest(BooleanSupplier condition, Runnable action) {
+        assertFalse(condition.getAsBoolean());
+        action.run();
+        assertTrue(condition.getAsBoolean());
+    }
+
+    /**
+     * Asserts false on the condition, eecutes action1 and asserts true on the condition
+     * @param val Value to pass to the condition and action
+     * @param condition The condition to be false then true
+     * @param action The action to run after the first (false) assertion
+     * @param <T> The type of 'val'
+     */
+    public static <T> void wrappedTest(T val, Predicate<T> condition, Consumer<T> action) {
+        assertFalse(condition.test(val));
+        action.accept(val);
+        assertTrue(condition.test(val));
+    }
+
+    /**
      * Add a consumer to be tracked. Used with {@link TestUtil#assertCalledOrdered(Object...)}} and {@link TestUtil#assertCalled(Object)}
      * @param consumer The consumer
      * @param <T> The consumer's parameter type
