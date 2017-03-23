@@ -21,7 +21,7 @@ import static game.core.TestUtil.*;
 class WorldTest {
 
     public static final int numPlayers = 2;
-    World world = World.load(Paths.get("data/office " + numPlayers + "Player.level"), numPlayers);
+    World world = World.load(Paths.get("data/office" + numPlayers + "Player.level"), numPlayers);
 
     WorldTest() throws IOException {
     }
