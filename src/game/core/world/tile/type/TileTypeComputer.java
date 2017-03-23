@@ -58,12 +58,16 @@ public class TileTypeComputer extends TileTypeAction {
 
     @Override
     protected PlayerAction getAction(Player player, Tile tile, InteractionType type) {
-        String owner = getOwningPlayer((MetaTile) tile);
-        if(type.getClass() == InteractionType.InteractionTypeWork.class && owner.equals(player.name))
-            return (player.isAI ? new PlayerActionWorkTimed(player) : new PlayerActionWork(player));
-        else if(type instanceof InteractionType.InteractionTypeHack) {
-            Player target = World.world.getPlayer(((InteractionType.InteractionTypeHack) type).target);
-            return player.isAI ? new PlayerActionHackTimed(player, target) : new PlayerActionHack(player, target);
+        System.out.println("computer.getAction");
+        if(!TileTypeComputer.getOnFire((MetaTile) tile)) {
+            System.out.println("pc not on fire");
+            String owner = getOwningPlayer((MetaTile) tile);
+            if (type.getClass() == InteractionType.InteractionTypeWork.class && owner.equals(player.name))
+                return (player.isAI ? new PlayerActionWorkTimed(player) : new PlayerActionWork(player));
+            else if (type instanceof InteractionType.InteractionTypeHack) {
+                Player target = World.world.getPlayer(((InteractionType.InteractionTypeHack) type).target);
+                return player.isAI ? new PlayerActionHackTimed(player, target) : new PlayerActionHack(player, target);
+            } else return null;
         } else return null;
     }
 
@@ -102,6 +106,7 @@ public class TileTypeComputer extends TileTypeAction {
     }
 
     public static void extinguish(MetaTile computer) {
+        System.out.println("extinguish");
         setOnFire(computer, false);
     }
 
