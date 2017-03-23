@@ -1,3 +1,5 @@
+server.properties
+
 ## Eclipse
 
 # Mac stuff
@@ -10,6 +12,7 @@ tmp/
 *.bak
 *.swp
 *~.nib
+*.eml
 local.properties
 .settings/
 .loadpath

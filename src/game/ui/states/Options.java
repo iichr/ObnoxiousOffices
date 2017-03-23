@@ -1,82 +1,193 @@
 package game.ui.states;
 
 import org.lwjgl.input.Mouse;
-import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Music;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import game.ui.buttons.MenuButton;
+import game.ui.components.MusicBox;
+import game.ui.components.WordGenerator;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
+import game.util.Pair;
 
 /**
  * The Options submenu.
- * 
- * @author iichr
- *
  */
 public class Options extends BasicGameState {
-	private Image speakerOn, speakerOff;
-	private Animation turnOn, turnOff, soundStatus;
-	private int[] duration = { 200, 200 };
-	private Music music;
-	private Sound sound;
-	private int mouseX, mouseY;
-	private String mouseCoords;
+	private WordGenerator wg;
+	private float currentSVolume, currentMVolume;
+	private MusicBox musicBox;
+	private MenuButton backButton, nextPageButton;
+	private Image background;
 
-	private MenuButton backButton;
-
-	public Options(int state) {
-
+	public void setDependencies(WordGenerator wg, MusicBox musicBox) {
+		this.wg = wg;
+		this.musicBox = musicBox;
 	}
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-		
-		// sound toggle animation
-		speakerOff = new Image(ImageLocations.SPEAKER_OFF);
-		speakerOn = new Image(ImageLocations.SPEAKER_ON);
 
-		Image[] speakerTurnOff = { speakerOff, speakerOn };
-		Image[] speakerTurnOn = { speakerOn, speakerOff };
-
-		turnOff = new Animation(speakerTurnOff, duration, false);
-		turnOn = new Animation(speakerTurnOn, duration, false);
-
-		// set initial state to ON;
-		soundStatus = turnOn;
-
-		// TODO add music and sound
+		// set up back button
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
-
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
+
+		background = new Image(ImageLocations.BACKGROUND, false, Image.FILTER_NEAREST);
+
+		// the next page button leading to the keyboard controls screen
+		nextPageButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W - wg.getWH(">", 1.0f).getL(),
+				Vals.BUTTON_ALIGN_CENTRE_H + 1.75f * wg.getWH(">", 1.0f).getR(), 60, 60, wg.get('>', false),
+				wg.get('>', true));
+
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
-		// debugging
-		g.drawString(mouseCoords, 10, 50);
-		
-		soundStatus.draw(295, 150);
+		Input input = gc.getInput();
+		// get the mouse coordinates
+		float mousex = input.getMouseX();
+		float mousey = input.getMouseY();
 
-		// add back button
+		// draw the background
+		background.draw(0, 0, Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT, new Color(20, 20, 20));
+
+		// set the colour to white
+		g.setColor(Color.white);
+
+		// get the current volumes of sound and music
+		currentSVolume = gc.getSoundVolume();
+		currentMVolume = gc.getMusicVolume();
+
+		/****
+		 * SOUND OPTION
+		 ****/
+		Pair<Float, Float> wh = wg.getWH("Sound", 0.3f);
+		wg.draw(g, "Sound", Vals.BUTTON_ALIGN_CENTRE_W - wh.getL(), Vals.BUTTON_ALIGN_CENTRE_H - wh.getR(), false,
+				0.3f);
+		// < symbol
+		Pair<Float, Float> wh2 = wg.getWH("<", 0.3f);
+		wg.draw(g, "<", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH, Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR(), false,
+				0.3f);
+		if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH
+				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH + wh2.getL()
+				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR() && mousey <= Vals.BUTTON_ALIGN_CENTRE_H) {
+			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				musicBox.playPressed();
+				musicBox.changeSVolumeL(gc);
+			}
+		}
+
+		// Sound volume in %
+		wg.draw(g, (int) (currentSVolume * 100) + "%", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 1.5f,
+				Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR(), false, 0.3f);
+		// > symbol
+		wg.draw(g, ">", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f, Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR(),
+				false, 0.3f);
+		if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f
+				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f + wh2.getL()
+				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR() && mousey <= Vals.BUTTON_ALIGN_CENTRE_H) {
+			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				musicBox.playPressed();
+				musicBox.changeSVolumeR(gc);
+			}
+		}
+
+		/****
+		 * MUSIC OPTION
+		 ****/
+		wg.draw(g, "Music", Vals.BUTTON_ALIGN_CENTRE_W - wh.getL(), Vals.BUTTON_ALIGN_CENTRE_H, false, 0.3f);
+		// < symbol
+		wg.draw(g, "<", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH, Vals.BUTTON_ALIGN_CENTRE_H, false, 0.3f);
+		if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH
+				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH + wh2.getL()
+				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H && mousey <= Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR()) {
+			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				musicBox.playPressed();
+				musicBox.changeMVolumeL(gc);
+			}
+		}
+
+		// Music volume in %
+		wg.draw(g, (int) (currentMVolume * 100) + "%", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 1.5f,
+				Vals.BUTTON_ALIGN_CENTRE_H, false, 0.3f);
+		// > symbol
+		wg.draw(g, ">", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f, Vals.BUTTON_ALIGN_CENTRE_H, false, 0.3f);
+		if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f
+				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f + wh2.getL()
+				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H && mousey <= Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR()) {
+			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				musicBox.playPressed();
+				musicBox.changeMVolumeR(gc);
+			}
+		}
+
+		/****
+		 * DISPLAY MODE OPTION
+		 ****/
+		Pair<Float, Float> wh3 = wg.getWH("Display Mode", 0.3f);
+		wg.draw(g, "Display Mode", Vals.BUTTON_ALIGN_CENTRE_W - wh3.getL(), Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR(),
+				false, 0.3f);
+		// < symbol
+		wg.draw(g, "<", Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH / 2, Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR(),
+				false, 0.3f);
+		if (mousex >= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH / 2
+				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH / 2 + wh3.getL()
+				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR()
+				&& mousey <= Vals.BUTTON_ALIGN_CENTRE_H + 2 * wh2.getR()) {
+			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				musicBox.playPressed();
+				gc.setFullscreen(!gc.isFullscreen());
+			}
+		}
+
+		// display modes
+		String toShow = "Window";
+		if (gc.isFullscreen()) {
+			toShow = "Full Screen";
+		}
+
+		Pair<Float, Float> wh5 = wg.getWH(toShow, 0.2f);
+		wg.draw(g, toShow, Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH, Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR(),
+				false, 0.3f);
+		// > symbol
+		float arrowRW = Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2f + wh5.getL();
+		wg.draw(g, ">", arrowRW, Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR(), false, 0.3f);
+		if (mousex >= arrowRW && mousex <= arrowRW + wh3.getL() && mousey >= Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR()
+				&& mousey <= Vals.BUTTON_ALIGN_CENTRE_H + 2 * wh2.getR()) {
+			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				musicBox.playPressed();
+				gc.setFullscreen(!gc.isFullscreen());
+			}
+		}
+
+		/****
+		 * LINK TO KEYBOARD CONTROLS PAGE
+		 ****/
+		wg.draw(g, "MORE", Vals.BUTTON_ALIGN_CENTRE_W - (wg.getWH("MORE", 0.3f).getL() * 2f),
+				Vals.BUTTON_ALIGN_CENTRE_H + 1.75f * wg.getWH("MORE", 0.5f).getR(), true, 0.3f);
+
+		// add return and next page buttons
 		backButton.render();
+		nextPageButton.render();
+
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		int mouseX = Mouse.getX();
 		int mouseY = gc.getHeight() - Mouse.getY();
-		mouseCoords = mouseX + " ," + mouseY;
-
+		// link to the menu state
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
+		// link to the keyboard control page
+		nextPageButton.update(gc, game, mouseX, mouseY, Vals.OPTIONS_STATE_PAGE2);
 	}
 
 	@Override
@@ -84,20 +195,4 @@ public class Options extends BasicGameState {
 		return Vals.OPTIONS_STATE;
 	}
 
-	public void mousePressed(int button, int x, int y) {
-		mouseX = x;
-		mouseY = y;
-		if (button == 0) {
-			// png size 128
-			if ((x >= 295 && x <= 423) && (y >= 150 && y <= 278)) {
-				if (soundStatus == turnOff) {
-					soundStatus = turnOn;
-					//music.resume();
-				} else {
-					soundStatus = turnOff;
-					//music.stop();
-				}
-			}
-		}
-	}
 }

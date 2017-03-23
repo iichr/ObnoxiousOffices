@@ -9,37 +9,45 @@ import java.net.UnknownHostException;
 import game.core.event.ConnectionAttemptEvent;
 import game.core.event.ConnectionFailedEvent;
 import game.core.event.Events;
-import game.core.event.PlayerCreatedEvent;
-import game.core.event.PlayerInputEvent;
+import game.core.event.GameFinishedEvent;
+import game.core.event.GameFullEvent;
+import game.core.event.chat.ChatMessageCreatedEvent;
+import game.core.event.player.PlayerCreatedEvent;
+import game.core.event.player.PlayerInputEvent;
 import game.core.player.Player;
 
 public class Client {
 
 	private Socket server;
-	ObjectOutputStream od;
+	private ObjectOutputStream od;
+	public boolean connected = false;
+	
 
+	/**
+	 * Listens for events
+	 */
 	public Client() {
 		Events.on(ConnectionAttemptEvent.class, this::connectToServer);
 		Events.on(PlayerCreatedEvent.class, this::setLocalPlayer);
 		Events.on(PlayerInputEvent.class, this::sendDataToServer);
+		Events.on(ChatMessageCreatedEvent.class, this::sendDataToServer);
+		Events.on(GameFullEvent.class, this::gameFull);
+		Events.on(GameFinishedEvent.class, this::endGame);
 	}
 
 	/**
 	 * Sends Data to the server for updating the players
 	 * 
-	 * @param data
+	 * @param data-
 	 *            The data to end
 	 */
 	public void sendDataToServer(Object data) {
 		try {
-			System.out.println("sending to server: " + data);
 			od.writeObject(data);
 			od.flush();
-			System.out.println("Data Sent!");
 
 		} catch (IOException e) {
-			System.out.println("ERROR: Can't create Object Stream to send");
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 	}
 
@@ -47,12 +55,11 @@ public class Client {
 	 * Attempt to connect to the server when ConnectionAttemptEvent is received
 	 * If it fails then send connectionFailedEvent
 	 * 
-	 * @param event
-	 *            The ConnectionAttemptEvent
+	 * @param event-The
+	 *            ConnectionAttemptEvent
 	 */
 	public void connectToServer(ConnectionAttemptEvent event) {
 		int port = 8942;
-		boolean connected = false;
 		String hostname = event.ipAddress;
 
 		try {
@@ -83,11 +90,21 @@ public class Client {
 	/**
 	 * Sets the local player name on PlayerCreatedEvent
 	 * 
-	 * @param e
-	 *            THe playerCreatedEvent
+	 * @param e-
+	 *            The playerCreatedEvent
 	 */
 	public void setLocalPlayer(PlayerCreatedEvent e) {
-		Player.localPlayerName = e.localPlayerName;
+		if (Player.localPlayerName.equals("")) {
+			Player.localPlayerName = e.localPlayerName;
+		}
+	}
+
+	private void gameFull(GameFullEvent e) {
+		System.out.println("got game full event");
+		connected = false;
+	}
+	private void endGame(GameFinishedEvent e){
+		connected = false;
 	}
 
 }

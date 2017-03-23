@@ -1,5 +1,8 @@
 package game.core.chat;
 
+import game.core.event.Event;
+import game.core.event.chat.ChatMessageCreatedEvent;
+import game.core.event.chat.ChatMessageReceivedEvent;
 import game.core.player.Player;
 
 /**
@@ -8,12 +11,20 @@ import game.core.player.Player;
 public class ChatMessage {
 
     public final String message;
-    public final Player from, to;
+    public final String from, to;
 
-    public ChatMessage(String message, Player from, Player to) {
+    public ChatMessage(String message, String from, String to) {
         this.message = message;
         this.from = from;
         this.to = to;
+    }
+
+    public ChatMessage(String message, String from) {
+        this(message, from, null);
+    }
+
+    public boolean isPrivateMessage() {
+        return to != null;
     }
 
     @Override
@@ -36,4 +47,9 @@ public class ChatMessage {
         result = 31 * result + to.hashCode();
         return result;
     }
+
+    public ChatMessageCreatedEvent toCreatedEvent() {
+        return to != null ? new ChatMessageCreatedEvent(Player.localPlayerName, to, message) : new ChatMessageCreatedEvent(Player.localPlayerName, message);
+    }
+
 }

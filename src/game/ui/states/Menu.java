@@ -1,94 +1,107 @@
 package game.ui.states;
 
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
-import org.newdawn.slick.MusicListener;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import game.ui.buttons.MenuButton;
+import game.ui.components.MusicBox;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
-public class Menu extends BasicGameState implements MusicListener {
+/**
+ * The state containing the Main game menu to be rendered.
+ */
+public class Menu extends BasicGameState {
 
-	private MenuButton playButton, optionsButton, rulesButton, exitButton;
-	private String mouseCoords = "No input yet!";
+	// the menu buttons
+	private MenuButton playButton;
+	private MenuButton optionsButton;
+	private MenuButton rulesButton;
+	private MenuButton exitButton;
+
+	// The music and sound
 	private Music music;
-	private Image bg;
+	private MusicBox musicBox;
 
-	public Menu(int state) {
+	// The background image the menu is set against
+	private Image background;
+	private Image logo;
 
-	}
+	// An array of buttons that follows the order of menu
+	private MenuButton buttons[];
+	private int values[] = new int[] { Vals.CHARACTER_SELECT_STATE, Vals.OPTIONS_STATE, Vals.RULES_STATE, Vals.EXIT };
+
+	private int CURRENT = 0;
 
 	@Override
 	public int getID() {
 		return Vals.MENU_STATE;
 	}
+	
+	public void setDependencies(Music music, MusicBox musicBox) {
+		this.music = music;
+		this.musicBox = musicBox;
+	}
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		gc.setShowFPS(false);
-		bg = new Image(ImageLocations.BG, false, Image.FILTER_NEAREST);
-		Image play = new Image(ImageLocations.PLAY);
-		Image playR = new Image(ImageLocations.PLAY_ROLLOVER);
 
-		playButton = new MenuButton(Vals.SCREEN_WIDTH/4 - (play.getWidth()/2), Vals.BUTTON_ALIGN_CENTRE_H - 50,
+		// initialise all menu buttons' positions and sizes
+		background = new Image(ImageLocations.BACKGROUND, false, Image.FILTER_NEAREST);
+		logo = new Image(ImageLocations.LOGO, false, Image.FILTER_NEAREST);
+		Image play = new Image(ImageLocations.PLAY).getScaledCopy(0.8f);
+		Image playR = new Image(ImageLocations.PLAY_ROLLOVER).getScaledCopy(0.8f);
+		float padding = Vals.SCREEN_HEIGHT / 15;
+
+		playButton = new MenuButton(Vals.SCREEN_WIDTH / 2 - (play.getWidth() / 2), Vals.SCREEN_HEIGHT / 2 - padding,
 				play.getWidth(), play.getHeight(), play, playR);
 
-		Image options = new Image(ImageLocations.OPTIONS);
-		Image optionsR = new Image(ImageLocations.OPTIONS_ROLLOVER);
-		optionsButton = new MenuButton(3*Vals.SCREEN_WIDTH/4 - (options.getWidth()/2), Vals.BUTTON_ALIGN_CENTRE_H - 50, options.getWidth(),
-				options.getHeight(), options, optionsR);
+		Image options = new Image(ImageLocations.OPTIONS).getScaledCopy(0.8f);
+		Image optionsR = new Image(ImageLocations.OPTIONS_ROLLOVER).getScaledCopy(0.8f);
+		optionsButton = new MenuButton(Vals.SCREEN_WIDTH / 2 - (options.getWidth() / 2),
+				Vals.SCREEN_HEIGHT / 2 + padding, options.getWidth(), options.getHeight(), options, optionsR);
 
-		Image rules = new Image(ImageLocations.RULES);
-		Image rulesR = new Image(ImageLocations.RULES_ROLLOVER);
+		Image rules = new Image(ImageLocations.RULES).getScaledCopy(0.8f);
+		Image rulesR = new Image(ImageLocations.RULES_ROLLOVER).getScaledCopy(0.8f);
 
-		rulesButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W/2 - 240, Vals.BUTTON_ALIGN_CENTRE_H + 150, rules.getWidth(),
-				rules.getHeight(), rules, rulesR);
+		rulesButton = new MenuButton(Vals.SCREEN_WIDTH / 2 - rules.getWidth() / 2, Vals.SCREEN_HEIGHT / 2 + 3 * padding,
+				rules.getWidth(), rules.getHeight(), rules, rulesR);
 
-		Image exit = new Image(ImageLocations.EXIT);
-		Image exitR = new Image(ImageLocations.EXIT_ROLLOVER);
-		exitButton = new MenuButton(3*Vals.BUTTON_ALIGN_CENTRE_W/2 - 140, Vals.BUTTON_ALIGN_CENTRE_H + 150, exit.getWidth(),
-				exit.getHeight(), exit, exitR);
+		Image exit = new Image(ImageLocations.EXIT).getScaledCopy(0.8f);
+		Image exitR = new Image(ImageLocations.EXIT_ROLLOVER).getScaledCopy(0.8f);
+		exitButton = new MenuButton(Vals.SCREEN_WIDTH / 2 - exit.getWidth() / 2, Vals.SCREEN_HEIGHT / 2 + 5 * padding,
+				exit.getWidth(), exit.getHeight(), exit, exitR);
 
+		// add all buttons to an array
+		buttons = new MenuButton[] { playButton, optionsButton, rulesButton, exitButton };
 
-		// music = new Music (MusicLocations.MENU_MUSIC);
-		// music.addListener(this);
-		// music.setVolume(0.5f);
-
-	}
-
-	public void enter(GameContainer container, StateBasedGame sbg) throws SlickException {
-		// Start the music loop when you first enter the state, will not end
-		// until you use music.stop() or .pause() somewhere, even if you change
-		// states.
-		// music.loop();
 	}
 
 	@Override
-	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-
+	public void enter(GameContainer container, StateBasedGame sbg) throws SlickException {
+		// manage music when the game is entered.
+		if (music.playing()) {
+			music.resume();
+		} else {
+			music.loop();
+		}
 	}
 
-	/*
-	 * The main board of the menu screen
-	 */
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		// debugging
-		g.drawString(mouseCoords, 10, 50);
+		// draw the background
+		background.draw(0, 0, Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT, Color.darkGray);
+		logo.draw(Vals.SCREEN_WIDTH / 4, Vals.SCREEN_HEIGHT / 8, Vals.SCREEN_WIDTH / 2, Vals.SCREEN_HEIGHT / 4);
 
-		//put the background on
-
-        bg.draw(0,0,Vals.SCREEN_WIDTH,Vals.SCREEN_HEIGHT);
-        // draw buttons
-        
+		// draw buttons
 		playButton.render();
 		optionsButton.render();
 		rulesButton.render();
@@ -97,33 +110,40 @@ public class Menu extends BasicGameState implements MusicListener {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
-		Input input = gc.getInput();
 		float mouseX = Mouse.getX();
 		float mouseY = gc.getHeight() - Mouse.getY();
-		mouseCoords = mouseX + " ," + mouseY;
 
 		// set button properties
 		playButton.update(gc, game, mouseX, mouseY, Vals.CHARACTER_SELECT_STATE);
-		playButton.update(gc,game);
 		optionsButton.update(gc, game, mouseX, mouseY, Vals.OPTIONS_STATE);
-		optionsButton.update(gc,game);
 		rulesButton.update(gc, game, mouseX, mouseY, Vals.RULES_STATE);
-		rulesButton.update(gc,game);
 		exitButton.update(gc, game, mouseX, mouseY, Vals.EXIT);
-		exitButton.update(gc,game);
 
-		// Add a boolean function to button.update
+		for (int i = 0; i < buttons.length; i++) {
+			buttons[i].update(gc, game, i == CURRENT, values[CURRENT]);
+		}
 	}
 
 	@Override
-	public void musicEnded(Music arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void musicSwapped(Music arg0, Music arg1) {
-		// TODO Auto-generated method stub
-
+	public void keyPressed(int key, char c) {
+		// handle movement through the menu with the UP and DOWN keys
+		switch (key) {
+		case Input.KEY_DOWN:
+			musicBox.playPressed();
+			if (CURRENT == (buttons.length - 1)) {
+				CURRENT = 0;
+			} else {
+				CURRENT += 1;
+			}
+			break;
+		case Input.KEY_UP:
+			musicBox.playPressed();
+			if (CURRENT == 0) {
+				CURRENT = (buttons.length - 1);
+			} else {
+				CURRENT -= 1;
+			}
+			break;
+		}
 	}
 }

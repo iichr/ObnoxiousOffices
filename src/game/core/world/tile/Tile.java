@@ -1,8 +1,10 @@
 package game.core.world.tile;
 
+import game.core.input.InteractionType;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.Location;
+import game.core.world.tile.type.TileType;
 
 import java.io.Serializable;
 
@@ -16,14 +18,14 @@ public class Tile implements Serializable {
     public final Direction facing;
     public final int multitileID;
 
-    Tile(Location location, TileType type, Direction facing, int multitileID) {
+    public Tile(Location location, TileType type, Direction facing, int multitileID) {
         this.location = location;
         this.type = type;
         this.facing = facing;
         this.multitileID = multitileID;
     }
 
-    Tile(Location location, TileType type, Direction facing) {
+    public Tile(Location location, TileType type, Direction facing) {
         this(location, type, facing, -1);
     }
 
@@ -31,8 +33,8 @@ public class Tile implements Serializable {
         type.onWalkOver(player);
     }
 
-    public void onInteraction(Player player) {
-        type.onInteraction(player);
+    public void onInteraction(Player player, InteractionType type) {
+        this.type.onInteraction(player, this, type);
     }
 
     @Override

@@ -1,30 +1,33 @@
 package game.ui.buttons;
 
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Rectangle;
 
+/**
+ * Superclass for menu buttons
+ */
 public class Button extends Rectangle {
 
 	private static final long serialVersionUID = -3539104161526355883L;
 	protected Animation select, unselect, button;
 
 	/**
-	 * Create a new image based menu button.
+	 * Constructor: sets up variables needed for the button and creates the
+	 * animation for the button
 	 * 
 	 * @param x
-	 *            The x coord of the top left of the button
+	 *            The x position of the top left of the button
 	 * @param y
-	 *            The y coord of the top left of the button
+	 *            The y position of the top left of the button
 	 * @param width
-	 *            The button's width
+	 *            The width of the button
 	 * @param height
-	 *            The button's height
+	 *            The height of the button
 	 * @param normal
-	 *            The default button image, on no interaction
-	 * @param rollover
-	 *            The button image on mouse hover.
+	 *            The default image for the button
+	 * @param alternate
+	 *            The alternate image for the button
 	 */
 	public Button(float x, float y, float width, float height, Image normal, Image alternate) {
 		super(x, y, width, height);

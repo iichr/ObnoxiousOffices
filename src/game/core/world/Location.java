@@ -1,5 +1,6 @@
 package game.core.world;
 
+import game.core.util.Coordinates;
 import game.core.world.tile.Tile;
 
 import java.io.Serializable;
@@ -9,18 +10,20 @@ import java.io.Serializable;
  */
 public class Location implements Serializable {
 
-    public final int x, y, z;
+    public final Coordinates coords;
     public final World world;
 
     public Location(int x, int y, int z, World world) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.world = world;
+        this(new Coordinates(x, y, z), world);
     }
 
     public Location(int x, int y, World world) {
         this(x, y, 0, world);
+    }
+
+    public Location(Coordinates coordinates, World world) {
+        this.coords = coordinates;
+        this.world = world;
     }
 
     public Location forward(Direction facing) {
@@ -29,55 +32,50 @@ public class Location implements Serializable {
 
     public Location backward(Direction facing) {
         facing = facing.opposite();
-        return new Location(x + facing.xAdd, y + facing.yAdd, z, world);
+        return add(facing.xAdd, facing.yAdd, 0);
     }
 
     public void setTile(Tile tile) {
-        world.setTile(x, y, z, tile);
+        world.setTile(coords, tile);
     }
 
     public Tile getTile() {
-        return world.getTile(x, y, z);
+        return world.getTile(coords);
     }
 
     public boolean checkBounds() {
-        return world.checkBounds(x, y, z);
+        return world.checkBounds(coords);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Location location = (Location) o;
 
-        if (x != location.x) return false;
-        if (y != location.y) return false;
-        if (z != location.z) return false;
-        return world.equals(location.world);
-
+        if (coords != null ? !coords.equals(location.coords) : location.coords != null) return false;
+        return world != null ? world.equals(location.world) : location.world == null;
     }
 
     @Override
     public int hashCode() {
-        int result = x;
-        result = 31 * result + y;
-        result = 31 * result + z;
-        result = 31 * result + world.hashCode();
+        int result = coords != null ? coords.hashCode() : 0;
+        result = 31 * result + (world != null ? world.hashCode() : 0);
         return result;
     }
 
     public Location diff(Location location) {
-        Location location2 = location.neg();
-        return add(location2.x, location2.y, location2.z);
+        Coordinates coords2 = coords.diff(location.coords);
+        return new Location(coords2, world);
     }
 
     public Location add(int dX, int dY, int dZ) {
-        return new Location(x + dX, y + dY, z + dZ, world);
+        return new Location(coords.add(dX, dY, dZ), world);
     }
 
     public Location neg() {
-        return new Location(-x, -y, -z, world);
+        return new Location(coords.neg(), world);
     }
 
 }

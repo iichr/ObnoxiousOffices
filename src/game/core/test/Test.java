@@ -1,8 +1,8 @@
 package game.core.test;
 
-import game.core.event.Event;
 import game.core.event.Events;
-import game.core.event.PlayerInputEvent;
+import game.core.event.player.PlayerInputEvent;
+import game.core.input.InputTypeMovement;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.World;
@@ -20,19 +20,21 @@ public class Test {
     }
 
     private void playerInput(PlayerInputEvent t) {
-        switch (t.inputType) {
-            case MOVE_DOWN:
-                getPlayer(localPlayer).setFacing(Direction.SOUTH);
-                break;
-            case MOVE_UP:
-            	getPlayer(localPlayer).setFacing(Direction.NORTH);
-                break;
-            case MOVE_LEFT:
-            	getPlayer(localPlayer).setFacing(Direction.WEST);
-                break;
-            case MOVE_RIGHT:
-            	getPlayer(localPlayer).setFacing(Direction.EAST);
-                break;
+        if(t.inputType instanceof InputTypeMovement) {
+            switch (((InputTypeMovement) t.inputType).type) {
+                case MOVE_DOWN:
+                    getPlayer(localPlayer).setFacing(Direction.SOUTH);
+                    break;
+                case MOVE_UP:
+                    getPlayer(localPlayer).setFacing(Direction.NORTH);
+                    break;
+                case MOVE_LEFT:
+                    getPlayer(localPlayer).setFacing(Direction.WEST);
+                    break;
+                case MOVE_RIGHT:
+                    getPlayer(localPlayer).setFacing(Direction.EAST);
+                    break;
+            }
         }
         getPlayer(localPlayer).moveForwards();
     }

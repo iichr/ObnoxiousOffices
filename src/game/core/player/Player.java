@@ -2,29 +2,34 @@ package game.core.player;
 
 import game.core.Updateable;
 import game.core.event.Events;
-import game.core.event.PlayerMovedEvent;
-import game.core.event.PlayerProgressUpdateEvent;
-import game.core.event.PlayerRotatedEvent;
+import game.core.event.GameFinishedEvent;
+import game.core.event.player.PlayerMovedEvent;
+import game.core.event.player.PlayerProgressUpdateEvent;
+import game.core.event.player.PlayerRotatedEvent;
+import game.core.player.action.PlayerAction;
+import game.core.player.state.PlayerState;
 import game.core.world.Direction;
 import game.core.world.Location;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by samtebbs on 15/01/2017.
  */
+
 public class Player implements Updateable, Serializable {
 
     public final String name;
-    public final PlayerStatus status = new PlayerStatus(this);
+    public PlayerStatus status = new PlayerStatus(this);
     private double progress = 0;
     private Direction facing;
     private Location location;
-
     private int hair = BLONDE;
-
     public boolean isAI = false;
-
+    
     public static String localPlayerName = "";
     public static int BLONDE = 0;
     public static int BROWN = 1;
@@ -58,8 +63,10 @@ public class Player implements Updateable, Serializable {
      * @param facing
      */
     public void setFacing(Direction facing) {
-        this.facing = facing;
-        Events.trigger(new PlayerRotatedEvent(facing, this.name), true);
+        if(this.facing != facing) {
+            this.facing = facing;
+            Events.trigger(new PlayerRotatedEvent(facing, this.name), true);
+        }
     }
 
     /**
@@ -67,9 +74,12 @@ public class Player implements Updateable, Serializable {
      * @param location
      */
     public void setLocation(Location location) {
-        Location diff = location.diff(this.location);
-        this.location = location;
-        Events.trigger(new PlayerMovedEvent(diff.x, diff.y, diff.z, this.name), true);
+        if(!this.location.equals(location)) {
+            status.getActions().stream().filter(PlayerAction::cancelsOnMove).forEach(status::cancelAction);
+            status.getStates().stream().filter(PlayerState::cancelsOnMove).forEach(status::removeState);
+            this.location = location;
+            Events.trigger(new PlayerMovedEvent(location.coords, this.name), true);
+        }
     }
 
     public Location getLocation() {
@@ -105,7 +115,7 @@ public class Player implements Updateable, Serializable {
     }
 
     public void update() {
-        status.update(this);
+        if(getLocation().world.getMiniGame(name) == null) status.update(this);
     }
 
     @Override
@@ -113,18 +123,22 @@ public class Player implements Updateable, Serializable {
         return false;
     }
 
+    @Override
+    public void end() {
+
+    }
+
     /**
      * Set the player's work progress
      * @param progress
      */
     public void setProgress(double progress) {
-        double diff = progress - this.progress;
-        this.progress += progress;
-        if(this.progress >= 100) {
-            onProgressDone();
-            this.progress = 0;
+        if(progress != this.progress) {
+            progress = Math.max(0, Math.min(100, progress));
+            this.progress = progress;
+            Events.trigger(new PlayerProgressUpdateEvent(this.progress, this.name), true);
+            if (this.progress == 100) onProgressDone();
         }
-        Events.trigger(new PlayerProgressUpdateEvent(diff, this.name), true);
     }
 
     public double getProgress() {
@@ -132,18 +146,18 @@ public class Player implements Updateable, Serializable {
     }
 
     private void onProgressDone() {
-        // TODO
+        Events.trigger(new GameFinishedEvent(), true);
     }
 
-    public void removeProgress() {
-
+    public void removeProgress(int val) {
+        setProgress(getProgress() - val);
     }
 
     /**
      * Add the standard amount of progress (using multiplier)
      */
     public void addProgress() {
-        double toAdd = 1.0 * getProgressMultiplier();
+        double toAdd = 20 * getProgressMultiplier();
         setProgress(progress + toAdd);
     }
 
@@ -151,9 +165,12 @@ public class Player implements Updateable, Serializable {
      * Gets the player's progress multiplier, which depends on attributes and effects
      * @return
      */
-    // TODO: Consider fatigue
-    private double getProgressMultiplier() {
-        return status.getAttribute(PlayerStatus.PlayerAttribute.PRODUCTIVITY);
+    public double getProgressMultiplier() {
+        return PlayerStatus.PlayerAttribute.FATIGUE.maxVal - status.getAttribute(PlayerStatus.PlayerAttribute.FATIGUE);
+    }
+
+    public boolean workSucceeded(Random rand) {
+        return rand.nextBoolean();
     }
 
     @Override
@@ -177,5 +194,14 @@ public class Player implements Updateable, Serializable {
 
     public void setHair(int hair) {
         this.hair = hair;
+    }
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", facing=" + facing +
+                ", location=" + location +
+                ", isAI=" + isAI +
+                '}';
     }
 }

@@ -2,24 +2,26 @@ package game.ui;
 
 import java.io.File;
 
-import game.core.world.World;
 import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
 import game.core.world.World;
+import game.ui.components.MusicBox;
+import game.ui.components.WordGenerator;
+import game.ui.interfaces.MusicLocations;
 import game.ui.interfaces.Vals;
-import game.ui.states.CharacterSelect;
+import game.ui.states.Connect;
 import game.ui.states.Intro;
+import game.ui.states.KeyOptions;
 import game.ui.states.Menu;
 import game.ui.states.Options;
-import game.ui.states.Pause;
 import game.ui.states.Play;
-import game.ui.states.PlayTest;
 import game.ui.states.Rules;
 
 public class Game extends StateBasedGame {
@@ -28,44 +30,70 @@ public class Game extends StateBasedGame {
 	private Menu menuState;
 	private Options optionsState;
 	private Rules rulesState;
-	private CharacterSelect chSelectState;
-	private Pause pauseState;
-	private PlayTest playtestState;
+	private Connect connectState;
+	private KeyOptions keyOptionsState;
 
+	/**
+	 * Constructor: sets up states and event listeners
+	 * 
+	 * @param gamename
+	 *            The name of the game
+	 */
 	public Game(String gamename) {
 		super(gamename);
-		
-		introState= new Intro(Vals.INTRO_STATE);
+
+		introState = new Intro();
 		this.addState(introState);
-		menuState = new Menu(Vals.MENU_STATE);
+		menuState = new Menu();
 		this.addState(menuState);
-		playState = new Play(Vals.PLAY_STATE);
+		playState = new Play();
 		this.addState(playState);
-		playtestState = new PlayTest(Vals.PLAY_TEST_STATE);
-		this.addState(playtestState);
-		optionsState = new Options(Vals.OPTIONS_STATE);
+		optionsState = new Options();
 		this.addState(optionsState);
-		rulesState = new Rules(Vals.RULES_STATE);
+		rulesState = new Rules();
 		this.addState(rulesState);
-		chSelectState = new CharacterSelect(Vals.CHARACTER_SELECT_STATE, playtestState);
-		this.addState(chSelectState);
-		pauseState = new Pause(Vals.PAUSE_STATE);
-		this.addState(pauseState);
-		
-		
+		connectState = new Connect();
+		this.addState(connectState);
+		keyOptionsState = new KeyOptions();
+		this.addState(keyOptionsState);
+
 		Events.on(GameStartedEvent.class, this::onGameStart);
 	}
 
+	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
-		//initialises states automatically
+		// initialises states automatically
+
+		WordGenerator wg = new WordGenerator();
+		// initialise music and sound
+		gc.setMusicVolume(0.5f);
+		MusicBox musicBox = new MusicBox(gc);
+		Music music = new Music(MusicLocations.MENU_MUSIC);
+		
+
+		menuState.setDependencies(music, musicBox);
+		playState.setDependencies(wg);
+		optionsState.setDependencies(wg, musicBox);
+		connectState.setDepenedencies(wg, music);
+		keyOptionsState.setDependencies(wg);
+
 	}
-	
+
+	/**
+	 * On game started event, set up play state and enter it.
+	 * 
+	 * @param event
+	 */
 	public void onGameStart(GameStartedEvent event) {
 		World.world = event.world;
 		playState.playSetup();
 		this.enterState(Vals.PLAY_STATE);
 	}
 
+	/**
+	 * Toggle the library folder based on the system platform.
+	 * Initialises the window and UI environment
+	 */
 	public static void init() {
 
 		File JGLLib = null;
@@ -88,20 +116,30 @@ public class Game extends StateBasedGame {
 		}
 
 		System.setProperty("org.lwjgl.librarypath", JGLLib.getAbsolutePath());
-
+		//System.setProperty("org.lwjgl.opengl.Window.undecorated","true");
+		
 		AppGameContainer agc;
 		try {
 			agc = new AppGameContainer(new Game(Vals.GAME_NAME));
 			agc.setDisplayMode(Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT, false);
-
+			agc.setIcon("res/icon.png");
+			agc.setUpdateOnlyWhenVisible(true);
+			agc.setMinimumLogicUpdateInterval(10);
+			agc.setShowFPS(false);
 			agc.setFullscreen(false);
 			agc.start();
+
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
 
 	}
 
+	/**
+	 * Main method used for testing UI elements on their own
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		init();
 	}
