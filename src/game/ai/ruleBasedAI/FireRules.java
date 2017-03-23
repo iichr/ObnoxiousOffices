@@ -123,5 +123,6 @@ public class FireRules implements Serializable {
 			// the ai is not moving so we need to reset the update method
 			isMoving = false;
 		}
+		Thread.currentThread().interrupt();
 	}
 }
