@@ -53,21 +53,24 @@ public class Rules extends BasicGameState {
 
 		// character encoding: \u0027 for apostrophe
 		gameTitle = "DevWars";
-		rules = " <insert catchy intro here> \n" + "The main game actions are:" + "\n\n"
-				+ "Work - increases project completion rate. That\u0027s what they hired you for after all, better deliver!"
+		rules = "Your goal is to complete your programming project before the other players!\n"
+				+ "Move around with the WASD keys, interact with objects by using the up and down arrow keys.\n"
+				+ "Hold the TAB key whilst in game to see your and others\u0027 progress and fatigue levels.\n"
+				+ "You have the following interactions available to meet your goal:"
 				+ "\n\n"
-				+ "Hack - you need to interact with the other players\u0027 computers to hinder their progress. Failure to engage in\n"
-				+ "the office politics will make your own progress plateau, there is only so much one could achieve alone…\n"
-				+ "That\u0027s not all, hacking is not that easy, you will be faced with challenges along the way. It also goes\n "
-				+ "both waysso be wary of notifications that someone\u0027s on your computer doing monkey business."
+				+ "Work - you can work only on your own computer, which helps you up your progress.\n"
+				+ "You will be presented with a Hangman minigame where you have to guess the word \n" 
+				+ "displayed to get progress."
 				+ "\n\n"
-				+ "Coffee break - feeling tired of the incessant work work work? Why not head for a coffee then, your office\n"
-				+ "provides coffee machines, so you can go back to working reinvigorated. What could possibly go wrong?"
+				+ "Hack - you can hack another player from your own computer as well, by selecting Hack and that\n" 
+				+ "player\u0027s name. You\u0027ll be presented with a game of Pong, where you control one of the paddles\n" 
+				+ "and your objective is not to miss a ball."
 				+ "\n\n"
-				+ "Naps - under new regulations from Brussels (?!!) the modern 21st century office ought to provide its employees\n"
-				+ "with a place for relaxation. Use that to reduce your fatigue, without negative consequences. I promise."
-				+ "\n\n" + "Share ideas (player-to-player interaction) - provides a boost to productivity to you\n"
-				+ "and whom you are chatting away with.";
+				+ "Coffee Break - reduces your fatigue and increases your productivity. Be careful, it may have negative consequences."
+				+ "\n\n"
+				+ "Nap -  a risk-free way of reducing your fatigue."
+				+ "\n\n"
+				+ "To view all controls available go to the Options menu and press More> at the bottom.";
 	}
 
 	@Override
@@ -123,7 +126,7 @@ public class Rules extends BasicGameState {
 						Vals.SCREEN_WIDTH - Vals.RULES_SECT_RIGHT_W, y += Vals.FONT_RULES.getLineHeight() * 2);
 			} else {
 				g.drawString(line, Vals.SCREEN_WIDTH - Vals.RULES_SECT_RIGHT_W,
-						y += Vals.FONT_RULES.getLineHeight() * 1.7);
+						y += Vals.FONT_RULES.getLineHeight() * 1.5);
 			}
 	}
 
