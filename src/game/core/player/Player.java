@@ -63,8 +63,10 @@ public class Player implements Updateable, Serializable {
      * @param facing
      */
     public void setFacing(Direction facing) {
-        this.facing = facing;
-        Events.trigger(new PlayerRotatedEvent(facing, this.name), true);
+        if(this.facing != facing) {
+            this.facing = facing;
+            Events.trigger(new PlayerRotatedEvent(facing, this.name), true);
+        }
     }
 
     /**
@@ -134,8 +136,8 @@ public class Player implements Updateable, Serializable {
         if(progress != this.progress) {
             progress = Math.max(0, Math.min(100, progress));
             this.progress = progress;
-            if (this.progress == 100) onProgressDone();
             Events.trigger(new PlayerProgressUpdateEvent(this.progress, this.name), true);
+            if (this.progress == 100) onProgressDone();
         }
     }
 
@@ -147,8 +149,8 @@ public class Player implements Updateable, Serializable {
         Events.trigger(new GameFinishedEvent(), true);
     }
 
-    public void removeProgress() {
-        setProgress(getProgress() - 50);
+    public void removeProgress(int val) {
+        setProgress(getProgress() - val);
     }
 
     /**

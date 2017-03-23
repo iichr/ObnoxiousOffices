@@ -22,7 +22,7 @@ public class PlayerActionHack extends PlayerActionMinigame {
     @Override
     public void end(MiniGameEndedEvent event) {
         super.end(event);
-        if(event != null && event.victor.equals(player.name)) target.removeProgress();
+        if(event != null && event.victor.equals(player.name)) target.removeProgress((int) (25 * player.getProgressMultiplier()));
     }
 
     @Override
