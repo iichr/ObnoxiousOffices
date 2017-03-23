@@ -105,7 +105,7 @@ public class PlayerStatus implements Serializable {
 
     public Set<PlayerAction> getActions() {
         synchronized (actions) {
-            return new HashSet<>(actions);
+            return actions;
         }
     }
 
@@ -180,19 +180,23 @@ public class PlayerStatus implements Serializable {
     }
 
     public void removeAction(Class<? extends PlayerAction> actionClass) {
-        Set<PlayerAction> matching = actions.stream().filter(a -> a.getClass() == actionClass).collect(Collectors.toSet());
-        matching.forEach(action -> {
-            Events.trigger(new PlayerActionEndedEvent(action, player.name), true);
-            actions.remove(action);
-        });
+        synchronized (actions) {
+            Set<PlayerAction> matching = actions.stream().filter(a -> a.getClass() == actionClass).collect(Collectors.toSet());
+            matching.forEach(action -> {
+                Events.trigger(new PlayerActionEndedEvent(action, player.name), true);
+                actions.remove(action);
+            });
+        }
     }
 
     public void removeEffect(Class<? extends PlayerEffect> effectClass) {
-        Set<PlayerEffect> matching = effects.stream().filter(e -> e.getClass() == effectClass).collect(Collectors.toSet());
-        matching.forEach(effect -> {
-            Events.trigger(new PlayerEffectEndedEvent(effect, player.name), true);
-            effects.remove(effect);
-        });
+        synchronized (effects) {
+            Set<PlayerEffect> matching = effects.stream().filter(e -> e.getClass() == effectClass).collect(Collectors.toSet());
+            matching.forEach(effect -> {
+                Events.trigger(new PlayerEffectEndedEvent(effect, player.name), true);
+                effects.remove(effect);
+            });
+        }
     }
 
     public Set<PlayerState> getStates() {
