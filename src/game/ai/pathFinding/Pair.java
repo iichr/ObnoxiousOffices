@@ -4,13 +4,7 @@ package game.ai.pathFinding;
 import java.io.Serializable;
 
 /**
- * 
- * @author Atanas K. Harbaliev. Created on 14.02.2017
- *
- * @param <L>
- *            left int of pair
- * @param <R>
- *            right int of pair
+ * Own implementation of a pair, that consists of two elements separated by a coma.
  */
 public class Pair<L, R> implements Serializable{
 

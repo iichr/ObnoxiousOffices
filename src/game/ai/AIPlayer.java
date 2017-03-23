@@ -1,5 +1,7 @@
 package game.ai;
 
+import java.util.Random;
+
 import game.ai.logic.Logic;
 import game.ai.logic.LogicEasy;
 import game.ai.logic.LogicHard;
@@ -17,7 +19,7 @@ import game.core.world.Location;
 import game.core.world.World;
 
 /**
- * @author Atanas K. Harbaliev Created on 18/01/2017
+ * Create the AI object.
  */
 
 public class AIPlayer extends Player {
@@ -46,7 +48,6 @@ public class AIPlayer extends Player {
 	// serialVersion to shut eclipse
 	private static final long serialVersionUID = 1L;
 
-	// constructor from Player class
 	/**
 	 * Constructor
 	 * 
@@ -76,13 +77,13 @@ public class AIPlayer extends Player {
 		// initialise everything
 		initialise();
 	}
-
+	// constructor that is going to be called when a player disconnects and is replaced by an AI player
 	public AIPlayer(Player player) {
 		this(player.name, player.getFacing(), player.getLocation(), "e");
 		this.status = player.status;
 		this.setHair(player.getHair());
 		this.setProgress(player.getProgress());
-		this.timesDrunkCoffee = player.timesDrunkCoffee;
+		this.status.actionRepetitions = player.status.actionRepetitions;
 	}
 
 	public static void init() {
@@ -105,6 +106,7 @@ public class AIPlayer extends Player {
 		fr = new FireRules(this, rules, wm, uwm);
 	}
 
+	// what happens when a player quits the game or is disconnected
 	private static void onPlayerQuit(PlayerQuitEvent event) {
 		AIPlayer player = new AIPlayer(event.player);
 		World.world.removePlayer(event.player);
@@ -122,6 +124,15 @@ public class AIPlayer extends Player {
 			return logicEasy;
 		return logicHard;
 
+	}
+	
+	@Override
+	public boolean workSucceeded(Random o) {
+		//give the easy mode AI 30% chance to successfully hack a player
+		//give the hard mode AI 50% chance to successfully hack a player
+		if (mode.equals("e")) 
+			return o.nextInt(101) <= 30 ? true : false;
+		return o.nextInt(101) > 50 ? true : false;
 	}
 
 	// create the working memory, the update working memory object,

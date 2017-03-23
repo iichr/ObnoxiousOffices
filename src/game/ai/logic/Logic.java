@@ -1,3 +1,4 @@
+
 package game.ai.logic;
 
 import java.io.Serializable;
@@ -9,15 +10,13 @@ import game.core.player.Player;
 import game.core.world.World;
 
 /**
- *
- * @author Atanas K. Harabliev. Created on 6/02/2017
- *
+ * Interface
  */
 public interface Logic extends Serializable {
 
 	/**
 	 * Sends the ai to the coffee machine
-	 * 
+	 *
 	 * @param ai
 	 *            the ai that goes to the coffee machine
 	 */
@@ -137,10 +136,10 @@ public interface Logic extends Serializable {
 	/**
 	 * Make the AI move one tile at a time, which is one element from the path
 	 * ArrayList
-	 * 
+	 *
 	 * @param ai
 	 *            the ai player that is moving
-	 * 
+	 *
 	 * @param path
 	 *            ArrayList of pairs containing the x,y coordinates of the path
 	 *            to a given object
@@ -151,7 +150,7 @@ public interface Logic extends Serializable {
 
 	/**
 	 * Finds path to somewhere and back to the initial starting point.
-	 * 
+	 *
 	 * @param w
 	 *            the world of the player
 	 * @param ai
@@ -163,17 +162,17 @@ public interface Logic extends Serializable {
 	 *         destination and the second one is from the destination to the
 	 *         start point
 	 */
-	public ArrayList<ArrayList<Pair<Integer, Integer>>> findPaths(World w, AIPlayer p, String go);
-	
+	public ArrayList<ArrayList<Pair<Integer, Integer>>> findPaths(World w, AIPlayer ai, String go);
+
 	/**
 	 * When a certain player disconnects, an AI replaces him/her. When this is
 	 * done, if the player was not on his chair, find the path to it and sit.
 	 * Else, do nothing.
-	 * 
+	 *
 	 * @param w
 	 *            the world of the player
 	 * @param ai
 	 *            the ai that needs to move
 	 */
 	public void findChair(World w, AIPlayer ai);
-}
+}

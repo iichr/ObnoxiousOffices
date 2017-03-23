@@ -12,15 +12,15 @@ import game.core.player.action.PlayerActionWork;
 import game.core.player.action.PlayerActionWorkTimed;
 
 /**
- * @author Atanas K. Harbaliev. Created on 22.02.2017
+ * This object is going to update the working memory.
  */
 public class UpdateMemory implements Serializable{
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private AIPlayer ai;
 	private WorkingMemory wm;
-	
+
 	public UpdateMemory(AIPlayer ai, WorkingMemory wm) {
 		this.ai = ai;
 		this.wm = wm;
@@ -35,10 +35,10 @@ public class UpdateMemory implements Serializable{
 			// might be the wrong way of checking the the player is up to
 			if (wm.getWMplayer().status.hasAction(PlayerActionWorkTimed.class)) //checks if the player is currently working
 				wm.setAll(activityValues.Yes, activityValues.No, activityValues.No, compareProgress());
-			//checks if the player is currently drinking coffee or sleeping on the sofa TODO: change the PlayerActionSleep
-			else if (wm.getWMplayer().status.hasAction(PlayerActionDrink.class) || wm.getWMplayer().status.hasAction(PlayerActionSleep.class)) 
+				//checks if the player is currently drinking coffee or sleeping on the sofa TODO: change the PlayerActionSleep
+			else if (wm.getWMplayer().status.hasAction(PlayerActionDrink.class) || wm.getWMplayer().status.hasAction(PlayerActionSleep.class))
 				wm.setAll(activityValues.No, activityValues.No, activityValues.Yes, compareProgress());
-			//checks if the player is currently hacking someone
+				//checks if the player is currently hacking someone
 			else if (wm.getWMplayer().status.hasAction(PlayerActionHackTimed.class))
 				wm.setAll(activityValues.No, activityValues.Yes, activityValues.No, compareProgress());
 			else
@@ -48,10 +48,10 @@ public class UpdateMemory implements Serializable{
 			// might be the wrong way of checking the the player is up to
 			if (wm.getWMplayer().status.hasAction(PlayerActionWork.class)) //checks if the player is currently working
 				wm.setAll(activityValues.Yes, activityValues.No, activityValues.No, compareProgress());
-			//checks if the player is currently drinking coffee or sleeping on the sofa TODO: change the PlayerActionSleep
-			else if (wm.getWMplayer().status.hasAction(PlayerActionDrink.class) || wm.getWMplayer().status.hasAction(PlayerActionSleep.class)) 
+				//checks if the player is currently drinking coffee or sleeping on the sofa TODO: change the PlayerActionSleep
+			else if (wm.getWMplayer().status.hasAction(PlayerActionDrink.class) || wm.getWMplayer().status.hasAction(PlayerActionSleep.class))
 				wm.setAll(activityValues.No, activityValues.No, activityValues.Yes, compareProgress());
-			//checks if the player is currently hacking someone
+				//checks if the player is currently hacking someone
 			else if (wm.getWMplayer().status.hasAction(PlayerActionHack.class))
 				wm.setAll(activityValues.No, activityValues.Yes, activityValues.No, compareProgress());
 			else
