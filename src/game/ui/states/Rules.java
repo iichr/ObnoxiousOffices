@@ -25,10 +25,10 @@ import game.ui.interfaces.Vals;
  */
 public class Rules extends BasicGameState {
 	private MenuButton backButton;
-	private String mouseCoords;
 	private String gameTitle;
 	private String rules;
-	SpriteSheet allSprites;
+	private SpriteSheet allSprites;
+	private Image background;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -36,6 +36,8 @@ public class Rules extends BasicGameState {
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
+
+		background = new Image(ImageLocations.BACKGROUND, false, Image.FILTER_NEAREST);
 
 		// Set up fonts
 		ArrayList<UnicodeFont> fontList = new ArrayList<UnicodeFont>();
@@ -56,28 +58,24 @@ public class Rules extends BasicGameState {
 		rules = "Your goal is to complete your programming project before the other players!\n"
 				+ "Move around with the WASD keys, interact with objects by using the up and down arrow keys.\n"
 				+ "Hold the TAB key whilst in game to see your and others\u0027 progress and fatigue levels.\n"
-				+ "You have the following interactions available to meet your goal:"
-				+ "\n\n"
+				+ "You have the following interactions available to meet your goal:" + "\n\n"
 				+ "Work - you can work only on your own computer, which helps you up your progress.\n"
-				+ "You will be presented with a Hangman minigame where you have to guess the word \n" 
-				+ "displayed to get progress."
-				+ "\n\n"
-				+ "Hack - you can hack another player from your own computer as well, by selecting Hack and that\n" 
-				+ "player\u0027s name. You\u0027ll be presented with a game of Pong, where you control one of the paddles\n" 
-				+ "and your objective is not to miss a ball."
-				+ "\n\n"
+				+ "You will be presented with a Hangman minigame where you have to guess the word \n"
+				+ "displayed to get progress." + "\n\n"
+				+ "Hack - you can hack another player from your own computer as well, by selecting Hack and that\n"
+				+ "player\u0027s name. You\u0027ll be presented with a game of Pong, where you control one of the paddles\n"
+				+ "and your objective is not to miss a ball." + "\n\n"
 				+ "Coffee Break - reduces your fatigue and increases your productivity. Be careful, it may have negative consequences."
-				+ "\n\n"
-				+ "Nap -  a risk-free way of reducing your fatigue."
-				+ "\n\n"
+				+ "\n\n" + "Nap -  a risk-free way of reducing your fatigue." + "\n\n"
 				+ "To view all controls available go to the Options menu and press More> at the bottom.";
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		g.setColor(Color.white);
-		// debugging
-		g.drawString(mouseCoords, 10, 50);
+
+		// draw the background
+		background.draw(0, 0, Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT, new Color(20, 20, 20));
 
 		// title
 		g.setFont(Vals.FONT_HEADING1);
@@ -96,7 +94,6 @@ public class Rules extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		int mouseX = Mouse.getX();
 		int mouseY = gc.getHeight() - Mouse.getY();
-		mouseCoords = mouseX + " ," + mouseY;
 
 		backButton.update(gc, game, mouseX, mouseY, Vals.MENU_STATE);
 	}
