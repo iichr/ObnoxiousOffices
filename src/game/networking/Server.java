@@ -22,7 +22,7 @@ import game.util.Time;
 
 public class Server {
 
-	private static File propertiesFile = new File("server.properties") {{
+	private static File propertiesFile = new File("data/server.properties") {{
 		if (!this.exists()) try {
 			this.createNewFile();
 		} catch (IOException e) {
@@ -41,7 +41,7 @@ public class Server {
 	private ServerSocket serverSocket = null;
 	private World world;
 	public static boolean listen;
-	public final int NUM_PLAYERS = Integer.parseInt(properties.getProperty("players", "2"));
+	public final int NUM_PLAYERS = Integer.parseInt(properties.getProperty("players", "4"));
 	public static final int timeToWait = 60000;
 
 	/**
@@ -54,7 +54,7 @@ public class Server {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ServerListener.NUM_AI_PLAYERS = Integer.parseInt(properties.getProperty("ai", "0"));
+		ServerListener.NUM_AI_PLAYERS = Integer.parseInt(properties.getProperty("ai", "1"));
 		listen = true;
 		connections = new ArrayList<ServerListener>();
 		final int port = 8942;
