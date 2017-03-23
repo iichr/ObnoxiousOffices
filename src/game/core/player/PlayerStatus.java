@@ -28,7 +28,7 @@ public class PlayerStatus implements Serializable {
     private Map<PlayerAttribute, Double> attributes = new HashMap<>();
     private Map<PlayerAttribute, Integer> attributeUpdateCounter = new HashMap<>();
     private Set<PlayerState> states = new HashSet<>();
-    private final Set<PlayerAction> actions = new HashSet<>();
+    public final Set<PlayerAction> actions = new HashSet<>();
     private final List<PlayerEffect> effects = new ArrayList<>();
     public final Player player;
     public boolean initialising = true;
