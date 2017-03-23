@@ -58,7 +58,9 @@ public class TileTypeComputer extends TileTypeAction {
 
     @Override
     protected PlayerAction getAction(Player player, Tile tile, InteractionType type) {
+        System.out.println("computer.getAction");
         if(!TileTypeComputer.getOnFire((MetaTile) tile)) {
+            System.out.println("pc not on fire");
             String owner = getOwningPlayer((MetaTile) tile);
             if (type.getClass() == InteractionType.InteractionTypeWork.class && owner.equals(player.name))
                 return (player.isAI ? new PlayerActionWorkTimed(player) : new PlayerActionWork(player));
@@ -104,6 +106,7 @@ public class TileTypeComputer extends TileTypeAction {
     }
 
     public static void extinguish(MetaTile computer) {
+        System.out.println("extinguish");
         setOnFire(computer, false);
     }
 
