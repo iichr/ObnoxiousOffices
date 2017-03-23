@@ -98,7 +98,14 @@ public class PlayerInfo {
 			}
 		}
 	}
-
+	/**
+	 * The Computer is ON FIRE!!
+	 * @param found 
+	 * 			The computer tile that is on fire
+	 * @param visible
+	 * 			show the visualize the fire when it is available 
+	 * 
+	 */
     private void showFire(Tile found, boolean [][] visible){
 		if(found.type.equals(TileType.COMPUTER)) {
 			if (TileTypeComputer.getOnFire((MetaTile) found)) {
