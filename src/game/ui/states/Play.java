@@ -255,11 +255,9 @@ public class Play extends BasicGameState {
 			if (playingPong) {
 				// use the pong controls if in pong
 				heldKey = controls.pongMoveStart(heldKey, key);
-				chatBox = controls.toggleChat(chatBox, key);
 			} else if (playingHangman) {
 				// use hangman controls in hangman
 				controls.hangman(localPlayerName, c);
-				chatBox = controls.toggleChat(chatBox, key);
 			} else {
 				coreControls(key);
 			}
@@ -282,7 +280,6 @@ public class Play extends BasicGameState {
 			controls.interaction(localPlayerName, key);
 		}
 		showOverview = controls.openOverview(showOverview, key);
-		chatBox = controls.toggleChat(chatBox, key);
 		options = controls.toggleOptions(options, key);
 	}
 

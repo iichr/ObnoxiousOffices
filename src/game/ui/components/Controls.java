@@ -30,7 +30,7 @@ public class Controls {
 
 	private final int TOGGLE_OPTIONS = Input.KEY_ESCAPE;
 	private final int TOGGLE_OVERVIEW = Input.KEY_TAB;
-	private final int TOGGLE_CHAT = Input.KEY_LCONTROL;
+	private final int TOGGLE_CHAT = Input.KEY_ENTER;
 
 	private final int PONG_UP = Input.KEY_W;
 	private final int PONG_DOWN = Input.KEY_S;
@@ -183,22 +183,6 @@ public class Controls {
 			return !options;
 		}
 		return options;
-	}
-
-	/**
-	 * Toggles typing in the chat box based on input
-	 * 
-	 * @param cb
-	 *            The current chat box
-	 * @param key
-	 *            The key being pressed
-	 * @return The modified chat box
-	 */
-	public ChatBox toggleChat(ChatBox cb, int key) {
-		if (key == TOGGLE_CHAT) {
-			cb.toggleFocus();
-		}
-		return cb;
 	}
 
 	/**
