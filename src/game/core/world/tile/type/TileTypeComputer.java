@@ -105,4 +105,8 @@ public class TileTypeComputer extends TileTypeAction {
         setOnFire(computer, false);
     }
 
+    public static boolean getOnFire(MetaTile computer) {
+        return computer.metadata.getBoolVar(ComputerMetadata.ON_FIRE);
+    }
+
 }
