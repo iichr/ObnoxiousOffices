@@ -53,7 +53,7 @@ public class PlayerInfo {
 		sleepDialogue = new Image(ImageLocations.SLEEP_DIALOGUE, false, Image.FILTER_NEAREST);
 		playerIdentifier = new Image(ImageLocations.PLAYER_IDENTIFIER, false, Image.FILTER_NEAREST);
 		Image onFire = new Image(ImageLocations.ON_FIRE, false, Image.FILTER_NEAREST);
-		SpriteSheet fireSheet = new SpriteSheet(onFire, 600,900);
+		SpriteSheet fireSheet = new SpriteSheet(onFire, 600,600);
 		fire = new Animation(fireSheet, 250);
 		fire.setAutoUpdate(true);
 
@@ -105,7 +105,7 @@ public class PlayerInfo {
 				int x = found.location.coords.x;
 				int y = found.location.coords.x;
 				if (visible[x][y]) {
-					fire.draw((float) x * tileWidth, (float) y * tileHeight / 2, tileWidth, tileHeight / 2);
+					fire.draw((float) x * tileWidth, (float) (y * tileHeight / 2) - tileHeight/4, tileWidth, tileHeight / 2);
 				}
 			}
 		}
