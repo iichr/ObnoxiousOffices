@@ -1,6 +1,7 @@
 package game.ai.pathFinding.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -54,8 +55,7 @@ public class PathFindingTestHard {
 		p = new Pair<Integer, Integer>(15, 1);
 		path.add(p);
 
-		assertTrue(path.equals(ai.getLogic().findPaths(world, ai, "cm").get(0)));
-		//assertTrue(path.equals(ai.getLogic().findPaths(worldEasy, aiEasy, "cm").get(0)));
+		assertEquals(path, (ai.getLogic().findPaths(world, ai, "cm").get(0)));
 	}
 
 	@Test
@@ -64,10 +64,13 @@ public class PathFindingTestHard {
 		Pair<Integer, Integer> sofaLocation;
 		sofaLocation = new Pair<Integer, Integer>(11, 0);
 		// get the size of the ArrayList path to the sofa
-		int size = ai.getLogic().findPaths(world, ai, "b").get(0).size() - 1;
+		int size = ai.getLogic().findPaths(world, ai, "s").get(0).size() - 1;
 		//int sizeEasy = aiEasy.getLogic().findPaths(worldEasy, aiEasy, "b").get(0).size() - 1;
 		
-		assertTrue(sofaLocation.equals(ai.getLogic().findPaths(world, ai, "b").get(0).get(size)));
+		System.out.println(sofaLocation);
+		System.out.println(ai.getLogic().findPaths(world, ai, "s").get(0).get(size));
+		
+		assertTrue(sofaLocation.equals(ai.getLogic().findPaths(world, ai, "s").get(0).get(size)));
 		//assertTrue(sofaLocation.equals(ai.getLogic().findPaths(worldEasy, aiEasy, "b").get(0).get(sizeEasy)));
 	}
 	
@@ -88,14 +91,13 @@ public class PathFindingTestHard {
 		//check if the ai is going back to its chair from the sofa
 		Pair<Integer, Integer> toChair = new Pair<Integer, Integer>(13, 7);
 		//get the size of thr ArrayList path to the desk
-		int size = ai.getLogic().findPaths(world, ai, "b").get(1).size() - 1;
+		int size = ai.getLogic().findPaths(world, ai, "s").get(1).size() - 1;
 		//int sizeEasy = aiEasy.getLogic().findPaths(worldEasy, aiEasy, "b").get(1).size() - 1;
 		
-		assertTrue(toChair.equals(ai.getLogic().findPaths(world, ai, "b").get(1).get(size)));
+		assertTrue(toChair.equals(ai.getLogic().findPaths(world, ai, "s").get(1).get(size)));
 		//assertTrue(toChair.equals(aiEasy.getLogic().findPaths(worldEasy, aiEasy, "b").get(1).get(sizeEasy)));
 	}
 	
-
 	@Before
 	public void createWorld() {
 		// create the world

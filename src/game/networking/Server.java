@@ -87,9 +87,7 @@ public class Server {
 					os.writeObject(e);
 				}
 			} catch (SocketTimeoutException s) {
-				System.out.println("timeout");
 				if (listen && connections.size() > 0) {
-					System.out.println("adding ai");
 					ServerListener.NUM_AI_PLAYERS = NUM_PLAYERS - connections.size();
 					for (int i = 0; i < ServerListener.NUM_AI_PLAYERS; i++) {
 						Events.trigger(new CreateAIPlayerRequest(connections.get(0), i));
@@ -136,7 +134,6 @@ public class Server {
 		try {
 			serverSocket.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		new Server();

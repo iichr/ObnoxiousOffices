@@ -94,7 +94,7 @@ public class ServerListener extends Thread {
 		Events.on(MiniGameEndedEvent.class, this::forwardInfo);
 		Events.on(MiniGameVarChangedEvent.class, this::forwardInfo);
 		Events.on(MiniGameStatChangedEvent.class, this::forwardInfo);
-		Events.on(GameFinishedEvent.class, this::closeConnection);
+		Events.on(Events.EventPriority.HIGH, GameFinishedEvent.class, this::closeConnection);
 		Events.on(ChatMessageReceivedEvent.class, this::forwardInfo);
 		Events.on(PlayerJoinedEvent.class, this::forwardInfo);
 		Events.on(Events.EventPriority.HIGH, PlayerQuitEvent.class, this::forwardInfo);
@@ -150,7 +150,6 @@ public class ServerListener extends Thread {
 				} else {
 					try {
 						Event eventObject = (Event) is.readObject();
-						System.out.println("recieved: " + eventObject);
 						Events.trigger(eventObject);
 					} catch (Exception e) {
 						try {
@@ -166,7 +165,6 @@ public class ServerListener extends Thread {
 
 	public void startGame() {
 		Server.listen = false;
-		System.out.println(Server.listen);
 		GameStartedEvent gameStart = new GameStartedEvent(world);
 		sendToAllClients(gameStart);
 		Events.trigger(gameStart);
@@ -190,7 +188,6 @@ public class ServerListener extends Thread {
 	 */
 	public void sendToAllClients(Object obj) {
 		for (int i = 0; i < this.connections.size(); i++) {
-			System.out.println("sending " + obj + "to connection " + i);
 			this.connections.get(i).forwardInfo(obj);
 		}
 	}
@@ -239,7 +236,7 @@ public class ServerListener extends Thread {
 								this.queueWait.wait();
 							}
 						} catch (InterruptedException e1) {
-							System.out.print("INterrupted exception:  ");
+							System.out.print("Player left");
 						}
 					}
 				}

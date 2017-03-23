@@ -19,8 +19,6 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-
-
 /**
  * Created by samtebbs on 15/01/2017.
  */
@@ -30,10 +28,11 @@ public class PlayerStatus implements Serializable {
     private Map<PlayerAttribute, Double> attributes = new HashMap<>();
     private Map<PlayerAttribute, Integer> attributeUpdateCounter = new HashMap<>();
     private Set<PlayerState> states = new HashSet<>();
-    private Set<PlayerAction> actions = new HashSet<>();
-    private List<PlayerEffect> effects = new ArrayList<>();
+    private final Set<PlayerAction> actions = new HashSet<>();
+    private final List<PlayerEffect> effects = new ArrayList<>();
     public final Player player;
     public boolean initialising = true;
+    public Map<Class<? extends PlayerAction>, Integer> actionRepetitions = new HashMap<>();
 
     public static double FATIGUE_INCREASE = 0.003;
 
@@ -80,7 +79,7 @@ public class PlayerStatus implements Serializable {
     }
 
     public List<PlayerEffect> getEffects() {
-        return effects.stream().collect(Collectors.toList());
+        return new ArrayList<>(effects);
     }
 
     /**
@@ -88,22 +87,35 @@ public class PlayerStatus implements Serializable {
      * @param action
      */
     public void addAction(PlayerAction action) {
+        actionRepetitions.compute(action.getClass(), (c, i) -> i == null ? 1 : i + 1);
+        if(actionRepetitions.get(action.getClass()) >= action.getMaxRepetitions(new Random())) {
+            action.onMaxRepetitions();
+            actionRepetitions.put(action.getClass(), 0);
+        }
         actions.add(action);
         Events.trigger(new PlayerActionAddedEvent(action, player.name), true);
         action.start();
     }
 
     public <T extends PlayerAction> boolean hasAction(Class<T> actionClass) {
-        return actions.stream().anyMatch(a -> a.getClass() == actionClass);
+        synchronized (actions) {
+            return actions.stream().anyMatch(a -> a.getClass() == actionClass);
+        }
     }
 
     public Set<PlayerAction> getActions() {
-        return actions.stream().collect(Collectors.toSet());
+        synchronized (actions) {
+            return new HashSet<>(actions);
+        }
     }
 
     public void update(Player player) {
-        Updateable.updateAll(actions).forEach(a -> removeAction(a.getClass()));
-        Updateable.updateAll(effects).forEach(e -> removeEffect(e.getClass()));
+        synchronized (actions) {
+            Updateable.updateAll(actions).forEach(a -> removeAction(a.getClass()));
+        }
+        synchronized (effects) {
+            Updateable.updateAll(effects).forEach(e -> removeEffect(e.getClass()));
+        }
 
         addToAttribute(PlayerAttribute.FATIGUE, FATIGUE_INCREASE);
         if(getAttribute(PlayerAttribute.FATIGUE) >= PlayerAttribute.FATIGUE.maxVal) {
@@ -184,11 +196,11 @@ public class PlayerStatus implements Serializable {
     }
 
     public Set<PlayerState> getStates() {
-        return states.stream().collect(Collectors.toSet());
+        return new HashSet<>(states);
     }
 
     public PlayerEffect getEffect(Class<? extends PlayerEffect> playerEffectClass) {
-        return getEffects().stream().filter(effect -> effect.getClass() == playerEffectClass).findFirst().get();
+        return getEffects().stream().filter(effect -> effect.getClass() == playerEffectClass).findFirst().orElse(null); // Don't judge me
     }
 
     public boolean canMove() {

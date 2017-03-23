@@ -14,6 +14,9 @@ import game.core.player.effect.PlayerEffectSleeping;
 import game.ui.interfaces.ImageLocations;
 import game.ui.interfaces.Vals;
 
+/**
+ * Displays effects affecting the player on screen
+ */
 public class Effect {
 	private long activeFor;
 	private float tileWidth;
@@ -70,7 +73,7 @@ public class Effect {
 		float y = tileHeight + height;
 
 		for (PlayerEffect e : pe) {
-			if (!e.ended()) {
+			if (!e.ended() && imgs.containsKey(e)) {
 				activeFor = e.getDuration() - e.getElapsed();
 
 				// draw image

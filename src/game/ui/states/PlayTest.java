@@ -38,8 +38,8 @@ public class PlayTest extends Play {
 		this.world = w;
 		this.localPlayerName = Test.localPlayer;
 		World.world = w;
-		
-		ctrs = new Controls();
+
+		controls = new Controls();
 
 		// set boolean flags
 		options = false;

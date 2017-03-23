@@ -5,18 +5,22 @@ import java.io.File;
 import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import game.core.event.Events;
 import game.core.event.GameStartedEvent;
 import game.core.world.World;
+import game.ui.components.MusicBox;
+import game.ui.components.WordGenerator;
+import game.ui.interfaces.MusicLocations;
 import game.ui.interfaces.Vals;
-import game.ui.states.CharacterSelect;
+import game.ui.states.Connect;
 import game.ui.states.Intro;
+import game.ui.states.KeyOptions;
 import game.ui.states.Menu;
 import game.ui.states.Options;
-import game.ui.states.KeyOptions;
 import game.ui.states.Play;
 import game.ui.states.PlayTest;
 import game.ui.states.Rules;
@@ -27,9 +31,9 @@ public class Game extends StateBasedGame {
 	private Menu menuState;
 	private Options optionsState;
 	private Rules rulesState;
-	private CharacterSelect chSelectState;
+	private Connect connectState;
 	private PlayTest playTestState;
-	private KeyOptions optionsState2;
+	private KeyOptions keyOptionsState;
 
 	/**
 	 * Constructor: sets up states and event listeners
@@ -52,10 +56,10 @@ public class Game extends StateBasedGame {
 		this.addState(optionsState);
 		rulesState = new Rules();
 		this.addState(rulesState);
-		chSelectState = new CharacterSelect(playTestState);
-		this.addState(chSelectState);
-		optionsState2 = new KeyOptions();
-		this.addState(optionsState2);
+		connectState = new Connect(playTestState);
+		this.addState(connectState);
+		keyOptionsState = new KeyOptions();
+		this.addState(keyOptionsState);
 
 		Events.on(GameStartedEvent.class, this::onGameStart);
 	}
@@ -63,6 +67,20 @@ public class Game extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
 		// initialises states automatically
+
+		WordGenerator wg = new WordGenerator();
+		// initialise music and sound
+		gc.setMusicVolume(0.5f);
+		MusicBox musicBox = new MusicBox(gc);
+		Music music = new Music(MusicLocations.MENU_MUSIC);
+		
+
+		menuState.setDependencies(music, musicBox);
+		playState.setDependencies(wg);
+		optionsState.setDependencies(wg, musicBox);
+		connectState.setDepenedencies(wg, music);
+		keyOptionsState.setDependencies(wg);
+
 	}
 
 	/**
@@ -106,13 +124,13 @@ public class Game extends StateBasedGame {
 		try {
 			agc = new AppGameContainer(new Game(Vals.GAME_NAME));
 			agc.setDisplayMode(Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT, false);
-			
+
 			agc.setUpdateOnlyWhenVisible(true);
 			agc.setMinimumLogicUpdateInterval(10);
 
+			agc.setShowFPS(false);
 			agc.setFullscreen(false);
 			agc.start();
-			
 
 		} catch (SlickException e) {
 			e.printStackTrace();

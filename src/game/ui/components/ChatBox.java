@@ -15,9 +15,12 @@ import game.core.chat.Chat;
 import game.core.chat.ChatMessage;
 import game.ui.interfaces.Vals;
 
+/**
+ * Class to manage in game chat
+ */
 public class ChatBox {
 	protected Chat chat;
-	private String message = "";
+	private String message = "Press Enter to type....";
 	private TextField typer;
 	private List<ChatMessage> cms = new ArrayList<>();
 	private int msgSize = 10;
@@ -34,7 +37,7 @@ public class ChatBox {
 		this.chat = chat;
 
 		typer = new TextField(gc, Vals.FONT_MAIN, 0, Vals.SCREEN_HEIGHT - Vals.FONT_MAIN.getLineHeight(),
-				Vals.TFIELD_WIDTH * 10, Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
+				Vals.TFIELD_WIDTH, Vals.FONT_MAIN.getLineHeight(), new ComponentListener() {
 					public void componentActivated(AbstractComponent src) {
 						typer.setFocus(true);
 					}
@@ -84,9 +87,11 @@ public class ChatBox {
 	public void update(GameContainer gc, String localPlayerName) {
 		Input input = gc.getInput();
 		if (input.isKeyPressed(Input.KEY_ENTER)) {
-			if (!typer.getText().isEmpty()) {
+			if (!typer.getText().isEmpty()&&!typer.getText().equals(message)) {
 				chat.sendMessage(new ChatMessage(typer.getText(), localPlayerName));
-				typer.setText(message);
+				toggleFocus();
+			}else{
+				toggleFocus();
 			}
 		}
 
@@ -110,8 +115,10 @@ public class ChatBox {
 	public void toggleFocus() {
 		if (typer.hasFocus()) {
 			typer.setFocus(false);
+			typer.setText(message);
 		} else {
 			typer.setFocus(true);
+			typer.setText("");
 		}
 	}
 

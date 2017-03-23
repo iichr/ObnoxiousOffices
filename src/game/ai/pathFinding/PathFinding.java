@@ -4,7 +4,6 @@ package game.ai.pathFinding;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.PriorityQueue;
 
 import game.ai.AIPlayer;
@@ -14,9 +13,8 @@ import game.core.world.tile.type.TileType;
 import game.core.world.tile.type.TileTypeComputer;
 
 /**
- * Created on 28.01.2017
- * 
- * @author Atanas K. Harbaliev
+ * Implementation of the A* algorithm for path finding. Also it finds all coffee
+ * machines and sofas on a given map, as well as the players chair.
  */
 
 public class PathFinding implements Runnable, Serializable {
@@ -28,24 +26,21 @@ public class PathFinding implements Runnable, Serializable {
 									// move
 
 	// list of tiles to be explored
-	// change the comparator operation by comparing the final cost of two cells
-	PriorityQueue<Cell> open = new PriorityQueue<>(new Comparator<Cell>() {
-		@Override
-		public int compare(Cell c1, Cell c2) {
-			return c1.fCost < c2.fCost ? -1 : c1.fCost > c2.fCost ? 1 : 0;
-		}
-	});
+	PriorityQueue<Cell> open = new PriorityQueue<Cell>();
 	boolean closed[][]; // array of tiles that are already explored
 
 	World world;
 	AIPlayer player;
-
-	int startI, startJ; // coordinates for our start point
-
+	
+	// coordinates for our start point
+	int startI;
+	int startJ; 
+	//coordinates of the closes coffee machine and sofa
 	int coffeeI;
 	int coffeeJ;
 	int sofaI;
 	int sofaJ;
+	
 	ArrayList<Pair<Integer, Integer>> coffees = new ArrayList<Pair<Integer, Integer>>();
 	ArrayList<Pair<Integer, Integer>> sofas = new ArrayList<Pair<Integer, Integer>>();
 
@@ -58,7 +53,6 @@ public class PathFinding implements Runnable, Serializable {
 		toGo = s;
 	}
 
-	// the size of the world
 	int colLength = World.world.ySize; // j
 	int rowLength = World.world.xSize; // i
 
@@ -93,7 +87,7 @@ public class PathFinding implements Runnable, Serializable {
 			for (int j = 0; j < colLength; j++) {
 
 				grid[i][j] = new Cell(i, j);
-				Tile tile = World.world.getTile(i, j, 0); // get the tile at i,j
+				Tile tile = World.world.getTile(i, j, 0); 
 				// if you can walk over a tile, calculate the
 				// heuristic function, else make it a null
 				if (tile.type.canWalkOver())
@@ -145,7 +139,7 @@ public class PathFinding implements Runnable, Serializable {
 	void checkAndUpdateCost(Cell current, Cell c, int cost) {
 		// if cell c is reachable and not yet explored, calculate the cost of
 		// exploring it
-		if (closed[c.i][c.j]) // c == null ||
+		if (closed[c.i][c.j]) 
 			return;
 		int cCost = c.hCost + cost;
 
@@ -180,13 +174,12 @@ public class PathFinding implements Runnable, Serializable {
 		while (true) {
 			current = open.poll(); // pops the head of the queue
 
-			if (current == null) // if the head of the queue is empty - break
+			if (current == null)
 				break;
-			closed[current.i][current.j] = true; // put the current cell in the
-													// explored list
+			closed[current.i][current.j] = true; 
 
-			if (current.equals(grid[goalI][goalJ])) // if we have found the goal
-				return; // state - return
+			if (current.equals(grid[goalI][goalJ])) 
+				return;
 
 			Cell c;
 
@@ -292,14 +285,12 @@ public class PathFinding implements Runnable, Serializable {
 				AStar(coffeeI, coffeeJ);
 				// get the path after AStar
 				currentPath = path(coffeeI, coffeeJ);
-				// if the path is smaller than the previous one
 				if (size > currentPath.size()) {
-					path = currentPath; // get the new best path
-					size = currentPath.size(); // assign the size of the new
-												// best path
+					path = currentPath; 
+					size = currentPath.size(); 
 				}
 			}
-		} else if (toGo == "s"){
+		} else if (toGo == "s") {
 			// create an ArrayList to store the current best path
 			ArrayList<Pair<Integer, Integer>> currentPathB = new ArrayList<Pair<Integer, Integer>>();
 			// store the best size
@@ -313,15 +304,15 @@ public class PathFinding implements Runnable, Serializable {
 				AStar(sofaI, sofaJ);
 				// get the path after AStar
 				currentPathB = path(sofaI, sofaJ);
-				// if the path is smaller than the previous one
 				if (sizeB > currentPathB.size()) {
-					path = currentPathB; // get the new best path
-					sizeB = currentPathB.size(); // assign the size of the new
-													// best path
+					path = currentPathB; 
+					sizeB = currentPathB.size(); 
 				}
 			}
 		} else {
-			path = pathToChair(player, TileTypeComputer.getChair(player).location.coords.x, TileTypeComputer.getChair(player).location.coords.y);
+			//find the path to the chair of the player that got replace by an AI player
+			path = pathToChair(player, TileTypeComputer.getChair(player).location.coords.x,
+					TileTypeComputer.getChair(player).location.coords.y);
 		}
 	}
 }

@@ -24,7 +24,6 @@ public class PathFindingTestEasy {
 
 	@Test
 	public void testGoToCM() {
-		// fail("Not yet implemented");
 
 		// add all steps to the path
 		p = new Pair<Integer, Integer>(13, 7);

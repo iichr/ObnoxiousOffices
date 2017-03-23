@@ -13,6 +13,9 @@ import game.core.input.InteractionType;
 import game.core.input.MovementType;
 import game.ui.player.ActionSelector;
 
+/**
+ * Class manages the in game controls
+ */
 public class Controls {
 	private final int MOVE_UP = Input.KEY_W;
 	private final int MOVE_DOWN = Input.KEY_S;
@@ -27,40 +30,40 @@ public class Controls {
 
 	private final int TOGGLE_OPTIONS = Input.KEY_ESCAPE;
 	private final int TOGGLE_OVERVIEW = Input.KEY_TAB;
-	private final int TOGGLE_CHAT = Input.KEY_LALT;
+	private final int TOGGLE_CHAT = Input.KEY_ENTER;
 
 	private final int PONG_UP = Input.KEY_W;
 	private final int PONG_DOWN = Input.KEY_S;
-	
+
 	public LinkedHashMap<String, String> allControls;
-	
+
 	/**
 	 * Creates an instance of a Linked Hash Map, storing the key mappings in the
 	 * order of their insertion. Used to display the keyboard controls in the
 	 * Options menu
 	 */
-	public Controls(){
+	public Controls() {
 		allControls = new LinkedHashMap<String, String>();
-		
+
 		allControls.put("Move Up", Input.getKeyName(MOVE_UP));
 		allControls.put("Move Down", Input.getKeyName(MOVE_DOWN));
 		allControls.put("Move Left", Input.getKeyName(MOVE_LEFT));
 		allControls.put("Move Right", Input.getKeyName(MOVE_RIGHT));
-		
+
 		allControls.put("Interact", Input.getKeyName(INTERACT));
-		
+
 		allControls.put("Selector Up", Input.getKeyName(SELECTOR_UP));
 		allControls.put("Selector Down", Input.getKeyName(SELECTOR_DOWN));
 		allControls.put("Selector Back", Input.getKeyName(SELECTOR_BACK));
-		
+
 		allControls.put("Show Hide Options Menu", Input.getKeyName(TOGGLE_OPTIONS));
 		allControls.put("Show Hide Player Overview", Input.getKeyName(TOGGLE_OVERVIEW));
 		allControls.put("Show Hide Chat", Input.getKeyName(TOGGLE_CHAT));
-		
+
 		allControls.put("Move Up in Pong", Input.getKeyName(PONG_UP));
 		allControls.put("Move Down in Pong", Input.getKeyName(PONG_DOWN));
 	}
-	
+
 	/**
 	 * Manages the movement to make based on the key currently held by the
 	 * player
@@ -161,7 +164,8 @@ public class Controls {
 	 */
 	public void interaction(String localPlayerName, int key) {
 		if (key == INTERACT) {
-			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(new InteractionType.InteractionTypeOther()), localPlayerName));
+			Events.trigger(new PlayerInputEvent(new InputTypeInteraction(new InteractionType.InteractionTypeOther()),
+					localPlayerName));
 		}
 	}
 
@@ -179,22 +183,6 @@ public class Controls {
 			return !options;
 		}
 		return options;
-	}
-
-	/**
-	 * Toggles typing in the chat box based on input
-	 * 
-	 * @param cb
-	 *            The current chat box
-	 * @param key
-	 *            The key being pressed
-	 * @return The modified chat box
-	 */
-	public ChatBox toggleChat(ChatBox cb, int key) {
-		if (key == TOGGLE_CHAT) {
-			cb.toggleFocus();
-		}
-		return cb;
 	}
 
 	/**
@@ -229,6 +217,15 @@ public class Controls {
 		return showOverview;
 	}
 
+	/**
+	 * Starts movement presses for pong minigame
+	 * 
+	 * @param heldKey
+	 *            The current movement key held
+	 * @param key
+	 *            The key being pressed
+	 * @return heldKey The movement key to set
+	 */
 	public int pongMoveStart(int heldKey, int key) {
 		if (key == MOVE_UP || key == MOVE_DOWN) {
 			return key;
@@ -236,6 +233,15 @@ public class Controls {
 		return heldKey;
 	}
 
+	/**
+	 * Stops movement presses for pong minigame
+	 * 
+	 * @param heldKey
+	 *            The current movement key held
+	 * @param key
+	 *            The key being pressed
+	 * @return heldKey The movement key to set
+	 */
 	public int pongMoveFinish(int heldKey, int key) {
 		if (heldKey == key && (key == MOVE_UP || key == MOVE_DOWN)) {
 			return -1;
