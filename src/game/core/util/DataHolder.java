@@ -17,7 +17,7 @@ public abstract class DataHolder implements Serializable {
     protected abstract Event getUpdateEvent(String var, Object val);
 
     public Object getVar(String var) {
-        return vars.containsKey(var) ? vars.get(var) : null;
+        return vars.getOrDefault(var, null);
     }
 
     protected void addVar(String var, int val) {
@@ -42,4 +42,7 @@ public abstract class DataHolder implements Serializable {
         return val == null ? 0 : (Integer) val;
     }
 
+    public boolean getBoolVar(String var) {
+        return (Boolean) getVar(var);
+    }
 }

@@ -12,6 +12,9 @@ import game.core.world.Direction;
 import game.core.world.Location;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by samtebbs on 15/01/2017.
@@ -32,7 +35,6 @@ public class Player implements Updateable, Serializable {
     public static int BROWN = 1;
     public static int DARK = 2;
     public static int PINK = 3;
-    public int timesDrunkCoffee = 0;
 
     public Player(String name, Direction facing, Location location) {
         this.name = name;
@@ -61,8 +63,10 @@ public class Player implements Updateable, Serializable {
      * @param facing
      */
     public void setFacing(Direction facing) {
-        this.facing = facing;
-        Events.trigger(new PlayerRotatedEvent(facing, this.name), true);
+        if(this.facing != facing) {
+            this.facing = facing;
+            Events.trigger(new PlayerRotatedEvent(facing, this.name), true);
+        }
     }
 
     /**
@@ -132,8 +136,8 @@ public class Player implements Updateable, Serializable {
         if(progress != this.progress) {
             progress = Math.max(0, Math.min(100, progress));
             this.progress = progress;
-            if (this.progress == 100) onProgressDone();
             Events.trigger(new PlayerProgressUpdateEvent(this.progress, this.name), true);
+            if (this.progress == 100) onProgressDone();
         }
     }
 
@@ -145,8 +149,8 @@ public class Player implements Updateable, Serializable {
         Events.trigger(new GameFinishedEvent(), true);
     }
 
-    public void removeProgress() {
-        setProgress(getProgress() - 1);
+    public void removeProgress(int val) {
+        setProgress(getProgress() - val);
     }
 
     /**
@@ -163,6 +167,10 @@ public class Player implements Updateable, Serializable {
      */
     public double getProgressMultiplier() {
         return PlayerStatus.PlayerAttribute.FATIGUE.maxVal - status.getAttribute(PlayerStatus.PlayerAttribute.FATIGUE);
+    }
+
+    public boolean workSucceeded(Random rand) {
+        return rand.nextBoolean();
     }
 
     @Override

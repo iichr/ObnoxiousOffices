@@ -47,25 +47,19 @@ public class World implements Updateable, Serializable {
     }
 
     public void removePlayer(Player player) {
-        if(!ClientSync.isClient) {
-            synchronized (miniGames) {
-                MiniGame minigame = getMiniGame(player.name);
-                if (minigame != null) {
-                    minigame.end();
-                    miniGames.remove(minigame);
-                }
-            }
-        }
+        if(!ClientSync.isClient) removeMiniGame(getMiniGame(player.name));
         synchronized (players) {
             players.remove(player);
         }
     }
 
-    public void startMiniGame(MiniGame game) {
-        if(!ClientSync.isClient) {
+    public boolean startMiniGame(MiniGame game) {
+        boolean noneInMinigame = game.getPlayers().stream().map(this::getMiniGame).allMatch(Objects::isNull);
+        if(!ClientSync.isClient && noneInMinigame) {
             miniGames.add(game);
             Events.trigger(new MiniGameStartedEvent(game), true);
-        }
+            return true;
+        } else return false;
     }
 
     public Location getSpawnPoint(int i) {
@@ -257,5 +251,26 @@ public class World implements Updateable, Serializable {
         Location loc = tile.location;
         List<Location> locs = Arrays.stream(Direction.values()).map(loc::forward).collect(Collectors.toList());
         return locs.stream().filter(Location::checkBounds).map(Location::getTile).collect(Collectors.toList());
+    }
+
+    public boolean hasPlayer(String name) {
+        return players.stream().anyMatch(p -> p.name.equals(name));
+    }
+
+    public void removePlayer(String name) {
+        if(hasPlayer(name)) removePlayer(getPlayer(name));
+    }
+
+    public void removeMiniGame(MiniGame minigame) {
+        synchronized (miniGames) {
+            if (minigame != null) {
+                minigame.end();
+                miniGames.remove(minigame);
+            }
+        }
+    }
+
+    public boolean hasMiniGame(MiniGame game) {
+        return miniGames.contains(game);
     }
 }

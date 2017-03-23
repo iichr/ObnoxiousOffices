@@ -20,12 +20,13 @@ public class PlayerActionSleep extends TimedPlayerAction {
     @Override
     public void end() {
         super.end();
+        player.status.removeState(PlayerState.sleeping);
         player.status.removeEffect(PlayerEffectSleeping.class);
     }
 
     @Override
     protected void timedUpdate() {
-        player.status.addToAttribute(PlayerStatus.PlayerAttribute.FATIGUE, -0.1);
+        player.status.addToAttribute(PlayerStatus.PlayerAttribute.FATIGUE, -0.01);
     }
 
     @Override

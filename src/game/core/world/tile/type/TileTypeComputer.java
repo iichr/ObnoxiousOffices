@@ -58,13 +58,17 @@ public class TileTypeComputer extends TileTypeAction {
 
     @Override
     protected PlayerAction getAction(Player player, Tile tile, InteractionType type) {
-        String owner = getOwningPlayer((MetaTile) tile);
-        if(type.getClass() == InteractionType.InteractionTypeWork.class && owner.equals(player.name))
-            return (player.isAI ? new PlayerActionWorkTimed(player) : new PlayerActionWork(player));
-        else {
-            Player target = World.world.getPlayer(((InteractionType.InteractionTypeHack) type).target);
-            return player.isAI ? new PlayerActionHackTimed(player, target) : new PlayerActionHack(player, target);
-        }
+        System.out.println("computer.getAction");
+        if(!TileTypeComputer.getOnFire((MetaTile) tile)) {
+            System.out.println("pc not on fire");
+            String owner = getOwningPlayer((MetaTile) tile);
+            if (type.getClass() == InteractionType.InteractionTypeWork.class && owner.equals(player.name))
+                return (player.isAI ? new PlayerActionWorkTimed(player) : new PlayerActionWork(player));
+            else if (type instanceof InteractionType.InteractionTypeHack) {
+                Player target = World.world.getPlayer(((InteractionType.InteractionTypeHack) type).target);
+                return player.isAI ? new PlayerActionHackTimed(player, target) : new PlayerActionHack(player, target);
+            } else return null;
+        } else return null;
     }
 
     @Override
@@ -90,6 +94,24 @@ public class TileTypeComputer extends TileTypeAction {
     public static String getOwningPlayer(MetaTile computerTile) {
         Object player = computerTile.metadata.getVar(ComputerMetadata.PLAYER);
         return player == null ? "" : (String) player;
+    }
+
+    public static void setOnFire(MetaTile computer, boolean onFire) {
+        System.out.printf("Setting computer at %s onFire: %b%n", computer.location, onFire);
+        computer.metadata.setVar(ComputerMetadata.ON_FIRE, onFire);
+    }
+
+    public static void ignite(MetaTile computer) {
+        setOnFire(computer, true);
+    }
+
+    public static void extinguish(MetaTile computer) {
+        System.out.println("extinguish");
+        setOnFire(computer, false);
+    }
+
+    public static boolean getOnFire(MetaTile computer) {
+        return computer.metadata.getBoolVar(ComputerMetadata.ON_FIRE);
     }
 
 }
