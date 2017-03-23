@@ -6,9 +6,12 @@ import game.core.event.minigame.MiniGameEndedEvent;
 import game.core.minigame.MiniGame;
 import game.core.minigame.MiniGameHangman;
 import game.core.player.Player;
+import game.core.player.effect.PlayerEffectOnFire;
 import game.core.world.World;
 import game.core.world.tile.MetaTile;
+import game.core.world.tile.Tile;
 import game.core.world.tile.type.TileTypeComputer;
+import game.util.Time;
 
 import java.util.Random;
 
@@ -23,8 +26,9 @@ public class PlayerActionWork extends PlayerActionMinigame {
 
     @Override
     public void onMaxRepetitions() {
-        TileTypeComputer.getComputer(player).ifPresent(t -> {
+        TileTypeComputer.getComputer(player).ifPresent((Tile t) -> {
             TileTypeComputer.ignite((MetaTile) t);
+            player.status.addEffect(new PlayerEffectOnFire((int) Time.ticks(5000), player));
         });
     }
 
