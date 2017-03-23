@@ -55,7 +55,7 @@ public class Rules extends BasicGameState {
 		gameTitle = "DevWars";
 		rules = "Your goal is to complete your programming project before the other players!\n"
 				+ "Move around with the WASD keys, interact with objects by using the up and down arrow keys.\n"
-				+ "Hold the TAB key whilst in game to see your and others' progress and fatigue levels.\n"
+				+ "Hold the TAB key whilst in game to see your and others\u0027 progress and fatigue levels.\n"
 				+ "You have the following interactions available to meet your goal:"
 				+ "\n\n"
 				+ "Work - you can work only on your own computer, which helps you up your progress.\n"
@@ -68,7 +68,7 @@ public class Rules extends BasicGameState {
 				+ "\n\n"
 				+ "Coffee Break - reduces your fatigue and increases your productivity. Be careful, it may have negative consequences."
 				+ "\n\n"
-				+ "Nap -  a risk-free way fo reducing your fatigue."
+				+ "Nap -  a risk-free way of reducing your fatigue."
 				+ "\n\n"
 				+ "To view all controls available go to the Options menu and press More> at the bottom.";
 	}
@@ -126,7 +126,7 @@ public class Rules extends BasicGameState {
 						Vals.SCREEN_WIDTH - Vals.RULES_SECT_RIGHT_W, y += Vals.FONT_RULES.getLineHeight() * 2);
 			} else {
 				g.drawString(line, Vals.SCREEN_WIDTH - Vals.RULES_SECT_RIGHT_W,
-						y += Vals.FONT_RULES.getLineHeight() * 1.7);
+						y += Vals.FONT_RULES.getLineHeight() * 1.5);
 			}
 	}
 
