@@ -20,7 +20,8 @@ public class Client {
 
 	private Socket server;
 	private ObjectOutputStream od;
-	private boolean connected;
+	public boolean connected = false;
+	
 
 	/**
 	 * Listens for events
@@ -59,7 +60,6 @@ public class Client {
 	 */
 	public void connectToServer(ConnectionAttemptEvent event) {
 		int port = 8942;
-		connected = false;
 		String hostname = event.ipAddress;
 
 		try {
