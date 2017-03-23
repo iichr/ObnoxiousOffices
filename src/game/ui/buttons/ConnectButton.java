@@ -51,8 +51,6 @@ public class ConnectButton extends Button {
 	 *            The x coord of the mouse cursor
 	 * @param mouseY
 	 *            The y coord of the mouse cursor
-	 * @param stateID
-	 *            The new state to enter.
 	 */
 	public void update(GameContainer gc, StateBasedGame game, float mouseX, float mouseY, String serverAddress,
 			String name, Connect cs) {
@@ -61,7 +59,7 @@ public class ConnectButton extends Button {
 			if (inRange(mouseX, mouseY)) {
 				button = select;
 				if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-					if (Pattern.matches("[a-zA-Z0-9_]*", name) && name.length() >= 1) {
+					if (Pattern.matches("[a-zA-Z0-9_ ]*", name) && name.length() >= 1) {
 						cs.setInvalidName(false);
 						Events.trigger(new ConnectionAttemptEvent(name, serverAddress));
 					} else {
