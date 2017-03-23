@@ -11,7 +11,6 @@ import org.newdawn.slick.SlickException;
 import game.core.event.Events;
 import game.core.event.player.PlayerMovedEvent;
 import game.core.player.Player;
-import game.core.player.action.PlayerActionSleep;
 import game.core.player.state.PlayerState;
 import game.core.util.Coordinates;
 import game.core.world.Direction;
@@ -198,7 +197,7 @@ public class Renderer {
 			if (playerLocation.coords.x == x && playerLocation.coords.y == y) {
 				PlayerAnimation animation = playerAnimations.get(player.getHair());
 				changeAnimation(player, animation);
-				if (player.status.hasAction(PlayerActionSleep.class)) {
+				if (player.status.hasState(PlayerState.sleeping)) {
 					Location right = new Location(new Coordinates(x - 1, y, 0), world);
 					if (right.checkBounds()) {
 						animation.drawPlayer((x - 1) * tileWidth, (y + 2) * (tileHeight / 2), tileWidth * 2,
