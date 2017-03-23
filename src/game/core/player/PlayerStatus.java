@@ -98,7 +98,7 @@ public class PlayerStatus implements Serializable {
     }
 
     public <T extends PlayerAction> boolean hasAction(Class<T> actionClass) {
-        return getActions().stream().anyMatch(a -> a.getClass() == actionClass);
+        return actions.stream().anyMatch(a -> a.getClass() == actionClass);
     }
 
     public Set<PlayerAction> getActions() {
