@@ -1,5 +1,7 @@
 package game.ai;
 
+import java.util.Random;
+
 import game.ai.logic.Logic;
 import game.ai.logic.LogicEasy;
 import game.ai.logic.LogicHard;
@@ -122,6 +124,13 @@ public class AIPlayer extends Player {
 			return logicEasy;
 		return logicHard;
 
+	}
+	
+	@Override
+	public boolean workSucceeded(Random o) {
+		if (mode.equals("e")) 
+			return o.nextInt(101) <= 30 ? true : false;
+		return o.nextInt(101) > 50 ? true : false;
 	}
 
 	// create the working memory, the update working memory object,
