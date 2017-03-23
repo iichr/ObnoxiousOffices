@@ -15,12 +15,18 @@ public class PlayerActionDrink extends TimedPlayerAction {
 
     public PlayerActionDrink(Player player) {
         super(player);
-        if(player.timesDrunkCoffee++ > new Random().nextInt(10)) {
-            PlayerEffect effect = new PlayerEffectCoffeeBuzz((int) Time.ticks(60000), player);
-            if(!player.status.hasEffect(effect.getClass())) player.status.addEffect(effect);
-            else player.status.getEffect(PlayerEffectCoffeeBuzz.class).setElapsed(effect.getDuration());
-            player.timesDrunkCoffee = 0;
-        }
+    }
+
+    @Override
+    public int getMaxRepetitions(Random rand) {
+        return rand.nextInt(10);
+    }
+
+    @Override
+    public void onMaxRepetitions() {
+        PlayerEffect effect = new PlayerEffectCoffeeBuzz((int) Time.ticks(60000), player);
+        if(!player.status.hasEffect(effect.getClass())) player.status.addEffect(effect);
+        else player.status.getEffect(PlayerEffectCoffeeBuzz.class).setElapsed(effect.getDuration());
     }
 
     @Override

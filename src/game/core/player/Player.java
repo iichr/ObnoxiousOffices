@@ -12,6 +12,8 @@ import game.core.world.Direction;
 import game.core.world.Location;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -33,7 +35,6 @@ public class Player implements Updateable, Serializable {
     public static int BROWN = 1;
     public static int DARK = 2;
     public static int PINK = 3;
-    public int timesDrunkCoffee = 0;
 
     public Player(String name, Direction facing, Location location) {
         this.name = name;

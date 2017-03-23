@@ -7,11 +7,12 @@ import game.core.util.Coordinates;
  */
 public class ComputerMetadata extends TileMetadata {
 
-    public static final String PLAYER = "p";
+    public static final String PLAYER = "p", ON_FIRE = "f";
 
     public ComputerMetadata(Coordinates tile, String owningPlayer) {
         super(tile);
         setVar(PLAYER, owningPlayer);
+        setVar(ON_FIRE, false);
     }
 
 }

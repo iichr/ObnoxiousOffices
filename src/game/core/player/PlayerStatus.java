@@ -19,8 +19,6 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-
-
 /**
  * Created by samtebbs on 15/01/2017.
  */
@@ -34,6 +32,7 @@ public class PlayerStatus implements Serializable {
     private final List<PlayerEffect> effects = new ArrayList<>();
     public final Player player;
     public boolean initialising = true;
+    public Map<Class<? extends PlayerAction>, Integer> actionRepetitions = new HashMap<>();
 
     public static double FATIGUE_INCREASE = 0.003;
 
@@ -80,7 +79,7 @@ public class PlayerStatus implements Serializable {
     }
 
     public List<PlayerEffect> getEffects() {
-        return effects.stream().collect(Collectors.toList());
+        return new ArrayList<>(effects);
     }
 
     /**
@@ -88,6 +87,11 @@ public class PlayerStatus implements Serializable {
      * @param action
      */
     public void addAction(PlayerAction action) {
+        actionRepetitions.compute(action.getClass(), (c, i) -> i == null ? 1 : i + 1);
+        if(actionRepetitions.get(action.getClass()) >= action.getMaxRepetitions(new Random())) {
+            action.onMaxRepetitions();
+            actionRepetitions.put(action.getClass(), 0);
+        }
         actions.add(action);
         Events.trigger(new PlayerActionAddedEvent(action, player.name), true);
         action.start();

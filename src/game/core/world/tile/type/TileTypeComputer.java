@@ -92,4 +92,21 @@ public class TileTypeComputer extends TileTypeAction {
         return player == null ? "" : (String) player;
     }
 
+    public static void setOnFire(MetaTile computer, boolean onFire) {
+        System.out.printf("Setting computer at %s onFire: %b%n", computer.location, onFire);
+        computer.metadata.setVar(ComputerMetadata.ON_FIRE, onFire);
+    }
+
+    public static void ignite(MetaTile computer) {
+        setOnFire(computer, true);
+    }
+
+    public static void extinguish(MetaTile computer) {
+        setOnFire(computer, false);
+    }
+
+    public static boolean getOnFire(MetaTile computer) {
+        return computer.metadata.getBoolVar(ComputerMetadata.ON_FIRE);
+    }
+
 }
