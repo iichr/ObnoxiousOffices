@@ -19,7 +19,7 @@ public class PlayerActionHackTimed extends TimedPlayerAction {
     @Override
     public void end() {
         super.end();
-        if(player.workSucceeded(new Random())) target.removeProgress();
+        if(player.workSucceeded(new Random())) target.removeProgress((int) (25 * player.getProgressMultiplier()));
     }
 
     @Override
