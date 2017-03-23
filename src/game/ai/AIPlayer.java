@@ -128,6 +128,8 @@ public class AIPlayer extends Player {
 	
 	@Override
 	public boolean workSucceeded(Random o) {
+		//give the easy mode AI 30% chance to successfully hack a player
+		//give the hard mode AI 50% chance to successfully hack a player
 		if (mode.equals("e")) 
 			return o.nextInt(101) <= 30 ? true : false;
 		return o.nextInt(101) > 50 ? true : false;
