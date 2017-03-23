@@ -105,7 +105,7 @@ public class PlayerInfo {
 				int x = found.location.coords.x;
 				int y = found.location.coords.y;
 				if (visible[x][y]) {
-					fire.draw((float) x * tileWidth, (float) (y * tileHeight / 2) - tileHeight/4, tileWidth, tileHeight / 2);
+					fire.draw((float) x * tileWidth, ((y + 2) * tileHeight / 2) - tileHeight/4, tileWidth, tileHeight / 2);
 				}
 			}
 		}
