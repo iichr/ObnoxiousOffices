@@ -50,7 +50,7 @@ public class Connect extends BasicGameState {
 	// information in response to events
 	private String waitingString = "Connected: Waiting for ";
 	private String connectFailString = "Connection failed: please check the ip and try again";
-	private String gameFullSring = "Game is already full, try a different server";
+	private String gameFullString = "Game is already full, try a different server";
 	private String invalidNameString = "Invalid name: Must be alphanumeric";
 
 	private boolean toPlay = false;
@@ -216,7 +216,7 @@ public class Connect extends BasicGameState {
 				wg.drawCenter(g, connectFailString, connectButton.getCenterX(),
 						connectButton.getY() + 3 * Vals.BUTTON_HEIGHT / 2, false, 0.15f);
 			} else if (gameFull) {
-				wg.drawCenter(g, gameFullSring, connectButton.getCenterX(),
+				wg.drawCenter(g, gameFullString, connectButton.getCenterX(),
 						connectButton.getY() + 3 * Vals.BUTTON_HEIGHT / 2, false, 0.15f);
 			}
 		}
