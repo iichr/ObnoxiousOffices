@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import game.core.player.effect.PlayerEffect;
+import game.core.player.effect.PlayerEffectOnFire;
 import org.newdawn.slick.*;
 
 import game.core.event.Events;
@@ -196,10 +198,12 @@ public class Renderer {
 
 				float xLoc = x * tileWidth;
 				float yLoc = ((y + 2) * tileHeight / 2) - tileHeight/4;
+				
+				String playerName = TileTypeComputer.getOwningPlayer((MetaTile) found);
+				Player onFire = world.getPlayer(playerName);
 
-				//TODO fix this
-				int activeFor = 0;
-				Effect e = null;
+				PlayerEffect e = onFire.status.getEffect(PlayerEffectOnFire.class);
+				int activeFor = e.getDuration() - e.getElapsed();
 
 				if (visible[x][y]) {
 					fire.draw(xLoc, yLoc, tileWidth, tileHeight / 2);
