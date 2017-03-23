@@ -105,7 +105,7 @@ public class PlayerStatus implements Serializable {
 
     public Set<PlayerAction> getActions() {
         synchronized (actions) {
-            return new HashSet<>(actions);
+            return actions;
         }
     }
 
