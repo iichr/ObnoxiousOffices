@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 
 import game.core.event.Events;
 import game.core.event.player.PlayerMovedEvent;
@@ -40,6 +38,8 @@ public class Renderer {
 
 	// player animations
 	private List<PlayerAnimation> playerAnimations;
+
+	private Animation fire;
 
 	// boolean toggles
 	private boolean showOverview;
@@ -75,6 +75,12 @@ public class Renderer {
 
 		// add player animations
 		playerAnimations = animatePlayers(world.getPlayers());
+		
+		Image onFire = new Image(ImageLocations.ON_FIRE, false, Image.FILTER_NEAREST);
+		SpriteSheet fireSheet = new SpriteSheet(onFire, 600,600);
+		fire = new Animation(fireSheet, 250);
+		fire.setAutoUpdate(true);
+
 	}
 
 	/**
@@ -105,6 +111,8 @@ public class Renderer {
 
 				// draw the tile at this location
 				drawTile(tileX, tileY, found, visible[x][y]);
+
+				showFire(found, visible);
 
 				// draw any players at this location
 				if (visible[x][y]) {
@@ -175,6 +183,18 @@ public class Renderer {
 			}
 		}
 	}
+	private void showFire(Tile found, boolean [][] visible){
+		if(found.type.equals(TileType.COMPUTER)) {
+			if (TileTypeComputer.getOnFire((MetaTile) found)) {
+				int x = found.location.coords.x;
+				int y = found.location.coords.y;
+				if (visible[x][y]) {
+					fire.draw((float) x * tileWidth, ((y + 2) * tileHeight / 2) - tileHeight/4, tileWidth, tileHeight / 2);
+				}
+			}
+		}
+	}
+
 
 	/**
 	 * Renders the players in the world
