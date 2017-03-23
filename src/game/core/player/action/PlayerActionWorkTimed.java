@@ -13,7 +13,7 @@ public class PlayerActionWorkTimed extends TimedPlayerAction {
 
     @Override
     protected void timedUpdate() {
-        player.setProgress(player.getProgress() + player.getProgressMultiplier());
+        player.setProgress(player.getProgress() + player.getProgressMultiplier() / 2);
     }
 
     @Override
