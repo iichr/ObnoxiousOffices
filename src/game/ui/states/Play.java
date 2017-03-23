@@ -229,7 +229,7 @@ public class Play extends BasicGameState {
 
 		// shows selectors
 		if (world.getPlayer(localPlayerName).status.hasState(PlayerState.sitting)) {
-			if (world.getPlayer(localPlayerName).status.getActions().size() == 0) {
+			if (world.getPlayer(localPlayerName).status.actions.size() == 0) {
 				actionSelector.updateSelector(world, localPlayerName, tileWidth, tileHeight, g);
 			}
 		}

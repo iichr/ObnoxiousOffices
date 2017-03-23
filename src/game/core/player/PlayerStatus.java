@@ -28,7 +28,7 @@ public class PlayerStatus implements Serializable {
     private Map<PlayerAttribute, Double> attributes = new HashMap<>();
     private Map<PlayerAttribute, Integer> attributeUpdateCounter = new HashMap<>();
     private Set<PlayerState> states = new HashSet<>();
-    private final Set<PlayerAction> actions = new HashSet<>();
+    public final Set<PlayerAction> actions = new HashSet<>();
     private final List<PlayerEffect> effects = new ArrayList<>();
     public final Player player;
     public boolean initialising = true;
@@ -98,15 +98,11 @@ public class PlayerStatus implements Serializable {
     }
 
     public <T extends PlayerAction> boolean hasAction(Class<T> actionClass) {
-        synchronized (actions) {
-            return actions.stream().anyMatch(a -> a.getClass() == actionClass);
-        }
+        return getActions().stream().anyMatch(a -> a.getClass() == actionClass);
     }
 
     public Set<PlayerAction> getActions() {
-        synchronized (actions) {
-            return new HashSet<>(actions);
-        }
+        return new HashSet<>(actions);
     }
 
     public void update(Player player) {
@@ -180,19 +176,23 @@ public class PlayerStatus implements Serializable {
     }
 
     public void removeAction(Class<? extends PlayerAction> actionClass) {
-        Set<PlayerAction> matching = actions.stream().filter(a -> a.getClass() == actionClass).collect(Collectors.toSet());
-        matching.forEach(action -> {
-            Events.trigger(new PlayerActionEndedEvent(action, player.name), true);
-            actions.remove(action);
-        });
+        synchronized (actions) {
+            Set<PlayerAction> matching = actions.stream().filter(a -> a.getClass() == actionClass).collect(Collectors.toSet());
+            matching.forEach(action -> {
+                Events.trigger(new PlayerActionEndedEvent(action, player.name), true);
+                actions.remove(action);
+            });
+        }
     }
 
     public void removeEffect(Class<? extends PlayerEffect> effectClass) {
-        Set<PlayerEffect> matching = effects.stream().filter(e -> e.getClass() == effectClass).collect(Collectors.toSet());
-        matching.forEach(effect -> {
-            Events.trigger(new PlayerEffectEndedEvent(effect, player.name), true);
-            effects.remove(effect);
-        });
+        synchronized (effects) {
+            Set<PlayerEffect> matching = effects.stream().filter(e -> e.getClass() == effectClass).collect(Collectors.toSet());
+            matching.forEach(effect -> {
+                Events.trigger(new PlayerEffectEndedEvent(effect, player.name), true);
+                effects.remove(effect);
+            });
+        }
     }
 
     public Set<PlayerState> getStates() {
