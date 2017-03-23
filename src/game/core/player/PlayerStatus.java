@@ -98,15 +98,11 @@ public class PlayerStatus implements Serializable {
     }
 
     public <T extends PlayerAction> boolean hasAction(Class<T> actionClass) {
-        synchronized (actions) {
-            return actions.stream().anyMatch(a -> a.getClass() == actionClass);
-        }
+        return getActions().stream().anyMatch(a -> a.getClass() == actionClass);
     }
 
     public Set<PlayerAction> getActions() {
-        synchronized (actions) {
-            return actions;
-        }
+        return new HashSet<>(actions);
     }
 
     public void update(Player player) {
