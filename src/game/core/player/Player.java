@@ -136,8 +136,8 @@ public class Player implements Updateable, Serializable {
         if(progress != this.progress) {
             progress = Math.max(0, Math.min(100, progress));
             this.progress = progress;
-            if (this.progress == 100) onProgressDone();
             Events.trigger(new PlayerProgressUpdateEvent(this.progress, this.name), true);
+            if (this.progress == 100) onProgressDone();
         }
     }
 
