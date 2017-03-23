@@ -149,8 +149,8 @@ public class Player implements Updateable, Serializable {
         Events.trigger(new GameFinishedEvent(), true);
     }
 
-    public void removeProgress() {
-        setProgress(getProgress() - 50);
+    public void removeProgress(int val) {
+        setProgress(getProgress() - val);
     }
 
     /**
