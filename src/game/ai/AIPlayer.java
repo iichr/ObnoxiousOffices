@@ -83,7 +83,7 @@ public class AIPlayer extends Player {
 		this.status = player.status;
 		this.setHair(player.getHair());
 		this.setProgress(player.getProgress());
-		this.timesDrunkCoffee = player.timesDrunkCoffee;
+		this.status.actionRepetitions = player.status.actionRepetitions;
 	}
 
 	public static void init() {
