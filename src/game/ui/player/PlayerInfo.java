@@ -99,13 +99,15 @@ public class PlayerInfo {
 	}
 
     private void showFire(Tile found, boolean [][] visible){
-        if(TileTypeComputer.getOnFire((MetaTile) found)){
-            int x = found.location.coords.x;
-            int y = found.location.coords.x;
-            if(visible[x][y]){
-                onFire.draw((float)x * tileWidth, (float)(y + 1) *  tileHeight/2, tileWidth, tileHeight/2 );
-            }
-        }
+		if(found.type.equals(TileType.COMPUTER)) {
+			if (TileTypeComputer.getOnFire((MetaTile) found)) {
+				int x = found.location.coords.x;
+				int y = found.location.coords.x;
+				if (visible[x][y]) {
+					onFire.draw((float) x * tileWidth, (float) (y + 1) * tileHeight / 2, tileWidth, tileHeight / 2);
+				}
+			}
+		}
     }
 
 	/**
