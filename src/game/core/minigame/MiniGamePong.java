@@ -37,10 +37,14 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
 		if (!ended) {
 			addVar(X_POS, (float) getVar(BALL_X_VEL));
 			addVar(Y_POS, (float) getVar(BALL_Y_VEL));
-			float ballX = (float) getVar(X_POS), ballY = (float) getVar(Y_POS);
+			float ballX = (float) getVar(X_POS);
+			float ballY = (float) getVar(Y_POS);
 
 			checkPaddleBounce(player1, true, ballX, ballY);
 			checkPaddleBounce(player2, false, ballX, ballY);
+			
+			ballX = (float) getVar(X_POS);
+			ballY = (float) getVar(Y_POS);
 
 			if (ballX - BALL_SIZE / 2 <= 0) {
 				addStat(player1, SCORE, 1);
