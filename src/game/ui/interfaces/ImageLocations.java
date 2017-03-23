@@ -28,7 +28,8 @@ public interface ImageLocations {
 	public static final String SPEAKER_OFF = "res/buttons/speakerOff.png";
 
 	// SELECTION BUTTON IMAGES
-	public static final String BG = "res/bg.png";
+	public static final String BACKGROUND = "res/gameScreenshot.png";
+	public static final String LOGO = "res/logo.png";
 
 	// PLAYER IMAGES
 	public static final String PLAYER_HEADS = "res/sprites/players/heads.png";

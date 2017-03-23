@@ -7,6 +7,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.gui.AbstractComponent;
@@ -38,6 +39,8 @@ public class Connect extends BasicGameState {
 	// the spiral of death
 	private Image waiting;
 
+	private Image background;
+
 	// Input fields on the screen
 	private String serverStr = "Enter Server Address:";
 	private String playerStr = "Enter Player Name:";
@@ -65,6 +68,7 @@ public class Connect extends BasicGameState {
 	private PlayTest playTest;
 	private int playerLeft = 0;
 	private WordGenerator wg;
+	private Music music;
 
 	/**
 	 * [USE ONLY IN TESTING] Creates the connect state and starts the necessary
@@ -80,9 +84,10 @@ public class Connect extends BasicGameState {
 		Events.on(ConnectionFailedEvent.class, this::connectFail);
 		Events.on(GameFullEvent.class, this::gameFull);
 	}
-	
-	public void setWG(WordGenerator wg) {
+
+	public void setDepenedencies(WordGenerator wg, Music music) {
 		this.wg = wg;
+		this.music = music;
 	}
 
 	@Override
@@ -91,6 +96,8 @@ public class Connect extends BasicGameState {
 		Image back = new Image(ImageLocations.BACK, false);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
+
+		background = new Image(ImageLocations.BACKGROUND, false, Image.FILTER_NEAREST);
 
 		Image conn = new Image(ImageLocations.CONNECT);
 		Image connR = new Image(ImageLocations.CONNECT_ROLLOVER);
@@ -155,9 +162,18 @@ public class Connect extends BasicGameState {
 	}
 
 	@Override
+	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		// pause music when leaving the menu.
+		music.pause();
+	}
+
+	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		g.setFont(Vals.FONT_MAIN);
 		g.setColor(Color.white);
+
+		// draw the background
+		background.draw(0, 0, Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT, new Color(20, 20, 20));
 
 		// add the back button
 		backButton.render();

@@ -23,11 +23,13 @@ import game.util.Pair;
 public class Options extends BasicGameState {
 	private WordGenerator wg;
 	private float currentSVolume, currentMVolume;
-	private MusicBox mb;
+	private MusicBox musicBox;
 	private MenuButton backButton, nextPageButton;
+	private Image background;
 
-	public void setWG(WordGenerator wg) {
+	public void setDependencies(WordGenerator wg, MusicBox musicBox) {
 		this.wg = wg;
+		this.musicBox = musicBox;
 	}
 
 	@Override
@@ -38,16 +40,12 @@ public class Options extends BasicGameState {
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
 
+		background = new Image(ImageLocations.BACKGROUND, false, Image.FILTER_NEAREST);
+
 		// the next page button leading to the keyboard controls screen
 		nextPageButton = new MenuButton(Vals.BUTTON_ALIGN_CENTRE_W - wg.getWH(">", 1.0f).getL(),
 				Vals.BUTTON_ALIGN_CENTRE_H + 1.75f * wg.getWH(">", 1.0f).getR(), 60, 60, wg.get('>', false),
 				wg.get('>', true));
-
-		// set initial sound volume
-		gc.setSoundVolume(1.0f);
-
-		// set music box to control the volume
-		mb = new MusicBox(gc);
 
 	}
 
@@ -57,6 +55,9 @@ public class Options extends BasicGameState {
 		// get the mouse coordinates
 		float mousex = input.getMouseX();
 		float mousey = input.getMouseY();
+
+		// draw the background
+		background.draw(0, 0, Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT, new Color(20, 20, 20));
 
 		// set the colour to white
 		g.setColor(Color.white);
@@ -79,8 +80,8 @@ public class Options extends BasicGameState {
 				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH + wh2.getL()
 				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR() && mousey <= Vals.BUTTON_ALIGN_CENTRE_H) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				mb.playPressed();
-				mb.changeSVolumeL(gc);
+				musicBox.playPressed();
+				musicBox.changeSVolumeL(gc);
 			}
 		}
 
@@ -94,8 +95,8 @@ public class Options extends BasicGameState {
 				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f + wh2.getL()
 				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H - wh2.getR() && mousey <= Vals.BUTTON_ALIGN_CENTRE_H) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				mb.playPressed();
-				mb.changeSVolumeR(gc);
+				musicBox.playPressed();
+				musicBox.changeSVolumeR(gc);
 			}
 		}
 
@@ -109,8 +110,8 @@ public class Options extends BasicGameState {
 				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH + wh2.getL()
 				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H && mousey <= Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR()) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				mb.playPressed();
-				mb.changeMVolumeL(gc);
+				musicBox.playPressed();
+				musicBox.changeMVolumeL(gc);
 			}
 		}
 
@@ -123,8 +124,8 @@ public class Options extends BasicGameState {
 				&& mousex <= Vals.BUTTON_ALIGN_CENTRE_W + Vals.BUTTON_WIDTH * 2.5f + wh2.getL()
 				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H && mousey <= Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR()) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				mb.playPressed();
-				mb.changeMVolumeR(gc);
+				musicBox.playPressed();
+				musicBox.changeMVolumeR(gc);
 			}
 		}
 
@@ -142,7 +143,7 @@ public class Options extends BasicGameState {
 				&& mousey >= Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR()
 				&& mousey <= Vals.BUTTON_ALIGN_CENTRE_H + 2 * wh2.getR()) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				mb.playPressed();
+				musicBox.playPressed();
 				gc.setFullscreen(!gc.isFullscreen());
 			}
 		}
@@ -162,7 +163,7 @@ public class Options extends BasicGameState {
 		if (mousex >= arrowRW && mousex <= arrowRW + wh3.getL() && mousey >= Vals.BUTTON_ALIGN_CENTRE_H + wh2.getR()
 				&& mousey <= Vals.BUTTON_ALIGN_CENTRE_H + 2 * wh2.getR()) {
 			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				mb.playPressed();
+				musicBox.playPressed();
 				gc.setFullscreen(!gc.isFullscreen());
 			}
 		}
