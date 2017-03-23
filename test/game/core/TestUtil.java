@@ -29,7 +29,7 @@ public class TestUtil {
      * @param action2 The action to run after the second (true) assertion
      * @param <T> The type of 'val'
      */
-    public static <T> void wrappedTest(T val, Predicate<T> condition, Consumer<T> action1, Consumer<T> action2) {
+    public static <T> void wrapped(T val, Predicate<T> condition, Consumer<T> action1, Consumer<T> action2) {
         assertFalse(condition.test(val));
         action1.accept(val);
         assertTrue(condition.test(val));
@@ -43,7 +43,7 @@ public class TestUtil {
      * @param action The action to run after the first (false) assertion
      * @param <T> The type of 'val'
      */
-    public static <T> void wrappedTest(BooleanSupplier condition, Runnable action) {
+    public static <T> void wrapped(BooleanSupplier condition, Runnable action) {
         assertFalse(condition.getAsBoolean());
         action.run();
         assertTrue(condition.getAsBoolean());
@@ -56,7 +56,7 @@ public class TestUtil {
      * @param action The action to run after the first (false) assertion
      * @param <T> The type of 'val'
      */
-    public static <T> void wrappedTest(T val, Predicate<T> condition, Consumer<T> action) {
+    public static <T> void wrapped(T val, Predicate<T> condition, Consumer<T> action) {
         assertFalse(condition.test(val));
         action.accept(val);
         assertTrue(condition.test(val));

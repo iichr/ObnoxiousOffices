@@ -34,7 +34,7 @@ class MiniGameTest {
 
     @Test
     void addPlayer() {
-        wrappedTest("bob", game::hasPlayer, game::addPlayer, game.getPlayers()::remove);
+        wrapped("bob", game::hasPlayer, game::addPlayer, game.getPlayers()::remove);
     }
 
     @Test
@@ -52,7 +52,7 @@ class MiniGameTest {
 
     @Test
     void ended() {
-        wrappedTest(game::ended, game::end);
+        wrapped(game::ended, game::end);
     }
 
     @Test
@@ -68,7 +68,7 @@ class MiniGameTest {
 
     @Test
     void isPlaying() {
-        wrappedTest("bianca", game::isPlaying, game::addPlayer);
+        wrapped("bianca", game::isPlaying, game::addPlayer);
     }
 
     @Test

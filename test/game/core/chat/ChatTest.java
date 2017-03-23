@@ -23,7 +23,7 @@ class ChatTest {
 
     @Test
     void addMessage() {
-        wrappedTest(new ChatMessage("hi", "me"), m -> chat.getMessages().size() > 0 && chat.getLatestMessages(1).get(0).equals(m), chat::addMessage, chat::removeMessage);
+        wrapped(new ChatMessage("hi", "me"), m -> chat.getMessages().size() > 0 && chat.getLatestMessages(1).get(0).equals(m), chat::addMessage, chat::removeMessage);
     }
 
 }
