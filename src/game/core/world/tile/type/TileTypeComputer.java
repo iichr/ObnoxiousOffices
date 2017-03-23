@@ -58,12 +58,14 @@ public class TileTypeComputer extends TileTypeAction {
 
     @Override
     protected PlayerAction getAction(Player player, Tile tile, InteractionType type) {
-        String owner = getOwningPlayer((MetaTile) tile);
-        if(type.getClass() == InteractionType.InteractionTypeWork.class && owner.equals(player.name))
-            return (player.isAI ? new PlayerActionWorkTimed(player) : new PlayerActionWork(player));
-        else if(type instanceof InteractionType.InteractionTypeHack) {
-            Player target = World.world.getPlayer(((InteractionType.InteractionTypeHack) type).target);
-            return player.isAI ? new PlayerActionHackTimed(player, target) : new PlayerActionHack(player, target);
+        if(!TileTypeComputer.getOnFire((MetaTile) tile)) {
+            String owner = getOwningPlayer((MetaTile) tile);
+            if (type.getClass() == InteractionType.InteractionTypeWork.class && owner.equals(player.name))
+                return (player.isAI ? new PlayerActionWorkTimed(player) : new PlayerActionWork(player));
+            else if (type instanceof InteractionType.InteractionTypeHack) {
+                Player target = World.world.getPlayer(((InteractionType.InteractionTypeHack) type).target);
+                return player.isAI ? new PlayerActionHackTimed(player, target) : new PlayerActionHack(player, target);
+            } else return null;
         } else return null;
     }
 
