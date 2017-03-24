@@ -46,7 +46,7 @@ public class Client {
 			od.flush();
 
 		} catch (IOException e) {
-			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 

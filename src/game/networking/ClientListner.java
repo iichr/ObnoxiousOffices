@@ -47,7 +47,7 @@ public class ClientListner extends Thread {
 			}
 			is.close();
 		} catch (IOException e) {
-			System.err.println(e.getMessage());
+			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
