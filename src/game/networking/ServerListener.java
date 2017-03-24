@@ -32,6 +32,7 @@ import game.core.event.player.action.PlayerActionEndedEvent;
 import game.core.event.player.effect.PlayerEffectAddedEvent;
 import game.core.event.player.effect.PlayerEffectElapsedUpdate;
 import game.core.event.player.effect.PlayerEffectEndedEvent;
+import game.core.event.tile.TileMetadataUpdatedEvent;
 import game.core.player.Player;
 import game.core.world.Direction;
 import game.core.world.World;
@@ -98,6 +99,7 @@ public class ServerListener extends Thread {
 		Events.on(ChatMessageReceivedEvent.class, this::forwardInfo);
 		Events.on(PlayerJoinedEvent.class, this::forwardInfo);
 		Events.on(Events.EventPriority.HIGH, PlayerQuitEvent.class, this::forwardInfo);
+		Events.on(TileMetadataUpdatedEvent.class, this::forwardInfo);
 	}
 
 	/**
