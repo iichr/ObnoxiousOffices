@@ -10,6 +10,7 @@ import game.core.player.action.PlayerAction;
 import game.core.player.state.PlayerState;
 import game.core.world.Direction;
 import game.core.world.Location;
+import game.core.world.World;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -115,7 +116,7 @@ public class Player implements Updateable, Serializable {
     }
 
     public void update() {
-        if(getLocation().world.getMiniGame(name) == null) status.update(this);
+        if(World.world.getMiniGame(name) == null) status.update(this);
     }
 
     @Override

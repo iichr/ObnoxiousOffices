@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class PlayerTest {
 
-    public static final Player player = new Player("memer", Direction.SOUTH, new Location(new Coordinates(0, 0, 0), null));
+    public static final Player player = new Player("memer", Direction.SOUTH, new Location(new Coordinates(0, 0, 0)));
 
     @Test
     void move() {
@@ -29,7 +29,7 @@ public class PlayerTest {
 
     @Test
     void setLocation() {
-        Location loc = new Location(0, 0, 0, null);
+        Location loc = new Location(0, 0, 0);
         player.setLocation(loc);
         assertEquals(player.getLocation(), loc);
     }
