@@ -1,5 +1,7 @@
 package game.core.player.action;
 
+import game.core.event.Events;
+import game.core.event.chat.ChatMessageReceivedEvent;
 import game.core.event.minigame.MiniGameEndedEvent;
 import game.core.minigame.MiniGame;
 import game.core.minigame.MiniGameHangman;
@@ -22,6 +24,7 @@ public class PlayerActionHack extends PlayerActionMinigame {
     @Override
     public void start() {
         super.start();
+        Events.trigger(new ChatMessageReceivedEvent("Server", player.name + " is hacking " + target.name), true);
         player.status.actionRepetitions.put(PlayerActionWork.class, 0);
         player.status.actionRepetitions.put(PlayerActionWorkTimed.class, 0);
     }

@@ -1,5 +1,7 @@
 package game.core.event.player;
 
+import game.core.event.Events;
+import game.core.event.chat.ChatMessageReceivedEvent;
 import game.core.player.Player;
 import game.core.world.World;
 
@@ -13,5 +15,6 @@ public class PlayerQuitEvent extends PlayerEvent {
     public PlayerQuitEvent(String playerName) {
         super(playerName);
         player = World.world.getPlayer(playerName);
+        Events.trigger(new ChatMessageReceivedEvent("Server", playerName + " has disconnected"), true);
     }
 }
