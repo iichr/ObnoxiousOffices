@@ -76,12 +76,10 @@ public class ClientListner extends Thread {
 	}
 
 	private void gameFull(GameFullEvent e) {
-		System.out.println("got game full event");
 		connected = false;
 	}
 
 	private void endGame(GameFinishedEvent e) {
-		//TODO the client isn't closing properly
 		connected = false;		
 	}
 }
