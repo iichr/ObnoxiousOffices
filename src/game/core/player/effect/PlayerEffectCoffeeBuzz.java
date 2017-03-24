@@ -15,6 +15,6 @@ public class PlayerEffectCoffeeBuzz extends PlayerEffect {
     @Override
     public void update() {
         super.update();
-        player.status.addToAttribute(PlayerStatus.PlayerAttribute.PRODUCTIVITY, -0.005);
+        player.status.addToAttribute(PlayerStatus.PlayerAttribute.FATIGUE, +0.005);
     }
 }
