@@ -27,14 +27,14 @@ public class PlayerActionWork extends PlayerActionMinigame {
     @Override
     public void onMaxRepetitions() {
         TileTypeComputer.getComputer(player).ifPresent((Tile t) -> {
-            TileTypeComputer.ignite((MetaTile) t);
             player.status.addEffect(new PlayerEffectOnFire((int) Time.ticks(5000), player));
+            TileTypeComputer.ignite((MetaTile) t);
         });
     }
 
     @Override
     public int getMaxRepetitions(Random rand) {
-        return 5;
+        return 2;
     }
 
     @Override
