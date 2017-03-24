@@ -26,7 +26,6 @@ public class PlayerInfo {
     private Image drinkDialogue;
     private Image sleepDialogue;
 	private Image playerIdentifier;
-	private Animation fire;
 
 	/**
 	 * Constructor: sets up variables and reads in the images needed
@@ -52,10 +51,6 @@ public class PlayerInfo {
 		drinkDialogue = new Image(ImageLocations.DRINK_DIALOGUE, false, Image.FILTER_NEAREST);
 		sleepDialogue = new Image(ImageLocations.SLEEP_DIALOGUE, false, Image.FILTER_NEAREST);
 		playerIdentifier = new Image(ImageLocations.PLAYER_IDENTIFIER, false, Image.FILTER_NEAREST);
-		Image onFire = new Image(ImageLocations.ON_FIRE, false, Image.FILTER_NEAREST);
-		SpriteSheet fireSheet = new SpriteSheet(onFire, 600,600);
-		fire = new Animation(fireSheet, 250);
-		fire.setAutoUpdate(true);
 
 	}
 
@@ -90,7 +85,6 @@ public class PlayerInfo {
 				Location inFront = pLocation.forward(p.getFacing());
 				if (inFront.checkBounds()) {
 				    Tile found = inFront.getTile();
-                    showFire(found, visible);
 					TileType type = found.type;
 					Coordinates coords = inFront.coords;
 					checkDialogue(type, coords);
@@ -98,25 +92,6 @@ public class PlayerInfo {
 			}
 		}
 	}
-	/**
-	 * The Computer is ON FIRE!!
-	 * @param found 
-	 * 			The computer tile that is on fire
-	 * @param visible
-	 * 			show the visualize the fire when it is available 
-	 * 
-	 */
-    private void showFire(Tile found, boolean [][] visible){
-		if(found.type.equals(TileType.COMPUTER)) {
-			if (TileTypeComputer.getOnFire((MetaTile) found)) {
-				int x = found.location.coords.x;
-				int y = found.location.coords.y;
-				if (visible[x][y]) {
-					fire.draw((float) x * tileWidth, (float) (y * tileHeight / 2) - tileHeight/4, tileWidth, tileHeight / 2);
-				}
-			}
-		}
-    }
 
 	/**
 	 * Check if the tile has a pop-up

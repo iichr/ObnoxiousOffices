@@ -12,7 +12,7 @@ import org.newdawn.slick.UnicodeFont;
  */
 public interface Vals {
 	
-	public static final String GAME_NAME = "Dev Wars";
+	public static final String GAME_NAME = "DevWars";
 
 	// SCREEN SIZES
 	Dimension screenRes = Toolkit.getDefaultToolkit().getScreenSize();

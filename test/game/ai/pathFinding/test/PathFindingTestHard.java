@@ -67,9 +67,6 @@ public class PathFindingTestHard {
 		int size = ai.getLogic().findPaths(world, ai, "s").get(0).size() - 1;
 		//int sizeEasy = aiEasy.getLogic().findPaths(worldEasy, aiEasy, "b").get(0).size() - 1;
 		
-		System.out.println(sofaLocation);
-		System.out.println(ai.getLogic().findPaths(world, ai, "s").get(0).get(size));
-		
 		assertTrue(sofaLocation.equals(ai.getLogic().findPaths(world, ai, "s").get(0).get(size)));
 		//assertTrue(sofaLocation.equals(ai.getLogic().findPaths(worldEasy, aiEasy, "b").get(0).get(sizeEasy)));
 	}

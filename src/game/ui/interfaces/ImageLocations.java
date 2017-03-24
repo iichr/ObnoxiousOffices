@@ -1,5 +1,7 @@
 package game.ui.interfaces;
 
+import org.newdawn.slick.opengl.Texture;
+
 /**
  * An interface for UI Images
  */
@@ -57,5 +59,8 @@ public interface ImageLocations {
 	
 	// WAITING FOR PLAYERS IMAGE
 	public static final String WAITING = "/res/ui/waiting.png";
+	public static final String WORK = "/res/work.png";
+	public static final String HACK = "/res/hack.png";
+	public static final String SIT = "/res/sit.png";
 
 }

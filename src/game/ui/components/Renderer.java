@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
+import game.core.player.effect.PlayerEffect;
+import game.core.player.effect.PlayerEffectOnFire;
+import org.newdawn.slick.*;
 
 import game.core.event.Events;
 import game.core.event.player.PlayerMovedEvent;
@@ -40,6 +40,10 @@ public class Renderer {
 
 	// player animations
 	private List<PlayerAnimation> playerAnimations;
+
+	private Animation fire;
+	private Image timerBarBase;
+	private Image timerBarFull;
 
 	// boolean toggles
 	private boolean showOverview;
@@ -75,6 +79,15 @@ public class Renderer {
 
 		// add player animations
 		playerAnimations = animatePlayers(world.getPlayers());
+		
+		Image onFire = new Image(ImageLocations.ON_FIRE, false, Image.FILTER_NEAREST);
+		SpriteSheet fireSheet = new SpriteSheet(onFire, 600,600);
+		fire = new Animation(fireSheet, 250);
+		fire.setAutoUpdate(true);
+
+		timerBarBase = new Image(ImageLocations.ACTION_BAR_BASE, false, Image.FILTER_NEAREST);
+		timerBarFull = new Image(ImageLocations.ACTION_BAR_FULL, false, Image.FILTER_NEAREST);
+
 	}
 
 	/**
@@ -105,6 +118,8 @@ public class Renderer {
 
 				// draw the tile at this location
 				drawTile(tileX, tileY, found, visible[x][y]);
+
+				showFire(found, visible);
 
 				// draw any players at this location
 				if (visible[x][y]) {
@@ -176,6 +191,36 @@ public class Renderer {
 		}
 	}
 
+	private void showFire(Tile found, boolean [][] visible){
+		if(found.type.equals(TileType.COMPUTER)) {
+			String playerName = TileTypeComputer.getOwningPlayer((MetaTile) found);
+			Player onFire = world.getPlayer(playerName);
+
+			if(onFire != null) {
+				//check if the owning player has the on fire effect
+				PlayerEffect e = onFire.status.getEffect(PlayerEffectOnFire.class);
+
+				if (e != null) {
+					int x = found.location.coords.x;
+					int y = found.location.coords.y;
+
+					float xLoc = x * tileWidth;
+					float yLoc = ((y + 2) * tileHeight / 2) - tileHeight / 4;
+
+					int activeFor = e.getDuration() - e.getElapsed();
+
+					if (visible[x][y]) {
+						fire.draw(xLoc, yLoc, tileWidth, tileHeight / 2);
+						timerBarBase.draw(xLoc, yLoc + tileWidth / 2, tileWidth, tileHeight / 16);
+						timerBarFull.draw(xLoc, yLoc + tileWidth / 2, xLoc + tileWidth * activeFor / e.getDuration(),
+								yLoc + tileWidth / 2 + tileWidth / 16, 0, 0,
+								timerBarFull.getWidth() * activeFor / e.getDuration(), timerBarFull.getHeight());
+					}
+				}
+			}
+		}
+	}
+
 	/**
 	 * Renders the players in the world
 	 * 
@@ -198,7 +243,7 @@ public class Renderer {
 				PlayerAnimation animation = playerAnimations.get(player.getHair());
 				changeAnimation(player, animation);
 				if (player.status.hasState(PlayerState.sleeping)) {
-					Location right = new Location(new Coordinates(x - 1, y, 0), world);
+					Location right = new Location(new Coordinates(x - 1, y, 0));
 					if (right.checkBounds()) {
 						animation.drawPlayer((x - 1) * tileWidth, (y + 2) * (tileHeight / 2), tileWidth * 2,
 								tileHeight / 2);

@@ -50,6 +50,7 @@ public class LogicEasyTest {
 		assertTrue(fatigeBeforeRefresh > fatigueAfterRefresh);
 	}
 
+	@Test
 	public void testWork() {
 
 		// start updating the world, so we can check the progress, fatigue, etc.
@@ -62,8 +63,7 @@ public class LogicEasyTest {
 		double noWorkProgress = 0;
 		// make ai work
 		ai.getLogic().aiWork(ai);
-		// store the progress of the ai
-		double workProgress = ai.status.getAttribute(PlayerAttribute.FATIGUE);
+		
 		// make sure the ai has had the change to progress before doing the
 		// assertion
 		try {
@@ -71,6 +71,9 @@ public class LogicEasyTest {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		// store the progress of the ai
+		double workProgress = ai.getProgress();
+		
 		assertTrue(noWorkProgress < workProgress);
 	}
 

@@ -11,19 +11,17 @@ import java.io.Serializable;
 public class Location implements Serializable {
 
     public final Coordinates coords;
-    public final World world;
 
-    public Location(int x, int y, int z, World world) {
-        this(new Coordinates(x, y, z), world);
+    public Location(int x, int y, int z) {
+        this(new Coordinates(x, y, z));
     }
 
-    public Location(int x, int y, World world) {
-        this(x, y, 0, world);
+    public Location(int x, int y) {
+        this(x, y, 0);
     }
 
-    public Location(Coordinates coordinates, World world) {
+    public Location(Coordinates coordinates) {
         this.coords = coordinates;
-        this.world = world;
     }
 
     public Location forward(Direction facing) {
@@ -36,15 +34,15 @@ public class Location implements Serializable {
     }
 
     public void setTile(Tile tile) {
-        world.setTile(coords, tile);
+        World.world.setTile(coords, tile);
     }
 
     public Tile getTile() {
-        return world.getTile(coords);
+        return World.world.getTile(coords);
     }
 
     public boolean checkBounds() {
-        return world.checkBounds(coords);
+        return World.world.checkBounds(coords);
     }
 
     @Override
@@ -55,27 +53,26 @@ public class Location implements Serializable {
         Location location = (Location) o;
 
         if (coords != null ? !coords.equals(location.coords) : location.coords != null) return false;
-        return world != null ? world.equals(location.world) : location.world == null;
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = coords != null ? coords.hashCode() : 0;
-        result = 31 * result + (world != null ? world.hashCode() : 0);
         return result;
     }
 
     public Location diff(Location location) {
         Coordinates coords2 = coords.diff(location.coords);
-        return new Location(coords2, world);
+        return new Location(coords2);
     }
 
     public Location add(int dX, int dY, int dZ) {
-        return new Location(coords.add(dX, dY, dZ), world);
+        return new Location(coords.add(dX, dY, dZ));
     }
 
     public Location neg() {
-        return new Location(coords.neg(), world);
+        return new Location(coords.neg());
     }
 
 }

@@ -11,6 +11,8 @@ import game.core.event.tile.*;
 import game.core.minigame.MiniGame;
 import game.core.player.Player;
 import game.core.world.*;
+import game.core.world.tile.MetaTile;
+import game.core.world.tile.Tile;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -39,6 +41,7 @@ public class ClientSync {
         Events.on(PlayerQuitEvent.class, ClientSync::onPlayerQuit);
 
         Events.on(TileChangedEvent.class, ClientSync::onTileChanged);
+        Events.on(TileMetadataUpdatedEvent.class, ClientSync::onTileMetadataUpdate);
 
         Events.on(MiniGameStartedEvent.class, ClientSync::onMiniGameStarted);
         Events.on(MiniGameEndedEvent.class, ClientSync::onMiniGameEnded);
@@ -46,6 +49,11 @@ public class ClientSync {
         Events.on(MiniGameVarChangedEvent.class, ClientSync::onMiniGameVarChanged);
 
         Events.on(ChatMessageReceivedEvent.class, ClientSync::onChatMessageReceived);
+    }
+
+    private static void onTileMetadataUpdate(TileMetadataUpdatedEvent event) {
+        Tile tile = World.world.getTile(event.tile);
+        if(tile instanceof MetaTile) ((MetaTile) tile).metadata.setVar(event.var, event.val);
     }
 
     private static void onPlayerQuit(PlayerQuitEvent event) {
@@ -101,7 +109,7 @@ public class ClientSync {
     }
 
     private static void onPlayerMoved(PlayerMovedEvent event) {
-        actOnPlayer(event.playerName, player -> player.setLocation(new Location(event.coords, player.getLocation().world)));
+        actOnPlayer(event.playerName, player -> player.setLocation(new Location(event.coords)));
     }
 
     private static void onPlayerAttributeChanged(PlayerAttributeChangedEvent event) {

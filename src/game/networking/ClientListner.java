@@ -19,9 +19,7 @@ public class ClientListner extends Thread {
 
 	/**
 	 * Starts the client listener
-	 * 
-	 * @param server-
-	 *            The socket it is connected two
+	 * @param server- The socket it is connected two
 	 */
 	public ClientListner(Socket server) {
 		this.server = server;
@@ -47,7 +45,7 @@ public class ClientListner extends Thread {
 			}
 			is.close();
 		} catch (IOException e) {
-			System.err.println(e.getMessage());
+			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -74,12 +72,18 @@ public class ClientListner extends Thread {
 		});
 		manageInputs.start();
 	}
-
+	/**
+	 * Disconnects client from game if game is full
+	 * @param e
+	 */
 	private void gameFull(GameFullEvent e) {
 		System.out.println("got game full event");
 		connected = false;
 	}
-
+	/**
+	 * Disconnects client from game if game is full
+	 * @param e
+	 */
 	private void endGame(GameFinishedEvent e) {
 		//TODO the client isn't closing properly
 		connected = false;		

@@ -174,11 +174,11 @@ public class World implements Updateable, Serializable {
         String[][] tileStrings = new String[worldLines.length][];
         for (int j = 0; j < tileStrings.length; j++) tileStrings[j] = worldLines[j].split(",");
         int sizeX = Arrays.stream(tileStrings).mapToInt(a -> a.length).min().orElse(0), sizeZ = 1;
-        World world = new World(maxPlayers, sizeX, tileStrings.length, sizeZ);
+        World world = (World.world = new World(maxPlayers, sizeX, tileStrings.length, sizeZ));
         IntStream.range(0, tileStrings.length).forEach(y -> {
             IntStream.range(0, sizeX).forEach(x -> {
                 TilePrototype p = aliases.get(tileStrings[y][x]);
-                Collection<Tile> tiles = p.type.getTiles(new Location(x, y, 0, world), p.facing);
+                Collection<Tile> tiles = p.type.getTiles(new Location(x, y, 0), p.facing);
                 tiles.forEach(t -> {
                     Tile currTile = t.location.getTile();
                     // Ensure that non-multitiles don't overwrite multitiles
@@ -190,7 +190,7 @@ public class World implements Updateable, Serializable {
         Arrays.stream(spawnLines).forEach(l -> {        	
             try {
 				int[] coords = Arrays.stream(l.split(",")).mapToInt(Integer::parseInt).toArray();
-				world.addSpawnPoint(new Location(coords[0], coords[1], coords[2], world));
+				world.addSpawnPoint(new Location(coords[0], coords[1], coords[2]));
 			} catch (NumberFormatException e) {
 				System.err.println("The level file contains empty lines, please remove them");
 			}
