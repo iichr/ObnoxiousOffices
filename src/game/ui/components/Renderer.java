@@ -196,7 +196,7 @@ public class Renderer {
 			String playerName = TileTypeComputer.getOwningPlayer((MetaTile) found);
 			Player onFire = world.getPlayer(playerName);
 
-			if(player != null) {
+			if(onFire != null) {
 				//check if the owning player has the on fire effect
 				PlayerEffect e = onFire.status.getEffect(PlayerEffectOnFire.class);
 
