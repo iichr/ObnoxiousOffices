@@ -18,13 +18,11 @@ public class PlayerEffectOnFire extends PlayerEffect {
     @Override
     public void update() {
         super.update();
-        System.out.printf("onFire.update %d/%d%n", getElapsed(), getDuration());
     }
 
     @Override
     public void end() {
         super.end();
-        System.out.println("onFire.end");
         TileTypeComputer.getComputer(player).ifPresent(t -> TileTypeComputer.extinguish((MetaTile) t));
     }
 }

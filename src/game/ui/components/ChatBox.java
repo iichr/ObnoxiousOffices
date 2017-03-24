@@ -46,7 +46,7 @@ public class ChatBox {
 		typer.setBackgroundColor(Color.transparent);
 		typer.setMaxLength(50);
 		typer.setText(message);
-
+		typer.setTextColor(Color.white);
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class ChatBox {
 	public void update(GameContainer gc, String localPlayerName) {
 		Input input = gc.getInput();
 		if (input.isKeyPressed(Input.KEY_ENTER)) {
-			if (!typer.getText().isEmpty()&&!typer.getText().equals(message)) {
+			if (!typer.getText().isEmpty() && !typer.getText().equals(message)) {
 				chat.sendMessage(new ChatMessage(typer.getText(), localPlayerName));
 			}
 			toggleFocus();
