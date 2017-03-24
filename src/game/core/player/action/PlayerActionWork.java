@@ -20,26 +20,32 @@ import java.util.Random;
  */
 public class PlayerActionWork extends PlayerActionMinigame {
 
+    boolean doFire = false;
+
     public PlayerActionWork(Player player) {
         super(player);
     }
 
     @Override
     public void onMaxRepetitions() {
-        TileTypeComputer.getComputer(player).ifPresent((Tile t) -> {
-            player.status.addEffect(new PlayerEffectOnFire((int) Time.ticks(5000), player));
-            TileTypeComputer.ignite((MetaTile) t);
-        });
+        doFire = true;
     }
 
     @Override
     public int getMaxRepetitions(Random rand) {
-        return 2;
+        return 3;
     }
 
     @Override
     public void end(MiniGameEndedEvent event) {
         super.end(event);
+        if (doFire) {
+            TileTypeComputer.getComputer(player).ifPresent(t -> {
+                player.status.addEffect(new PlayerEffectOnFire((int) Time.ticks(5000), player));
+                TileTypeComputer.ignite((MetaTile) t);
+            });
+            doFire = false;
+        }
         if(event != null && event.victor.equals(player.name)) player.addProgress();
     }
 

@@ -174,7 +174,7 @@ public class World implements Updateable, Serializable {
         String[][] tileStrings = new String[worldLines.length][];
         for (int j = 0; j < tileStrings.length; j++) tileStrings[j] = worldLines[j].split(",");
         int sizeX = Arrays.stream(tileStrings).mapToInt(a -> a.length).min().orElse(0), sizeZ = 1;
-        World world = new World(maxPlayers, sizeX, tileStrings.length, sizeZ);
+        World world = (World.world = new World(maxPlayers, sizeX, tileStrings.length, sizeZ));
         IntStream.range(0, tileStrings.length).forEach(y -> {
             IntStream.range(0, sizeX).forEach(x -> {
                 TilePrototype p = aliases.get(tileStrings[y][x]);
@@ -187,9 +187,13 @@ public class World implements Updateable, Serializable {
             });
         });
 
-        Arrays.stream(spawnLines).forEach(l -> {
-            int[] coords = Arrays.stream(l.split(",")).mapToInt(Integer::parseInt).toArray();
-            world.addSpawnPoint(new Location(coords[0], coords[1], coords[2]));
+        Arrays.stream(spawnLines).forEach(l -> {        	
+            try {
+				int[] coords = Arrays.stream(l.split(",")).mapToInt(Integer::parseInt).toArray();
+				world.addSpawnPoint(new Location(coords[0], coords[1], coords[2]));
+			} catch (NumberFormatException e) {
+				System.err.println("The level file contains empty lines, please remove them");
+			}
         });
         return world;
     }
