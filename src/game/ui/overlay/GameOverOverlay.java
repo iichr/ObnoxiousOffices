@@ -57,8 +57,8 @@ public class GameOverOverlay extends PopUpOverlay {
 			playerNumber++;
 		}
 
-		wg.drawCenter(g, "PRESS ANY KEY TO EXIT", x + width / 2, y + height / 2 + height / 3, true, scale / 3);
-		if (input.isKeyPressed(Keyboard.getEventKey())) {
+		wg.drawCenter(g, "PRESS ESC TO EXIT", x + width / 2, y + height / 2 + height / 3, true, scale / 3);
+		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
 			sbg.enterState(Vals.MENU_STATE);
 		}
 
