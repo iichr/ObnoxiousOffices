@@ -101,7 +101,7 @@ public class Rules extends BasicGameState {
 		
 		int start = Vals.SCREEN_HEIGHT / 6;
 		for (int i = 0; i < imgs.length; i++) {
-			imgs[i].draw(Vals.SCREEN_WIDTH / 8, start);
+			imgs[i].draw(Vals.SCREEN_WIDTH / 9, start);
 			start += padding;
 		}
 	}
