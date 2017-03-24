@@ -77,15 +77,14 @@ public class TileTypeComputer extends TileTypeAction {
     }
 
     public static Optional<Tile> getComputer(Player player) {
-        World world = player.getLocation().world;
-        List<Tile> computers = world.getTiles(TileTypeComputer.class);
+        List<Tile> computers = World.world.getTiles(TileTypeComputer.class);
         return computers.stream().filter(c -> getOwningPlayer((MetaTile) c).equals(player.name)).findFirst();
     }
 
     public static Tile getChair(Player player) {
         Optional<Tile> computer = getComputer(player);
         if(computer.isPresent()) {
-            List<Tile> neighbours = player.getLocation().world.getNeighbours(computer.get());
+            List<Tile> neighbours = World.world.getNeighbours(computer.get());
             return neighbours.stream().filter(t -> t.type.equals(TileType.CHAIR)).findFirst().orElse(null);
         }
         return null;
