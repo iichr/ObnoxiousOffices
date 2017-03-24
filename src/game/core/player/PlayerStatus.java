@@ -16,6 +16,7 @@ import game.core.player.state.PlayerState;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class PlayerStatus implements Serializable {
     private Map<PlayerAttribute, Double> attributes = new HashMap<>();
     private Map<PlayerAttribute, Integer> attributeUpdateCounter = new HashMap<>();
     private Set<PlayerState> states = new HashSet<>();
-    public final Set<PlayerAction> actions = new HashSet<>();
+    public final Set<PlayerAction> actions = ConcurrentHashMap.newKeySet();
     private final List<PlayerEffect> effects = new ArrayList<>();
     public final Player player;
     public boolean initialising = true;
@@ -98,7 +99,9 @@ public class PlayerStatus implements Serializable {
     }
 
     public <T extends PlayerAction> boolean hasAction(Class<T> actionClass) {
-        return actions.stream().anyMatch(a -> a.getClass() == actionClass);
+        for(PlayerAction a : actions) if (a.getClass() == actionClass) return true;
+        return false;
+        //return actions.stream().anyMatch(a -> a.getClass() == actionClass);
     }
 
     public Set<PlayerAction> getActions() {
