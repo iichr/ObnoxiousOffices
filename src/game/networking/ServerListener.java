@@ -54,12 +54,9 @@ public class ServerListener extends Thread {
 
 	/**
 	 * 
-	 * @param socket-The
-	 *            socket its connected to
-	 * @param connection-The
-	 *            server listeners
-	 * @param world-
-	 *            The game world
+	 * @param socket-The socket its connected to
+	 * @param connection-The server listeners
+	 * @param world- The game world
 	 */
 	public ServerListener(Socket socket, ArrayList<ServerListener> connection, World world) {
 		this.queueWait = new Object();
@@ -164,14 +161,19 @@ public class ServerListener extends Thread {
 			}
 		}
 	}
-
+	/**
+	 * Starts the game by sending event to players and stops the server allowing any more players to connect
+	 */
 	public void startGame() {
 		Server.listen = false;
 		GameStartedEvent gameStart = new GameStartedEvent(world);
 		sendToAllClients(gameStart);
 		Events.trigger(gameStart);
 	}
-
+	/**
+	 * Removes client from connections list and closes the socket
+	 * @throws IOException
+	 */
 	private void stopRunning() throws IOException {
 		if (running) {
 			outputThread.interrupt();
@@ -184,9 +186,7 @@ public class ServerListener extends Thread {
 
 	/**
 	 * Sends info to all clients
-	 * 
-	 * @param obj-The
-	 *            info to send
+	 * @param obj-The info to send
 	 */
 	public void sendToAllClients(Object obj) {
 		for (int i = 0; i < this.connections.size(); i++) {
@@ -196,9 +196,7 @@ public class ServerListener extends Thread {
 
 	/**
 	 * Forwards the info to one client
-	 * 
-	 * @param recieved-
-	 *            The info to send
+	 * @param recieved-The info to send
 	 */
 	private void forwardInfo(Object recieved) {
 		outputQ.offer(recieved);
@@ -249,9 +247,7 @@ public class ServerListener extends Thread {
 
 	/**
 	 * Adds a player to the game.
-	 * 
-	 * @param name-The
-	 *            name of the player to add.
+	 * @param name-The name of the player to add.
 	 */
 	private void addPlayerToGame(String name) {
 		if (this.playerNameUsed(name)) {
@@ -270,7 +266,6 @@ public class ServerListener extends Thread {
 
 	/**
 	 * Adds ai to the game
-	 * 
 	 * @param playerToAdd
 	 */
 	public void addAIToGame(Player playerToAdd) {
@@ -282,9 +277,7 @@ public class ServerListener extends Thread {
 
 	/**
 	 * Check to see if the player name has been used
-	 * 
-	 * @param name-The
-	 *            name to check
+	 * @param name-The name to check
 	 * @return Whether or not the name is being used
 	 */
 	private boolean playerNameUsed(String name) {
@@ -298,9 +291,7 @@ public class ServerListener extends Thread {
 
 	/**
 	 * Close the connection when the game ends
-	 * 
-	 * @param recieved-
-	 *            Object received from the game closed event
+	 * @param recieved- Object received from the game closed event
 	 */
 	private void closeConnection(Object recieved) {
 		forwardInfo(recieved);
