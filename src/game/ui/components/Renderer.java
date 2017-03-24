@@ -192,24 +192,26 @@ public class Renderer {
 	}
 	private void showFire(Tile found, boolean [][] visible){
 		if(found.type.equals(TileType.COMPUTER)) {
-			if (TileTypeComputer.getOnFire((MetaTile) found)) {
+			String playerName = TileTypeComputer.getOwningPlayer((MetaTile) found);
+			Player onFire = world.getPlayer(playerName);
+
+			//check if the owning player has the on fire effect
+			PlayerEffect e = onFire.status.getEffect(PlayerEffectOnFire.class);
+
+			if (e != null) {
 				int x = found.location.coords.x;
 				int y = found.location.coords.y;
 
 				float xLoc = x * tileWidth;
 				float yLoc = ((y + 2) * tileHeight / 2) - tileHeight/4;
-				
-				String playerName = TileTypeComputer.getOwningPlayer((MetaTile) found);
-				Player onFire = world.getPlayer(playerName);
 
-				PlayerEffect e = onFire.status.getEffect(PlayerEffectOnFire.class);
 				int activeFor = e.getDuration() - e.getElapsed();
 
 				if (visible[x][y]) {
 					fire.draw(xLoc, yLoc, tileWidth, tileHeight / 2);
-					timerBarBase.draw(xLoc, yLoc + tileWidth/4, tileWidth, tileHeight / 16);
-					timerBarFull.draw(xLoc, yLoc + tileWidth/4, xLoc + tileWidth * activeFor / e.getDuration(),
-							yLoc + tileWidth/4 + tileWidth/16, 0, 0,
+					timerBarBase.draw(xLoc, yLoc + tileWidth/2, tileWidth, tileHeight / 16);
+					timerBarFull.draw(xLoc, yLoc + tileWidth/2, xLoc + tileWidth * activeFor / e.getDuration(),
+							yLoc + tileWidth/2 + tileWidth/16, 0, 0,
 							timerBarFull.getWidth() * activeFor / e.getDuration(),timerBarFull.getHeight());
 				}
 			}
