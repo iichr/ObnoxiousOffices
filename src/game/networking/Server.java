@@ -21,7 +21,9 @@ import game.core.world.World;
 import game.util.Time;
 
 public class Server {
-	
+	/**
+	 * Makes sure there's a properties file and creates it if it doesn't exist 
+	 */
 	private static File propertiesFile = new File("data/server.properties") {{
 		if (!this.exists()) try {
 			this.createNewFile();
@@ -29,6 +31,10 @@ public class Server {
 			e.printStackTrace();
 		}
 	}};
+	
+	/**
+	 * Loads properties from file
+	 */
 	Properties properties = new Properties() {{
 		try {
 			this.load(new FileInputStream(propertiesFile));
@@ -72,9 +78,7 @@ public class Server {
 
 	/**
 	 * Creates a server socket on the given port
-	 * 
-	 * @param port-
-	 *            The port to create the socket on
+	 * @param port- The port to create the socket on
 	 */
 	private void createSocket(int port) {
 		// Open a server socket:
@@ -135,9 +139,7 @@ public class Server {
 
 	/**
 	 * Update the world
-	 * 
-	 * @param e-
-	 *            Game started event object
+	 * @param e-Game started event object
 	 */
 	private void updateWorld(GameStartedEvent e) {
 		Updater worldUpdater = new Updater(e.world, Time.UPDATE_RATE, true);
@@ -150,7 +152,10 @@ public class Server {
 		}
 		updateThread.start();
 	}
-
+	/**
+	 * Closes server and starts a new one when game ends
+	 * @param recieved
+	 */
 	private void endGame(Object recieved) {
 		try {
 			serverSocket.close();
@@ -162,7 +167,6 @@ public class Server {
 
 	/**
 	 * Main method for starting server
-	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {

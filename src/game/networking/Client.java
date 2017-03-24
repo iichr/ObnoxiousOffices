@@ -37,9 +37,7 @@ public class Client {
 
 	/**
 	 * Sends Data to the server for updating the players
-	 * 
-	 * @param data-
-	 *            The data to end
+	 * @param data- The data to end
 	 */
 	public void sendDataToServer(Object data) {
 		try {
@@ -54,9 +52,7 @@ public class Client {
 	/**
 	 * Attempt to connect to the server when ConnectionAttemptEvent is received
 	 * If it fails then send connectionFailedEvent
-	 * 
-	 * @param event-The
-	 *            ConnectionAttemptEvent
+	 * @param event-The ConnectionAttemptEvent
 	 */
 	public void connectToServer(ConnectionAttemptEvent event) {
 		int port = 8942;
@@ -89,20 +85,26 @@ public class Client {
 
 	/**
 	 * Sets the local player name on PlayerCreatedEvent
-	 * 
-	 * @param e-
-	 *            The playerCreatedEvent
+	 * @param e-The playerCreatedEvent
 	 */
 	public void setLocalPlayer(PlayerCreatedEvent e) {
 		if (Player.localPlayerName.equals("")) {
 			Player.localPlayerName = e.localPlayerName;
 		}
 	}
+	/**
+	 * Disconnects from server if game is full
+	 * @param e
+	 */
 
 	private void gameFull(GameFullEvent e) {
 		System.out.println("got game full event");
 		connected = false;
 	}
+	/**
+	 * Disconnects from server at the end of the game
+	 * @param e
+	 */
 	private void endGame(GameFinishedEvent e){
 		connected = false;
 	}
