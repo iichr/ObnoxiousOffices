@@ -9,6 +9,8 @@ import game.core.world.tile.type.TileTypeComputer;
  * Created by samtebbs on 23/03/2017.
  */
 public class PlayerEffectOnFire extends PlayerEffect {
+    private static final long serialVersionUID = -4438140090215929505L;
+
     public PlayerEffectOnFire(int duration, Player player) {
         super(duration, player);
     }
