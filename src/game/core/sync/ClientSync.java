@@ -109,7 +109,7 @@ public class ClientSync {
     }
 
     private static void onPlayerMoved(PlayerMovedEvent event) {
-        actOnPlayer(event.playerName, player -> player.setLocation(new Location(event.coords, player.getLocation().world)));
+        actOnPlayer(event.playerName, player -> player.setLocation(new Location(event.coords)));
     }
 
     private static void onPlayerAttributeChanged(PlayerAttributeChangedEvent event) {
