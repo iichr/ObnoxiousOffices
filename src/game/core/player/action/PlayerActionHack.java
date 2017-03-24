@@ -23,6 +23,7 @@ public class PlayerActionHack extends PlayerActionMinigame {
     public void start() {
         super.start();
         player.status.actionRepetitions.put(PlayerActionWork.class, 0);
+        player.status.actionRepetitions.put(PlayerActionWorkTimed.class, 0);
     }
 
     @Override
