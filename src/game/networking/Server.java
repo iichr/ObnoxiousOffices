@@ -21,7 +21,7 @@ import game.core.world.World;
 import game.util.Time;
 
 public class Server {
-
+	
 	private static File propertiesFile = new File("data/server.properties") {{
 		if (!this.exists()) try {
 			this.createNewFile();
