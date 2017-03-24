@@ -243,7 +243,7 @@ public class Renderer {
 				PlayerAnimation animation = playerAnimations.get(player.getHair());
 				changeAnimation(player, animation);
 				if (player.status.hasState(PlayerState.sleeping)) {
-					Location right = new Location(new Coordinates(x - 1, y, 0), world);
+					Location right = new Location(new Coordinates(x - 1, y, 0));
 					if (right.checkBounds()) {
 						animation.drawPlayer((x - 1) * tileWidth, (y + 2) * (tileHeight / 2), tileWidth * 2,
 								tileHeight / 2);

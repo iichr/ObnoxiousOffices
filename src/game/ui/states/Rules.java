@@ -29,6 +29,11 @@ public class Rules extends BasicGameState {
 	private String rules;
 	private SpriteSheet allSprites;
 	private Image background;
+	private Image work;
+	private Image hack;
+	private Image sit;
+	private Image imgs[];
+	int padding;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -36,9 +41,12 @@ public class Rules extends BasicGameState {
 		Image back = new Image(ImageLocations.BACK);
 		Image backR = new Image(ImageLocations.BACK_ROLLOVER);
 		backButton = new MenuButton(10.0f, 10.0f, 40, 40, back, backR);
-
+		work = new Image(ImageLocations.WORK);
+		hack = new Image(ImageLocations.HACK);
+		sit = new Image(ImageLocations.SIT);
+		imgs = new Image[] { sit, work, hack };
 		background = new Image(ImageLocations.BACKGROUND, false, Image.FILTER_NEAREST);
-
+		padding = ((Vals.SCREEN_HEIGHT - Vals.SCREEN_HEIGHT / 6) - Vals.SCREEN_HEIGHT / 6) / imgs.length;
 		// Set up fonts
 		ArrayList<UnicodeFont> fontList = new ArrayList<UnicodeFont>();
 		fontList.add(Vals.FONT_RULES);
@@ -74,6 +82,7 @@ public class Rules extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		g.setColor(Color.white);
 
+	
 		// draw the background
 		background.draw(0, 0, Vals.SCREEN_WIDTH, Vals.SCREEN_HEIGHT, new Color(20, 20, 20));
 
@@ -85,9 +94,16 @@ public class Rules extends BasicGameState {
 
 		// add back button
 		backButton.render();
+		
 
 		// do -50 of the first image rendered to account for xline height.
 		drawRules(g, rules, 100);
+		
+		int start = Vals.SCREEN_HEIGHT / 6;
+		for (int i = 0; i < imgs.length; i++) {
+			imgs[i].draw(Vals.SCREEN_WIDTH / 7, start);
+			start += padding;
+		}
 	}
 
 	@Override
