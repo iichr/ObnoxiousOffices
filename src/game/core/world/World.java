@@ -178,7 +178,7 @@ public class World implements Updateable, Serializable {
         IntStream.range(0, tileStrings.length).forEach(y -> {
             IntStream.range(0, sizeX).forEach(x -> {
                 TilePrototype p = aliases.get(tileStrings[y][x]);
-                Collection<Tile> tiles = p.type.getTiles(new Location(x, y, 0, world), p.facing);
+                Collection<Tile> tiles = p.type.getTiles(new Location(x, y, 0), p.facing);
                 tiles.forEach(t -> {
                     Tile currTile = t.location.getTile();
                     // Ensure that non-multitiles don't overwrite multitiles
