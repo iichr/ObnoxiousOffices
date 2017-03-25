@@ -24,10 +24,10 @@ public class Coordinates implements Serializable {
     }
 
     public Coordinates diff(Coordinates coords) {
-        return coords.sub(this);
+        return this.sub(coords);
     }
 
-    private Coordinates sub(Coordinates coordinates) {
+    public Coordinates sub(Coordinates coordinates) {
         return add(coordinates.neg());
     }
 
@@ -45,6 +45,15 @@ public class Coordinates implements Serializable {
         if (x != that.x) return false;
         if (y != that.y) return false;
         return z == that.z;
+    }
+
+    @Override
+    public String toString() {
+        return "Coordinates{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                '}';
     }
 
     @Override
