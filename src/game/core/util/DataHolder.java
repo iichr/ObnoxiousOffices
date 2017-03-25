@@ -20,11 +20,11 @@ public abstract class DataHolder implements Serializable {
         return vars.getOrDefault(var, null);
     }
 
-    protected void addVar(String var, int val) {
+    public void addVar(String var, int val) {
         setVar(var, getIntVar(var) + val);
     }
     
-    protected void addVar(String var, float val) {
+    public void addVar(String var, float val) {
         setVar(var, (float)getVar(var) + val);
     }
 
@@ -33,7 +33,7 @@ public abstract class DataHolder implements Serializable {
         Events.trigger(getUpdateEvent(var, val), true);
     }
 
-    protected void negVar(String var) {
+    public void negVar(String var) {
         setVar(var, -(float)getVar(var));
     }
 
