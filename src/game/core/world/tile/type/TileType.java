@@ -65,10 +65,6 @@ public abstract class TileType implements Serializable {
 
     public abstract void onInteraction(Player player, Tile tile, InteractionType type);
 
-    public static boolean typeExists(char ch) {
-        return types.containsKey(ch);
-    }
-
     public static TileType getType(String symbol) {
         return types.get(symbol);
     }
