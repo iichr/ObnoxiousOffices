@@ -39,7 +39,7 @@ public class ServerSync {
 		Events.on(GameStartedEvent.class, ServerSync::onGameStarted);
 	}
 
-    private static void onGameStarted(GameStartedEvent event) {
+    public static void onGameStarted(GameStartedEvent event) {
         event.world.getPlayers().forEach(player -> {
             // Make player sit on chair and face correct way
             player.setFacing(player.getLocation().getTile().facing);
@@ -47,11 +47,11 @@ public class ServerSync {
         });
     }
 
-	private static void onChatMessageCreated(ChatMessageCreatedEvent event) {
+	public static void onChatMessageCreated(ChatMessageCreatedEvent event) {
 		Events.trigger(event.toChatReceivedEvent());
 	}
 
-    private static void onPlayerInput(PlayerInputEvent event) {
+    public static void onPlayerInput(PlayerInputEvent event) {
         MiniGame playerMiniGame = World.world.getMiniGame(event.playerName);
         if(playerMiniGame != null) playerMiniGame.onInput(event);
         else {
@@ -62,7 +62,7 @@ public class ServerSync {
         }
     }
 
-    private static void processInteraction(InputTypeInteraction type, Player player) {
+    public static void processInteraction(InputTypeInteraction type, Player player) {
 	    if (!player.status.canInteract()) return;
         Tile targetTile = player.getLocation().forward(player.getFacing()).getTile();
         if(targetTile != null) {
@@ -71,7 +71,7 @@ public class ServerSync {
         }
     }
 
-    private static void processMovement(InputType type, Player player) {
+    public static void processMovement(InputType type, Player player) {
 	    if(!player.status.canMove()) return;
         Direction direction = null;
         Location loc = player.getLocation();
