@@ -43,6 +43,10 @@ public class PlayerStatus implements Serializable {
         initialising = false;
     }
 
+    /**
+     * Add a state to the player
+     * @param state the state to add
+     */
     public void addState(PlayerState state) {
         if(!states.contains(state)) {
             states.add(state);
@@ -51,6 +55,10 @@ public class PlayerStatus implements Serializable {
         }
     }
 
+    /**
+     * Remove a state from the player
+     * @param state the state to remove
+     */
     public void removeState(PlayerState state) {
         if(states.contains(state)) {
             states.remove(state);
@@ -59,6 +67,11 @@ public class PlayerStatus implements Serializable {
         }
     }
 
+    /**
+     * Checks if the player has a state
+     * @param state the state to check for
+     * @return true if it does else false
+     */
     public boolean hasState(PlayerState state) {
         return states.stream().anyMatch(s -> state.getClass().isInstance(s));
     }
@@ -74,10 +87,19 @@ public class PlayerStatus implements Serializable {
         }
     }
 
+    /**
+     * Checks if the player has an effect of the given class
+     * @param effectClass the effect class to check for
+     * @return true if it does else false
+     */
     public boolean hasEffect(Class<? extends PlayerEffect> effectClass) {
         return getEffects().stream().anyMatch(effect1 -> effectClass == effect1.getClass());
     }
 
+    /**
+     * Returns a copy of the effect list
+     * @return the copied list
+     */
     public List<PlayerEffect> getEffects() {
         return new ArrayList<>(effects);
     }
@@ -97,10 +119,19 @@ public class PlayerStatus implements Serializable {
         action.start();
     }
 
+    /**
+     * Checks if the player has an action of the class
+     * @param actionClass the action class to check for
+     * @return true if it does else false
+     */
     public <T extends PlayerAction> boolean hasAction(Class<T> actionClass) {
         return actions.stream().anyMatch(a -> a.getClass() == actionClass);
     }
 
+    /**
+     * Returns a copy of the actions list
+     * @return the copied list
+     */
     public Set<PlayerAction> getActions() {
         return new HashSet<>(actions);
     }
@@ -170,11 +201,19 @@ public class PlayerStatus implements Serializable {
         return attributes.getOrDefault(attribute, 0.0);
     }
 
+    /**
+     * Cancel an action
+     * @param action the action to cancel
+     */
     public void cancelAction(PlayerAction action) {
         action.cancel();
         removeAction(action.getClass());
     }
 
+    /**
+     * Remove an action of the given class
+     * @param actionClass the action class to remove
+     */
     public void removeAction(Class<? extends PlayerAction> actionClass) {
         synchronized (actions) {
             Set<PlayerAction> matching = actions.stream().filter(a -> a.getClass() == actionClass).collect(Collectors.toSet());
@@ -185,6 +224,10 @@ public class PlayerStatus implements Serializable {
         }
     }
 
+    /**
+     * Remove an effect of the given class
+     * @param effectClass the effect class to remove
+     */
     public void removeEffect(Class<? extends PlayerEffect> effectClass) {
         synchronized (effects) {
             Set<PlayerEffect> matching = effects.stream().filter(e -> e.getClass() == effectClass).collect(Collectors.toSet());
@@ -195,18 +238,35 @@ public class PlayerStatus implements Serializable {
         }
     }
 
+    /**
+     * returns the list of states
+     * @return the list
+     */
     public Set<PlayerState> getStates() {
         return new HashSet<>(states);
     }
 
+    /**
+     * Get an effect of the given effect class
+     * @param playerEffectClass the effect class
+     * @return the effect if it exists else null
+     */
     public PlayerEffect getEffect(Class<? extends PlayerEffect> playerEffectClass) {
         return getEffects().stream().filter(effect -> effect.getClass() == playerEffectClass).findFirst().orElse(null); // Don't judge me
     }
 
+    /**
+     * Returns true if the player can move
+     * @return true if they can else false
+     */
     public boolean canMove() {
         return actions.stream().allMatch(PlayerAction::allowsMove);
     }
 
+    /**
+     * Returns true if the player can interact with things
+     * @return true if they can else false
+     */
     public boolean canInteract() {
         return actions.stream().allMatch(PlayerAction::allowsInteraction) && effects.stream().allMatch(PlayerEffect::allowsInteraction) && states.stream().allMatch(PlayerState::allowsInteraction);
     }

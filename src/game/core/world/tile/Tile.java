@@ -29,10 +29,19 @@ public class Tile implements Serializable {
         this(location, type, facing, -1);
     }
 
+    /**
+     * {@link TileType#onWalkOver(Player)}
+     * @param player
+     */
     public void onWalkOver(Player player) {
         type.onWalkOver(player);
     }
 
+    /**
+     * {@link TileType#onInteraction(Player, Tile, InteractionType)}
+     * @param player
+     * @param type
+     */
     public void onInteraction(Player player, InteractionType type) {
         this.type.onInteraction(player, this, type);
     }

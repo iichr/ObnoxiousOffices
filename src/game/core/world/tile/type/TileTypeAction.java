@@ -19,6 +19,10 @@ public abstract class TileTypeAction extends TileType {
         super(id);
     }
 
+    /**
+     * Gets all required states before the action is added
+     * @return the states
+     */
     public Collection<PlayerState> getRequiredStates() {
         return new HashSet<>();
     }
@@ -29,5 +33,12 @@ public abstract class TileTypeAction extends TileType {
         if(action != null && !player.status.hasAction(action.getClass()) && getRequiredStates().stream().allMatch(player.status::hasState)) player.status.addAction(action);
     }
 
+    /**
+     * Gets the action to add to the player on interaction
+     * @param player the player
+     * @param tile the tile they interacted with
+     * @param type the interaction type
+     * @return the action to add
+     */
     protected abstract PlayerAction getAction(Player player, Tile tile, InteractionType type);
 }

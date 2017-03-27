@@ -20,6 +20,10 @@ public abstract class PlayerActionMinigame extends PlayerAction {
         super(player);
     }
 
+    /**
+     * Returns the minigame to be started when the action starts
+     * @return the minigame
+     */
     public abstract MiniGame getMiniGame();
 
     @Override
@@ -32,6 +36,9 @@ public abstract class PlayerActionMinigame extends PlayerAction {
 
     }
 
+    /**
+     * Starts the minigame
+     */
     @Override
     public void start() {
         MiniGame miniGame = getMiniGame();

@@ -4,6 +4,8 @@ import game.core.player.action.PlayerAction;
 import game.core.player.action.PlayerActionDrink;
 import game.core.player.action.PlayerActionSleep;
 import game.core.player.effect.PlayerEffectCoffeeBuzz;
+import game.core.player.effect.PlayerEffectOnFire;
+import game.core.player.effect.PlayerEffectSleeping;
 import game.core.player.state.PlayerState;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +28,7 @@ class PlayerStatusTest {
 
     @Test
     void testEffect() {
-        wrapped(new PlayerEffectCoffeeBuzz(100, status.player), e -> status.hasEffect(e.getClass()), status::addEffect, e -> status.removeEffect(e.getClass()));
+        wrapped(new PlayerEffectOnFire(100, status.player), e -> status.hasEffect(e.getClass()), status::addEffect, e -> status.removeEffect(e.getClass()));
     }
 
     @Test

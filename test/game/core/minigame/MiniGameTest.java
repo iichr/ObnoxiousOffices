@@ -1,6 +1,7 @@
 package game.core.minigame;
 
 import game.core.event.minigame.MiniGameEndedEvent;
+import game.core.event.player.PlayerInputEvent;
 import game.core.player.Player;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +20,12 @@ class MiniGameTest {
 
     String player = "sam";
     MiniGame game = new MiniGameHangman(player);
+    MiniGame1Player game2 = new MiniGame1Player("me") {
+        @Override
+        public void onInput(PlayerInputEvent event) {
+
+        }
+    };
 
     @Test
     void addStat() {
@@ -64,6 +71,11 @@ class MiniGameTest {
     void isLocal() {
         Player.localPlayerName = "adam";
         assertFalse(game.isLocal());
+    }
+
+    @Test
+    void update() {
+        game2.update();
     }
 
     @Test

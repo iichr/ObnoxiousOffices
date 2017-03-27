@@ -49,22 +49,53 @@ public abstract class TileType implements Serializable {
         this.id = id;
     }
 
+    /**
+     * Add a tile alias
+     * @param levelSymbol the alias
+     * @param type the tile type
+     * @return true if existed else false
+     */
     public static boolean addTileType(String levelSymbol, TileType type) {
         if(types.containsKey(levelSymbol)) return true;
         types.put(levelSymbol, type);
         return false;
     }
 
+    /**
+     * All tiles that should be placed in the world upon spawning a tile of this type
+     * @param location the location
+     * @param facing the facing
+     * @return the list of all tiles
+     */
     public Collection<Tile> getTiles(Location location, Direction facing) {
         return Collections.singletonList(new Tile(location, this, facing));
     }
 
+    /**
+     * Called when a player walks over a tile
+     * @param player the player
+     */
     public abstract void onWalkOver(Player player);
 
+    /**
+     * Checks if the player can walk over this tile
+     * @return true if the can else false
+     */
     public abstract boolean canWalkOver();
 
+    /**
+     * Called on interaction with a player
+     * @param player the player
+     * @param tile the tile
+     * @param type the interaction type
+     */
     public abstract void onInteraction(Player player, Tile tile, InteractionType type);
 
+    /**
+     * Get the tile type from a tile alias
+     * @param symbol the alias
+     * @return the type
+     */
     public static TileType getType(String symbol) {
         return types.get(symbol);
     }

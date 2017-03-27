@@ -35,11 +35,6 @@ class WorldTest {
     }
 
     @Test
-    void startMiniGame() {
-        wrapped(new MiniGameHangman("bob"), world::hasMiniGame, world::startMiniGame, world::removeMiniGame);
-    }
-
-    @Test
     void getSpawnPoint() {
         assertTrue(IntStream.range(0, numPlayers).mapToObj(world::getSpawnPoint).map(Location::getTile).map(t -> t.type).allMatch(t -> t.equals(TileType.CHAIR)));
     }
@@ -89,16 +84,6 @@ class WorldTest {
     void getTiles() {
         int numComputers = (int) world.getTiles(TileTypeComputer.class).stream().filter(t -> t.type.equals(TileType.COMPUTER)).count();
         assertTrue(numComputers == numPlayers);
-    }
-
-    @Test
-    void playerAt() {
-        wrapped(PlayerTest.player, p -> world.playerAt(p.getLocation()), world::addPlayer, world::removePlayer);
-    }
-
-    @Test
-    void getMiniGame() {
-        wrapped(new MiniGameHangman(PlayerTest.player.name), m -> world.getMiniGame(PlayerTest.player.name) != null, world::startMiniGame, world::removeMiniGame);
     }
 
     @Test

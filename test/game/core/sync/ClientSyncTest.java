@@ -41,6 +41,7 @@ import org.junit.jupiter.api.Test;
 import javax.swing.*;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.function.Consumer;
 
 import static game.core.TestUtil.*;
 
@@ -54,6 +55,7 @@ class ClientSyncTest {
     Player player = PlayerTest.player;
 
     ClientSyncTest() throws IOException {
+        ClientSync.init();
         world.addPlayer(player);
         Player.localPlayerName = player.name;
     }
@@ -154,6 +156,13 @@ class ClientSyncTest {
     void onPlayerActionAdded() {
         PlayerAction action = new PlayerActionDrink(player);
         trigger(action, a -> new PlayerActionAddedEvent(a, player.name), ClientSync::onPlayerActionAdded, a -> player.status.hasAction(a.getClass()));
+    }
+
+    @Test
+    void actOnPlayer() {
+        Consumer<Player> meme = p -> {};
+        ClientSync.actOnPlayer(player.name, addLambda(meme));
+        assertCalled(meme);
     }
 
 }

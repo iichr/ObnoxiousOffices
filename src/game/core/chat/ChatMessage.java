@@ -23,6 +23,10 @@ public class ChatMessage {
         this(message, from, null);
     }
 
+    /**
+     * Checks if the message is private (i.e no specific recipient)
+     * @return true if private, else false
+     */
     public boolean isPrivateMessage() {
         return to != null;
     }
@@ -47,8 +51,12 @@ public class ChatMessage {
         return result;
     }
 
+    /**
+     * Creates a ChatMessageCreatedEvent from this chat message object
+     * @return
+     */
     public ChatMessageCreatedEvent toCreatedEvent() {
-        return to != null ? new ChatMessageCreatedEvent(Player.localPlayerName, to, message) : new ChatMessageCreatedEvent(Player.localPlayerName, message);
+        return to != null ? new ChatMessageCreatedEvent(from, to, message) : new ChatMessageCreatedEvent(from, message);
     }
 
 }

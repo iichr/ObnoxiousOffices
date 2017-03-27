@@ -15,18 +15,39 @@ public class Coordinates implements Serializable {
         this.z = z;
     }
 
+    /**
+     * Add to these coordinates
+     * @param dX the x to add
+     * @param dY the y to add
+     * @param dZ the z to add
+     * @return a new coordinates object with the new values
+     */
     public Coordinates add(int dX, int dY, int dZ) {
         return new Coordinates(x + dX, y + dY, z + dZ);
     }
 
+    /**
+     * Negates these coordinates
+     * @return new coordinates object with new values
+     */
     public Coordinates neg() {
         return new Coordinates(-x, -y, -z);
     }
 
+    /**
+     * {@link Coordinates#sub(Coordinates)}
+     * @param coords
+     * @return
+     */
     public Coordinates diff(Coordinates coords) {
         return this.sub(coords);
     }
 
+    /**
+     * Subtracts the argument's coordinates from this one
+     * @param coordinates
+     * @return
+     */
     public Coordinates sub(Coordinates coordinates) {
         return add(coordinates.neg());
     }
