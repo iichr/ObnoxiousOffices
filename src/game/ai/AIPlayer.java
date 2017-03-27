@@ -111,7 +111,7 @@ public class AIPlayer extends Player {
 		AIPlayer player = new AIPlayer(event.player);
 		World.world.removePlayer(event.player);
 		World.world.addPlayer(player);
-		Events.trigger(new PlayerJoinedEvent(player.name, player), true);
+		Events.trigger(new PlayerJoinedEvent(player), true);
 		player.getLogic().findChair(World.world, player);
 		player.getLogic().aiWork(player);
 	}
