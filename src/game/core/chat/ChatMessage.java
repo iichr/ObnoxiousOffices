@@ -30,21 +30,20 @@ public class ChatMessage {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ChatMessage)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ChatMessage that = (ChatMessage) o;
 
         if (!message.equals(that.message)) return false;
         if (!from.equals(that.from)) return false;
-        return to.equals(that.to);
-
+        return to != null ? to.equals(that.to) : that.to == null;
     }
 
     @Override
     public int hashCode() {
         int result = message.hashCode();
         result = 31 * result + from.hashCode();
-        result = 31 * result + to.hashCode();
+        result = 31 * result + (to != null ? to.hashCode() : 0);
         return result;
     }
 
