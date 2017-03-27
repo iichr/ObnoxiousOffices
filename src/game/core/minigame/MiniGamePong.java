@@ -23,10 +23,19 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
 		newRound();
 	}
 
+	/**
+	 * Get the position of the ball
+	 * @return a pair of x and y coords
+	 */
 	public Pair<Float, Float> getBallPos() {
 		return new Pair<>((float) getVar(X_POS), (float) getVar(Y_POS));
 	}
 
+	/**
+	 * Get the position of a player's paddle
+	 * @param player the player
+	 * @return a pair of x and y coords
+	 */
 	public Pair<Float, Float> getPlayerPos(String player) {
 		return new Pair<>((float) getStat(player, X_POS), (float) getStat(player, Y_POS));
 	}
@@ -58,7 +67,14 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
 		}
 	}
 
-	private void checkPaddleBounce(String player, boolean left, float ballX, float ballY) {
+	/**
+	 * Checks for a bounce between the ball and a player's paddle
+	 * @param player the player
+	 * @param left if they are the player on the left
+	 * @param ballX ball x coord
+	 * @param ballY ball y coord
+	 */
+	public void checkPaddleBounce(String player, boolean left, float ballX, float ballY) {
 		float playerX = (float) getStat(player, X_POS), playerY = (float) getStat(player, Y_POS);
 		float yDiff = ballY - (playerY + PADDLE_LEN / 2);
 		if (((ballX + BALL_SIZE / 2 >= playerX && !left) || (ballX - BALL_SIZE / 2 <= playerX && left))
@@ -69,14 +85,23 @@ public class MiniGamePong extends MiniGame2Player implements Serializable {
 		}
 	}
 
-	private void bounceBall(String varToNegate, String otherVer, float velVal) {
+	/**
+	 * Perform a ball bouncd
+	 * @param varToNegate the velocity variable to negate
+	 * @param otherVer the opposite velocity variable
+	 * @param velVal the new velocity
+	 */
+	public void bounceBall(String varToNegate, String otherVer, float velVal) {
 		negVar(varToNegate);
 		if (otherVer != null) {
 			setVar(otherVer, velVal / 5);
 		}
 	}
 
-	private void newRound() {
+	/**
+	 * Reset variables and stats and start a new round
+	 */
+	public void newRound() {
 		Random r = new Random();
 		float xVel = 1.0f;
 		float yVel = r.nextFloat() - 0.5f;

@@ -9,6 +9,11 @@ public class Updater implements Runnable {
 
     public final Updateable updateable;
     public final long rateMilliseconds;
+
+    public long getLastUpdate() {
+        return lastUpdate;
+    }
+
     private long lastUpdate = 0;
     private boolean run;
 
@@ -43,4 +48,7 @@ public class Updater implements Runnable {
         this.lastUpdate = 0;
     }
 
+    public boolean running() {
+        return run;
+    }
 }

@@ -8,8 +8,8 @@ import game.core.player.Player;
 public class PlayerJoinedEvent extends PlayerEvent {
     public final Player player;
 
-    public PlayerJoinedEvent(String playerName, Player player) {
-        super(playerName);
+    public PlayerJoinedEvent(Player player) {
+        super(player.name);
         this.player = player;
     }
 }

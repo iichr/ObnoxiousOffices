@@ -133,14 +133,26 @@ public class MiniGameHangman extends MiniGame1Player {
         }
     }
 
+    /**
+     * Get the word including underscores for unguessed characters
+     * @return the guessed word
+     */
     public String getDisplayWord() {
         return (String)getVar(PROGRESS);
     }
 
+    /**
+     * Get the string of entered characters
+     * @return the string of entered characters
+     */
     public String getEntered() {
         return (String) getVar(ENTERED);
     }
 
+    /**
+     * Gets the number of wrong attempts left
+     * @return the number of wrong attempts left
+     */
     public int getAttemptsLeft() {
     	
         return MAX_WRONG - getIntVar(WRONG)<=0?0:MAX_WRONG - getIntVar(WRONG);

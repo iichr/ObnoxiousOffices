@@ -1,13 +1,18 @@
 package game.core;
 
+import game.core.event.Event;
+import game.core.event.tile.TileMetadataUpdatedEvent;
+import game.core.sync.ClientSync;
+import game.core.util.Coordinates;
+import game.core.world.tile.MetaTile;
+import game.core.world.tile.metadata.ComputerMetadata;
+import game.core.world.tile.type.TileTypeComputer;
+import game.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
+import javax.crypto.interfaces.PBEKey;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.Stream;
 
 import game.util.Pair;
 
@@ -19,6 +24,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestUtil {
 
     private static List<Object> lambdas = new ArrayList<>();
+
+    public static <T, E extends Event> void trigger(T val, Function<T, E> eventFunc, Consumer<E> listener, Predicate<T> condition) {
+        listener.accept(eventFunc.apply(val));
+        assertTrue(condition.test(val));
+    }
 
     /**
      * Asserts false on the condition, eecutes action1, asserts true on the condition, excutes action2 then asserts false on the condition.

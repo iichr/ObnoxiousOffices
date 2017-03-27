@@ -7,6 +7,10 @@ import java.io.Serializable;
  */
 public abstract class InputType implements Serializable {
 
+    /**
+     * True if is a movement input type
+     * @return
+     */
     public abstract boolean isMovement();
 
 }

@@ -22,6 +22,9 @@ public abstract class TimedPlayerAction extends PlayerAction implements Serializ
         if (ended()) end();
     }
 
+    /**
+     * Called each update
+     */
     protected abstract void timedUpdate();
 
     @Override
@@ -29,18 +32,32 @@ public abstract class TimedPlayerAction extends PlayerAction implements Serializ
         startCounter(getDuration());
     }
 
+    /**
+     * Returns the action's duration
+     * @return
+     */
     protected abstract int getDuration();
 
+    /**
+     * Cancels the action
+     */
     @Override
     public void cancel() {
         end();
     }
 
+    /**
+     * Ends the action
+     */
     @Override
     public void end() {
         stopCounter();
     }
 
+    /**
+     * Checks if the action has ended based on the counter
+     * @return
+     */
     @Override
     public boolean ended() {
         return counterEnded();

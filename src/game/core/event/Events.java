@@ -17,6 +17,11 @@ public class Events {
 
     private static final Map<Class<? extends Event>, Map<EventPriority, List<Consumer>>> subscribers = new HashMap<>();
 
+    /**
+     * Trigger an event and its listeners
+     * @param event the event to trigger
+     * @param <T> the type of the event
+     */
     public static <T extends Event> void trigger(T event) {
         if(subscribers.containsKey(event.getClass())) {
             Map<EventPriority, List<Consumer>> consumers = subscribers.get(event.getClass());
@@ -28,6 +33,13 @@ public class Events {
         c.accept(event);
     }
 
+    /**
+     * Register an event listener
+     * @param priority the listener's priority
+     * @param eventClass the class of the event to listen for
+     * @param method the consumer to invoke when the event is triggered
+     * @param <T> the type of the event
+     */
     public static <T extends Event> void on(EventPriority priority, Class<T> eventClass, Consumer<T> method) {
         if(subscribers.containsKey(eventClass)) subscribers.get(eventClass).get(priority).add(method);
         else {
@@ -39,10 +51,21 @@ public class Events {
         }
     }
 
+    /**
+     * Same as {@link Events#on(EventPriority, Class, Consumer)} but with medium priority
+     * @param eventClass the class of the event to listen for
+     * @param method the consumer to invoke when the event is triggered
+     * @param <T> the type of the event
+     */
     public static <T extends Event> void on(Class<T> eventClass, Consumer<T> method) {
         on(EventPriority.MEDIUM, eventClass, method);
     }
 
+    /**
+     * {@link Events#trigger(Event)} but only server-side
+     * @param event the event to trigger
+     * @param <T> the type of the event
+     */
     public static void trigger(Event event, boolean serverSide) {
         if(serverSide ^ ClientSync.isClient) trigger(event);
     }
