@@ -12,6 +12,7 @@ class InputTypeTest {
     void isMovement() {
         assertTrue(new InputTypeMovement(MovementType.MOVE_DOWN).isMovement());
         assertFalse(new InputTypeCharacter('c').isMovement());
+        assertFalse(new InputTypeInteraction(new InteractionType.InteractionTypeOther()).isMovement());
     }
 
 }
