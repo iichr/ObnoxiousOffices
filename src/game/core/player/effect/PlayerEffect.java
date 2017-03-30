@@ -32,14 +32,26 @@ public abstract class PlayerEffect implements PlayerCondition, Serializable {
         }
     }
 
+    /**
+     * The duration of the effect
+     * @return
+     */
     public int getDuration() {
         return duration;
     }
 
+    /**
+     * The elapsed time
+     * @return
+     */
     public int getElapsed() {
         return elapsed;
     }
 
+    /**
+     * Checks if the effect has expired
+     * @return
+     */
     public boolean ended() {
         return expired;
     }
@@ -59,6 +71,10 @@ public abstract class PlayerEffect implements PlayerCondition, Serializable {
         expired = true;
     }
 
+    /**
+     * Set the effect's elapsed time
+     * @param elapsed
+     */
     public void setElapsed(int elapsed) {
         this.elapsed = elapsed;
         if(++updates >= UPDATE_THRESHOLD) {

@@ -51,92 +51,94 @@ public class ClientSync {
         Events.on(ChatMessageReceivedEvent.class, ClientSync::onChatMessageReceived);
     }
 
-    private static void onTileMetadataUpdate(TileMetadataUpdatedEvent event) {
+    public static void onTileMetadataUpdate(TileMetadataUpdatedEvent event) {
         Tile tile = World.world.getTile(event.tile);
         if(tile instanceof MetaTile) ((MetaTile) tile).metadata.setVar(event.var, event.val);
     }
 
-    private static void onPlayerQuit(PlayerQuitEvent event) {
+    public static void onPlayerQuit(PlayerQuitEvent event) {
         World.world.removePlayer(World.world.getPlayer(event.playerName));
     }
 
-    private static void onPlayerJoined(PlayerJoinedEvent event) {
+    public static void onPlayerJoined(PlayerJoinedEvent event) {
         World.world.addPlayer(event.player);
     }
 
-    private static void onMiniGameVarChanged(MiniGameVarChangedEvent event) {
+    public static void onMiniGameVarChanged(MiniGameVarChangedEvent event) {
         if(MiniGame.localMiniGame != null && MiniGame.localMiniGame.isPlaying(event.playerName)) MiniGame.localMiniGame.setVar(event.var, event.val);
     }
 
-    private static void onMiniGameStatChanged(MiniGameStatChangedEvent event) {
-        if(MiniGame.localMiniGame != null && MiniGame.localMiniGame.isPlaying(event.player)) MiniGame.localMiniGame.setStat(event.player, event.stat, event.val);
+    public static void onMiniGameStatChanged(MiniGameStatChangedEvent event) {
+        if(MiniGame.localMiniGame != null && MiniGame.localMiniGame.isPlaying(event.player)) {
+            MiniGame.localMiniGame.setStat(event.player, event.stat, event.val);
+        }
     }
 
-    private static void onPlayerEffectElapsedUpdate(PlayerEffectElapsedUpdate event) {
+    public static void onPlayerEffectElapsedUpdate(PlayerEffectElapsedUpdate event) {
         actOnPlayer(event.playerName, p-> p.status.getEffects().stream().filter(e -> e.getClass() == event.effectClass).findAny().ifPresent(effect -> effect.setElapsed(event.elapsed)));
     }
 
-    private static void onPlayerStateAdded(PlayerStateAddedEvent event) {
+    public static void onPlayerStateAdded(PlayerStateAddedEvent event) {
         actOnPlayer(event.playerName, p -> p.status.addState(event.state));
     }
 
-    private static void onPlayerStateRemoved(PlayerStateRemovedEvent event) {
+    public static void onPlayerStateRemoved(PlayerStateRemovedEvent event) {
         actOnPlayer(event.playerName, p -> p.status.removeState(event.state));
     }
 
-    private static void onChatMessageReceived(ChatMessageReceivedEvent event) {
+    public static void onChatMessageReceived(ChatMessageReceivedEvent event) {
         Chat.chat.addMessage(event.toChatMessage());
     }
 
-    private static void onMiniGameEnded(MiniGameEndedEvent event) {
+    public static void onMiniGameEnded(MiniGameEndedEvent event) {
         if(event.isLocal()) MiniGame.localMiniGame = null;
     }
 
-    private static void onMiniGameStarted(MiniGameStartedEvent event) {
+    public static void onMiniGameStarted(MiniGameStartedEvent event) {
         if(event.game.isLocal()) MiniGame.localMiniGame = event.game;
     }
 
-    private static void onTileChanged(TileChangedEvent event) {
+    public static void onTileChanged(TileChangedEvent event) {
         getWorld().setTile(event.x, event.y, event.z, event.tile);
     }
 
-    private static World getWorld() {
+    public static World getWorld() {
         return World.world;
     }
 
-    private static void onPlayerRotated(PlayerRotatedEvent event) {
+    public static void onPlayerRotated(PlayerRotatedEvent event) {
         actOnPlayer(event.playerName, p -> p.setFacing(event.newFacing));
     }
 
-    private static void onPlayerMoved(PlayerMovedEvent event) {
+    public static void onPlayerMoved(PlayerMovedEvent event) {
         actOnPlayer(event.playerName, player -> player.setLocation(new Location(event.coords)));
     }
 
-    private static void onPlayerAttributeChanged(PlayerAttributeChangedEvent event) {
+    public static void onPlayerAttributeChanged(PlayerAttributeChangedEvent event) {
         actOnPlayer(event.playerName, p -> p.status.setAttribute(event.attribute, event.newVal));
     }
     
-    private static void onPlayerProgressUpdate(PlayerProgressUpdateEvent event) {
+    public static void onPlayerProgressUpdate(PlayerProgressUpdateEvent event) {
         actOnPlayer(event.playerName, p -> p.setProgress(event.newVal));
     }
 
-    private static void onPlayerEffectEnded(PlayerEffectEndedEvent event) {
+    public static void onPlayerEffectEnded(PlayerEffectEndedEvent event) {
         actOnPlayer(event.playerName, p -> p.status.removeEffect(event.effect.getClass()));
     }
 
-    private static void onPlayerEffectAdded(PlayerEffectAddedEvent event) {
+    public static void onPlayerEffectAdded(PlayerEffectAddedEvent event) {
         actOnPlayer(event.playerName, p -> p.status.addEffect(event.effect));
     }
 
-    private static void onPlayerActionEnded(PlayerActionEndedEvent event) {
+    public static void onPlayerActionEnded(PlayerActionEndedEvent event) {
         actOnPlayer(event.playerName, p -> p.status.removeAction(event.action.getClass()));
     }
 
-    private static void onPlayerActionAdded(PlayerActionAddedEvent event) {
+    public static void onPlayerActionAdded(PlayerActionAddedEvent event) {
         actOnPlayer(event.playerName, p -> p.status.addAction(event.action));
     }
 
-    private static void actOnPlayer(String playerName, Consumer<Player> action) {
+    public static void actOnPlayer(String playerName, Consumer<Player> action) {
         Optional.ofNullable(getWorld().getPlayer(playerName)).ifPresent(action);
     }
 

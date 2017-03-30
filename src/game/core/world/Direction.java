@@ -16,18 +16,30 @@ public enum Direction implements Serializable {
         this.yAdd = yAdd;
     }
 
+    /**
+     * This direction to the right
+     * @return new direction
+     */
     public Direction right() {
         int i = ordinal() + 1;
         if(i >= values().length) i = 0;
         return values()[i];
     }
 
+    /**
+     * This direction to the left
+     * @return new direction
+     */
     public Direction left() {
         int i = ordinal() - 1;
         if(i < 0) i = values().length - 1;
         return values()[i];
     }
 
+    /**
+     * This direction opposite to this one
+     * @return new direction
+     */
     public Direction opposite() {
         return left().left();
     }
